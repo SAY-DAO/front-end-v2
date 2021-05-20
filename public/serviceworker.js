@@ -1,59 +1,78 @@
-const CACHE_NAME = "SAY-APP";
-const urlsToCache = [
+const staticCacheName = "SAY-home-v1";
+const filesToCache = [
 	"/static/js/main.chunk.js",
 	"/static/js/0.chunk.js",
 	"/static/js/bundle.js",
 	"/static/js/vendors~main.chunk.js",
-	"favicon.ico",
-	"logo192.png",
+	"/static/js/main.482930e5.chunk.js",
+	"/static/js/2.a637ec1e.chunk.js",
+	"/favicon.ico",
+	"/images/logo192.png",
 	"/index.html",
+	"/manifest.json",
 	"/",
-	"offline.html"
+	"/offline.html"
 ];
 
 const self = this;
 
-// install Service Worker
-self.addEventListener("install", (event)=> {
+// install Service Worker and save cache to Application - Cache
+self.addEventListener("install", event => {
+	console.log("Attempting to install service worker and cache static assets");
 	event.waitUntil(
-		caches.open(CACHE_NAME)
-			.then((cache) => {
-				console.log("Opended cache");
-				return cache.addAll(urlsToCache);
+		caches.open(staticCacheName)
+			.then(cache => {
+				return cache.addAll(filesToCache);
 			})
 	);
 });
 
-// Listen for requests
-self.addEventListener("fetch", (event)=> {
+// Serve files from the cache
+self.addEventListener("fetch", event => {
+	console.log("Fetch event for ", event.request.url);
 	event.respondWith(
+		// Check the cache for the requested resource
 		caches.match(event.request)
-			.then((response) => {
-				if(response){
-					return fetch(event.request);
+			.then(response => {
+				if (response) {
+					console.log("Found ", event.request.url, " in cache");
+					return response;
 				}
-				// try to get data from server 
-				let requestUrl = event.request.clone();
-				fetch(requestUrl);
-				console.log("Service worker fetched data");
+				// If fails, we send the request to the network.
+				console.log("Network request for ", event.request.url);
+				return fetch(event.request)
+					.then(response => {
+						// TODO 5 - Respond with custom 404 page
+						return caches.open(staticCacheName).then(cache => {
+							cache.put(event.request.url, response.clone());
+							return response;
+						});
+					});
 
-			} )
-			.catch(() => caches.match("offline.html"))         
+			}).catch((error) => {
+				// Respond with custom offline page
+				console.log("offline error ", error);
+				return caches.match("offline.html");
+
+			})
 	);
 });
 
-// Activate the SW
-self.addEventListener("activate", (event)=> {
-	const cacheWhitelist = [];
-	cacheWhitelist.push(CACHE_NAME);
-
+// Delete outdated caches
+self.addEventListener("activate", event => {
+	console.log("Activating new service worker...");
+  
+	const cacheAllowlist = [staticCacheName];
+  
 	event.waitUntil(
-		caches.keys().then((cacheNames) => Promise.allSettled(
-			cacheNames.map((cacheName) => {
-				if(!cacheWhitelist.includes(cacheName)) {
-					return caches.delete(cacheName);
-				}
-			})
-		))
+		caches.keys().then(cacheNames => {
+			return Promise.all(
+				cacheNames.map(cacheName => {
+					if (cacheAllowlist.indexOf(cacheName) === -1) {
+						return caches.delete(cacheName);
+					}
+				})
+			);
+		})
 	);
 });
