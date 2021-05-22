@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 export default function swDev() {
-	// eslint-disable-next-line no-undef
+	console.log("initiating service worker...");
 	let swUrl= `${process.env.PUBLIC_URL}/serviceworker.js`;
+	console.log("swurl = " + swUrl);
+
 	if("serviceWorker" in navigator) {
-		console.log(swUrl);
 		navigator.serviceWorker.register(swUrl)
 			.then((reg) => console.log("success: " ,reg.scope))
 			.catch((err) => console.log("Failiure: ", err));
