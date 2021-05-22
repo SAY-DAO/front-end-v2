@@ -7,7 +7,7 @@ const filesToCache = [
 	"/static/js/main.482930e5.chunk.js",
 	"/static/js/2.a637ec1e.chunk.js",
 	"/favicon.ico",
-	"/images/logo192.png",
+	"/images/logo.png",
 	"/index.html",
 	"/manifest.json",
 	"/",
