@@ -1,6 +1,6 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
-import theTheme from "./stylles/theTheme";
+import theTheme from "./styles/theTheme";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Splash from "./pages/Splash";
