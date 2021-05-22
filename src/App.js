@@ -1,19 +1,22 @@
 import React from "react";
-import AppBar from "./components/AppBar";
+import { ThemeProvider } from "@material-ui/core/styles";
+import theTheme from "./stylles/theTheme";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
+import Splash from "./pages/Splash";
 
 const App = () => (
 	<>
 		<BrowserRouter>
-			<AppBar />
-			<Container maxWidth="lg">
-				<React.StrictMode>
-					<Switch>
-						<Route exact path="/" />
-					</Switch>
-				</React.StrictMode>
-			</Container>
+			<ThemeProvider theme={theTheme}>
+				<Container maxWidth="lg">
+					<React.StrictMode>
+						<Switch>
+							<Route exact path="/" component={Splash}/>
+						</Switch>
+					</React.StrictMode>
+				</Container>
+			</ThemeProvider>
 		</BrowserRouter>
 	</>
 );
