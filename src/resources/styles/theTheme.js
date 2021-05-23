@@ -7,12 +7,12 @@ const theTheme = createTheme({
 		// light: will be calculated from palette.primary.main,
 			main: "#6a8c30",
 			// dark: will be calculated from palette.primary.main,
-			dark: "#6a8c30",
+			dark: "black",
 		// contrastText: will be calculated to contrast with palette.primary.main
 		},
 		secondary: {
-			light: "#0066ff",
-			main: "#0044ff",
+			light: "#beeeff",
+			main: "#5b5a8f",
 			// dark: will be calculated from palette.secondary.main,
 			contrastText: "#ffcc00",
 		},
@@ -25,9 +25,13 @@ const theTheme = createTheme({
 		tonalOffset: 0.2,
 	},
 	components: {
+		MuiContainer: {
+			defaultProps:{
+				// disableGutters: true, // If true, the left and right padding is removed.
+			}
+		},
 		MuiButtonBase: {
 			defaultProps: {
-			// The props to change the default for.
 				// disableRipple: true, // No more ripple!
 				disableElevation: true,
 
