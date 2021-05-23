@@ -33,8 +33,6 @@ const theTheme = createTheme({
 		MuiButtonBase: {
 			defaultProps: {
 				// disableRipple: true, // No more ripple!
-				disableElevation: true,
-
 			},
 			styleOverrides: {
 				root: {
