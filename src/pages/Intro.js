@@ -12,7 +12,7 @@ const Intro = () => {
 			justifyContent="center"
 			alignItems="center"
 		>
-			<h2>{t("Welcome to React")}</h2>
+			<h2>{t("button.skip")}</h2>
 			<Grid item xs={12}>
 				<img src="/images/intro.png" width="100%"/>
 			</Grid>

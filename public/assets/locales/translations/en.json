@@ -1,0 +1,494 @@
+{
+  "button": {
+    "skip": "Skip",
+    "register": "Register",
+    "login": "Login",
+    "submit": "Submit",
+    "understand": "I understand",
+    "save": "Save",
+    "pay": "Pay",
+    "unpayable": "Unavaliable",
+    "payFromCredit": "Pay from wallet",
+    "leave": {
+      "yes": "I know",
+      "no": "I'll Stay"
+    },
+    "accept": {
+      "yes": "I would",
+      "no": "I won't"
+    },
+    "inviteRoleSelect": {
+      "yes": "Absolutely",
+      "no": "No, it's too soon"
+    },
+    "changeLanguage": {
+      "show": "FA",
+      "key": "fa"
+    },
+    "joinOption": {
+      "byPhone": "Sign up with phone number",
+      "byEmail": "Sign up with email address"
+    },
+    "timeout": "Retry",
+    "continue": "Accept",
+    "cancel": "Decline"
+  },
+  "error": {
+    "fillOne": "This information is necessary",
+    "allRequired": "Please fill in all the required fields",
+    "passwordMatch": "Password entries don’t match",
+    "wrongPassword": "Password is too short",
+    "wrongEmail": "Please enter a valid email address",
+    "wrongPhone": "The phone number you have entered is incomplete",
+    "usernameStart": "Username cannot contain any punctuation marks.",
+    "usernameLength": "Username must contain 3 to 12 characters.",
+    "wrongUsername": "Do not use the Persian alphabets for the Persian username.",
+    "usernameExists": "This username is already in use",
+    "phoneExists": "This phone number is already in use",
+    "emailExists": "This email address is already in use",
+    "wrongUserOrPass": "Username or password is incorrect",
+    "codeRequired": "You must use a confirmation code to continue",
+    "wrongCode": "Incorrect code",
+    "codeExpired": "The code you have entered is no longer available",
+    "manyRequest": "Try again after one minute",
+    "sthIsWrong": "Please try again later",
+    "addressLength": "Please enter a shorter address!",
+    "postalCodeLength": "Postal code must have 10 digits!",
+    "adoption": {
+      "goneChild": "دیگر دیر شده و {{childName}} نمی‌تواند یک {{roles}}{{rolesRelative}} تازه داشته باشد. {{childName}} دیگر در بینِ ما نیست.",
+      "cannotBeMemberInvite": "شما پیش از دعوت {{previousRole}}{{rolesRelative}} {{childName}} بودید ولی او را ترک کردید و یک نفر دیگر اکنون {{previousRole}}{{rolesRelative}} {{childName}} است. شما دیگر نمی‌توانید به این خانواده باز گردید.",
+      "cannotBeMember": "بعد از این که خانواده را ترک کردید فرد دیگری {{previousRole}}{{rolesRelative}} {{childName}} شد و شما دیگر نمی‌توانید به این خانواده باز گردید.",
+      "backToPrevRole": "شما پیش از ترک این خانواده {{previousRole}}{{rolesRelative}} {{childName}} بودید و در این لحظه تنها می‌توانید به عنوان {{previousRole}}{{rolesRelative}} {{childName}} به خانواده باز گردید.",
+      "FaMoTaken": "دیر رسیدید و یک نفر دیگر اکنون {{roles}}{{rolesRelative}} {{childName}} است."
+    },
+    "timeout": "Oh..! <1/>Something is not working. Check back latter"
+  },
+  "placeholder": {
+    "name": "First name",
+    "lastname": "Last name",
+    "username": "Username",
+    "password": "Password",
+    "repeatPassword": "Re-enter password",
+    "email": "Email",
+    "phoneNumber": "Phone Number"
+  },
+  "currency": {
+    "toman": " T"
+  },
+  "family": {
+    "roles": {
+      "father": "Father",
+      "mother": "Mother",
+      "uncle": "Uncle",
+      "aunt": "Aunt",
+      "daei": "Uncle",
+      "ame": "Aunt",
+      "others": "Others",
+      "say": "SAY"
+    },
+    "farsiRelatives": false
+  },
+  "assets": {
+    "language": "en",
+    "languages": {
+      "en": "English",
+      "fa": "Farsi"
+    },
+    "age": " Years ",
+    "readMore": {
+      "more": "More",
+      "less": "Less"
+    },
+    "css": {
+      "direction": "ltr",
+      "flex": "flex-row",
+      "eng": "",
+      "jus-right": "jus-left",
+      "jus-left": "jus-right",
+      "fontFamily": "roboto, iranyekan !important",
+      "paddingSpace": "padding-left"
+    }
+  },
+  "splash": {
+    "say": "SAY",
+    "title": "What you hear is real",
+    "content": "Building a platform to share wealth and love, literally"
+  },
+  "add": {
+    "modalDesc": "Using SAY App on your phone is easier.",
+    "android": "Android",
+    "androidDesc1": "Tap the menu on the right side of your screen",
+    "androidDesc2": "Then tap the Add to Home screen button",
+    "ios": "IOS",
+    "iosDesc1": "Tap the Share button",
+    "iosDesc2": "Tap the Add to Home Screen button",
+    "iosDesc3": "Then tap the Add button on the right side"
+  },
+  "intro": {
+    "title": "Welcome",
+    "slideTitle1": "To virtually touch a heart",
+    "slideDesc1": "Users can create virtual families for real children. Families big enough to nourish a feeling, a belief and a plan."
+  },
+  "join": {
+    "title": "Join SAY",
+    "alreadyJoined": "If already joined tap <1>here</1>"
+  },
+  "comeback": {
+    "title": "Login",
+    "noAccount": "Don't have an account yet? <1>Join us</1>"
+  },
+  "forgot-password": {
+    "title": "Forgot password",
+    "content": "Enter your email address.",
+    "successNotif": "A link has been sent to you for changing your password."
+  },
+  "change-password": {
+    "title": "Change password",
+    "successNotif": "Password changed"
+  },
+  "verify": {
+    "title": "Verification",
+    "content": {
+      "byPhone": "The 6-digit code sent to <1>{{verificationTool}}</1>.",
+      "byEmail": "The 6-digit code sent to <1>{{verificationTool}}</1>."
+    },
+    "placeholder": "Code",
+    "notReceiveCode": "Don't received the code?",
+    "resendCode": "Resend the code",
+    "pleaseWait": "Please wait",
+    "wrongEmail": "Incorrect email address?",
+    "changeEmail": "Change email address",
+    "wrongPhone": "Incorrect phone number?",
+    "changePhone": "Change phone number"
+  },
+  "userLayout": {
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "profile": "Profile",
+    "notifications": "Notifications"
+  },
+  "dashboard": {
+    "title": "Children"
+  },
+  "search": {
+    "title": "Adopt a child",
+    "content": "Here, you can search for a child to adopt and start building or growing your virtual family.",
+    "randomSearch": "Random search",
+    "or": "Or",
+    "brainContent": "In the near future, you will be able to use the SAY artificial intelligence to connect to children with life stories most similar to yours.",
+    "brainSearch": "SAY Brain search",
+    "justRegisterModalDesc": "شما همیشه می‌توانید اطلاعات خود را از قسمت پروفایل ویرایش کنید!"
+  },
+  "search-result": {
+    "exitQoute": {
+      "1": "What you read was real",
+      "2": "Every child is unique",
+      "3": "What you heard was real",
+      "4": "You are about to miss an opportunity",
+      "5": "You are about to lose a child"
+    },
+    "title": "Family Members",
+    "getRole": "I like to be",
+    "adoptModal": {
+      "desc": "Are you sure you want to be {{childname}}'s {{roles}}?"
+    },
+    "authWarn": {
+      "desc": "Enter if you want to be {{childname}}'s {{roles}}."
+    },
+    "takenRole": {
+      "1": "We're sorry, in the meantime another user has become {{childname}}'s {{roles}}.",
+      "2": "Too late! Someone else has become {{childname}}'s {{roles}} earlier.",
+      "3": "It's too late to become {{childname}}'s {{roles}}."
+    }
+  },
+  "profile": {
+    "editProfile": {
+      "title": "Edit profile",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phoneNumber": "Phone number",
+      "email": "Email",
+      "username": "Username",
+      "gender": {
+        "title": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other!",
+        "none": "-"
+      },
+      "male": "Male",
+      "female": "Female",
+      "country": "Country",
+      "city": "City",
+      "birthday": "Birthday!",
+      "pass": "Password",
+      "pass2": "Re-enter password",
+      "avatar": {
+        "title": "Edit photo",
+        "scale": "Zoom",
+        "rotate": "Rotate"
+      },
+      "address": "Address",
+      "postalCode": "Postal code"
+    },
+    "badges": "Badges",
+    "doneNeeds": "Done needs",
+    "credit": "Wallet credit",
+    "content": "With your data, the SAY brain starts analyzing based on International Personality Item Pool",
+    "advanceProfile": "SAY Brain data",
+    "creditModal": {
+      "thumbnail": "Your wallet can’t be directly credited...",
+      "modalTitle": "Wallet",
+      "modalDesc": "This wallet is not to be credited. It is for refunds in case of any discounts or price cuts."
+    }
+  },
+  "setting": {
+    "title": "Setting",
+    "wallet": {
+      "title": "Wallet"
+    },
+    "financial": {
+      "title": "Financial history"
+    },
+    "language": {
+      "title": "Change language"
+    },
+    "changePass": {
+      "title": "Change password"
+    },
+    "donation": {
+      "title": "Donation reports"
+    },
+    "notification": {
+      "title": "Notifications"
+    },
+    "crc": {
+      "title": "Child's rights",
+      "header": "Prelude",
+      "body": "The United Nations, in the Charter, has reaffirmed its faith in fundamental human rights and in the dignity and worth of the human person and by recognizing the family as the main component of the society and the natural environment for the growth and well-being of all its members in which children, in particular, should be afforded the necessary protection and assistance to be fully prepared to live an individual life in the society. Therefore, the United Nations defined the UNCRC in 1989, which has been signed over by 196 countries and is being executed in 140 countries. This is, by far, the most complete statement of children's rights ever produced.\nThe United Nations Convention on the Right of the Child is mainly prepared, for governments but in our belief, the UNCRC must be edited and re-presented for all individuals of the society.\nBear in mind that SAY, just like the United Nations, abides and respects the laws and safety of any country it operates in.",
+      "download": {
+        "button": "Download",
+        "title": "Click here to read the complete version of the United Nations Convention on the Rights of the Child."
+      },
+      "life": {
+        "title": "Basic definitions",
+        "body": [
+          "Recognizing that every child has the inherent right to life.",
+          "Based on the Convention, a child means every human being below the age of eighteen years.",
+          "Ensuring the child such protection and care as is necessary for his or her well-being. ",
+          "Respecting and ensuring the rights outlined in the Convention to each child within their jurisdiction without discrimination of any kind.",
+          "In all actions concerning children, the best interests of the child shall be a primary consideration.",
+          "Establishing proper ways for communications and providing a criterion for ensuring the child’s state of health, both mental and physical."
+        ]
+      },
+      "identity": {
+        "title": "Identity, nationality, culture",
+        "body": [
+          "Having a name, nationality, and family relations is an obvious right to all children, and no child shall be deprived of the rights of their identity. ",
+          "Each child shall have the right from birth to a name, the right to acquire a nationality and as far as possible, the right to know and be cared for by his or her parents.",
+          "Any child belonging to any linguistic or religious minorities, or who is indigenous, shall not be denied the right, to practice his or her religion and language, and to be able to enjoy their culture with other members of his or her community.",
+          "Local etiquette, responsibilities, parents’ rights and duties, are inseparable parts of a child’s identity and factors for them to get familiarized with the cultural life, leading them to recognize their abilities, which helps their growth.  ",
+          "Every child shall have the right to participate freely in cultural life and to engage in play and recreational activities appropriate to their age."
+        ]
+      },
+      "family": {
+        "title": "Family and Freedom",
+        "body": [
+          "Unless the child is in no harm, he or she shall not be temporarily or permanently deprived of their family environment.",
+          "Preserving the child’s interests is the most basic responsibility of parents, legal guardians, and society.",
+          "The child has the right to the protection of the law when being subjected to arbitrary or unlawful interference with his or her privacy.",
+          "Recreation, tranquility, and creative activities are the most basic rights of every child.",
+          "All Parties shall respect the right of the child to freedom of thought, conscience, and religion. Every child should be aware of their rights to be respectful of the rights of others.",
+          "There is no restriction to freedom of the child unless there is a human restriction.",
+          "Children’s opinions must be considered, according to their age and level of maturity, for them to be able to shape their beliefs."
+        ]
+      },
+      "security": {
+        "title": "Safety and security",
+        "body": [
+          "Children have the right to social security.",
+          "Children should not be subjected to misusing and sexual exploitation.",
+          "All Parties shall protect the child against all forms of exploitation prejudicial to any aspects of the child's welfare.",
+          "Children must be protected against all forms of mistreatment and violence. ",
+          "Effective methods should be established of social programs to provide necessary support and awareness for the child and who has the care of the child.",
+          "All parties shall take all appropriate measures, including legislative, administrative, social and educational, to protect children from the illicit use of narcotic drugs and psychotropic substances. ",
+          "No child shall be deprived of his or her liberty unlawfully or arbitrarily.",
+          "Every child deprived of liberty shall be treated with humanity and respect for the inherent dignity of the human person.",
+          "Children who are victims of any kind of violence must be protected and placed in an environment which fosters the health, self-respect, and dignity of the child."
+        ]
+      },
+      "education": {
+        "title": "Education",
+        "body": [
+          "It is essential that all children have the possibility of education.",
+          "Education must be free and accessible to all children. ",
+          "All children must be encouraged to study, to nurture their curiosity. ",
+          "Guidance should be available for the child to provide resolutions when needed.",
+          "Contributing to the elimination of ignorance is a significant matter, as ignorance is not respectable in any form. Especially for the children.",
+          "One of the most significant responsibilities towards every child is to guarantee adequate living conditions and having access to standard facilities for physical, mental, and ethical development.",
+          "The performance of mass media and social networks is very important and the child should have access to these media according to their understanding.",
+          "The necessities for educating all children:",
+          [
+            "Awareness and path of consciousness ",
+            "The development of the child's personality, talents, and mental and physical abilities to their fullest potential",
+            "Respect for humanity, society, cultural and linguistic identity, and national values ",
+            "The preparation of the child for responsible life in a free society, in the spirit of understanding, peace, tolerance, equality of sexes, and friendship among all people"
+          ],
+          "The media must consider the need for language education for children who belong to minority groups or are indigenous"
+        ]
+      },
+      "health": {
+        "title": "Health",
+        "body": [
+          "The child's health or physical, mental, spiritual, moral or social development is a continues road without an end.",
+          "The child has the right to the enjoyment of the highest attainable standards of health and to facilities for the treatment of illness and rehabilitation of health.",
+          "Disabled children have the right to receive education, training, health, care services, rehabilitation services preparation for employment and recreation opportunities.",
+          "Children are the future population of the society; therefore, we should take all effective and appropriate measures with a view to abolishing traditional practices prejudicial to the health of children. "
+        ]
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "desc": "Stay in touch and give us feedback from time to time.",
+      "btn1": "Send mail",
+      "btn2": "Call for support",
+      "btn3": "Any ideas",
+      "btn4": "FAQ"
+    },
+    "about": {
+      "title": "About SAY",
+      "desc1": "SAY, the virtual kid",
+      "desc2": "Make children's wishes come true",
+      "body": "SAY tracks all donations to their intended destinations over a transparent platform by creating a SWIFT liked network consisting of the following data: Donor/Bank/NGO/Social Worker/Child which helps users not to feel skeptical about the results of their donations.\nStarting with children; SAY partners up with NGOs, registers the NGO, their social workers, and all the children under their supervision, in our APP panel. SAY matches every user with a specific child with similar personality traits. Users can read the child’s real-life story and also listen to their thoughts and dreams through their recorded voices.\nUsers can adopt and improve the quality of life of specific children by taking care of all their daily, educational and developmental needs through well-known and trusted online retailers over a transparent platform by microdonations from their phones. Moreover, SAY creates a unique avatar on behalf of every single child to protect children's rights and abide by the Convention on the Rights of the Child.\nIn addition, the SAY App is a solution to 5 of United Nations’ SDGs and increases the donation rate by taking the “identifiable victim effect” into account. According to research, people are willing to expend greater resources to save the lives of identified victims than to save equal numbers of unidentified or statistical victims."
+    },
+    "logout": {
+      "title": "Logout",
+      "modalDesc": "Are you leaving us?",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "notification": {
+    "request": {
+      "title": "Requests",
+      "noContent": "There are no new requests"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "noContent": "There are no new notifications"
+    }
+  },
+  "childCard": {
+    "search": "Search",
+    "noChild": "You haven’t adopted any children yet, start growing your family in the search section"
+  },
+  "childPage": {
+    "childTab": {
+      "requirements": "Requirements",
+      "family": "Family",
+      "story": "Story"
+    },
+    "more": {
+      "growFamily": "Grow the family",
+      "leaveFamily": "Leave your family"
+    },
+    "growFamilyModal": {
+      "title": "Choose invite mehtod!",
+      "invite": "invite!",
+      "share": {
+        "btn": "Share!",
+        "title": "انتخاب‌هایی که داریم",
+        "text": "سلام \nیه اپلیکیشنی هست که توش می‌تونی خانواده درست کنی، یه خانواده که مجازیه اما آدم‌هاش مثل من و تو واقعی‌اند و تو می‌تونی آدم‌هایی که می‌شناسی رو دعوت کنی، مثل من که دارم تو رو دعوت می‌کنم به این خانواده و هر خانواده‌ای یه بچه‌ی واقعی داره. یه بچه‌ای که قصه‌ی زندگی‌اش رو اهل خانواده می‌تونن بخونن و صداش رو بشنون. تو این اپلیکیشن من شدم {{roles}}{{rolesRelative}} {{childname}} و فکر کردم تو هم می‌تونی {{inviteRoles}}{{invteRolesRelative}} {{childname}} باشی. بقیه‌اش رو هم خودت می‌تونی ببینی:\n"
+      }
+    },
+    "selectRoleModalDesc": "You can grow your family by inviting others. For this to happen, choose a role and create an invitation link.",
+    "copyModalDesc": "لینک دعوت کپی شد.",
+    "leaveModalDesc": "You won't be {{childname}}'s {{roles}} anymore.",
+    "permanentGoneMsg": "Some things are unpredictable and out of control, and {{sayName}} changing residence, is one of those things. They are gone, and the NGO doesn’t have access to them, no more. We have made sure everything you have provided has reached {{hisHer}} hands up-to today.\n We wish {{himHer}} well, and as a remembrance of who {{heShe}} was and what we have achieved together, {{hisHer}} profile will be kept open.",
+    "temporaryGoneMsg": "Somethings are out of our predictions and capacity and {{sayName}}’s temporary being away is one of those things. At the moment the NGO cannot reach {{himHer}} and {{hisHer}} family, so we decided to temporarily put this message on {{hisHer}} page and keep it semi-active. And wait with you for {{himHer}} return."
+  },
+  "childData": {
+    "needCategory": {
+      "urgent": "Urgent",
+      "growth": "Growth",
+      "joy": "Joy",
+      "health": "Health",
+      "surroundings": "Surroundings",
+      "done": "Done"
+    },
+    "growYourFamily": "Grow Your Family",
+    "story": "Story"
+  },
+  "needCard": {
+    "emptyCategory": "There are no new requests"
+  },
+  "needPage": {
+    "needInfo": "Need's Info",
+    "serviceDetail": "{{childName}}’s SW has written something, about the {{needName}}:",
+    "payTitle": "Payment",
+    "payContent": "Choose your method of payment and the amount you’d like to fund",
+    "paySome": "Pay some",
+    "payAll": "Pay all",
+    "payPlaceholder": "Amount",
+    "donateCheckbox": "Support the path",
+    "donateModal": "SAY does not take any contributions from the donations made for the children. Pitch in to help the cycle continue.",
+    "otherDonate": "Other",
+    "payWarningModal": "Unfortunately you cannot pay less than {{paylimit}} Tomans.",
+    "useCredit": {
+      "title": "Use your remaining balance"
+    },
+    "unavilableModal": "This product is temporarily unavailable.",
+    "participants": {
+      "title": "Participants",
+      "othersModal": "This part of the payment has been paid by the ones who are no longer part of this family.",
+      "SAYModal": "The price for the service/product was changed after the payment was done, SAY paid the rest."
+    },
+    "holidayModal": "You can pay for the {{needName}} at this moment, but it will be delivered to {{childName}} after the holidays."
+  },
+  "needStatus": {
+    "0": "Money transfer receipt",
+    "p1": "Product purchase receipt",
+    "p2": "Product delivery to the NGO receipt",
+    "p3": "Product delivery receipt",
+    "s1": "Money transfer to the NGO receipt",
+    "s2": "Service delivery receipt"
+  },
+  "report": {
+    "swId": "Social worker’s identification: SW-{{socialWorkerGeneratedCode}}",
+    "dkc": "Order: DKC-{{dkc}}",
+    "p2s2": {
+      "img": "https://sayapp.company/public/resources/img/done.jpg",
+      "title": "One of {{childSayName}}’s needs is completely done",
+      "paragraph": "With your collaborations, all expenses for {{needName}} has been paid for on {{date}}."
+    },
+    "p3": {
+      "img": "https://sayapp.company/public/resources/img/purchased.jpg",
+      "title": "Purchase receipt for {{childSayName}}’s needs",
+      "paragraph": "On {{date}} {{needName}} has been ordered for {{childSayName}} from Digikala."
+    },
+    "p4": {
+      "img": "https://sayapp.company/public/resources/img/ngo_delivered.jpg",
+      "title": "Product delivered to the NGO notification",
+      "paragraph": "On {{date}} {{needName}} is delivered to the NGO."
+    },
+    "p5": {
+      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "title": "Product delivered to {{childSayName}}",
+      "paragraph": "{{needName}} is delivered to {{childSayName}} on {{date}}."
+    },
+    "s3": {
+      "img": "https://sayapp.company/public/resources/img/money.jpg",
+      "title": "Money transfer to the NGO by SAY",
+      "paragraph": "The amount of {{needCost}} Tomans for purchasing {{childSayName}}’s {{needName}}, has been transferred into the NGO’s bank account, on {{date}}."
+    },
+    "s4": {
+      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "title": "{{childSayName}}’s {{needName}} has been paid for",
+      "paragraph": "The amount of {{needCost}} Tomans for {{childSayName}}’s {{needName}}, has been paid by the NGO on {{date}}."
+    },
+    "contact": "At SAY, we listen to you.",
+    "address": "4th Floor, No 22, Azarshahr St, Iranshahr St, Karimkhan Zand St, Tehran, Iran",
+    "phoneNumber": "Tel: <1>0 2 1 - 2 2 3 4 7 8 1 4</1>",
+    "download": "Download Report"
+  }
+}

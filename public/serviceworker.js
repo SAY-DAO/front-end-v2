@@ -1,5 +1,5 @@
-const staticCacheName = "SAY-home-v1";
-const filesToCache = [
+const staticCacheName = "SAY-v0.0.0";
+const urlsToCache = [
 	"/static/js/main.chunk.js",
 	"/static/js/0.chunk.js",
 	"/static/js/bundle.js",
@@ -22,7 +22,8 @@ self.addEventListener("install", event => {
 	event.waitUntil(
 		caches.open(staticCacheName)
 			.then(cache => {
-				return cache.addAll(filesToCache);
+				console.log("Opened cache");
+				return cache.addAll(urlsToCache);
 			})
 	);
 });
