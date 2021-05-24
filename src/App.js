@@ -9,7 +9,7 @@ import Intro from "./pages/Intro";
 const App = () => (
 	<>
 		<BrowserRouter>
-			<Suspense fallback=""> {/*i18n translations might still be loaded by the http backend*/}
+			<Suspense fallback=""> 
 				<ThemeProvider theme={theTheme}>
 					<Container maxWidth="sm">
 						<React.StrictMode>
