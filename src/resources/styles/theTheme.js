@@ -5,14 +5,14 @@ const theTheme = createTheme({
 	palette: {
 		primary: {
 		// light: will be calculated from palette.primary.main,
-			main: "#6a8c30",
+			main: "#f16531",
 			// dark: will be calculated from palette.primary.main,
 			dark: "black",
 		// contrastText: will be calculated to contrast with palette.primary.main
 		},
 		secondary: {
-			light: "#beeeff",
-			main: "#5b5a8f",
+			light: "#bfeeff",
+			main: "#6be2fe",
 			// dark: will be calculated from palette.secondary.main,
 			contrastText: "#ffcc00",
 		},
@@ -36,10 +36,9 @@ const theTheme = createTheme({
 			},
 			styleOverrides: {
 				root: {
-					borderRadius: 0,
 					textTransform: "none",
 				},
-				containedPrimary: {
+				outlinedPrimary: {
 					"&:hover": {
 						backgroundColor: "black",
 					},

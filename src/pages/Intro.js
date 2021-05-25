@@ -1,27 +1,12 @@
-import React, { useState } from "react";
-import { Button, Typography, Grid } from "@material-ui/core";
+import React from "react";
+import { Typography, Grid } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
+import LangButton from "../components/LangButton";
+import SayButton from "../components/SayButton";
 
 const Intro = () => {
-	const [lang, setLang] = useState("fa");
 	const { t } = useTranslation();
-
-	const clickHandler = () => {
-		console.log(lang);
-		switch(lang) {
-		case "en":
-			setLang("fa");
-			break;
-		case "fa":
-			setLang("en");
-			break;
-		default:
-			setLang("fa");
-		}
-
-		i18next.changeLanguage(lang);
-	};
+	
     
 	return (
 		<Grid
@@ -30,26 +15,31 @@ const Intro = () => {
 			justifyContent="center"
 			alignItems="center"
 		>
-			<Grid item xs={12}>
-				<h2>{t("button.skip")}</h2>
-				<Button variant="outlined" onClick={clickHandler}>{lang}</Button>
+
+			<Grid item xs={12} sx={{width: "100%", direction: "rtl"}}>
+				<LangButton />
 			</Grid>
 			<Grid item xs={12}>
 				<img src="/images/intro.png" width="100%"/>
 
 			</Grid>
 			<Grid item xs={12}>
-				<Typography>
-                    Text
+				<Typography variant='subtitle1'>
+					{t("splash.title")}
+				</Typography>
+				<Typography variant="body2">
+					{t("splash.content")}
 				</Typography>
 			</Grid>
 			<Grid item xs={12}>
-				<Button>
-                    Click
-				</Button>
-				<Button>
-                    Cllick
-				</Button>
+				<SayButton color="primary">
+					{t("SayButton.register")}
+				</SayButton>
+			</Grid>
+			<Grid item xs={12}>
+				<SayButton color="secondary">
+					{t("SayButton.login")}
+				</SayButton>
 			</Grid>
 		</Grid>
 	);
