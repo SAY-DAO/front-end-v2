@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
 import i18next from "i18next";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
 	root: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
   
 const LangButton = () => {
-	const [lang, setLang] = useState();
+	const [lang, setLang] = useState(document.cookies);
 
 	const clickHandler = () => {
 		switch(lang) {
@@ -25,7 +25,7 @@ const LangButton = () => {
 			setLang("en");
 			break;
 		default:
-			setLang("fa");
+			setLang(lang);
 		}
 
 		i18next.changeLanguage(lang);

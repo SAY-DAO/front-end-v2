@@ -2,9 +2,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import LinearLoading  from "../components/LinearLoading";
-// import { useTranslation } from "react-i18next";
-
-// const { t } = useTranslation();
 
 export default function Splash () {
 	return (
@@ -18,7 +15,6 @@ export default function Splash () {
 				<img
 					src="/images/logo.png"
 					style={{maxWidth: "30%", }}
-					
 				/>
 				<LinearLoading />
 			</Grid>
