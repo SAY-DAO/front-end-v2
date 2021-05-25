@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import { PropTypes } from "prop-types";
 import React from "react";
 import { withStyles } from "@material-ui/styles";
+import { withTranslation } from "react-i18next";
 
 const styles = {
 	root: {
@@ -16,7 +17,6 @@ const styles = {
 };
   
 const SayButton = ({color, children}) => {
-	console.log(color);
 	return (
 		<Button variant="contained" color={color}>
 			{children}
@@ -29,4 +29,5 @@ SayButton.propTypes = {
 	children: PropTypes.string
 };
 
-export default  withStyles(styles)(SayButton);
+// withTranslation to load i18n before - HOC
+export default  withTranslation()(withStyles(styles)(SayButton));

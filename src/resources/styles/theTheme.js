@@ -2,6 +2,7 @@ import { createTheme } from "@material-ui/core/styles";
 import { grey } from "@material-ui/core/colors";
 
 const theTheme = createTheme({
+	direction: "rtl",
 	palette: {
 		primary: {
 		// light: will be calculated from palette.primary.main,

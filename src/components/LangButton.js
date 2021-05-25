@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
   
 const LangButton = () => {
-	const [lang, setLang] = useState("fa");
+	const [lang, setLang] = useState();
 
 	const clickHandler = () => {
 		switch(lang) {
@@ -33,7 +33,7 @@ const LangButton = () => {
 	const classes = useStyles();
 	return (
 		<Button variant="outlined" className={classes.root} onClick={clickHandler}>
-			{lang==="en"? lang : "fa"}
+			{lang==="en" ? "en" : "fa"}
 		</Button>
 	);
 };
