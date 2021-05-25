@@ -3,6 +3,8 @@ import { grey } from "@material-ui/core/colors";
 
 const theTheme = createTheme({
 	direction: "rtl",
+	fontFamily: "iranyekan",
+
 	palette: {
 		primary: {
 		// light: will be calculated from palette.primary.main,
@@ -25,6 +27,9 @@ const theTheme = createTheme({
 		// E.g., shift from Red 500 to Red 300 or Red 700.
 		tonalOffset: 0.2,
 	},
+	typography: {
+		fontFamily: "\"iranyekan\", \"roboto\""
+	},  
 	components: {
 		MuiContainer: {
 			defaultProps:{
