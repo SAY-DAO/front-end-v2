@@ -18,13 +18,13 @@ const Intro = () => {
 			<Grid item xs={12} sx={{width: "100%", direction: "rtl"}}>
 				<LangButton />
 			</Grid>
-			<Grid item xs={12}>
-				<img src="/images/intro.png" width="100%"/>
-				<Typography variant="subtitle1">
-					{t("splash.title")}
+			<Grid item xs={12} sx={{paddingBottom: 4}}>
+				<img src="/images/intro.png" width="100%" style={{paddingBottom: "20px"}}/>
+				<Typography variant="subtitle1" align="center" sx={{paddingBottom: 2}}>
+					{t("intro.slideTitle1")}
 				</Typography>
-				<Typography variant="body2">
-					{t("splash.content")}
+				<Typography variant="body1" align="center">
+					{t("intro.slideDesc1")}
 				</Typography>
 			</Grid>
 			<Grid item xs={12}>

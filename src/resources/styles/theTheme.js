@@ -36,21 +36,34 @@ const theTheme = createTheme({
 				// disableGutters: true, // If true, the left and right padding is removed.
 			}
 		},
+		MuiTypography: {
+			styleOverrides:{
+				subtitle1:{
+					color:"#666666",
+					fontWeight: 500,
+					fontSize: "12px",
+					lineHeight: "14px",
+				},
+				body1:{
+					color:"#8C8C8C",
+					fontWeight: 200,
+					fontSize: "10px",
+					lineHeight: "14px",
+				}
+			}
+		},
 		MuiButton: {
 			defaultProps: {
 				// disableRipple: true, // No more ripple!
 			},
 			styleOverrides: {
 				root: {
-					// textTransform: "lowercase",
+					textTransform: "none",
 				},
 				containedPrimary: {
 					minWidth: "240px",
 					background: "linear-gradient(90deg, #F59E39 0%, #F05A31 100%)",
 					borderRadius: "48px",
-					"&:hover": {
-						backgroundColor: "blue",
-					},
 				},
 				outlinedPrimary: {
 					minWidth: "240px",

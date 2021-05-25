@@ -7,8 +7,11 @@ const useStyles = makeStyles({
 	root: {
 		background: "transparent",
 		border: "1px solid #F59E39",
-		borderRadius: "100%",
-		height: 48,
+		borderRadius: "50%",
+		fontWeight: 200,
+		lineHeight: "19px",
+		width: "36px",
+		height: "36px",
 		minWidth: 0,
 	},
 });
