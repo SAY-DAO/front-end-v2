@@ -1,10 +1,9 @@
 {
-  "ahmad" : "hifa",
   "button": {
     "skip": "می‌دانم",
     "register": "ثبت نام",
     "login": "ورود",
-    "submit": "ارسال",
+    "submit": "ارسال کد",
     "understand": "فهمیدم",
     "save": "ثبت",
     "pay": "پرداخت کنید",

@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import React from "react";
 import i18next from "i18next";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,7 @@ const useStyles = makeStyles({
 		width: "36px",
 		height: "36px",
 		minWidth: 0,
+		margin: 0
 	},
 });
   
@@ -37,9 +38,13 @@ const LangButton = () => {
 	};
 	const classes = useStyles();
 	return (
-		<Button variant="outlined" className={classes.root} onClick={clickHandler}>
-			{getLanguage() == "en" ? "FA" : "EN"}
-		</Button>
+		<Grid>
+			<Button variant="outlined" className={classes.root} onClick={clickHandler}>
+				{getLanguage() == "en" ? "FA" : "EN"}
+			</Button>
+		</Grid>
+
+		
 	);
 };
 
