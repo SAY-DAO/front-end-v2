@@ -6,7 +6,7 @@ const theTheme = createTheme({
 	palette: {
 		primary: {
 		// light: will be calculated from palette.primary.main,
-			main: "#f16531",
+			main: "#F05A31",
 			// dark: will be calculated from palette.primary.main,
 			dark: "black",
 		// contrastText: will be calculated to contrast with palette.primary.main
@@ -31,25 +31,25 @@ const theTheme = createTheme({
 				// disableGutters: true, // If true, the left and right padding is removed.
 			}
 		},
-		MuiButtonBase: {
+		MuiButton: {
 			defaultProps: {
 				// disableRipple: true, // No more ripple!
 			},
 			styleOverrides: {
 				root: {
-					textTransform: "none",
+					// textTransform: "lowercase",
 				},
 				containedPrimary: {
-					background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-					color: "red",
+					minWidth: "240px",
+					background: "linear-gradient(90deg, #F59E39 0%, #F05A31 100%)",
+					borderRadius: "48px",
 					"&:hover": {
 						backgroundColor: "blue",
 					},
 				},
-				containedSecondary: {
-					// background: "linear-gradient(90deg, #F59E39 0%, #F05A31 100%)",
-					background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-					fontWeight: 7000,
+				outlinedPrimary: {
+					minWidth: "240px",
+					borderRadius: "48px",
 				},
 			},
 		},

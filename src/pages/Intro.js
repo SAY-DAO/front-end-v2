@@ -12,6 +12,7 @@ const Intro = () => {
 			direction="column"
 			justifyContent="center"
 			alignItems="center"
+			spacing={2}
 		>
 
 			<Grid item xs={12} sx={{width: "100%", direction: "rtl"}}>
@@ -19,8 +20,6 @@ const Intro = () => {
 			</Grid>
 			<Grid item xs={12}>
 				<img src="/images/intro.png" width="100%"/>
-			</Grid>
-			<Grid item xs={12}>
 				<Typography variant="subtitle1">
 					{t("splash.title")}
 				</Typography>
@@ -30,16 +29,13 @@ const Intro = () => {
 			</Grid>
 			<Grid item xs={12}>
 				<Button variant="contained" color="primary">
-					{t("Button.register")}
+					{t("button.register")}
 				</Button>
 			</Grid>
 			<Grid item xs={12}>
-				<Button variant="outlined" color="secondary">
-					{t("Button.login")}
+				<Button variant="outlined" color="primary">
+					{t("button.login")}
 				</Button>
-			</Grid>
-			<Grid item xs={12}>
-				<Button variant="contained" color="primary">hi</Button>
 			</Grid>
 		</Grid>
 	);

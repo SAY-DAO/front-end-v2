@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 import i18next from "i18next";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -14,18 +14,20 @@ const useStyles = makeStyles({
 });
   
 const LangButton = () => {
-	const [lang, setLang] = useState(document.cookies);
+	let lang;
+	const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
 	const clickHandler = () => {
-		switch(lang) {
+		const currentLang = getLanguage();
+		switch(currentLang) {
 		case "en":
-			setLang("fa");
+			lang = "fa";
 			break;
 		case "fa":
-			setLang("en");
+			lang = "en";
 			break;
 		default:
-			setLang(lang);
+			lang = "fa";
 		}
 
 		i18next.changeLanguage(lang);
@@ -33,7 +35,7 @@ const LangButton = () => {
 	const classes = useStyles();
 	return (
 		<Button variant="outlined" className={classes.root} onClick={clickHandler}>
-			{lang==="en" ? "en" : "fa"}
+			{getLanguage() == "en" ? "FA" : "EN"}
 		</Button>
 	);
 };
