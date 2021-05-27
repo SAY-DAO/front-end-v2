@@ -4,23 +4,8 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
-import { makeStyles } from "@material-ui/core/styles";
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
-
-const useStyles = makeStyles({
-	root: {
-		background: "transparent",
-		border: "1px solid red",
-		borderRadius: "50%",
-		fontWeight: 200,
-		lineHeight: "19px",
-		width: "326px",
-		height: "36px",
-		minWidth: 0,
-		margin: 0
-	},
-});
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
@@ -35,7 +20,6 @@ const EnteryForm = () => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
     
-	const classes = useStyles();
 	return (
 		<Grid container
 			direction="column"
@@ -62,7 +46,7 @@ const EnteryForm = () => {
 						</Typography>
 					</Divider>
 					<PhoneInput
-						className={classes.root}
+						specialLabel={t("placeholder.phoneNumber")}
 						isValid={(value, country) => {
 							if (value.match(/12345/)) {
 								return "Invalid value: "+value+", "+country.name;
@@ -74,6 +58,7 @@ const EnteryForm = () => {
 						}}
 						country={"ir"}
 						value={values.phone}
+						disableDropdown='false'
 						onChange={handleChange("phone")}
 					/>
 				</FormControl>
