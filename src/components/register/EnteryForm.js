@@ -5,7 +5,8 @@ import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
 import { makeStyles } from "@material-ui/core/styles";
-import "react-phone-input-2/lib/material.css";
+// Customized "react-phone-input-2/lib/material.css"
+import "../../resources/styles/css/material.css";
 
 const useStyles = makeStyles({
 	root: {
