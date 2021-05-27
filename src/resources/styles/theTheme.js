@@ -1,11 +1,13 @@
 import { createTheme } from "@material-ui/core/styles";
-import { grey } from "@material-ui/core/colors";
 
 const theTheme = createTheme({
 	direction: "rtl",
 	fontFamily: "iranyekan",
 
 	palette: {
+		background: {
+			default: "#FFF" // CSSBaseline is needed for this
+		},
 		primary: {
 		// light: will be calculated from palette.primary.main,
 			main: "#F05A31",
@@ -25,7 +27,7 @@ const theTheme = createTheme({
 		// Used by the functions below to shift a color's luminance by approximately
 		// two indexes within its tonal palette.
 		// E.g., shift from Red 500 to Red 300 or Red 700.
-		tonalOffset: 0.2,
+		// tonalOffset: 0.2,
 	},
 	typography: {
 		fontFamily: "\"iranyekan\", \"roboto\""
@@ -88,26 +90,38 @@ const theTheme = createTheme({
 		},
 		MuiInputLabel: {
 			defaultProps: {
-				shrink: true,
+				// shrink: true,
 			},
 			styleOverrides: {
 				root: {
-					textTransform: "uppercase",
-					fontSize: "1.5rem",
+					// textTransform: "uppercase",
+					fontSize: "0.7rem",
 				},
 			},
-		},MuiInput: {
+		},
+		MuiOutlinedInput: {
 			defaultProps: {
-				disableUnderline: true,
+
 			},
 			styleOverrides: {
 				root: {
-					border: `1px solid ${grey[500]}`,
-					outline: "1px solid transparent",
-					padding: 2,
+					height: "40px",
 					"&$focused": {
 						border: "1px solid red",
 						outline: "1px solid blue",
+					},
+				},
+			},
+		},
+		MuiTextField: {
+			styleOverrides: {
+				root: {
+					padding: 2,
+					height: "35px",
+					"&$focused": {
+						border: "1px solid red",
+						outline: "1px solid blue",
+						
 					},
 				},
 			},

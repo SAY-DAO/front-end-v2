@@ -19,7 +19,7 @@ const Intro = () => {
 				spacing={2}
 			>
 
-				<Grid item xs={12} sx={{width: "100%", direction: "rtl"}}>
+				<Grid item xs={12} sx={{width: "100%", marginTop: 2, direction: "rtl"}}>
 					<LangButton />
 				</Grid>
 				<Grid item xs={12} sx={{paddingBottom: 4}}>

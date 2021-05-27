@@ -63,6 +63,9 @@
     },
     "timeout": "Oh..! <1/>Something is not working. Check back latter"
   },
+  "devider": {
+    "register": "OR"
+  },
   "placeholder": {
     "name": "First name",
     "lastname": "Last name",

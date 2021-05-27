@@ -7,12 +7,14 @@ import Splash from "./pages/Splash";
 import Intro from "./pages/Intro";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const App = () => (
 	<>
 		<BrowserRouter>
 			<Suspense fallback=""> {/*i18n translations might still be loaded by the http backend*/}
 				<ThemeProvider theme={theTheme}>
+					<CssBaseline />
 					<Container maxWidth="xs">
 						<React.StrictMode>
 							<Switch>
