@@ -1,9 +1,10 @@
 import React from "react";
-import { Grid, Divider, Typography } from "@material-ui/core";
+import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
+
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
 
@@ -12,13 +13,22 @@ const EnteryForm = () => {
 
 
 	const [values, setValues] = React.useState({
-		phone: "",
+		phoneNumber: "",
 		email: "",
 	});
     
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
+	const handleChange = (input) => (event) => {
+		setValues({ ...values, [input]: event.target.value });
 	};
+
+	const handleChangePhoneNumber = (input, data, event, formattedValue)=> {
+		console.log(input, data, event, formattedValue);
+		setValues({ ...values, phoneNumber: event.target.value });
+		setValues({
+			// phoneNumber: values.phoneNumber === "+" + country.dialCode ? "" : values.phoneNumber,
+		});
+	};
+
     
 	return (
 		<Grid container
@@ -47,9 +57,11 @@ const EnteryForm = () => {
 					</Divider>
 					<PhoneInput
 						specialLabel={t("placeholder.phoneNumber")}
-						isValid={(value, country) => {
-							if (value.match(/12345/)) {
-								return "Invalid value: "+value+", "+country.name;
+						isValid={(value) => {
+							if (!value.startsWith("98")) {
+								return <Typography variant="subtitle1">
+									{t("error.wrongPhone")}
+								</Typography>;
 							} else if (value.match(/1234/)) {
 								return false;
 							} else {
@@ -57,11 +69,25 @@ const EnteryForm = () => {
 							}
 						}}
 						country={"ir"}
-						value={values.phone}
+						value={values.phoneNumber}
+						defaultValues={values.phoneNumber}
 						disableDropdown='false'
-						onChange={handleChange("phone")}
+						onChange={handleChangePhoneNumber}
+						inputProps={{
+							name: "phone"
+						}}
+						defaultMask="... ... .. ..."
+						countryCodeEditable={false}
 					/>
 				</FormControl>
+			</Grid>
+			<Grid item xs={12}sx={{marginTop: 10}}>
+				<Button variant="contained" color="primary" onClick={() => history.push("/register")}
+					sx={{
+						bottom: 5}}
+				>
+					{t("button.submit")}
+				</Button>
 			</Grid>
 		</Grid>
 	);

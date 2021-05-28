@@ -1,8 +1,8 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { Grid, Button} from "@material-ui/core";
+import React, { useState } from "react";
+import { Grid} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EnteryForm from "../../components/register/EnteryForm";
+import Success from "../../components/Success";
 
 const useStyles = makeStyles({
 	root: {
@@ -13,27 +13,45 @@ const useStyles = makeStyles({
 });
 
 const Register = () => {
-	const { t } = useTranslation();
-	// const [step, setStep] = useState(1);
-	// const [email, setEmail] = useState("");
-	// const [phone, setPhone] = useState();
-
-	// // Next step
+	const [step, setstep] = useState(1);
+	// Next step
 	// const nextStep = () => {
 	// 	setStep(step + 1);
 	// };
 
-	// // Previous step
+	// Previous step
 	// const previousStep = () => {
 	// 	setStep(step - 1);
 	// };
 
-	// // Handle change
-	// const hangeHandler = input => e => {
+	// Handle fields change
 
-	// }
+	const switchComponent = () => {
+		switch (step) {
+		case 1:
+			return (
+				<Grid item xs={12} sx={{marginTop: 38}}>
+					<EnteryForm/>
+				</Grid>
+		
+			);
+		case 2:
+			return (
+				console.log("2"),
+				setstep(2)
+			);
+		case 3:
+			return (
+				console.log("3")
+			);
+		case 4:
+			return <Success />;
+		default:
+			(console.log("This is a multi-step form built with React."));
+		}
+	};
+	
 	const classes = useStyles();
-
 	return (
 		<Grid container
 			direction="column"
@@ -44,17 +62,8 @@ const Register = () => {
 			<Grid item xs={12}>
 				<img src="/images/register.svg" width="100%" style={{paddingBottom: "20px"}} className={classes.root}/>
 			</Grid>
-			<Grid item xs={12} sx={{marginTop: 38}}>
-				<EnteryForm />
-			</Grid>
-			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={() => history.push("/register")}
-					sx={{
-						bottom: 5}}
-				>
-					{t("button.submit")}
-				</Button>
-			</Grid>
+			{switchComponent()}
+			
 		</Grid>
 	);
 };
