@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EnteryForm from "../../components/register/EnteryForm";
+import VerifyCodeForm from "../../components/register/VerifyCodeForm";
 import Success from "../../components/Success";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
 	root: {
@@ -13,18 +15,8 @@ const useStyles = makeStyles({
 });
 
 const Register = () => {
-	const [step, setstep] = useState(1);
-	// Next step
-	// const nextStep = () => {
-	// 	setStep(step + 1);
-	// };
-
-	// Previous step
-	// const previousStep = () => {
-	// 	setStep(step - 1);
-	// };
-
-	// Handle fields change
+	const verification = useSelector((state) => state.verification);
+	const { step } = verification;
 
 	const switchComponent = () => {
 		switch (step) {
@@ -33,12 +25,12 @@ const Register = () => {
 				<Grid item xs={12} sx={{marginTop: 38}}>
 					<EnteryForm/>
 				</Grid>
-		
 			);
 		case 2:
 			return (
-				console.log("2"),
-				setstep(2)
+				<Grid item xs={12} sx={{marginTop: 38}}>
+					<VerifyCodeForm/>
+				</Grid>
 			);
 		case 3:
 			return (
@@ -47,7 +39,11 @@ const Register = () => {
 		case 4:
 			return <Success />;
 		default:
-			(console.log("This is a multi-step form built with React."));
+			return (
+				<Grid item xs={12} sx={{marginTop: 38}}>
+					<EnteryForm/>
+				</Grid>
+			);
 		}
 	};
 	
@@ -63,7 +59,6 @@ const Register = () => {
 				<img src="/images/register.svg" width="100%" style={{paddingBottom: "20px"}} className={classes.root}/>
 			</Grid>
 			{switchComponent()}
-			
 		</Grid>
 	);
 };

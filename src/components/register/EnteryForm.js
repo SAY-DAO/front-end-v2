@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
-
+import { useDispatch } from "react-redux";
+import { changeVerifyStep } from "../../actions/verifyAction";
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
+	const [values, setValues] = useState(
+		{
+			email: "",
+			phoneNumber: ""
+		}
+	);
+	const dispatch = useDispatch();
 
-
-	const [values, setValues] = React.useState({
-		phoneNumber: "",
-		email: "",
-	});
-    
+	const handleSubmit = () => {
+		dispatch(changeVerifyStep(2));
+	};
 	const handleChange = (input) => (event) => {
 		setValues({ ...values, [input]: event.target.value });
 	};
@@ -82,7 +87,7 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={() => history.push("/register")}
+				<Button variant="contained" color="primary" onSubmit={handleSubmit}
 					sx={{
 						bottom: 5}}
 				>
