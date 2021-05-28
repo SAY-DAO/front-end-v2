@@ -1,24 +1,25 @@
-import { contents, errorClassName } from "./Contents";
-import { api } from "../api";
+import { contents } from "./Contents";
+import { api } from "../apis/sayBase";
 
-export default async function checkEmail(email) {
+export default async function checkEmail(t, email) {
 	try {
 		let response = await  api.request({
 			url: "/check/email/" + email,
 			method: "GET",
 		});
 		if (response.status === 200) {
+			console.log(email);
 			return {errorMessage: "", erEmail: ""};
 		}  
 	} catch (error) {
 		var res = error.response;
 		var result = "";
 		if (res.status === 720) {
-			result = {errorMessage: contents.wrongEmail, erEmail: errorClassName};
+			result = {errorMessage: t(contents.wrongEmail)};
 		} else if (res.status === 721) {
-			result = {errorMessage: contents.emailExists, erEmail: errorClassName};
+			result = {errorMessage: t(contents.emailExists)};
 		} else {
-			result = {errorMessage: contents.sthIsWrong, erEmail: ""};
+			result = {errorMessage: t(contents.sthIsWrong)};
 		}
 	}
 	return result;

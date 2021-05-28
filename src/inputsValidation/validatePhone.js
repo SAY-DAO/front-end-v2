@@ -1,12 +1,12 @@
-import { contents, errorClassName } from "./Contents";
+import { contents } from "./Contents";
 import checkPhone from "./checkPhone";
 
-export default async function validatePhone(phone) {
-	if (phone !== "") {
-		if (phone.length < 13 || phone.length < 15) {
-			return { errorMessage: contents.wrongPhone, erPhoneNumber: errorClassName };
+export default async function validatePhone(t, phoneNumber) {
+	if (phoneNumber !== "") {
+		if (phoneNumber.length < 15) {
+			return { errorMessage: t(contents.wrongPhone) };
 		}
-		return (await checkPhone(phone));
+		return (await checkPhone(phoneNumber));
 	}
-	return { errorMessage: "", erPhoneNumber: "" };
+	return { errorMessage: phoneNumber, erPhoneNumber: "" };
 }

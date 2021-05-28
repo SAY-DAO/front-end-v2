@@ -1,20 +1,18 @@
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
+import i18n from "../i18n";
 
 const contents = {
-	wrongEmail:t("error.wrongEmail"),
-	emailExists:t("error.emailExists"),
-	wrongPhone:t("error.wrongPhone"),
-	phoneExists:t("error.phoneExists"),
-	usernameStart:t("error.usernameStart"),
-	usernameLength:t("error.usernameLength"),
-	wrongUsername:t("error.wrongUsername"),
-	usernameExists:t("error.usernameExists"),
-	wrongPassword:t("error.wrongPassword"),
-	passwordMatch:t("error.passwordMatch"),
-	sthIsWrong:t("error.sthIsWrong"),
-	manyRequest:t("error.manyRequest"),
+	wrongEmail:  i18n.t("error.wrongEmail"),
+	emailExists:  i18n.t("error.emailExists"),
+	wrongPhone:  i18n.t("error.wrongPhone"),
+	phoneExists:  i18n.t("error.phoneExists"),
+	usernameStart:  i18n.t("error.usernameStart"),
+	usernameLength:  i18n.t("error.usernameLength"),
+	wrongUsername:  i18n.t("error.wrongUsername"),
+	usernameExists:  i18n.t("error.usernameExists"),
+	wrongPassword:  i18n.t("error.wrongPassword"),
+	passwordMatch:  i18n.t("error.passwordMatch"),
+	sthIsWrong:  i18n.t("error.sthIsWrong"),
+	manyRequest:  i18n.t("error.manyRequest"),
 };
 
 export { contents };

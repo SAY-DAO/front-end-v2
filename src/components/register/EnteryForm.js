@@ -15,7 +15,7 @@ const EnteryForm = () => {
 	const { t } = useTranslation();
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
-	const [erEmail, setErEmail] = useState("");
+	// const [erEmail, setErEmail] = useState("");
 	const [erPhoneNumber, setErPhoneNumber] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
 	// const [countryCode, setCountryCode] = useState("");
@@ -36,7 +36,7 @@ const EnteryForm = () => {
 	};
 
 	const handleChangePhoneNumber = (input, data, event, formattedValue)=> {
-		console.log(input, data, event, formattedValue);
+		// console.log(input, data, event, formattedValue);
 		setEmail("");
 		setPhoneNumber(formattedValue);
 	};
@@ -44,7 +44,9 @@ const EnteryForm = () => {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			(async () => {
-				const result = await validatePhone(phoneNumber);
+				const result = await validatePhone(t, phoneNumber);
+				console.log(result);
+
 				setValidateErr(result.validateErrMessage);
 				setErPhoneNumber(result.erPhoneNumber);
 			})();
@@ -55,9 +57,10 @@ const EnteryForm = () => {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			(async () => {
-				const result = await validateEmail(email);
-				setValidateErr(result.validateErrMessage);
-				setErEmail(result.erEmail);
+				const result = await validateEmail(t, email);
+				console.log(result);
+				// setValidateErr(result.validateErrMessage);
+				// setErEmail(result.erEmail);
 			})();
 		}, 500);
 		return () => clearTimeout(timeout);
@@ -90,17 +93,7 @@ const EnteryForm = () => {
 					</Divider>
 					<PhoneInput
 						specialLabel={t("placeholder.phoneNumber")}
-						isValid={(value) => {
-							if (!value.startsWith("98")) {
-								return <Typography variant="subtitle1">
-									{t("validateErr.wrongPhone")}
-								</Typography>;
-							} else if (value.match(/1234/)) {
-								return false;
-							} else {
-								return true;
-							}
-						}}
+						// isValid={validatePhone(phoneNumber)}
 						country={"ir"}
 						value={phoneNumber}
 						disableDropdown='false'
@@ -120,6 +113,7 @@ const EnteryForm = () => {
 				>
 					{t("button.submit")}
 				</Button>
+				<div>{validateErr, erPhoneNumber }</div>
 			</Grid>
 		</Grid>
 	);
