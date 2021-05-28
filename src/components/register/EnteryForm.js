@@ -14,7 +14,7 @@ import "../../resources/styles/css/material.css";
 const EnteryForm = () => {
 	const { t } = useTranslation();
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
-	const [error, setError] = useState("");
+	const [validateErr, setValidateErr] = useState("");
 	const [erEmail, setErEmail] = useState("");
 	const [erPhoneNumber, setErPhoneNumber] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
@@ -45,7 +45,7 @@ const EnteryForm = () => {
 		const timeout = setTimeout(() => {
 			(async () => {
 				const result = await validatePhone(phoneNumber);
-				setError(result.errorMessage);
+				setValidateErr(result.validateErrMessage);
 				setErPhoneNumber(result.erPhoneNumber);
 			})();
 		}, 500);
@@ -56,7 +56,7 @@ const EnteryForm = () => {
 		const timeout = setTimeout(() => {
 			(async () => {
 				const result = await validateEmail(email);
-				setError(result.errorMessage);
+				setValidateErr(result.validateErrMessage);
 				setErEmail(result.erEmail);
 			})();
 		}, 500);
@@ -93,7 +93,7 @@ const EnteryForm = () => {
 						isValid={(value) => {
 							if (!value.startsWith("98")) {
 								return <Typography variant="subtitle1">
-									{t("error.wrongPhone")}
+									{t("validateErr.wrongPhone")}
 								</Typography>;
 							} else if (value.match(/1234/)) {
 								return false;
