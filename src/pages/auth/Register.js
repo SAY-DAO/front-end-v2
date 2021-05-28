@@ -15,8 +15,8 @@ const useStyles = makeStyles({
 });
 
 const Register = () => {
-	const verification = useSelector((state) => state.verification);
-	const { step } = verification;
+	const verifyStep = useSelector((state) => state.verifyStep);
+	const { step } = verifyStep;
 
 	const switchComponent = () => {
 		switch (step) {

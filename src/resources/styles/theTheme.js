@@ -126,6 +126,19 @@ const theTheme = createTheme({
 				},
 			},
 		},
+		MuiCircularProgress: {
+			styleOverrides: {
+				root: {
+					justifyContent: "center",
+					alignItems: "center",
+					display: "flex",
+					"& > * + *": {
+						marginLeft: 2,
+					},
+					width: "100%",
+				},
+			},
+		},
 	}
 });
 
