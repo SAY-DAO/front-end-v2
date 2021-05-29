@@ -13,7 +13,8 @@ const useStyles = makeStyles({
 		width: "36px",
 		height: "36px",
 		minWidth: 0,
-		margin: 0
+		margin: 0,
+		color: "#f05a31"
 	},
 });
   

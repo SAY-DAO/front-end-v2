@@ -11,6 +11,9 @@ const contents = {
 	passwordMatch:  "error.passwordMatch",
 	sthIsWrong:  "error.sthIsWrong",
 	manyRequest:  "error.manyRequest",
+	fillOne: "error.fillOne",
+	or: "search.or",
+	submit: "button.submit",
 };
 
 const errorClassName = "error";

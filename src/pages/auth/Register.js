@@ -11,6 +11,7 @@ const useStyles = makeStyles({
 		position:"absolute",
 		left:0,
 		right:0,
+		maxHeight: "280px"
 	},
 });
 

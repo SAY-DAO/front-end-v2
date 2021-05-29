@@ -5,7 +5,10 @@ import reducers from "./reducers";
 
 
 const initialState = {
-    
+	verifyProperty : {
+		EMAIL: "email",
+		PHONE: "phone",
+	}
 };
 
 // Dev Tools

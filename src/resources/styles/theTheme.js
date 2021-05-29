@@ -10,7 +10,7 @@ const theTheme = createTheme({
 		},
 		primary: {
 		// light: will be calculated from palette.primary.main,
-			main: "#F05A31",
+			main: "#fbb563",
 			// dark: will be calculated from palette.primary.main,
 			dark: "black",
 		// contrastText: will be calculated to contrast with palette.primary.main
@@ -41,13 +41,13 @@ const theTheme = createTheme({
 		MuiTypography: {
 			styleOverrides:{
 				subtitle1:{
-					color:"#666666",
+					color:"#636363",
 					fontWeight: 500,
 					fontSize: "12px",
 					lineHeight: "14px",
 				},
 				body1:{
-					color:"#8C8C8C",
+					color:"#000000",
 					fontWeight: 200,
 					fontSize: "10px",
 					lineHeight: "14px",
@@ -66,10 +66,14 @@ const theTheme = createTheme({
 					minWidth: "240px",
 					background: "linear-gradient(90deg, #F59E39 0%, #F05A31 100%)",
 					borderRadius: "48px",
+					color: "white"
 				},
 				outlinedPrimary: {
 					minWidth: "240px",
 					borderRadius: "48px",
+				},
+				filledPrimary: {
+					color: "white"
 				},
 			},
 		},
@@ -80,7 +84,6 @@ const theTheme = createTheme({
 			styleOverrides: {
 				tooltip: {
 					backgroundColor: "#6a8c30",
-					border: "2px solid red",
 					color: "bllue",
 				},
 				arrow: {
@@ -96,36 +99,25 @@ const theTheme = createTheme({
 				root: {
 					// textTransform: "uppercase",
 					fontSize: "0.7rem",
+					"&.Mui-focused": {
+						color: "#1e1e1e",
+					},
 				},
+				
 			},
 		},
 		MuiOutlinedInput: {
-			defaultProps: {
-
-			},
 			styleOverrides: {
 				root: {
 					height: "40px",
-					"&$focused": {
-						border: "1px solid red",
-						outline: "1px solid blue",
+					borderRadius: 4,
+					"&:focused": {
+						borderColor: "green",
 					},
 				},
 			},
 		},
-		MuiTextField: {
-			styleOverrides: {
-				root: {
-					padding: 2,
-					height: "35px",
-					"&$focused": {
-						border: "1px solid red",
-						outline: "1px solid blue",
-						
-					},
-				},
-			},
-		},
+	
 		MuiCircularProgress: {
 			styleOverrides: {
 				root: {
@@ -144,16 +136,17 @@ const theTheme = createTheme({
 				root: {
 					margin: 4
 				},
-				filledError: {
-					backgroundColor: "#ff4569",
+				outlinedError: {
+					// color: "#ff4569",
+					borderColor: "transparent"
 				},
-				filledSuccess: {
+				outlinedSuccess: {
 					backgroundColor: "#00e676",
-					color: "black"
+					// color: "#20c997"
 				},
 				filledWarning: {
 					backgroundColor: "#ffee58",
-					color: "black"
+					// color: "black"
 				}
 			},
 		},
