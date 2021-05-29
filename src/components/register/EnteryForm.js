@@ -43,35 +43,36 @@ const EnteryForm = () => {
 	};
 
 	useEffect(() => {
-		const timeout = setTimeout(() => {
-			(async () => {
-				const result = await validatePhone(t, phoneNumber);
-				console.log(result);
-				setValidateErr(result.errorMessage);
-				setErPhoneNumber(result.erPhoneNumber);
-			})();
-		}, 500);
-		return () => clearTimeout(timeout);
-	}, [phoneNumber]);
-		
+		if(validateErr.length > 3 || (email === "" & phoneNumber == "")){
+			setisDisabled(true);
+		}else {
+			setisDisabled(false);
+		}
+	}, [validateErr, email, phoneNumber]);
+
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			(async () => {
 				const result = await validateEmail(t, email);
-				console.log(result);
+				console.log(validateErr);
 				setValidateErr(result.errorMessage);
 				setErEmail(result.erEmail);
 			})();
 		}, 500);
 		return () => clearTimeout(timeout);
 	}, [email]);
-
+	
 	useEffect(() => {
-		if(!validateErr == ""){
-			setisDisabled(true);
-		}
-		setisDisabled((false));
-	}, [email, phoneNumber]);
+		const timeout = setTimeout(() => {
+			(async () => {
+				const result = await validatePhone(t, phoneNumber);
+				console.log(validateErr);
+				setValidateErr(result.errorMessage);
+				setErPhoneNumber(result.erPhoneNumber);
+			})();
+		}, 500);
+		return () => clearTimeout(timeout);
+	}, [phoneNumber]);
 
 	return (
 		<Grid container
@@ -84,6 +85,7 @@ const EnteryForm = () => {
 			<Grid item xs={12}>
 				<FormControl variant="outlined">
 					<TextField
+						type="email"
 						id="outlined-adornment-email"
 						label={t("placeholder.email")}
 						value={email}
@@ -114,10 +116,7 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled}
-					sx={{
-						bottom: 5}}
-				>
+				<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled} sx={{bottom: 5}}>
 					{t("button.submit")}
 				</Button>
 			</Grid>

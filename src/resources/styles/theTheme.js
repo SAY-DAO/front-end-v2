@@ -144,6 +144,17 @@ const theTheme = createTheme({
 				root: {
 					margin: 4
 				},
+				filledError: {
+					backgroundColor: "#ff4569",
+				},
+				filledSuccess: {
+					backgroundColor: "#00e676",
+					color: "black"
+				},
+				filledWarning: {
+					backgroundColor: "#ffee58",
+					color: "black"
+				}
 			},
 		},
 	}
