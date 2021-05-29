@@ -7,6 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import { useDispatch } from "react-redux";
 import { changeVerifyStep, requestVerifyCode } from "../../actions/userAction";
 import { validatePhone, validateEmail } from "../../inputsValidation";
+import Message from "../Message";
 
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
@@ -15,7 +16,7 @@ const EnteryForm = () => {
 	const { t } = useTranslation();
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
-	// const [erEmail, setErEmail] = useState("");
+	const [erEmail, setErEmail] = useState("");
 	const [erPhoneNumber, setErPhoneNumber] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
 	// const [countryCode, setCountryCode] = useState("");
@@ -23,7 +24,7 @@ const EnteryForm = () => {
 	// const [goToVerify, setGoToVerify] = useState(false);
 	// const [verificationProperty, setVerificationProperty] = useState("");
 	// const [verifyId, setVerifyId] = useState("");
-
+	const [isDisabled, setisDisabled] = useState(true);
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
@@ -46,8 +47,7 @@ const EnteryForm = () => {
 			(async () => {
 				const result = await validatePhone(t, phoneNumber);
 				console.log(result);
-
-				setValidateErr(result.validateErrMessage);
+				setValidateErr(result.errorMessage);
 				setErPhoneNumber(result.erPhoneNumber);
 			})();
 		}, 500);
@@ -59,12 +59,19 @@ const EnteryForm = () => {
 			(async () => {
 				const result = await validateEmail(t, email);
 				console.log(result);
-				// setValidateErr(result.validateErrMessage);
-				// setErEmail(result.erEmail);
+				setValidateErr(result.errorMessage);
+				setErEmail(result.erEmail);
 			})();
 		}, 500);
 		return () => clearTimeout(timeout);
 	}, [email]);
+
+	useEffect(() => {
+		if(!validateErr == ""){
+			setisDisabled(true);
+		}
+		setisDisabled((false));
+	}, [email, phoneNumber]);
 
 	return (
 		<Grid container
@@ -107,13 +114,20 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={handleClick}
+				<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled}
 					sx={{
 						bottom: 5}}
 				>
 					{t("button.submit")}
 				</Button>
-				<div>{validateErr, erPhoneNumber }</div>
+			</Grid>
+			<Grid item xs={12}>
+				{!validateErr == "" && (
+					<Message variant="filled" severity="error">
+						{validateErr}
+					</Message>
+				)}
+				<div>{ erPhoneNumber, erEmail , isDisabled}</div>
 			</Grid>
 		</Grid>
 	);

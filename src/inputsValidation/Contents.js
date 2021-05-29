@@ -13,4 +13,6 @@ const contents = {
 	manyRequest:  "error.manyRequest",
 };
 
-export { contents };
+const errorClassName = "error";
+
+export { contents, errorClassName };

@@ -1,4 +1,4 @@
-import { contents } from "./Contents";
+import { contents , errorClassName} from "./Contents";
 import { api } from "../apis/sayBase";
 
 export default async function checkEmail(t, email) {
@@ -15,11 +15,11 @@ export default async function checkEmail(t, email) {
 		var res = error.response;
 		var result = "";
 		if (res.status === 720) {
-			result = {errorMessage: t(contents.wrongEmail)};
+			result = {errorMessage: t(contents.wrongEmail), erEmail: errorClassName};
 		} else if (res.status === 721) {
-			result = {errorMessage: t(contents.emailExists)};
+			result = {errorMessage: t(contents.emailExists), erEmail: errorClassName};
 		} else {
-			result = {errorMessage: t(contents.sthIsWrong)};
+			result = {errorMessage: t(contents.sthIsWrong), erEmail: ""};
 		}
 	}
 	return result;

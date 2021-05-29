@@ -139,6 +139,13 @@ const theTheme = createTheme({
 				},
 			},
 		},
+		MuiAlert: {
+			styleOverrides: {
+				root: {
+					margin: 4
+				},
+			},
+		},
 	}
 });
 
