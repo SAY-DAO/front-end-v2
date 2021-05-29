@@ -73,22 +73,26 @@ const EnteryForm = () => {
 	}, [phoneNumber]);
 
 	useEffect(() => {
-		dispatch(changeVerifyStep(2));
+		// dispatch(changeVerifyStep(2));
 	}, []);
 
+	const validateTheEmail = async () => {
+		let result = await validateEmail(t, email);
+		console.log(result);
+
+		if (!(result.errorMessage || result.erEmail)) {
+			dispatch(verifyEmail(email));
+		} else {
+			setValidateErr(result.errorMessage);
+			setErEmail(result.erEmail);
+			return;
+		}
+	};
 	const handleVerify = () => {
 		if (!validateErr) {
 			if ((email !== "") && (phoneNumber === "")) {
-				(async () => {
-					let result = await validateEmail(t, email);
-					if (!(result.errorMessage || result.erEmail)) {
-						dispatch(verifyEmail(email));
-					} else {
-						setValidateErr(result.errorMessage);
-						setErEmail(result.erEmail);
-						return;
-					}
-				});
+				console.log("verfying email..");
+				validateTheEmail();
 			} else if((phoneNumber !== "") && (email === "")) {
 				(async () => {
 					let result = await validatePhone(phoneNumber);
@@ -109,12 +113,13 @@ const EnteryForm = () => {
 	};
 
 
-	const handleSubmit = () => {
+	const handleClick = () => {
 		if (!(phoneNumber || email)) {
 			setValidateErr(contents.fillOne);
 			setErEmail(errorClassName);
 			setErPhoneNumber(errorClassName);
 		} else {
+			console.log("verfying...");
 			handleVerify();
 		}
 	};
@@ -161,7 +166,7 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onSubmit={handleSubmit} disabled={isDisabled} sx={{bottom: 5}}>
+				<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled} sx={{bottom: 5}}>
 					{t("button.submit")}
 				</Button>
 			</Grid>
