@@ -17,6 +17,7 @@ import "../../resources/styles/css/material.css";
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
+	const dispatch = useDispatch();
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
 	const [erEmail, setErEmail] = useState("");
@@ -25,7 +26,6 @@ const EnteryForm = () => {
 	const [countryCode, setCountryCode] = useState("");
 	const [email, setEmail] = useState("");
 	const [isDisabled, setisDisabled] = useState(true);
-	const dispatch = useDispatch();
 
 
 	const handleChangeEmail = (event) => {
@@ -72,56 +72,44 @@ const EnteryForm = () => {
 		return () => clearTimeout(timeout);
 	}, [phoneNumber]);
 
+	useEffect(() => {
+		dispatch(changeVerifyStep(2));
+	}, []);
 
 	const handleVerify = () => {
 		if (!validateErr) {
-			if (email) {
+			if ((email !== "") && (phoneNumber === "")) {
 				(async () => {
 					let result = await validateEmail(t, email);
 					if (!(result.errorMessage || result.erEmail)) {
 						dispatch(verifyEmail(email));
-						dispatch(changeVerifyStep(2));
-						// 	return;
-						// }
 					} else {
 						setValidateErr(result.errorMessage);
 						setErEmail(result.erEmail);
 						return;
 					}
-				})();
-			} else {
+				});
+			} else if((phoneNumber !== "") && (email === "")) {
 				(async () => {
 					let result = await validatePhone(phoneNumber);
 					if (!(result.errorMessage || result.erPhoneNumber)) {
-						dispatch(verifyPhone(phoneNumber));
-						// let verifyResult = await verifyPhone(t, phoneNumber);
-						// if (!isNaN(verifyResult)) {
-						// 	setVerificationProperty(initialsVerifyProperty.PHONE);
-						// 	setVerifyId(verifyResult);
+						dispatch(verifyPhone(phoneNumber.split(" ").join("")));
 						dispatch(changeVerifyStep(2));
-						// 	dispatch(requestVerifyCode({
-						// 		phoneNumber: phoneNumber.split(" ").join(""),
-						// 		countryCode,
-						// 		email,
-						// 		verifyId,
-						// 		verificationProperty
-						// 	}));
-						// 	return;
-						// }
 					} else {
 						setValidateErr(result.errorMessage);
 						setErPhoneNumber(result.erPhoneNumber);
 						return;
 					}
-				})();
+				});
 			}
 		} else {
+			setValidateErr("verification logic error");
 			return;
 		}
 	};
 
 
-	const checkRequired = () => {
+	const handleSubmit = () => {
 		if (!(phoneNumber || email)) {
 			setValidateErr(contents.fillOne);
 			setErEmail(errorClassName);
@@ -173,7 +161,7 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={checkRequired} disabled={isDisabled} sx={{bottom: 5}}>
+				<Button variant="contained" color="primary" onSubmit={handleSubmit} disabled={isDisabled} sx={{bottom: 5}}>
 					{t("button.submit")}
 				</Button>
 			</Grid>

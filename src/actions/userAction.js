@@ -61,7 +61,7 @@ export const verifyEmail = (email) => async (
 	}
 };
 
-export const verifyPhone = (email) => async (
+export const verifyPhone = (phone) => async (
 	dispatch
 ) => {
 	try {
@@ -72,7 +72,7 @@ export const verifyPhone = (email) => async (
 			},
 		};
 		const { data } = await axios.post("/auth/verify/", {
-			email,
+			phone,
 			config,
 		});
 		dispatch({
