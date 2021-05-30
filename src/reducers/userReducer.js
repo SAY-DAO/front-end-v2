@@ -28,12 +28,12 @@ export const userStepReducer = (state = { step: 1 }, action) => {
 	}
 };
 
-export const userVerifyReducer = (state = { verifyId: {} }, action) => {
+export const userVerifyReducer = (state = { verifyData: {} }, action) => {
 	switch (action.type) {
 	case USER_VERIFY_REQUEST:
-		return { loading: true };
+		return { loading: true, ...state };
 	case USER_VERIFY_SUCCESS:
-		return { loading: false, verifyId: action.payload };
+		return { loading: false, success: true, verifyData: action.payload};
 	case USER_VERIFY_FAIL:
 		return { loading: false, error: action.payload };
 	default:

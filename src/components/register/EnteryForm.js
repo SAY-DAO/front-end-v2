@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
+import LoadingButton from "@material-ui/lab/LoadingButton";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
@@ -20,7 +21,7 @@ const EnteryForm = () => {
 	const dispatch = useDispatch();
 
 	const verifyInfo = useSelector((state) => state.verifyInfo);
-	const { error } = verifyInfo;
+	const { loading, error, success } = verifyInfo;
 
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
@@ -62,6 +63,12 @@ const EnteryForm = () => {
 		return () => clearTimeout(timeout);
 	}, [phoneNumber]);
 
+	useEffect(() => {
+		if(success){
+			dispatch(changeVerifyStep(2));
+		}
+	}, [success]);
+
 	const handleChangeEmail = (event) => {
 		setEmail(event.target.value);
 		setPhoneNumber(countryCode);
@@ -88,7 +95,6 @@ const EnteryForm = () => {
 		let result = await validatePhone(t, phoneNumber);
 		if (!(result.errorMessage || result.erPhoneNumber)) {
 			dispatch(verifyPhone(phoneNumber.split(" ").join("")));
-			dispatch(changeVerifyStep(2));
 		} else {
 			setValidateErr(result.errorMessage);
 			setErPhoneNumber(result.erPhoneNumber);
@@ -165,9 +171,17 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12}sx={{marginTop: 10}}>
-				<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled} sx={{bottom: 5}}>
-					{t("button.submit")}
-				</Button>
+				{ loading ? (
+					<LoadingButton loading variant="contained">
+						{t("button.submit")}
+					</LoadingButton>) :
+					(<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled} sx={{bottom: 5}}>
+						{t("button.submit")}
+					</Button>)
+
+				}
+				
+				
 			</Grid>
 			<Grid item xs={12}>
 				{((!validateErr == "" )|| error) && (

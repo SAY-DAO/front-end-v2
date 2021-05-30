@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import EnteryForm from "../../components/verify/EnteryForm";
-import VerifyCodeForm from "../../components/verify/VerifyCodeForm";
+import EnteryForm from "../../components/register/EnteryForm";
+import VerifyCodeForm from "../../components/register/VerifyCodeForm";
 import Success from "../../components/Message";
 import { useSelector } from "react-redux";
 
