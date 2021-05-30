@@ -38,7 +38,7 @@ if (env != "local") {
 			},
 			network: {
 				requestSanitizer: request => {
-					// scrub header value from request
+				// scrub header value from request
 					if (request.headers["Authorization"]) {
 						request.headers["Authorization"] = "";
 					}

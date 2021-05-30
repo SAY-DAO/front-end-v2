@@ -1,4 +1,4 @@
-import axios from "axios";
+import sayBase from "../apis/sayBase";
 import {
 	CHANGE_VERIFY_STEP,
 	USER_VERIFY_REQUEST,
@@ -27,13 +27,11 @@ export const changeVerifyStep = (step) => async (dispatch) => {
 	});
 };
 
-// let verifyResult = await verifyEmail(email);
-// if (!isNaN(verifyResult)) {
-// 	setVerificationProperty(initialsVerifyProperty.EMAIL);
-// 	setVerifyId(verifyResult);
 export const verifyEmail = (email) => async (
 	dispatch
 ) => {
+	const formDataEmail = new FormData();
+	formDataEmail.append("email", email);
 	try {
 		dispatch({ type: USER_VERIFY_REQUEST });
 		const config = {
@@ -41,9 +39,8 @@ export const verifyEmail = (email) => async (
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await axios.post("/auth/verify/", {
-			"email": email,
-			config,
+		const { data } = await sayBase.post("/auth/verify/email", formDataEmail, {
+			config
 		});
 		dispatch({
 			type: USER_VERIFY_SUCCESS,
@@ -64,6 +61,8 @@ export const verifyEmail = (email) => async (
 export const verifyPhone = (phone) => async (
 	dispatch
 ) => {
+	const formDataPhone = new FormData();	
+	formDataPhone.append("phone_number", phone);
 	try {
 		dispatch({ type: USER_VERIFY_REQUEST });
 		const config = {
@@ -71,8 +70,7 @@ export const verifyPhone = (phone) => async (
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await axios.post("/auth/verify/", {
-			phone,
+		const { data } = await sayBase.post("/auth/verify/phone", formDataPhone, {
 			config,
 		});
 		dispatch({
@@ -99,7 +97,7 @@ export const login = (email, password) => async (dispatch) => {
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await axios.post("/api/users/login/", {
+		const { data } = await sayBase.post("/api/users/login/", {
 			username: email,
 			password,
 			config,
@@ -140,7 +138,7 @@ export const register = (firstName, lastName, email, password) => async (
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await axios.post("/api/users/register/", {
+		const { data } = await sayBase.post("/api/users/register/", {
 			firstName,
 			lastName,
 			email,

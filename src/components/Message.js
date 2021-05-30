@@ -4,23 +4,28 @@ import Alert from "@material-ui/core/Alert";
 import { contents } from "../inputsValidation/Contents";
 import { useTranslation } from "react-i18next";
 
-export default function Message({ variant, children, severity }) {
+export default function Message({ onRequestFrontError, onRequestBackError, variant, children, severity }) {
 	const { t } = useTranslation();
 
-	if (!children) {
-		t(contents.sthIsWrong);
-	} else if (children.status === 400) {
-		t(contents.wrongEmail);
-	} else if (children.status === 422) {
-		t(contents.emailExists);
-	} else if (children.status === 429) {
-		t(contents.manyRequest);
-	} else {
-		t(contents.sthIsWrong);
-	}
+	const onRequestCheck = () => {
+		if (onRequestFrontError.status === 400) {
+			return t(contents.wrongEmail);
+		} else if (onRequestFrontError.status === 422) {
+			return t(contents.emailExists);
+		} else if (onRequestFrontError.status === 429) {
+			return t(contents.manyRequest);
+		} else if (onRequestBackError.status === 720) {
+			return t(contents.wrongEmail);
+		} else if (onRequestBackError.status === 721) {
+			return t(contents.emailExists);
+		} else {
+			return t(contents.sthIsWrong);
+		}
+	};
+	
 	return (
 		<Alert variant={variant} severity={severity}>
-			{children}
+			{children || onRequestCheck()}
 		</Alert>
 	);
 }

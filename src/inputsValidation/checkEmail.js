@@ -1,14 +1,10 @@
 import { contents , errorClassName} from "./Contents";
-import { api } from "../apis/sayBase";
+import sayBase from "../apis/sayBase";
 
 export default async function checkEmail(t, email) {
 	try {
-		let response = await  api.request({
-			url: "/check/email/" + email,
-			method: "GET",
-		});
+		const response  = await sayBase.get(`/check/email/${email}`);
 		if (response.status === 200) {
-			console.log(email);
 			return {errorMessage: "", erEmail: ""};
 		}  
 	} catch (error) {

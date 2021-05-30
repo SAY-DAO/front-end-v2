@@ -1,13 +1,11 @@
 import { contents , errorClassName} from "./Contents";
-import { api } from "../apis/sayBase";
+import sayBase from "../apis/sayBase";
 
 export default async function checkPhone(t, phone) {
 	try {
-		let response = await api.request({
-			url: "/check/phone/" + phone,
-			method: "GET",
-		});
-        
+
+		const response = await sayBase.get(`/check/phone/${phone}`);
+
 		if (response.status === 200) {
 			return {errorMessage: "", erPhoneNumber: ""};
 		}

@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeVerifyStep, verifyEmail, verifyPhone } from "../../actions/userAction";
 import { validatePhone, validateEmail } from "../../inputsValidation";
 import Message from "../Message";
@@ -18,6 +18,10 @@ import "../../resources/styles/css/material.css";
 const EnteryForm = () => {
 	const { t } = useTranslation();
 	const dispatch = useDispatch();
+
+	const verifyInfo = useSelector((state) => state.verifyInfo);
+	const { error } = verifyInfo;
+
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
 	const [erEmail, setErEmail] = useState("");
@@ -27,20 +31,6 @@ const EnteryForm = () => {
 	const [email, setEmail] = useState("");
 	const [isDisabled, setisDisabled] = useState(true);
 
-
-	const handleChangeEmail = (event) => {
-		setEmail(event.target.value);
-		setPhoneNumber(countryCode);
-
-	};
-
-	const handleChangePhoneNumber = (input, data, event, formattedValue)=> {
-		console.log(input, data, event, formattedValue);
-		console.log(phoneNumber.split(" ").join(""));
-		setEmail("");
-		setCountryCode(data.countryCode);
-		setPhoneNumber(formattedValue);
-	};
 
 	useEffect(() => {
 		if((validateErr.length > 3) || (validateErr === "" && (email == "" && phoneNumber == "")) ){
@@ -72,14 +62,19 @@ const EnteryForm = () => {
 		return () => clearTimeout(timeout);
 	}, [phoneNumber]);
 
-	useEffect(() => {
-		// dispatch(changeVerifyStep(2));
-	}, []);
+	const handleChangeEmail = (event) => {
+		setEmail(event.target.value);
+		setPhoneNumber(countryCode);
+	};
+
+	const handleChangePhoneNumber = (input, data, event, formattedValue)=> {
+		setEmail("");
+		setCountryCode(data.countryCode);
+		setPhoneNumber(formattedValue);
+	};
 
 	const validateTheEmail = async () => {
 		let result = await validateEmail(t, email);
-		console.log(result);
-
 		if (!(result.errorMessage || result.erEmail)) {
 			dispatch(verifyEmail(email));
 		} else {
@@ -88,23 +83,27 @@ const EnteryForm = () => {
 			return;
 		}
 	};
+
+	const validateThePhone = async () => {
+		let result = await validatePhone(t, phoneNumber);
+		if (!(result.errorMessage || result.erPhoneNumber)) {
+			dispatch(verifyPhone(phoneNumber.split(" ").join("")));
+			dispatch(changeVerifyStep(2));
+		} else {
+			setValidateErr(result.errorMessage);
+			setErPhoneNumber(result.erPhoneNumber);
+			return;
+		}
+	};
+
 	const handleVerify = () => {
 		if (!validateErr) {
 			if ((email !== "") && (phoneNumber === "")) {
 				console.log("verfying email..");
 				validateTheEmail();
 			} else if((phoneNumber !== "") && (email === "")) {
-				(async () => {
-					let result = await validatePhone(phoneNumber);
-					if (!(result.errorMessage || result.erPhoneNumber)) {
-						dispatch(verifyPhone(phoneNumber.split(" ").join("")));
-						dispatch(changeVerifyStep(2));
-					} else {
-						setValidateErr(result.errorMessage);
-						setErPhoneNumber(result.erPhoneNumber);
-						return;
-					}
-				});
+				console.log("verfying phone number..");
+				validateThePhone();
 			}
 		} else {
 			setValidateErr("verification logic error");
@@ -171,8 +170,13 @@ const EnteryForm = () => {
 				</Button>
 			</Grid>
 			<Grid item xs={12}>
-				{!validateErr == "" && (
-					<Message variant="outlined" severity="error">
+				{((!validateErr == "" )|| error) && (
+					<Message 
+						onRequestFrontError={error}
+						onRequestBackError={error} 
+						variant="outlined" 
+						severity="error"
+					>
 						{validateErr}
 					</Message>
 				)}
