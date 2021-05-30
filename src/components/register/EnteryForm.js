@@ -13,6 +13,7 @@ import { contents , errorClassName} from "../../inputsValidation/Contents";
 
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
+import { Link } from "react-router-dom";
 
 
 
@@ -103,7 +104,7 @@ const EnteryForm = () => {
 	};
 
 	const handleVerify = () => {
-		if (!validateErr) {
+		if (!(validateErr || erPhoneNumber || erEmail)) {
 			if ((email !== "") && (phoneNumber === "")) {
 				console.log("verfying email..");
 				validateTheEmail();
@@ -170,7 +171,7 @@ const EnteryForm = () => {
 					
 				</FormControl>
 			</Grid>
-			<Grid item xs={12}sx={{marginTop: 10}}>
+			<Grid item xs={12} sx={{marginTop: 10}}>
 				{ loading ? (
 					<LoadingButton loading variant="contained">
 						{t("button.submit")}
@@ -178,23 +179,26 @@ const EnteryForm = () => {
 					(<Button variant="contained" color="primary" onClick={handleClick} disabled={isDisabled} sx={{bottom: 5}}>
 						{t("button.submit")}
 					</Button>)
-
 				}
-				
-				
 			</Grid>
 			<Grid item xs={12}>
-				{((!validateErr == "" )|| error) && (
+				<Typography>
+					<Link to="/comeback">
+						{t("join.alreadyJoined")}
+					</Link>
+				</Typography>
+			</Grid>
+			<Grid item xs={12}>
+				{( !(validateErr == "") || !(erPhoneNumber == "")  || !(erEmail == "") || error) && (
 					<Message 
 						onRequestFrontError={error}
 						onRequestBackError={error} 
 						variant="outlined" 
 						severity="error"
 					>
-						{validateErr}
+						{validateErr || erPhoneNumber || erEmail}
 					</Message>
 				)}
-				<div>{ erPhoneNumber, erEmail , isDisabled}</div>
 			</Grid>
 		</Grid>
 	);
