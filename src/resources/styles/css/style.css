@@ -3,3 +3,9 @@
 body {
     margin: 0
 }
+
+
+a:link, a:visited {
+    color: #F05A31 !important;
+    text-decoration: none !important;
+  }

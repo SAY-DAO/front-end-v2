@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import LoadingButton from "@material-ui/lab/LoadingButton";
 import FormControl from "@material-ui/core/FormControl";
@@ -16,10 +16,6 @@ import { Link } from "react-router-dom";
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
 
-
-const FancyLink = forwardRef((props, ref) => (
-	<a ref={ref} {...props} style={{color: "#F05A31", textDecoration: "none"}}>{props.children}</a>
-));
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
@@ -70,7 +66,7 @@ const EnteryForm = () => {
 
 	useEffect(() => {
 		if(success){
-			dispatch(changeVerifyStep(2));
+			dispatch(changeVerifyStep("VerifyCodeForm"));
 		}
 	}, [success]);
 
@@ -110,10 +106,10 @@ const EnteryForm = () => {
 	const handleVerify = () => {
 		if (!(validateErr || erPhoneNumber || erEmail)) {
 			if ((email !== "") && (phoneNumber === "")) {
-				console.log("verfying email..");
+				console.log("verfying email...");
 				validateTheEmail();
 			} else if((phoneNumber !== "") && (email === "")) {
-				console.log("verfying phone number..");
+				console.log("verfying phone number...");
 				validateThePhone();
 			}
 		} else {
@@ -189,7 +185,7 @@ const EnteryForm = () => {
 				<Typography variant="subtitle1">
 					<Trans i18nKey="join.alreadyJoined">
 					If already joined tap
-						<Link to="/comeback" component={FancyLink}>here</Link>
+						<Link to="/Intro" >here</Link>
 					</Trans>
 				</Typography>
 			</Grid>

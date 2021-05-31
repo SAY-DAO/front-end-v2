@@ -21,23 +21,23 @@ const Register = () => {
 
 	const switchComponent = () => {
 		switch (step) {
-		case 1:
+		case "EnteryForm":
 			return (
 				<Grid item xs={12} sx={{marginTop: 36}}>
 					<EnteryForm/>
 				</Grid>
 			);
-		case 2:
+		case "VerifyCodeForm":
 			return (
 				<Grid item xs={12} sx={{marginTop: 36}}>
 					<VerifyCodeForm/>
 				</Grid>
 			);
-		case 3:
+		case "3":
 			return (
 				console.log("3")
 			);
-		case 4:
+		case "4":
 			return <Success />;
 		default:
 			return (
