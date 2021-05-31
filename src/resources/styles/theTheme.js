@@ -6,7 +6,7 @@ const theTheme = createTheme({
 
 	palette: {
 		background: {
-			default: "#FFF" // CSSBaseline is needed for this
+			default: "#f7f7f7" // CSSBaseline is needed for this
 		},
 		primary: {
 		// light: will be calculated from palette.primary.main,
@@ -113,22 +113,17 @@ const theTheme = createTheme({
 					borderRadius: 4,
 					"&:focused": {
 						borderColor: "green",
-					},
+					}
 				},
 			},
 		},
-	
 		MuiCircularProgress: {
 			styleOverrides: {
 				root: {
-					justifyContent: "center",
-					alignItems: "center",
-					display: "flex",
-					"& > * + *": {
-						marginLeft: 2,
-					},
-					width: "100%",
-				},
+					color: "#fbb563",
+					display: "block",
+					margin: "auto"
+				}
 			},
 		},
 		MuiAlert: {

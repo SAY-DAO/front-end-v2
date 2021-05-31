@@ -23,13 +23,13 @@ const Register = () => {
 		switch (step) {
 		case 1:
 			return (
-				<Grid item xs={12} sx={{marginTop: 38}}>
+				<Grid item xs={12} sx={{marginTop: 36}}>
 					<EnteryForm/>
 				</Grid>
 			);
 		case 2:
 			return (
-				<Grid item xs={12} sx={{marginTop: 38}}>
+				<Grid item xs={12} sx={{marginTop: 36}}>
 					<VerifyCodeForm/>
 				</Grid>
 			);
@@ -41,7 +41,7 @@ const Register = () => {
 			return <Success />;
 		default:
 			return (
-				<Grid item xs={12} sx={{marginTop: 38}}>
+				<Grid item xs={12} sx={{marginTop: 36}}>
 					<EnteryForm/>
 				</Grid>
 			);

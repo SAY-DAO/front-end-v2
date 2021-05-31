@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect, forwardRef } from "react";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import LoadingButton from "@material-ui/lab/LoadingButton";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
 import { changeVerifyStep, verifyEmail, verifyPhone } from "../../actions/userAction";
 import { validatePhone, validateEmail } from "../../inputsValidation";
 import Message from "../Message";
 import { contents , errorClassName} from "../../inputsValidation/Contents";
-
+import { Link } from "react-router-dom";
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
-import { Link } from "react-router-dom";
 
 
+const FancyLink = forwardRef((props, ref) => (
+	<a ref={ref} {...props} style={{color: "#F05A31", textDecoration: "none"}}>{props.children}</a>
+));
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
@@ -171,7 +175,7 @@ const EnteryForm = () => {
 					
 				</FormControl>
 			</Grid>
-			<Grid item xs={12} sx={{marginTop: 10}}>
+			<Grid item xs={12} sx={{marginTop: 8}}>
 				{ loading ? (
 					<LoadingButton loading variant="contained">
 						{t("button.submit")}
@@ -181,11 +185,12 @@ const EnteryForm = () => {
 					</Button>)
 				}
 			</Grid>
-			<Grid item xs={12}>
-				<Typography>
-					<Link to="/comeback">
-						{t("join.alreadyJoined")}
-					</Link>
+			<Grid item xs={12} sx={{marginTop: 2}}>
+				<Typography variant="subtitle1">
+					<Trans i18nKey="join.alreadyJoined">
+					If already joined tap
+						<Link to="/comeback" component={FancyLink}>here</Link>
+					</Trans>
 				</Typography>
 			</Grid>
 			<Grid item xs={12}>
@@ -193,7 +198,7 @@ const EnteryForm = () => {
 					<Message 
 						onRequestFrontError={error}
 						onRequestBackError={error} 
-						variant="outlined" 
+						variant="filled" 
 						severity="error"
 					>
 						{validateErr || erPhoneNumber || erEmail}
@@ -205,3 +210,4 @@ const EnteryForm = () => {
 };
 
 export default EnteryForm;
+

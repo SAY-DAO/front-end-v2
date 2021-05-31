@@ -73,7 +73,9 @@
     "password": "گذرواژه",
     "repeatPassword": "تکرار گذرواژه",
     "email": "ایمیل",
-    "phoneNumber": "شماره تلفن"
+    "phoneNumber": "شماره تلفن",
+    "code": "کد"
+
   },
   "currency": {
     "toman": " تومان"
@@ -159,7 +161,6 @@
       "byPhone": "کد تایید به شماره موبایل <1>{{verificationTool}}</1> ارسال شد.",
       "byEmail": "کد تایید به نشانی ایمیل <1>{{verificationTool}}</1> ارسال شد."
     },
-    "placeholder": "کد",
     "notReceiveCode": "کد را دریافت نکردید؟",
     "resendCode": "ارسال مجدد کد",
     "pleaseWait": "لطفاً صبر کنید",

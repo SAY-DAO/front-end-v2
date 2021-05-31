@@ -1,6 +1,4 @@
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
-import theTheme from "./resources/styles/theTheme";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Splash from "./pages/Splash";
@@ -13,19 +11,17 @@ const App = () => (
 
 	<>
 		<BrowserRouter>
-			<ThemeProvider theme={theTheme}>
-				<CssBaseline />
-				<Container maxWidth="xs">
-					<React.StrictMode>
-						<Switch>
-							<Route exact path="/" component={Splash}/>
-							<Route exact path="/intro" component={Intro}/>
-							<Route exact path="/register" component={Register}/>
-							<Route exact path="/login" component={Login}/>
-						</Switch>
-					</React.StrictMode>
-				</Container>
-			</ThemeProvider>
+			<CssBaseline />
+			<Container maxWidth="xs">
+				<React.StrictMode>
+					<Switch>
+						<Route exact path="/" component={Splash}/>
+						<Route exact path="/intro" component={Intro}/>
+						<Route exact path="/register" component={Register}/>
+						<Route exact path="/login" component={Login}/>
+					</Switch>
+				</React.StrictMode>
+			</Container>
 		</BrowserRouter>
 	</>
 );

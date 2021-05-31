@@ -73,7 +73,9 @@
     "password": "Password",
     "repeatPassword": "Re-enter password",
     "email": "Email",
-    "phoneNumber": "Phone Number"
+    "phoneNumber": "Phone Number",
+    "code": "Code"
+
   },
   "currency": {
     "toman": " T"
@@ -155,7 +157,6 @@
       "byPhone": "The 6-digit code sent to <1>{{verificationTool}}</1>.",
       "byEmail": "The 6-digit code sent to <1>{{verificationTool}}</1>."
     },
-    "placeholder": "Code",
     "notReceiveCode": "Don't received the code?",
     "resendCode": "Resend the code",
     "pleaseWait": "Please wait",
