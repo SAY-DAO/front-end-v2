@@ -13,9 +13,20 @@ import { validatePhone, validateEmail } from "../../inputsValidation";
 import Message from "../Message";
 import { contents , errorClassName} from "../../inputsValidation/Contents";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Back from "../Back";
 // Customized "react-phone-input-2/lib/material.css"
 import "../../resources/styles/css/material.css";
 
+const useStyles = makeStyles({
+	root: {
+		position:"absolute",
+		top:0,
+		left:0,
+		right:0,
+		maxHeight: "280px",
+	},
+});
 
 const EnteryForm = () => {
 	const { t } = useTranslation();
@@ -130,6 +141,7 @@ const EnteryForm = () => {
 		}
 	};
 
+	const classes = useStyles();
 	return (
 		<Grid container
 			direction="column"
@@ -138,6 +150,10 @@ const EnteryForm = () => {
 			maxWidth
 			sx={{direction: "ltr"}}
 		>
+			<Back to={"/intro"}/>
+			<Grid item xs={12}>
+				<img src="/images/register.svg" width="100%" style={{paddingBottom: "20px"}} className={classes.root}/>
+			</Grid>
 			<Grid item xs={12}>
 				<FormControl variant="outlined">
 					<PhoneInput
@@ -185,7 +201,7 @@ const EnteryForm = () => {
 				<Typography variant="subtitle1">
 					<Trans i18nKey="join.alreadyJoined">
 					If already joined tap
-						<Link to="/Intro" >here</Link>
+						<Link to="/Login" >here</Link>
 					</Trans>
 				</Typography>
 			</Grid>

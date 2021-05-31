@@ -122,7 +122,9 @@ const theTheme = createTheme({
 				root: {
 					color: "#fbb563",
 					display: "block",
-					margin: "auto"
+					margin: "auto",
+					marginTop: 10,
+
 				}
 			},
 		},

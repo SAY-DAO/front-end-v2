@@ -158,8 +158,8 @@
   "verify": {
     "title": "تایید",
     "content": {
-      "byPhone": "کد تایید به شماره موبایل <1>{{verificationTool}}</1> ارسال شد.",
-      "byEmail": "کد تایید به نشانی ایمیل <1>{{verificationTool}}</1> ارسال شد."
+      "byPhone": "کد تایید به شماره موبایل <1>{{verificationMethod}}</1> ارسال شد.",
+      "byEmail": "کد تایید به نشانی ایمیل <1>{{verificationMethod}}</1> ارسال شد."
     },
     "notReceiveCode": "کد را دریافت نکردید؟",
     "resendCode": "ارسال مجدد کد",

@@ -1,19 +1,10 @@
 import React from "react";
 import { Grid} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import EnteryForm from "../../components/register/EnteryForm";
 import VerifyCodeForm from "../../components/register/VerifyCodeForm";
 import Success from "../../components/Message";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles({
-	root: {
-		position:"absolute",
-		left:0,
-		right:0,
-		maxHeight: "280px"
-	},
-});
 
 const Register = () => {
 	const verifyStep = useSelector((state) => state.verifyStep);
@@ -23,15 +14,19 @@ const Register = () => {
 		switch (step) {
 		case "EnteryForm":
 			return (
-				<Grid item xs={12} sx={{marginTop: 36}}>
-					<EnteryForm/>
-				</Grid>
+				<>
+					<Grid item xs={12} sx={{marginTop: 36}}>
+						<EnteryForm/>
+					</Grid>
+				</>
 			);
 		case "VerifyCodeForm":
 			return (
-				<Grid item xs={12} sx={{marginTop: 36}}>
-					<VerifyCodeForm/>
-				</Grid>
+				<>
+					<Grid item xs={12} sx={{marginTop: 36}}>
+						<VerifyCodeForm/>
+					</Grid>
+				</>
 			);
 		case "3":
 			return (
@@ -48,7 +43,6 @@ const Register = () => {
 		}
 	};
 	
-	const classes = useStyles();
 	return (
 		<Grid container
 			direction="column"
@@ -56,9 +50,6 @@ const Register = () => {
 			alignItems="center"
 			maxWidth
 		>
-			<Grid item xs={12}>
-				<img src="/images/register.svg" width="100%" style={{paddingBottom: "20px"}} className={classes.root}/>
-			</Grid>
 			{switchComponent()}
 		</Grid>
 	);

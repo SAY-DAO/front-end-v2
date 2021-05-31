@@ -154,8 +154,8 @@
   "verify": {
     "title": "Verification",
     "content": {
-      "byPhone": "The 6-digit code sent to <1>{{verificationTool}}</1>.",
-      "byEmail": "The 6-digit code sent to <1>{{verificationTool}}</1>."
+      "byPhone": "The 6-digit code sent to <1>{{verificationMethod}}</1>.",
+      "byEmail": "The 6-digit code sent to <1>{{verificationMethod}}</1>."
     },
     "notReceiveCode": "Don't received the code?",
     "resendCode": "Resend the code",
