@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import { useTranslation, Trans } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
-import { changeVerifyStep, verifyEmail, verifyPhone } from "../../actions/userAction";
+import { changeVerifyStep, verifyUser } from "../../actions/userAction";
 import { validatePhone, validateEmail } from "../../inputsValidation";
 import Message from "../Message";
 import { contents , errorClassName} from "../../inputsValidation/Contents";
@@ -95,7 +95,7 @@ const EnteryForm = () => {
 	const validateTheEmail = async () => {
 		let result = await validateEmail(t, email);
 		if (!(result.errorMessage || result.erEmail)) {
-			dispatch(verifyEmail(email));
+			dispatch(verifyUser("email", email));
 		} else {
 			setValidateErr(result.errorMessage);
 			setErEmail(result.erEmail);
@@ -106,7 +106,8 @@ const EnteryForm = () => {
 	const validateThePhone = async () => {
 		let result = await validatePhone(t, phoneNumber);
 		if (!(result.errorMessage || result.erPhoneNumber)) {
-			dispatch(verifyPhone(phoneNumber.split(" ").join("")));
+			const thePhoneNymber = phoneNumber.split(" ").join("");
+			dispatch(verifyUser("phone_number", thePhoneNymber));
 		} else {
 			setValidateErr(result.errorMessage);
 			setErPhoneNumber(result.erPhoneNumber);

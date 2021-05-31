@@ -27,7 +27,7 @@ export const changeVerifyStep = (step) => async (dispatch) => {
 	});
 };
 
-export const verifyEmail = (email) => async (
+export const checkEmail = (email) => async (
 	dispatch
 ) => {
 	const formDataEmail = new FormData();
@@ -58,11 +58,12 @@ export const verifyEmail = (email) => async (
 	}
 };
 
-export const verifyPhone = (phone) => async (
+
+export const verifyUser = (methodType, value) => async (
 	dispatch
 ) => {
 	const formDataPhone = new FormData();	
-	formDataPhone.append("phone_number", phone);
+	formDataPhone.append(methodType, value); // phone_number, +989121234565
 	try {
 		dispatch({ type: USER_VERIFY_REQUEST });
 		const config = {
@@ -70,7 +71,7 @@ export const verifyPhone = (phone) => async (
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await sayBase.post("/auth/verify/phone", formDataPhone, {
+		const { data } = await sayBase.post(`/auth/verify/${methodType === "email" ? "email" : "phone"}`, formDataPhone, {
 			config,
 		});
 		dispatch({
