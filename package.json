@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
+    "history": "^5.0.0",
     "i18next": "^20.3.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-http-backend": "^1.2.4",
@@ -28,8 +29,10 @@
     "react-native": "^0.64.1",
     "react-phone-input-2": "^2.14.0",
     "react-redux": "^7.2.4",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "redux-thunk": "^2.3.0",
     "serve": "^11.3.2",
     "styled-components": "^5.3.0",
     "web-vitals": "^1.0.1"
@@ -53,7 +56,16 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.26.0",
-    "eslint-plugin-react": "^7.23.2"
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "prettier": "^2.3.0"
   }
 }

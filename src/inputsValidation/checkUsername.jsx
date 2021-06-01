@@ -1,4 +1,4 @@
-// import { contents } from "./Contents";
+// import contents from "./Contents";
 // import { api } from "../api";
 
 // export default async function checkUsername(username) {
