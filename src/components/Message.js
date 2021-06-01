@@ -18,6 +18,10 @@ export default function Message({ onRequestFrontError, onRequestBackError, varia
 			return t(contents.wrongEmail);
 		} else if (onRequestBackError.status === 721) {
 			return t(contents.emailExists);
+		} else if (onRequestBackError.status === 730) {
+			return t(contents.wrongPhone);
+		} else if (onRequestBackError.status === 731) {
+			return t(contents.phoneExists);
 		} else {
 			return t(contents.sthIsWrong);
 		}

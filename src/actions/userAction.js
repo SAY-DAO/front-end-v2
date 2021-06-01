@@ -1,5 +1,9 @@
 import sayBase from "../apis/sayBase";
+import { contents } from "../inputsValidation/Contents";
 import {
+	CHECK_BEFORE_VERIFY_REQUEST,
+	CHECK_BEFORE_VERIFY_SUCCESS,
+	CHECK_BEFORE_VERIFY_FAIL,
 	CHANGE_VERIFY_STEP,
 	USER_VERIFY_REQUEST,
 	USER_VERIFY_SUCCESS,
@@ -27,29 +31,39 @@ export const changeVerifyStep = (step) => async (dispatch) => {
 	});
 };
 
-export const checkEmail = (email) => async (
+export const checkBeforeVerify = (t, methodType, value) => async (
 	dispatch
 ) => {
-	const formDataEmail = new FormData();
-	formDataEmail.append("email", email);
+	const formData = new FormData();
+	formData.append(methodType, value); // phone_number, +989121234565 or email, abc@bmail.com
 	try {
-		dispatch({ type: USER_VERIFY_REQUEST });
+		if (methodType === "email") {
+			if (value.indexOf("@") < 0 || value.indexOf(".") < 0 ) {
+				return {errorMessage: await t(contents.wrongEmail)};
+			} 
+		}
+		if (methodType === "phone_number") {
+			if (value.length < 16) {
+				return { errorMessage: t(contents.wrongPhone)};
+			}
+		}
+		dispatch({ type: CHECK_BEFORE_VERIFY_REQUEST });
 		const config = {
 			headers: {
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await sayBase.post("/auth/verify/email", formDataEmail, {
+		const { data } = await sayBase.post(`/auth/check/${methodType === "email" ? "email" : "phone"}/${value}`, formData, {
 			config
 		});
 		dispatch({
-			type: USER_VERIFY_SUCCESS,
+			type: CHECK_BEFORE_VERIFY_SUCCESS,
 			payload: data,
 		});
 	} catch (e) {
 		// check for generic and custom message to return using ternary statement
 		dispatch({
-			type: USER_VERIFY_FAIL,
+			type: CHECK_BEFORE_VERIFY_FAIL,
 			payload:
 			e.response && e.response.data.detail
 				? e.response.data.detail
@@ -62,8 +76,8 @@ export const checkEmail = (email) => async (
 export const verifyUser = (methodType, value) => async (
 	dispatch
 ) => {
-	const formDataPhone = new FormData();	
-	formDataPhone.append(methodType, value); // phone_number, +989121234565
+	const formData = new FormData();	
+	formData.append(methodType, value); // phone_number, +989121234565
 	try {
 		dispatch({ type: USER_VERIFY_REQUEST });
 		const config = {
@@ -71,7 +85,7 @@ export const verifyUser = (methodType, value) => async (
 				"Content-type": "application/json",
 			},
 		};
-		const { data } = await sayBase.post(`/auth/verify/${methodType === "email" ? "email" : "phone"}`, formDataPhone, {
+		const { data } = await sayBase.post(`/auth/verify/${methodType === "email" ? "email" : "phone"}`, formData, {
 			config,
 		});
 		dispatch({

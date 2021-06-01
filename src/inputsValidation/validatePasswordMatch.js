@@ -4,7 +4,7 @@
 // 	if (password != repeatPassword) {
 // 		return {
 // 			errorMessage: contents.passwordMatch,
-// 			erPasswordMatch: errorClassName,
+// 			erPasswordMatch: ,
 // 		};
 // 	} else {
 // 		return {errorMessage: "", erPasswordMatch: ""};

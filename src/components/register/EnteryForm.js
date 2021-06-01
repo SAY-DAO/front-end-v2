@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name */
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import LoadingButton from "@material-ui/lab/LoadingButton";
@@ -9,9 +7,8 @@ import { useTranslation, Trans } from "react-i18next";
 import PhoneInput from "react-phone-input-2";
 import { useDispatch, useSelector } from "react-redux";
 import { changeVerifyStep, verifyUser } from "../../actions/userAction";
-import { validatePhone, validateEmail } from "../../inputsValidation";
 import Message from "../Message";
-import { contents , errorClassName} from "../../inputsValidation/Contents";
+import { contents } from "../../inputsValidation/Contents";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Back from "../Back";
@@ -33,53 +30,56 @@ const EnteryForm = () => {
 	const dispatch = useDispatch();
 
 	const verifyInfo = useSelector((state) => state.verifyInfo);
-	const { loading, error, success } = verifyInfo;
+	const { loading:loadingVerify, error:errorVerify, success:successVerify } = verifyInfo;
+
+	const checkBeforeVerify = useSelector((state) => state.checkBeforeVerify);
+	const { loading:loadingCheck, error:errorCheck, success:successCheck } = checkBeforeVerify;
 
 	// const [_isLoggedIn, setIsLoggedIn] = useState(false);
 	const [validateErr, setValidateErr] = useState("");
-	const [erEmail, setErEmail] = useState("");
-	const [erPhoneNumber, setErPhoneNumber] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [countryCode, setCountryCode] = useState("");
 	const [email, setEmail] = useState("");
 	const [isDisabled, setisDisabled] = useState(true);
 
-
+	// disable button
 	useEffect(() => {
-		if((validateErr.length > 3) || (validateErr === "" && (email == "" && phoneNumber == "")) ){
+		if((validateErr.length > 1) || (validateErr === "" && (email == "" && phoneNumber == "")) ){
 			setisDisabled(true);
 		}else {
 			setisDisabled(false);
 		}
 	}, [validateErr, email, phoneNumber]);
 
+
+	// check email every 500 ms when typing
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			(async () => {
-				const result = await validateEmail(t, email);
-				setValidateErr(result.errorMessage);
-				setErEmail(result.erEmail);
+			(() => {
+				dispatch(checkBeforeVerify(t, "email", email));
 			})();
 		}, 500);
 		return () => clearTimeout(timeout);
 	}, [email]);
 	
+
+	// check phone every 500 ms when typing
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			(async () => {
-				const result = await validatePhone(t, phoneNumber);
-				setValidateErr(result.errorMessage);
-				setErPhoneNumber(result.erPhoneNumber);
-			})();
+			(() => {
+				dispatch(checkBeforeVerify(t, "phone_number", phoneNumber));
+			});
 		}, 500);
 		return () => clearTimeout(timeout);
 	}, [phoneNumber]);
 
+
 	useEffect(() => {
-		if(success){
+		if(successCheck && successVerify){
 			dispatch(changeVerifyStep("VerifyCodeForm"));
 		}
-	}, [success]);
+	}, [successVerify, successCheck]);
+
 
 	const handleChangeEmail = (event) => {
 		setEmail(event.target.value);
@@ -93,30 +93,22 @@ const EnteryForm = () => {
 	};
 
 	const validateTheEmail = async () => {
-		let result = await validateEmail(t, email);
-		if (!(result.errorMessage || result.erEmail)) {
+		dispatch(checkBeforeVerify(t, "email", email));
+		if (!errorCheck) {
 			dispatch(verifyUser("email", email));
-		} else {
-			setValidateErr(result.errorMessage);
-			setErEmail(result.erEmail);
-			return;
 		}
 	};
 
 	const validateThePhone = async () => {
-		let result = await validatePhone(t, phoneNumber);
-		if (!(result.errorMessage || result.erPhoneNumber)) {
+		dispatch(checkBeforeVerify(t, "phone_number", phoneNumber));
+		if (!errorCheck) {
 			const thePhoneNymber = phoneNumber.split(" ").join("");
 			dispatch(verifyUser("phone_number", thePhoneNymber));
-		} else {
-			setValidateErr(result.errorMessage);
-			setErPhoneNumber(result.erPhoneNumber);
-			return;
 		}
 	};
 
 	const handleVerify = () => {
-		if (!(validateErr || erPhoneNumber || erEmail)) {
+		if (!validateErr) {
 			if ((email !== "") && (phoneNumber === "")) {
 				console.log("verfying email...");
 				validateTheEmail();
@@ -134,8 +126,6 @@ const EnteryForm = () => {
 	const handleClick = () => {
 		if (!(phoneNumber || email)) {
 			setValidateErr(contents.fillOne);
-			setErEmail(errorClassName);
-			setErPhoneNumber(errorClassName);
 		} else {
 			console.log("verfying...");
 			handleVerify();
@@ -189,7 +179,7 @@ const EnteryForm = () => {
 				</FormControl>
 			</Grid>
 			<Grid item xs={12} sx={{marginTop: 8}}>
-				{ loading ? (
+				{ loadingCheck && loadingVerify ? (
 					<LoadingButton loading variant="contained">
 						{t("button.submit")}
 					</LoadingButton>) :
@@ -207,14 +197,14 @@ const EnteryForm = () => {
 				</Typography>
 			</Grid>
 			<Grid item xs={12}>
-				{( !(validateErr == "") || !(erPhoneNumber == "")  || !(erEmail == "") || error) && (
+				{( !(validateErr == "") || errorVerify || errorCheck) && (
 					<Message 
-						onRequestFrontError={error}
-						onRequestBackError={error} 
+						onRequestBackError={errorCheck} 
+						onRequestFrontError={errorVerify}
 						variant="filled" 
 						severity="error"
 					>
-						{validateErr || erPhoneNumber || erEmail}
+						{validateErr}
 					</Message>
 				)}
 			</Grid>

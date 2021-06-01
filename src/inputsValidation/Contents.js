@@ -16,6 +16,4 @@ const contents = {
 	submit: "button.submit",
 };
 
-const errorClassName = "error";
-
-export { contents, errorClassName };
+export { contents,  };

@@ -4,7 +4,7 @@
 // 	if (password !== "" && password.length < 6) {
 // 		return {
 // 			errorMessage: contents.wrongPassword,
-// 			erPassword: errorClassName,
+// 			erPassword: ,
 // 		};
 // 	} else {
 // 		return {errorMessage: "", erPassword: ""};

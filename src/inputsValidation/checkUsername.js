@@ -16,12 +16,12 @@
 // 		if (res.status === 710) {
 // 			result = {
 // 				errorMessage: contents.wrongUsername,
-// 				erUsername: errorClassName,
+// 				erUsername: ,
 // 			};
 // 		} else if (res.status === 711) {
 // 			result = {
 // 				errorMessage: contents.usernameExists,
-// 				erUsername: errorClassName,
+// 				erUsername: ,
 // 			};
 // 		} else {
 // 			result = {

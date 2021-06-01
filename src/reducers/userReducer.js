@@ -1,4 +1,7 @@
-import { 
+import {
+	CHECK_BEFORE_VERIFY_REQUEST,
+	CHECK_BEFORE_VERIFY_SUCCESS,
+	CHECK_BEFORE_VERIFY_FAIL,
 	CHANGE_VERIFY_STEP,
 	USER_VERIFY_REQUEST,
 	USER_VERIFY_SUCCESS,
@@ -29,6 +32,19 @@ export const userStepReducer = (state = { step: "EnteryForm" }, action) => {
 	}
 };
 
+export const checkBeforeVerifyReducer = (state = { checkResult: {} }, action) => {
+	switch (action.type) {
+	case CHECK_BEFORE_VERIFY_REQUEST:
+		return { loading: true, ...state };
+	case CHECK_BEFORE_VERIFY_SUCCESS:
+		return { loading: false, success: true, checkResult: action.payload};
+	case CHECK_BEFORE_VERIFY_FAIL:
+		return { loading: false, error: action.payload };
+	default:
+		return state;
+	}
+};
+
 export const userVerifyReducer = (state = { verifyData: {} }, action) => {
 	switch (action.type) {
 	case USER_VERIFY_REQUEST:
@@ -43,3 +59,4 @@ export const userVerifyReducer = (state = { verifyData: {} }, action) => {
 		return state;
 	}
 };
+
