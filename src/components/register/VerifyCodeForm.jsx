@@ -6,7 +6,7 @@ import { useTranslation, Trans } from 'react-i18next';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Back from '../Back';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const VerifyCodeForm = () => {
-  const enableResend = true;
+  // const enableResend = true;
   const { t } = useTranslation();
   const history = useHistory();
   // eslint-disable-next-line no-unused-vars

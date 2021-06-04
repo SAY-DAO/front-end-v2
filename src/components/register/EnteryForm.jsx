@@ -8,7 +8,11 @@ import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { changeVerifyStep, verifyUser } from '../../actions/userAction';
+import {
+  changeVerifyStep,
+  verifyUser,
+  checkContactBeforeVerify,
+} from '../../actions/userAction';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
@@ -29,6 +33,13 @@ const EnteryForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // const [_isLoggedIn, setIsLoggedIn] = useState(false);
+  const [validateErr, setValidateErr] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [email, setEmail] = useState('');
+  const [isDisabled, setisDisabled] = useState(true);
+
   const verifyInfo = useSelector((state) => state.verifyInfo);
   const {
     loading: loadingVerify,
@@ -43,13 +54,7 @@ const EnteryForm = () => {
     success: successCheck,
   } = checkBeforeVerify;
 
-  // const [_isLoggedIn, setIsLoggedIn] = useState(false);
-  const [validateErr, setValidateErr] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('');
-  const [email, setEmail] = useState('');
-  const [isDisabled, setisDisabled] = useState(true);
-
+  console.log(email, phoneNumber);
   // disable button
   useEffect(() => {
     if (
@@ -65,7 +70,7 @@ const EnteryForm = () => {
   // check email every 500 ms when typing
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(checkBeforeVerify(t, 'email', email));
+      dispatch(checkContactBeforeVerify(t, 'email', email));
     }, 500);
     return () => clearTimeout(timeout);
   }, [email]);
@@ -73,7 +78,7 @@ const EnteryForm = () => {
   // check phone every 500 ms when typing
   useEffect(() => {
     const timeout = setTimeout(() => {
-      dispatch(checkBeforeVerify(t, 'phone_number', phoneNumber));
+      dispatch(checkContactBeforeVerify(t, 'phone_number', phoneNumber));
     }, 500);
     return () => clearTimeout(timeout);
   }, [phoneNumber]);
@@ -96,14 +101,14 @@ const EnteryForm = () => {
   };
 
   const validateTheEmail = async () => {
-    dispatch(checkBeforeVerify(t, 'email', email));
+    dispatch(checkContactBeforeVerify(t, 'email', email));
     if (!errorCheck) {
       dispatch(verifyUser('email', email));
     }
   };
 
   const validateThePhone = async () => {
-    dispatch(checkBeforeVerify(t, 'phone_number', phoneNumber));
+    dispatch(checkContactBeforeVerify(t, 'phone_number', phoneNumber));
     if (!errorCheck) {
       const thePhoneNymber = phoneNumber.split(' ').join('');
       dispatch(verifyUser('phone_number', thePhoneNymber));
@@ -209,7 +214,7 @@ const EnteryForm = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        {(!(validateErr === '') || errorVerify || errorCheck) && (
+        {(validateErr || errorVerify || errorCheck) && (
           <Message
             onRequestBackError={errorCheck}
             onRequestFrontError={errorVerify}

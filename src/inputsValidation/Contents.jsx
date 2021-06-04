@@ -16,4 +16,4 @@ const contents = {
   submit: 'button.submit',
 };
 
-export default { contents };
+export default contents;

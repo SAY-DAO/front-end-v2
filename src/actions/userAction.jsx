@@ -31,50 +31,64 @@ export const changeVerifyStep = (step) => async (dispatch) => {
   });
 };
 
-export const checkBeforeVerify = (t, methodType, value) => async (dispatch) => {
-  try {
-    if (methodType === 'email') {
-      if (value.indexOf('@') < 0 || value.indexOf('.') < 0) {
-        return { errorMessage: await t(contents.wrongEmail) };
+export const checkContactBeforeVerify =
+  (t, theKey, value) => async (dispatch) => {
+    try {
+      if (theKey === 'email') {
+        if (value.indexOf('@') < 0 || value.indexOf('.') < 0) {
+          dispatch({
+            type: CHECK_BEFORE_VERIFY_FAIL,
+            payload: t(contents.wrongEmail),
+          });
+        }
       }
-    }
-    if (methodType === 'phone_number') {
-      if (value.length < 16) {
-        return { errorMessage: t(contents.wrongPhone) };
+      if (theKey === 'phone_number') {
+        if (value.length < 16) {
+          dispatch({
+            type: CHECK_BEFORE_VERIFY_FAIL,
+            payload: t(contents.wrongPhone),
+          });
+        }
+        return;
       }
-    }
-    dispatch({ type: CHECK_BEFORE_VERIFY_REQUEST });
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    };
-    const { data } = await sayBase.post(
-      `/auth/check/${methodType === 'email' ? 'email' : 'phone'}/${value}`,
-      {
-        methodType: value,
-      },
-      {
-        config,
-      }
-    );
-    dispatch({
-      type: CHECK_BEFORE_VERIFY_SUCCESS,
-      payload: data,
-    });
-  } catch (e) {
-    // check for generic and custom message to return using ternary statement
-    dispatch({
-      type: CHECK_BEFORE_VERIFY_FAIL,
-      payload:
-        e.response && e.response.data.detail
-          ? e.response.data.detail
-          : e.message,
-    });
-  }
-};
 
-export const verifyUser = (methodType, value) => async (dispatch) => {
+      dispatch({ type: CHECK_BEFORE_VERIFY_REQUEST });
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      };
+
+      // eslint-disable-next-line no-undef
+      const formData = new FormData();
+      formData.append(theKey, value); // phone_number, +989121234565
+
+      const { data } = await sayBase.get(
+        `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
+        formData,
+        {
+          config,
+        }
+      );
+      dispatch({
+        type: CHECK_BEFORE_VERIFY_SUCCESS,
+        payload: data,
+      });
+    } catch (e) {
+      console.log(e);
+
+      // check for generic and custom message to return using ternary statement
+      dispatch({
+        type: CHECK_BEFORE_VERIFY_FAIL,
+        payload:
+          e.response && e.response.data.detail
+            ? e.response.data.detail
+            : e.message,
+      });
+    }
+  };
+
+export const verifyUser = (theKey, value) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
     const config = {
@@ -83,9 +97,9 @@ export const verifyUser = (methodType, value) => async (dispatch) => {
       },
     };
     const { data } = await sayBase.post(
-      `/auth/verify/${methodType === 'email' ? 'email' : 'phone'}`,
+      `/auth/verify/${theKey === 'email' ? 'email' : 'phone'}`,
       {
-        methodType: value,
+        theKey: value,
       },
       {
         config,
