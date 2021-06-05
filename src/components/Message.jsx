@@ -24,7 +24,10 @@ export default function Message({
       if (onRequestFrontError.status === 429) {
         return t(contents.manyRequest);
       }
-    } else if (onRequestBackError) {
+
+      return t(contents.sthIsWrong);
+    }
+    if (onRequestBackError) {
       if (onRequestBackError.status === 720) {
         return t(contents.wrongEmail);
       }
@@ -37,7 +40,6 @@ export default function Message({
       if (onRequestBackError.status === 731) {
         return t(contents.phoneExists);
       }
-    } else {
       return t(contents.sthIsWrong);
     }
   };

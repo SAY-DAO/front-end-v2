@@ -1,11 +1,19 @@
+/* eslint-disable no-undef */
 import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 
-const initialState = {};
+const localVerifyInfo = localStorage.getItem('localVerifyInfo')
+  ? JSON.parse(localStorage.getItem('localVerifyInfo'))
+  : {};
+
+const initialState = {
+  verifyInfo: {
+    local: localVerifyInfo,
+  },
+};
 
 // Dev Tools
-// eslint-disable-next-line no-undef
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [thunk];
 

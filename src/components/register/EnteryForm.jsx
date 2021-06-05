@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography, Button } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
@@ -74,7 +74,6 @@ const EnteryForm = () => {
 
   // check phone every 500 ms when typing
   useEffect(() => {
-    console.log(phoneNumber.length);
     if (
       phoneNumber.length === 16 &&
       countryCode === 'ir'
@@ -181,7 +180,6 @@ const EnteryForm = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
-      sx={{ direction: 'ltr' }}
     >
       <Back to="/intro" />
       <Grid item xs={12}>
@@ -193,7 +191,7 @@ const EnteryForm = () => {
           alt="register"
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ direction: 'ltr' }}>
         <FormControl variant="outlined">
           <PhoneInput
             specialLabel={t('placeholder.phoneNumber')}

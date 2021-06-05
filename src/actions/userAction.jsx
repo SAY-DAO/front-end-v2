@@ -59,8 +59,6 @@ export const checkContactBeforeVerify =
       });
     } catch (e) {
       // check for generic and custom message to return using ternary statement
-      console.log(e.response);
-
       dispatch({
         type: CHECK_BEFORE_VERIFY_FAIL,
         payload: e.response && e.response.status ? e.response : e.message,
@@ -93,6 +91,8 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
       type: USER_VERIFY_SUCCESS,
       payload: data,
     });
+    // eslint-disable-next-line no-undef
+    localStorage.setItem('localVerifyInfo', JSON.stringify(data));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
