@@ -55,15 +55,6 @@ const EnteryForm = () => {
     success: successCheck,
   } = checkBeforeVerify;
 
-  // disable button
-  useEffect(() => {
-    if (!successCheck || errorCheck || validateErr) {
-      setisDisabled(true);
-    } else {
-      setisDisabled(false);
-    }
-  }, [validateErr, email, phoneNumber, errorCheck, errorVerify]);
-
   // check email every 500 ms when typing
   useEffect(() => {
     if (
@@ -103,10 +94,19 @@ const EnteryForm = () => {
 
   // change step
   useEffect(() => {
-    if (successCheck && successVerify) {
+    if (successVerify) {
       dispatch(changeVerifyStep('VerifyCodeForm'));
     }
-  }, [successVerify, successCheck]);
+  }, [successVerify]);
+
+  // disable button
+  useEffect(() => {
+    if (!successCheck || errorCheck || validateErr) {
+      setisDisabled(true);
+    } else {
+      setisDisabled(false);
+    }
+  }, [validateErr, email, phoneNumber, errorCheck, errorVerify, successCheck]);
 
   // email changes
   const handleChangeEmail = (event) => {
@@ -141,12 +141,11 @@ const EnteryForm = () => {
   };
 
   const handleVerify = () => {
-    dispatch({ type: USER_VERIFY_RESET });
-    if (!validateErr) {
-      if (email !== '' && phoneNumber === '') {
+    if (validateErr === '') {
+      if (email !== '') {
         console.log('verfying email...');
         validateTheEmail();
-      } else if (phoneNumber !== '' && email === '') {
+      } else if (email === '') {
         console.log('verfying phone number...');
         validateThePhone();
       }
