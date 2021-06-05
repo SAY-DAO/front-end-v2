@@ -18,6 +18,7 @@ import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
+import { USER_VERIFY_RESET } from '../../constants/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -54,61 +55,85 @@ const EnteryForm = () => {
     success: successCheck,
   } = checkBeforeVerify;
 
-  console.log(email, phoneNumber);
   // disable button
   useEffect(() => {
-    if (
-      validateErr.length > 1 ||
-      (validateErr === '' && email === '' && phoneNumber === '')
-    ) {
+    if (!successCheck || errorCheck || validateErr) {
       setisDisabled(true);
     } else {
       setisDisabled(false);
     }
-  }, [validateErr, email, phoneNumber]);
+  }, [validateErr, email, phoneNumber, errorCheck, errorVerify]);
 
   // check email every 500 ms when typing
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch(checkContactBeforeVerify(t, 'email', email));
-    }, 500);
-    return () => clearTimeout(timeout);
+    if (
+      email.length > 0 ||
+      (email.indexOf('@') > 0 && email.indexOf('.') > 0)
+    ) {
+      const timeout = setTimeout(() => {
+        dispatch(checkContactBeforeVerify('email', email, countryCode));
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+    // if (email.length !== 0) {
+    //   setValidateErr(t(contents.wrongEmail));
+    // }
   }, [email]);
 
   // check phone every 500 ms when typing
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch(checkContactBeforeVerify(t, 'phone_number', phoneNumber));
-    }, 500);
-    return () => clearTimeout(timeout);
+    console.log(phoneNumber.length);
+    if (
+      phoneNumber.length === 16 &&
+      countryCode === 'ir'
+      // phoneNumber.length === 12
+    ) {
+      const timeout = setTimeout(() => {
+        dispatch(
+          checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
+        );
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+    if (phoneNumber.length > 4 && phoneNumber.length < 16) {
+      setValidateErr(t(contents.wrongPhone));
+    }
+    return () => setValidateErr('');
   }, [phoneNumber]);
 
+  // change step
   useEffect(() => {
     if (successCheck && successVerify) {
       dispatch(changeVerifyStep('VerifyCodeForm'));
     }
   }, [successVerify, successCheck]);
 
+  // email changes
   const handleChangeEmail = (event) => {
+    dispatch({ type: USER_VERIFY_RESET });
     setEmail(event.target.value);
     setPhoneNumber(countryCode);
   };
 
+  // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
+    dispatch({ type: USER_VERIFY_RESET });
     setEmail('');
-    setCountryCode(data.countryCode);
     setPhoneNumber(formattedValue);
+    setCountryCode(data.countryCode);
   };
 
   const validateTheEmail = async () => {
-    dispatch(checkContactBeforeVerify(t, 'email', email));
+    dispatch(checkContactBeforeVerify('email', email, countryCode));
     if (!errorCheck) {
-      dispatch(verifyUser('email', email));
+      dispatch(verifyUser('email', email, countryCode));
     }
   };
 
   const validateThePhone = async () => {
-    dispatch(checkContactBeforeVerify(t, 'phone_number', phoneNumber));
+    dispatch(
+      checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
+    );
     if (!errorCheck) {
       const thePhoneNymber = phoneNumber.split(' ').join('');
       dispatch(verifyUser('phone_number', thePhoneNymber));
@@ -116,6 +141,7 @@ const EnteryForm = () => {
   };
 
   const handleVerify = () => {
+    dispatch({ type: USER_VERIFY_RESET });
     if (!validateErr) {
       if (email !== '' && phoneNumber === '') {
         console.log('verfying email...');
@@ -189,7 +215,7 @@ const EnteryForm = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 8 }}>
-        {loadingCheck && loadingVerify ? (
+        {loadingCheck || loadingVerify ? (
           <LoadingButton loading variant="contained">
             {t('button.submit')}
           </LoadingButton>

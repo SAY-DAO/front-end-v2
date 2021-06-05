@@ -37,8 +37,6 @@ export default function Message({
       if (onRequestBackError.status === 731) {
         return t(contents.phoneExists);
       }
-    } else if (onRequestFrontError === '' && onRequestBackError === '') {
-      return '';
     } else {
       return t(contents.sthIsWrong);
     }

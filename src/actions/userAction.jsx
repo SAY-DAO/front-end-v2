@@ -1,5 +1,4 @@
 import sayBase from '../apis/sayBase';
-import contents from '../inputsValidation/Contents';
 import {
   CHECK_BEFORE_VERIFY_REQUEST,
   CHECK_BEFORE_VERIFY_SUCCESS,
@@ -32,26 +31,10 @@ export const changeVerifyStep = (step) => async (dispatch) => {
 };
 
 export const checkContactBeforeVerify =
-  (t, theKey, value) => async (dispatch) => {
-    try {
-      if (theKey === 'email') {
-        if (value.indexOf('@') < 0 || value.indexOf('.') < 0) {
-          dispatch({
-            type: CHECK_BEFORE_VERIFY_FAIL,
-            payload: t(contents.wrongEmail),
-          });
-        }
-      }
-      if (theKey === 'phone_number') {
-        if (value.length < 16) {
-          dispatch({
-            type: CHECK_BEFORE_VERIFY_FAIL,
-            payload: t(contents.wrongPhone),
-          });
-        }
-        return;
-      }
+  (theKey, value, countryCode) => async (dispatch) => {
+    console.log(theKey, value, countryCode);
 
+    try {
       dispatch({ type: CHECK_BEFORE_VERIFY_REQUEST });
       const config = {
         headers: {
@@ -75,15 +58,12 @@ export const checkContactBeforeVerify =
         payload: data,
       });
     } catch (e) {
-      console.log(e);
-
       // check for generic and custom message to return using ternary statement
+      console.log(e.response);
+
       dispatch({
         type: CHECK_BEFORE_VERIFY_FAIL,
-        payload:
-          e.response && e.response.data.detail
-            ? e.response.data.detail
-            : e.message,
+        payload: e.response && e.response.status ? e.response : e.message,
       });
     }
   };
@@ -96,11 +76,15 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
         'Content-type': 'application/json',
       },
     };
+
+    // eslint-disable-next-line no-undef
+    const formData = new FormData();
+    formData.append(theKey, value); // phone_number, +989121234565
+
     const { data } = await sayBase.post(
       `/auth/verify/${theKey === 'email' ? 'email' : 'phone'}`,
-      {
-        theKey: value,
-      },
+      formData,
+
       {
         config,
       }
@@ -113,10 +97,7 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_VERIFY_FAIL,
-      payload:
-        e.response && e.response.data.detail
-          ? e.response.data.detail
-          : e.message,
+      payload: e.response && e.response.status ? e.response : e.message,
     });
   }
 };
