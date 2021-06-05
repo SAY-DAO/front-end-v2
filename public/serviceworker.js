@@ -57,7 +57,7 @@ self.addEventListener('fetch', (event) => {
       .catch((error) => {
         // Respond with custom offline page
         console.log('offline error ', error);
-        return caches.match('offline.html');
+        // return caches.match('offline.html'); // will ineterfere with action error responses
       })
   );
 });

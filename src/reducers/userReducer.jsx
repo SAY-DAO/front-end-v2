@@ -23,7 +23,7 @@ import {
   // USER_UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants';
 
-export const userStepReducer = (state = { step: 'EnteryForm' }, action) => {
+export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
   switch (action.type) {
     case CHANGE_VERIFY_STEP:
       return { step: action.payload };

@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-const EnteryForm = () => {
+const EntryForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -39,8 +39,8 @@ const EnteryForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [email, setEmail] = useState('');
-  const [isDisabled, setisDisabled] = useState(true);
-  const [isLoading, setisLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const verifyInfo = useSelector((state) => state.verifyInfo);
   const {
@@ -102,18 +102,18 @@ const EnteryForm = () => {
   // loading button
   useEffect(() => {
     if (loadingCheck || loadingVerify) {
-      setisLoading(true);
+      setIsLoading(true);
     } else {
-      setisLoading(false);
+      setIsLoading(false);
     }
   }, [loadingCheck, loadingVerify]);
 
   // disable button
   useEffect(() => {
     if (!successCheck || errorCheck || validateErr) {
-      setisDisabled(true);
+      setIsDisabled(true);
     } else {
-      setisDisabled(false);
+      setIsDisabled(false);
     }
   }, [validateErr, email, phoneNumber, errorCheck, errorVerify, successCheck]);
 
@@ -144,18 +144,18 @@ const EnteryForm = () => {
       checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
     );
     if (!errorCheck) {
-      const thePhoneNymber = phoneNumber.split(' ').join('');
-      dispatch(verifyUser('phone_number', thePhoneNymber));
+      const thePhoneNumber = phoneNumber.split(' ').join('');
+      dispatch(verifyUser('phone_number', thePhoneNumber));
     }
   };
 
   const handleVerify = () => {
     if (validateErr === '') {
       if (email !== '') {
-        console.log('verfying email...');
+        console.log('verifying email...');
         validateTheEmail();
       } else if (email === '') {
-        console.log('verfying phone number...');
+        console.log('verifying phone number...');
         validateThePhone();
       }
     } else {
@@ -165,9 +165,9 @@ const EnteryForm = () => {
 
   const handleClick = () => {
     if (!(phoneNumber || email)) {
-      setValidateErr(contents.fillOne);
+      setValidateErr(t(contents.fillOne));
     } else {
-      console.log('verfying...');
+      console.log('verifying...');
       handleVerify();
     }
   };
@@ -206,7 +206,7 @@ const EnteryForm = () => {
             countryCodeEditable={false}
           />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
-            <Typography variant="subtitle1">{t('devider.register')}</Typography>
+            <Typography variant="subtitle1">{t('divider.register')}</Typography>
           </Divider>
           <TextField
             type="email"
@@ -257,4 +257,4 @@ const EnteryForm = () => {
   );
 };
 
-export default EnteryForm;
+export default EntryForm;

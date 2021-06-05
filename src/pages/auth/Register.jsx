@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import EnteryForm from '../../components/register/EnteryForm';
+import EntryForm from '../../components/register/EntryForm';
 import VerifyCodeForm from '../../components/register/VerifyCodeForm';
 import Success from '../../components/Message';
 
@@ -11,11 +11,11 @@ const Register = () => {
 
   const switchComponent = () => {
     switch (step) {
-      case 'EnteryForm':
+      case 'EntryForm':
         return (
           <>
             <Grid item xs={12} sx={{ marginTop: 36 }}>
-              <EnteryForm />
+              <EntryForm />
             </Grid>
           </>
         );
@@ -34,7 +34,7 @@ const Register = () => {
       default:
         return (
           <Grid item xs={12} sx={{ marginTop: 36 }}>
-            <EnteryForm />
+            <EntryForm />
           </Grid>
         );
     }

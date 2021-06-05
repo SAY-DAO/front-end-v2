@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid, Button, Typography } from '@material-ui/core';
@@ -7,12 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import { useTranslation, Trans } from 'react-i18next';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Back from '../Back';
 import { verifyUser } from '../../actions/userAction';
+import Message from '../Message';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,20 +33,21 @@ const VerifyCodeForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [verificationMethod, setverificationMethod] = useState('');
-  const [enableResend, setenableResend] = useState(false);
+  const [verificationMethod, setVerificationMethod] = useState('');
+  const [enableResend, setEnableResend] = useState(false);
   const [progress, setProgress] = useState(100);
 
-  // const verifyInfo = useSelector((state) => state.verifyInfo);
-  // const { localVerifyInfo } = verifyInfo;
+  const verifyInfo = useSelector((state) => state.verifyInfo);
+  const { error } = verifyInfo;
 
+  // eslint-disable-next-line no-undef
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
 
   useEffect(() => {
     if (localVerifyInfo.type === 'phone') {
-      setverificationMethod(localVerifyInfo.phone_number);
+      setVerificationMethod(localVerifyInfo.phone_number);
     } else if (localVerifyInfo.type === 'email') {
-      setverificationMethod(localVerifyInfo.email);
+      setVerificationMethod(localVerifyInfo.email);
     }
   }, []);
 
@@ -55,7 +56,7 @@ const VerifyCodeForm = () => {
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
-          setenableResend(false);
+          setEnableResend(false);
           return 100;
         }
         const diff = 1.5;
@@ -73,7 +74,7 @@ const VerifyCodeForm = () => {
     const theType = localVerifyInfo.phone_number ? 'phone_number' : 'email';
     dispatch(verifyUser(theType, verificationMethod));
     setProgress(0);
-    setenableResend(true);
+    setEnableResend(true);
   };
 
   return (
@@ -84,7 +85,7 @@ const VerifyCodeForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Back step="EnteryForm" />
+      <Back step="EntryForm" />
       <Grid item xs={12}>
         <img
           src="/images/otp.svg"
@@ -145,7 +146,7 @@ const VerifyCodeForm = () => {
             </Typography>
           )}
         </Grid>
-        {enableResend ? (
+        {enableResend && !error ? (
           <Grid sx={{ width: '100%', marginTop: 2 }}>
             <Grid item xs={12}>
               <LinearProgress variant="determinate" value={progress} />
@@ -175,6 +176,18 @@ const VerifyCodeForm = () => {
               </Typography>
             )}
           </Grid>
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        {error && (
+          <Message
+            onRequestBackError=""
+            onRequestFrontError=""
+            variant="filled"
+            severity="error"
+          >
+            {error}
+          </Message>
         )}
       </Grid>
     </Grid>

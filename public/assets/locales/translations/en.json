@@ -34,7 +34,7 @@
     "cancel": "Decline"
   },
   "error": {
-    "fillOne": "This information is necessary",
+    "fillOne": "Please fill one of the options",
     "allRequired": "Please fill in all the required fields",
     "passwordMatch": "Password entries don’t match",
     "wrongPassword": "Password is too short",
@@ -63,7 +63,7 @@
     },
     "timeout": "Oh..! <1/>Something is not working. Check back latter"
   },
-  "devider": {
+  "divider": {
     "register": "OR"
   },
   "placeholder": {
