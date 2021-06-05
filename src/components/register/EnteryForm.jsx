@@ -40,6 +40,7 @@ const EnteryForm = () => {
   const [countryCode, setCountryCode] = useState('');
   const [email, setEmail] = useState('');
   const [isDisabled, setisDisabled] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
 
   const verifyInfo = useSelector((state) => state.verifyInfo);
   const {
@@ -98,6 +99,15 @@ const EnteryForm = () => {
       dispatch(changeVerifyStep('VerifyCodeForm'));
     }
   }, [successVerify]);
+
+  // loading button
+  useEffect(() => {
+    if (loadingCheck || loadingVerify) {
+      setisLoading(true);
+    } else {
+      setisLoading(false);
+    }
+  }, [loadingCheck, loadingVerify]);
 
   // disable button
   useEffect(() => {
@@ -214,21 +224,16 @@ const EnteryForm = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 8 }}>
-        {loadingCheck || loadingVerify ? (
-          <LoadingButton loading variant="contained">
-            {t('button.submit')}
-          </LoadingButton>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleClick}
-            disabled={isDisabled}
-            sx={{ bottom: 5 }}
-          >
-            {t('button.submit')}
-          </Button>
-        )}
+        <LoadingButton
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          disabled={isDisabled}
+          loading={isLoading}
+          sx={{ bottom: 5 }}
+        >
+          {t('button.submit')}
+        </LoadingButton>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 2 }}>
         <Typography variant="subtitle1">
