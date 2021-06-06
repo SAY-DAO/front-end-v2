@@ -3,6 +3,7 @@ const contents = {
   emailExists: 'error.emailExists',
   wrongPhone: 'error.wrongPhone',
   phoneExists: 'error.phoneExists',
+  wrongCode: 'error.wrongCode',
   usernameStart: 'error.usernameStart',
   usernameLength: 'error.usernameLength',
   wrongUsername: 'error.wrongUsername',

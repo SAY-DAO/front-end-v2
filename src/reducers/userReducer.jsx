@@ -10,6 +10,7 @@ import {
   CODE_VERIFY_REQUEST,
   CODE_VERIFY_SUCCESS,
   CODE_VERIFY_FAIL,
+  CODE_VERIFY_RESET,
   // USER_LOGIN_REQUEST,
   // USER_LOGIN_SUCCESS,
   // USER_LOGIN_FAIL,
@@ -74,6 +75,8 @@ export const codeVerifyReducer = (state = { success: false }, action) => {
       return { loading: false, success: true };
     case CODE_VERIFY_FAIL:
       return { loading: false, error: action.payload };
+    case CODE_VERIFY_RESET:
+      return {};
     default:
       return state;
   }

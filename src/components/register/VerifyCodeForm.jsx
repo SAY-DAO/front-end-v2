@@ -8,13 +8,18 @@ import { useTranslation, Trans } from 'react-i18next';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import NumberFormat from 'react-number-format';
 import Back from '../Back';
-import { verifyUser, verifyCode } from '../../actions/userAction';
+import {
+  verifyUser,
+  verifyCode,
+  changeVerifyStep,
+} from '../../actions/userAction';
 import Message from '../Message';
+import { CODE_VERIFY_RESET } from '../../constants/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -32,7 +37,6 @@ const useStyles = makeStyles({
 
 const VerifyCodeForm = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const [verificationMethod, setVerificationMethod] = useState('');
@@ -42,8 +46,12 @@ const VerifyCodeForm = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const verifyInfo = useSelector((state) => state.verifyInfo);
-  const { error } = verifyInfo;
+  const theVerifyCode = useSelector((state) => state.verifyCode);
+  const {
+    error: errorVerifyCode,
+    success: successVerifyCode,
+    loading: loadingVerifyCode,
+  } = theVerifyCode;
 
   // eslint-disable-next-line no-undef
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
@@ -74,12 +82,29 @@ const VerifyCodeForm = () => {
     };
   }, []);
 
+  // change step
+  useEffect(() => {
+    if (successVerifyCode) {
+      dispatch(changeVerifyStep('FinalForm'));
+    }
+  }, [successVerifyCode]);
+
+  // loading button
+  useEffect(() => {
+    if (loadingVerifyCode) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingVerifyCode]);
+
   // button disable
   useEffect(() => {
-    console.log(code.length);
     if (code.length === 6) {
       setIsDisabled(false);
+      dispatch(verifyCode(localVerifyInfo.id, code));
     } else {
+      dispatch({ type: CODE_VERIFY_RESET });
       setIsDisabled(true);
     }
   }, [code]);
@@ -93,7 +118,6 @@ const VerifyCodeForm = () => {
 
   const handleChange = (event) => {
     setCode(event.value);
-    console.log(event);
   };
 
   const handleClick = () => {
@@ -164,7 +188,7 @@ const VerifyCodeForm = () => {
         justifyContent="center"
         alignItems="center"
       >
-        {enableResend && !error ? (
+        {enableResend && !errorVerifyCode ? (
           <Grid sx={{ width: '100%', marginTop: 2 }}>
             <Grid item xs={12}>
               <LinearProgress variant="determinate" value={progress} />
@@ -197,15 +221,12 @@ const VerifyCodeForm = () => {
         )}
       </Grid>
       <Grid item xs={12}>
-        {error && (
+        {errorVerifyCode && (
           <Message
-            onRequestBackError=""
-            onRequestFrontError=""
+            backError={errorVerifyCode}
             variant="filled"
             severity="error"
-          >
-            {error}
-          </Message>
+          />
         )}
       </Grid>
     </Grid>

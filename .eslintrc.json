@@ -8,6 +8,7 @@
         "func-names":"off",
         "object-shorthand":"off",
         "consistent-return":"off",
-        "react/jsx-filename-extension": "off"
+        "react/jsx-filename-extension": "off",
+        "react/forbid-prop-types": "off"
     }
 }

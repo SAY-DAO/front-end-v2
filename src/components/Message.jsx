@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
 import * as React from 'react';
 import Alert from '@material-ui/core/Alert';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import contents from '../inputsValidation/Contents';
 
 export default function Message({
-  onRequestFrontError,
-  onRequestBackError,
+  frontError,
+  backError,
   variant,
   children,
   severity,
@@ -14,33 +14,35 @@ export default function Message({
   const { t } = useTranslation();
 
   const onRequestCheck = () => {
-    if (onRequestFrontError) {
-      if (onRequestFrontError.status === 400) {
+    if (frontError.status) {
+      if (frontError.status === 400) {
         return t(contents.wrongEmail);
       }
-      if (onRequestFrontError.status === 422) {
+      if (frontError.status === 422) {
         return t(contents.emailExists);
       }
-      if (onRequestFrontError.status === 429) {
+      if (frontError.status === 429) {
         return t(contents.manyRequest);
       }
-
       return t(contents.sthIsWrong);
     }
-    if (onRequestBackError) {
-      if (onRequestBackError.status === 720) {
+    if (backError.status) {
+      if (backError.status === 720) {
         return t(contents.wrongEmail);
       }
-      if (onRequestBackError.status === 721) {
+      if (backError.status === 721) {
         return t(contents.emailExists);
       }
-      if (onRequestBackError.status === 730) {
+      if (backError.status === 730) {
         return t(contents.wrongPhone);
       }
-      if (onRequestBackError.status === 731) {
+      if (backError.status === 731) {
         return t(contents.phoneExists);
       }
-      return t(contents.sthIsWrong);
+      if (backError.status === 400) {
+        return t(contents.wrongCode);
+      }
+      // return t(contents.sthIsWrong);
     }
   };
   return (
@@ -49,3 +51,17 @@ export default function Message({
     </Alert>
   );
 }
+
+Message.propTypes = {
+  frontError: PropTypes.object,
+  backError: PropTypes.object,
+  variant: PropTypes.string.isRequired,
+  children: PropTypes.string,
+  severity: PropTypes.string.isRequired,
+};
+
+Message.defaultProps = {
+  frontError: {},
+  backError: {},
+  children: '',
+};

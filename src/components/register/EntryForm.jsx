@@ -244,8 +244,8 @@ const EntryForm = () => {
       <Grid item xs={12}>
         {(validateErr || errorVerify || errorCheck) && (
           <Message
-            onRequestBackError={errorCheck}
-            onRequestFrontError={errorVerify}
+            backError={errorCheck}
+            frontError={errorVerify}
             variant="filled"
             severity="error"
           >
