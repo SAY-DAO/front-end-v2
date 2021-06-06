@@ -7,6 +7,9 @@ import {
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
   USER_VERIFY_FAIL,
+  CODE_VERIFY_REQUEST,
+  CODE_VERIFY_SUCCESS,
+  CODE_VERIFY_FAIL,
   // USER_LOGIN_REQUEST,
   // USER_LOGIN_SUCCESS,
   // USER_LOGIN_FAIL,
@@ -66,6 +69,7 @@ export const checkContactBeforeVerify =
     }
   };
 
+// verify user by otp
 export const verifyUser = (theKey, value) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
@@ -97,6 +101,41 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_VERIFY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+// verify the code
+export const verifyCode = (id, code) => async (dispatch) => {
+  try {
+    dispatch({ type: CODE_VERIFY_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+
+    // eslint-disable-next-line no-undef
+    const formData = new FormData();
+    formData.append('code', code);
+
+    const { data } = await sayBase.patch(
+      `/auth/verify/${id}`,
+      formData,
+
+      {
+        config,
+      }
+    );
+    dispatch({
+      type: CODE_VERIFY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CODE_VERIFY_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

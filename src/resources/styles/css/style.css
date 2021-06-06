@@ -9,3 +9,8 @@ a:link, a:visited {
     color: #f5a344 !important;
     text-decoration: none !important;
   }
+
+  #codeInput {
+      text-align: center;
+      direction: ltr !important;
+  }

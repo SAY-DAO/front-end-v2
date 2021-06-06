@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '280px',
+    maxHeight: '300px',
   },
 });
 
@@ -110,7 +110,7 @@ const EntryForm = () => {
 
   // disable button
   useEffect(() => {
-    if (!successCheck || errorCheck || validateErr) {
+    if (!successCheck || errorCheck || validateErr || !(phoneNumber || email)) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);

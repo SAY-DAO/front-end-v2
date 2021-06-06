@@ -7,6 +7,9 @@ import {
   USER_VERIFY_SUCCESS,
   USER_VERIFY_FAIL,
   USER_VERIFY_RESET,
+  CODE_VERIFY_REQUEST,
+  CODE_VERIFY_SUCCESS,
+  CODE_VERIFY_FAIL,
   // USER_LOGIN_REQUEST,
   // USER_LOGIN_SUCCESS,
   // USER_LOGIN_FAIL,
@@ -58,6 +61,19 @@ export const userVerifyReducer = (state = { verifyData: {} }, action) => {
       return { loading: false, error: action.payload };
     case USER_VERIFY_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const codeVerifyReducer = (state = { success: false }, action) => {
+  switch (action.type) {
+    case CODE_VERIFY_REQUEST:
+      return { loading: true };
+    case CODE_VERIFY_SUCCESS:
+      return { loading: false, success: true };
+    case CODE_VERIFY_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

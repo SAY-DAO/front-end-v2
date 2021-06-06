@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useTranslation, Trans } from 'react-i18next';
@@ -10,8 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import NumberFormat from 'react-number-format';
 import Back from '../Back';
-import { verifyUser } from '../../actions/userAction';
+import { verifyUser, verifyCode } from '../../actions/userAction';
 import Message from '../Message';
 
 function capitalize(str) {
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '280px',
+    maxHeight: '300px',
   },
 });
 
@@ -36,6 +38,9 @@ const VerifyCodeForm = () => {
   const [verificationMethod, setVerificationMethod] = useState('');
   const [enableResend, setEnableResend] = useState(false);
   const [progress, setProgress] = useState(100);
+  const [code, setCode] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const verifyInfo = useSelector((state) => state.verifyInfo);
   const { error } = verifyInfo;
@@ -49,7 +54,7 @@ const VerifyCodeForm = () => {
     } else if (localVerifyInfo.type === 'email') {
       setVerificationMethod(localVerifyInfo.email);
     }
-  }, []);
+  }, [localVerifyInfo]);
 
   // resend progress
   useEffect(() => {
@@ -69,13 +74,33 @@ const VerifyCodeForm = () => {
     };
   }, []);
 
-  const classes = useStyles();
+  // button disable
+  useEffect(() => {
+    console.log(code.length);
+    if (code.length === 6) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [code]);
+
   const handleResend = () => {
     const theType = localVerifyInfo.phone_number ? 'phone_number' : 'email';
     dispatch(verifyUser(theType, verificationMethod));
     setProgress(0);
     setEnableResend(true);
   };
+
+  const handleChange = (event) => {
+    setCode(event.value);
+    console.log(event);
+  };
+
+  const handleClick = () => {
+    dispatch(verifyCode(localVerifyInfo.id, code));
+  };
+
+  const classes = useStyles();
 
   return (
     <Grid
@@ -84,13 +109,13 @@ const VerifyCodeForm = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
+      sx={{ marginTop: 4 }}
     >
       <Back step="EntryForm" />
       <Grid item xs={12}>
         <img
           src="/images/otp.svg"
           width="100%"
-          style={{ paddingBottom: '20px' }}
           className={classes.root}
           alt="otp page"
         />
@@ -108,27 +133,30 @@ const VerifyCodeForm = () => {
       </Grid>
       <Grid item xs={12}>
         <FormControl variant="outlined">
-          <TextField
-            id="outlined-adornment-email"
-            label={t('placeholder.code')}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'email',
-            }}
+          <NumberFormat
+            value={code}
+            onValueChange={handleChange}
+            id="codeInput"
+            placeholder={t('placeholder.code')}
+            customInput={TextField}
+            format="### ###"
+            mask="_"
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sx={{ marginTop: 10 }}>
-        <Button
+      <Grid item xs={12} sx={{ marginTop: 14 }}>
+        <LoadingButton
           variant="contained"
           color="primary"
-          onClick={() => history.push('#')}
+          disabled={isDisabled}
+          loading={isLoading}
+          onClick={handleClick}
           sx={{
             bottom: 5,
           }}
         >
           {t('button.submit')}
-        </Button>
+        </LoadingButton>
       </Grid>
       <Grid
         container
@@ -136,16 +164,6 @@ const VerifyCodeForm = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item xs={12} sx={{ marginTop: 2 }}>
-          {localVerifyInfo && (
-            <Typography variant="subtitle1">
-              {t(`verify.wrong${capitalize(localVerifyInfo.type)}`)}{' '}
-              <Link to="#" onClick={handleResend}>
-                {t(`verify.change${capitalize(localVerifyInfo.type)}`)}
-              </Link>
-            </Typography>
-          )}
-        </Grid>
         {enableResend && !error ? (
           <Grid sx={{ width: '100%', marginTop: 2 }}>
             <Grid item xs={12}>

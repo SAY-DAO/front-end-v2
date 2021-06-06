@@ -3,10 +3,12 @@ import {
   userStepReducer,
   checkBeforeVerifyReducer,
   userVerifyReducer,
+  codeVerifyReducer,
 } from './userReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
-  verifyInfo: userVerifyReducer,
   checkBeforeVerify: checkBeforeVerifyReducer,
+  verifyInfo: userVerifyReducer,
+  verifyCode: codeVerifyReducer,
 });
