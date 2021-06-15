@@ -13,12 +13,14 @@ import {
   verifyUser,
   checkContactBeforeVerify,
 } from '../../actions/userAction';
+import validateEmail from '../../inputsValidation/validateEmail';
+import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
+import { USER_VERIFY_RESET } from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
-import { USER_VERIFY_RESET } from '../../constants/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -56,34 +58,26 @@ const EntryForm = () => {
     success: successCheck,
   } = checkBeforeVerify;
 
-  // check email every 500 ms when typing
+  // check email every 1000 ms when typing
   useEffect(() => {
-    if (
-      email.length > 0 ||
-      (email.indexOf('@') > 0 && email.indexOf('.') > 0)
-    ) {
+    const result = validateEmail(email);
+    if (result) {
       const timeout = setTimeout(() => {
         dispatch(checkContactBeforeVerify('email', email, countryCode));
-      }, 500);
+      }, 1000);
       return () => clearTimeout(timeout);
     }
-    // if (email.length !== 0) {
-    //   setValidateErr(t(contents.wrongEmail));
-    // }
   }, [email]);
 
-  // check phone every 500 ms when typing
+  // check phone every 1000 ms when typing
   useEffect(() => {
-    if (
-      phoneNumber.length === 16 &&
-      countryCode === 'ir'
-      // phoneNumber.length === 12
-    ) {
+    const result = validatePhone(phoneNumber, countryCode);
+    if (result) {
       const timeout = setTimeout(() => {
         dispatch(
           checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
         );
-      }, 500);
+      }, 1000);
       return () => clearTimeout(timeout);
     }
     if (phoneNumber.length > 4 && phoneNumber.length < 16) {

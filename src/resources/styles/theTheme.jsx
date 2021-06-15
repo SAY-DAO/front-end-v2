@@ -111,8 +111,15 @@ const theTheme = createTheme({
           height: '40px',
           borderRadius: 4,
           '&:focused': {
-            borderColor: 'green',
+            // borderColor: 'green',
           },
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          width: '300px',
         },
       },
     },
