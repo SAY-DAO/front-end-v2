@@ -84,7 +84,7 @@ const theTheme = createTheme({
       styleOverrides: {
         tooltip: {
           backgroundColor: '#6a8c30',
-          color: 'bllue',
+          color: 'blue',
         },
         arrow: {
           color: 'green',
@@ -110,8 +110,16 @@ const theTheme = createTheme({
         root: {
           height: '40px',
           borderRadius: 4,
-          '&:focused': {
-            // borderColor: 'green',
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          // textTransform: 'uppercase',
+          fontSize: '0.5rem',
+          '&.Mui-focused': {
+            fontSize: '0.6rem',
           },
         },
       },

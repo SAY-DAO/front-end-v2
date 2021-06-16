@@ -10,13 +10,13 @@ import {
   CODE_VERIFY_REQUEST,
   CODE_VERIFY_SUCCESS,
   CODE_VERIFY_FAIL,
-  // USER_LOGIN_REQUEST,
-  // USER_LOGIN_SUCCESS,
-  // USER_LOGIN_FAIL,
-  // USER_LOGOUT,
-  // USER_REGISTER_REQUEST,
-  // USER_REGISTER_SUCCESS,
-  // USER_REGISTER_FAIL,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL,
+  USER_LOGOUT,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAIL,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -69,7 +69,7 @@ export const checkContactBeforeVerify =
     }
   };
 
-// verify user by otp
+// verify user by otp - theKey:email, value:akbar@gmail.com
 export const verifyUser = (theKey, value) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
@@ -120,14 +120,9 @@ export const verifyCode = (id, code) => async (dispatch) => {
     const formData = new FormData();
     formData.append('code', code);
 
-    const { data } = await sayBase.patch(
-      `/auth/verify/${id}`,
-      formData,
-
-      {
-        config,
-      }
-    );
+    const { data } = await sayBase.patch(`/auth/verify/${id}`, formData, {
+      config,
+    });
     dispatch({
       type: CODE_VERIFY_SUCCESS,
       payload: data,
@@ -140,6 +135,54 @@ export const verifyCode = (id, code) => async (dispatch) => {
     });
   }
 };
+
+export const register =
+  (username, password, theKey, value, countryCode, theVerifyCode) =>
+  async (dispatch) => {
+    try {
+      // eslint-disable-next-line no-undef
+      const formData = new FormData();
+      formData.set('username', username);
+      formData.set('password', password);
+      formData.set(theKey, value);
+      formData.set('verifyCode', theVerifyCode);
+      if (theKey === 'phone' && countryCode) {
+        formData.set('countryCode', countryCode);
+      }
+
+      dispatch({ type: USER_REGISTER_REQUEST });
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      };
+      const { data } = await sayBase.post('/auth/register/', formData, {
+        config,
+      });
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
+      // eslint-disable-next-line no-undef
+      localStorage.setItem('userInfo', JSON.stringify(data));
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+      // eslint-disable-next-line no-undef
+      localStorage.removeItem('localVerifyInfo');
+    } catch (e) {
+      // check for generic and custom message to return using ternary statement
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          e.response && e.response.data.detail
+            ? e.response.data.detail
+            : e.message,
+      });
+    }
+  };
 
 // export const login = (email, password) => async (dispatch) => {
 // 	try {
@@ -178,44 +221,4 @@ export const verifyCode = (id, code) => async (dispatch) => {
 // 	dispatch({ type: USER_LOGOUT });
 // 	dispatch({ type: USER_DETAILS_RESET });
 // 	// cleanMyOrders();
-// };
-
-// export const register = (firstName, lastName, email, password) => async (
-// 	dispatch
-// ) => {
-// 	try {
-// 		dispatch({ type: USER_REGISTER_REQUEST });
-// 		const config = {
-// 			headers: {
-// 				"Content-type": "application/json",
-// 			},
-// 		};
-// 		const { data } = await sayBase.post("/api/users/register/", {
-// 			firstName,
-// 			lastName,
-// 			email,
-// 			username: email,
-// 			password,
-// 			config,
-// 		});
-// 		dispatch({
-// 			type: USER_REGISTER_SUCCESS,
-// 			payload: data,
-// 		});
-// 		localStorage.setItem("userInfo", JSON.stringify(data));
-
-// 		dispatch({
-// 			type: USER_LOGIN_SUCCESS,
-// 			payload: data,
-// 		});
-// 	} catch (e) {
-// 		// check for generic and custom message to return using ternary statement
-// 		dispatch({
-// 			type: USER_REGISTER_FAIL,
-// 			payload:
-// 			e.response && e.response.data.detail
-// 				? e.response.data.detail
-// 				: e.message,
-// 		});
-// 	}
 // };

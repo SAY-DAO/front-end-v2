@@ -44,9 +44,7 @@ const FinalForm = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
-      sx={{ marginTop: 4 }}
     >
-      <Back step="VerifyCodeForm" />
       <Grid item xs={12}>
         <img
           src="/images/finalForm.svg"
@@ -59,25 +57,42 @@ const FinalForm = () => {
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <TextField
             type="email"
-            id="outlined-adornment-email"
-            label={t('placeholder.email')}
+            sx={{ marginBottom: 2 }}
+            label={t('placeholder.username')}
+            helperText="Some important text"
             aria-describedby="outlined-weight-helper-text"
             inputProps={{
               'aria-label': 'email',
             }}
           />
+          <TextField
+            type="password"
+            helperText="Some important text"
+            sx={{ marginBottom: 2 }}
+            label={t('placeholder.password')}
+            aria-describedby="outlined-weight-helper-text"
+            inputProps={{
+              'aria-label': 'password',
+            }}
+          />
+          <TextField
+            type="password"
+            sx={{ marginBottom: 2 }}
+            label={t('placeholder.repeatPassword')}
+            aria-describedby="outlined-weight-helper-text"
+            inputProps={{
+              'aria-label': 'repeatPassword',
+            }}
+          />
         </FormControl>
       </Grid>
-      <Grid item xs={12} sx={{ marginTop: 14 }}>
+      <Grid item xs={12} sx={{ marginTop: 2 }}>
         <LoadingButton
           variant="contained"
           color="primary"
           disabled={isDisabled}
           loading={isLoading}
           onClick={handleClick}
-          sx={{
-            bottom: 5,
-          }}
         >
           {t('button.submit')}
         </LoadingButton>
