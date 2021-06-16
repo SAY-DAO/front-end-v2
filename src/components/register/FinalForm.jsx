@@ -12,8 +12,15 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import NumberFormat from 'react-number-format';
-import Back from '../Back';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Message from '../Message';
+import Back from '../Back';
 
 const useStyles = makeStyles({
   root: {
@@ -29,11 +36,34 @@ const FinalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const [values, setValues] = useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
     dispatch();
+  };
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const classes = useStyles();
@@ -55,35 +85,77 @@ const FinalForm = () => {
       </Grid>
       <Grid item xs={12}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-          <TextField
-            type="email"
-            sx={{ marginBottom: 2 }}
-            label={t('placeholder.username')}
-            helperText="Some important text"
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'email',
-            }}
+          <OutlinedInput
+            id="outlined-adornment-username"
+            type="text"
+            value={values.username}
+            onChange={handleChange('username')}
+            endAdornment={
+              <InputAdornment position="end">
+                {values.username ? (
+                  <CancelRoundedIcon sx={{ color: 'red' }} />
+                ) : (
+                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                )}
+              </InputAdornment>
+            }
+            label="username"
           />
-          <TextField
+          <InputLabel htmlFor="username">
+            {t('placeholder.username')}
+          </InputLabel>
+          <FormHelperText id="outlined-weight-helper-text">
+            Weight
+          </FormHelperText>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+          <OutlinedInput
+            id="outlined-adornment-password"
             type="password"
-            helperText="Some important text"
-            sx={{ marginBottom: 2 }}
-            label={t('placeholder.password')}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'password',
-            }}
+            value={values.password}
+            onChange={handleChange('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                {values.password ? (
+                  <CancelRoundedIcon sx={{ color: 'red' }} />
+                ) : (
+                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                )}
+              </InputAdornment>
+            }
+            label="password"
           />
-          <TextField
+          <InputLabel htmlFor="password">
+            {t('placeholder.password')}
+          </InputLabel>
+          <FormHelperText id="outlined-weight-helper-text">
+            Weight
+          </FormHelperText>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+          <OutlinedInput
+            id="outlined-adornment-repeatPassword"
             type="password"
-            sx={{ marginBottom: 2 }}
-            label={t('placeholder.repeatPassword')}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'repeatPassword',
-            }}
+            value={values.repeatPassword}
+            onChange={handleChange('repeatPassword')}
+            endAdornment={
+              <InputAdornment position="end">
+                {values.repeatPassword ? (
+                  <CancelRoundedIcon sx={{ color: 'red' }} />
+                ) : (
+                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                )}
+              </InputAdornment>
+            }
+            label="repeatPassword"
           />
+          <InputLabel htmlFor="repeatPassword">
+            {t('placeholder.repeatPassword')}
+          </InputLabel>
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 2 }}>

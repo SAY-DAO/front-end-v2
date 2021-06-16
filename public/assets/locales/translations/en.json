@@ -33,6 +33,10 @@
     "continue": "Accept",
     "cancel": "Decline"
   },
+  "helperText": {
+    "username": "Alphabets, numbers and dot",
+    "password": "At least 6 characters, special characters and Upper Case alphabets for more security"
+  },
   "error": {
     "fillOne": "Please fill one of the options",
     "allRequired": "Please fill in all the required fields",
