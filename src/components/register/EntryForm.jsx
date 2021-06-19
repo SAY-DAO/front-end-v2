@@ -18,7 +18,10 @@ import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
-import { CHECK_CONTACT_RESET } from '../../constants/userConstants';
+import {
+  CHECK_CONTACT_RESET,
+  USER_VERIFY_RESET,
+} from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -40,6 +43,7 @@ const EntryForm = () => {
   const [validateErr, setValidateErr] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
+  const [dialCode, setDialCode] = useState('');
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -107,6 +111,7 @@ const EntryForm = () => {
     if (successVerify) {
       dispatch(changeVerifyStep('VerifyCodeForm'));
     }
+    return () => dispatch({ type: CHECK_CONTACT_RESET });
   }, [successVerify]);
 
   // loading button
@@ -130,16 +135,20 @@ const EntryForm = () => {
   // email changes
   const handleChangeEmail = (event) => {
     dispatch({ type: CHECK_CONTACT_RESET });
+    dispatch({ type: USER_VERIFY_RESET });
     setEmail(event.target.value);
-    setPhoneNumber(countryCode);
+    setPhoneNumber(dialCode);
   };
 
   // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
     dispatch({ type: CHECK_CONTACT_RESET });
+    dispatch({ type: USER_VERIFY_RESET });
     setEmail('');
+    console.log(data);
     setPhoneNumber(formattedValue);
     setCountryCode(data.countryCode);
+    setDialCode(data.dialCode);
   };
 
   const validateTheEmail = async () => {
