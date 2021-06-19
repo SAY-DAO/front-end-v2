@@ -61,7 +61,13 @@ const EntryForm = () => {
   // check email every 1000 ms when typing
   useEffect(() => {
     const result = validateEmail(email);
-    if (result) {
+    if (result && result.errorMessage) {
+      const timeout = setTimeout(() => {
+        setValidateErr(t(result.errorMessage));
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+    if (!result && email) {
       const timeout = setTimeout(() => {
         dispatch(checkContactBeforeVerify('email', email));
       }, 1000);
@@ -72,15 +78,12 @@ const EntryForm = () => {
   // check phone every 1000 ms when typing
   useEffect(() => {
     const result = validatePhone(phoneNumber, countryCode);
-    console.log(result);
-
     if (result && result.errorMessage) {
       const timeout = setTimeout(() => {
         setValidateErr(t(result.errorMessage));
       }, 1000);
       return () => clearTimeout(timeout);
     }
-
     if (!result && phoneNumber) {
       setValidateErr('');
       const timeout = setTimeout(() => {
@@ -90,8 +93,6 @@ const EntryForm = () => {
       }, 1000);
       return () => clearTimeout(timeout);
     }
-
-    return () => setValidateErr('');
   }, [phoneNumber]);
 
   // change step

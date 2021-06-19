@@ -1,6 +1,11 @@
+import contents from './Contents';
+
 export default function validateEmail(email) {
+  let result;
   if (email.length > 0 || (email.indexOf('@') > 0 && email.indexOf('.') > 0)) {
-    return true;
+    result = {
+      errorMessage: contents.wrongEmail,
+    };
   }
-  return false;
+  return result;
 }
