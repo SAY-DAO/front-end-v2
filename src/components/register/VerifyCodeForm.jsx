@@ -100,13 +100,22 @@ const VerifyCodeForm = () => {
 
   // button disable
   useEffect(() => {
-    if (code.length === 6) {
+    if (!errorVerifyCode && successVerifyCode) {
       setIsDisabled(false);
-      dispatch(verifyCode(localVerifyInfo.id, code));
     } else {
-      dispatch({ type: CODE_VERIFY_RESET });
       setIsDisabled(true);
     }
+  }, [errorVerifyCode, successVerifyCode]);
+
+  // verify code
+  useEffect(() => {
+    if (code.length === 6) {
+      dispatch({ type: CODE_VERIFY_RESET });
+      dispatch(verifyCode(localVerifyInfo.id, code));
+    }
+    return () => {
+      dispatch({ type: CODE_VERIFY_RESET });
+    };
   }, [code]);
 
   const handleResend = () => {

@@ -13,25 +13,25 @@ const Register = () => {
     switch (step) {
       case 'EntryForm':
         return (
-          <Grid xs={12} sx={{ marginTop: 36 }}>
+          <Grid xs={12} item sx={{ marginTop: 36 }}>
             <EntryForm />
           </Grid>
         );
       case 'VerifyCodeForm':
         return (
-          <Grid sx={{ marginTop: 36 }}>
+          <Grid item sx={{ marginTop: 36 }}>
             <VerifyCodeForm />
           </Grid>
         );
       case 'FinalForm':
         return (
-          <Grid sx={{ marginTop: 36 }}>
+          <Grid item sx={{ marginTop: 36 }}>
             <FinalForm />
           </Grid>
         );
       default:
         return (
-          <Grid sx={{ marginTop: 36 }}>
+          <Grid item sx={{ marginTop: 36 }}>
             <EntryForm />
           </Grid>
         );

@@ -1,6 +1,18 @@
+import contents from './Contents';
+
 export default function validatePhone(phoneNumber, countryCode) {
-  if (phoneNumber.length === 16 && countryCode === 'ir') {
-    return true;
+  let result;
+
+  if (countryCode === 'ir' && !phoneNumber.length === 16) {
+    result = {
+      errorMessage: contents.wrongPhone,
+    };
   }
-  return false;
+
+  if (phoneNumber.length > 4 && phoneNumber.length < 16) {
+    result = {
+      errorMessage: contents.wrongPhone,
+    };
+  }
+  return result;
 }

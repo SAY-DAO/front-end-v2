@@ -51,19 +51,19 @@ const EntryForm = () => {
     success: successVerify,
   } = verifyInfo;
 
-  const checkBeforeVerify = useSelector((state) => state.checkBeforeVerify);
+  const checkContact = useSelector((state) => state.checkContact);
   const {
     loading: loadingCheck,
     error: errorCheck,
     success: successCheck,
-  } = checkBeforeVerify;
+  } = checkContact;
 
   // check email every 1000 ms when typing
   useEffect(() => {
     const result = validateEmail(email);
     if (result) {
       const timeout = setTimeout(() => {
-        dispatch(checkContactBeforeVerify('email', email, countryCode));
+        dispatch(checkContactBeforeVerify('email', email));
       }, 1000);
       return () => clearTimeout(timeout);
     }
@@ -72,7 +72,17 @@ const EntryForm = () => {
   // check phone every 1000 ms when typing
   useEffect(() => {
     const result = validatePhone(phoneNumber, countryCode);
-    if (result) {
+    console.log(result);
+
+    if (result && result.errorMessage) {
+      const timeout = setTimeout(() => {
+        setValidateErr(t(result.errorMessage));
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (!result && phoneNumber) {
+      setValidateErr('');
       const timeout = setTimeout(() => {
         dispatch(
           checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
@@ -80,9 +90,7 @@ const EntryForm = () => {
       }, 1000);
       return () => clearTimeout(timeout);
     }
-    if (phoneNumber.length > 4 && phoneNumber.length < 16) {
-      setValidateErr(t(contents.wrongPhone));
-    }
+
     return () => setValidateErr('');
   }, [phoneNumber]);
 

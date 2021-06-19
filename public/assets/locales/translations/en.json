@@ -34,7 +34,7 @@
     "cancel": "Decline"
   },
   "helperText": {
-    "username": "Alphabets, numbers and dot",
+    "userName": "Alphabets, numbers and dot",
     "password": "At least 6 characters, special characters and Upper Case alphabets for more security"
   },
   "error": {
@@ -46,8 +46,8 @@
     "wrongPhone": "The number you entered is incomplete",
     "usernameStart": "Username cannot contain any punctuation marks.",
     "usernameLength": "Username must contain 3 to 12 characters.",
-    "wrongUsername": "Do not use the Persian alphabets for the Persian username.",
-    "usernameExists": "This username is already in use",
+    "wrongUsername": "Do not use the Persian alphabets for the Persian userName.",
+    "usernameExists": "This userName is already in use",
     "phoneExists": "This phone number is already in use",
     "emailExists": "This email address is already in use",
     "wrongUserOrPass": "Username or password is incorrect",
@@ -73,7 +73,7 @@
   "placeholder": {
     "name": "First name",
     "lastname": "Last name",
-    "username": "Username",
+    "userName": "Username",
     "password": "Password",
     "repeatPassword": "Re-enter password",
     "email": "Email",
@@ -161,7 +161,7 @@
       "byPhone": "The 6-digit code sent to <1>{{verificationMethod}}</1>.",
       "byEmail": "The 6-digit code sent to <1>{{verificationMethod}}</1>."
     },
-    "notReceiveCode": "Don't received the code?",
+    "notReceiveCode": "Didn't received the code?",
     "resendCode": "Resend the code",
     "pleaseWait": "We sent you a new code",
     "wrongEmail": "Incorrect email address?",
@@ -216,7 +216,7 @@
       "lastName": "Last name",
       "phoneNumber": "Phone number",
       "email": "Email",
-      "username": "Username",
+      "userName": "Username",
       "gender": {
         "title": "Gender",
         "male": "Male",

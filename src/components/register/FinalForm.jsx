@@ -1,26 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Divider } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import NumberFormat from 'react-number-format';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import IconButton from '@material-ui/core/IconButton';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Message from '../Message';
-import Back from '../Back';
+import validateUsername from '../../inputsValidation/validateUsername';
+import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -36,34 +31,71 @@ const FinalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [values, setValues] = useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
-
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
+  const checkUserName = useSelector((state) => state.checkUserName);
+  const {
+    loading: loadingCheck,
+    error: errorCheck,
+    success: successCheck,
+  } = checkUserName;
+
+  // check userName every 1000 ms when typing
+  useEffect(() => {
+    const result = validateUsername(userName);
+
+    if (!result.errorMessage) {
+      const timeout = setTimeout(() => {
+        dispatch(checkUserNameBeforeVerify(userName));
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [userName]);
+
+  // // change step
+  // useEffect(() => {
+  //   if (successVerify) {
+  //     dispatch(changeVerifyStep('VerifyCodeForm'));
+  //   }
+  // }, [successVerify]);
+
+  // loading button
+  useEffect(() => {
+    if (loadingCheck) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingCheck]);
+
+  // disable button
+  useEffect(() => {
+    if (!successCheck || errorCheck || !(userName || password)) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [userName, password, errorCheck, successCheck]);
+
   const handleClick = () => {
     dispatch();
+    // register(userName, password, theKey, value, countryCode, theVerifyCode)
   };
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChangeUserName = (event) => {
+    setUserName(event.target.value);
   };
 
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value);
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleChangeRepeatPassword = (event) => {
+    setRepeatPassword(event.target.value);
   };
 
   const classes = useStyles();
@@ -83,42 +115,39 @@ const FinalForm = () => {
           alt="otp page"
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
-            id="outlined-adornment-username"
+            id="outlined-adornment-userName"
             type="text"
-            value={values.username}
-            onChange={handleChange('username')}
+            value={userName}
+            onChange={handleChangeUserName}
             endAdornment={
               <InputAdornment position="end">
-                {values.username ? (
+                {userName ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
                 ) : (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
                 )}
               </InputAdornment>
             }
-            label="username"
+            label="userName"
           />
-          <InputLabel htmlFor="username">
-            {t('placeholder.username')}
+          <InputLabel htmlFor="userName">
+            {t('placeholder.userName')}
           </InputLabel>
-          <FormHelperText id="outlined-weight-helper-text">
-            Weight
-          </FormHelperText>
         </FormControl>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
             id="outlined-adornment-password"
             type="password"
-            value={values.password}
-            onChange={handleChange('password')}
+            value={password}
+            onChange={handleChangePassword}
             endAdornment={
               <InputAdornment position="end">
-                {values.password ? (
+                {password ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
                 ) : (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
@@ -130,21 +159,18 @@ const FinalForm = () => {
           <InputLabel htmlFor="password">
             {t('placeholder.password')}
           </InputLabel>
-          <FormHelperText id="outlined-weight-helper-text">
-            Weight
-          </FormHelperText>
         </FormControl>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
             id="outlined-adornment-repeatPassword"
             type="password"
-            value={values.repeatPassword}
-            onChange={handleChange('repeatPassword')}
+            value={repeatPassword}
+            onChange={handleChangeRepeatPassword}
             endAdornment={
               <InputAdornment position="end">
-                {values.repeatPassword ? (
+                {repeatPassword ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
                 ) : (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
@@ -158,7 +184,7 @@ const FinalForm = () => {
           </InputLabel>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sx={{ marginTop: 2 }}>
+      <Grid item xs={12} sx={{ marginTop: 4 }}>
         <LoadingButton
           variant="contained"
           color="primary"
@@ -169,15 +195,15 @@ const FinalForm = () => {
           {t('button.submit')}
         </LoadingButton>
       </Grid>
-      {/* <Grid item xs={12}>
-        {errorVerifyCode && (
+      <Grid item xs={12}>
+        {errorCheck && (
           <Message
-            backError={errorVerifyCode}
+            // backError={errorVerifyCode}
             variant="filled"
             severity="error"
           />
         )}
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };

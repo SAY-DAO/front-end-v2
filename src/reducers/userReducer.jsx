@@ -1,7 +1,7 @@
 import {
-  CHECK_BEFORE_VERIFY_REQUEST,
-  CHECK_BEFORE_VERIFY_SUCCESS,
-  CHECK_BEFORE_VERIFY_FAIL,
+  CHECK_CONTACT_BEFORE_VERIFY_REQUEST,
+  CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
+  CHECK_CONTACT_BEFORE_VERIFY_FAIL,
   CHANGE_VERIFY_STEP,
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
@@ -27,7 +27,7 @@ import {
   // USER_UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants';
 
-export const userStepReducer = (state = { step: 'FinalForm' }, action) => {
+export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
   switch (action.type) {
     case CHANGE_VERIFY_STEP:
       return { step: action.payload };
@@ -36,16 +36,26 @@ export const userStepReducer = (state = { step: 'FinalForm' }, action) => {
   }
 };
 
-export const checkBeforeVerifyReducer = (
-  state = { checkResult: {} },
-  action
-) => {
+export const checkContactReducer = (state = { checkResult: {} }, action) => {
   switch (action.type) {
-    case CHECK_BEFORE_VERIFY_REQUEST:
+    case CHECK_CONTACT_BEFORE_VERIFY_REQUEST:
       return { loading: true, ...state };
-    case CHECK_BEFORE_VERIFY_SUCCESS:
+    case CHECK_CONTACT_BEFORE_VERIFY_SUCCESS:
       return { loading: false, success: true, checkResult: action.payload };
-    case CHECK_BEFORE_VERIFY_FAIL:
+    case CHECK_CONTACT_BEFORE_VERIFY_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
+  switch (action.type) {
+    case CHECK_CONTACT_BEFORE_VERIFY_REQUEST:
+      return { loading: true, ...state };
+    case CHECK_CONTACT_BEFORE_VERIFY_SUCCESS:
+      return { loading: false, success: true, checkResult: action.payload };
+    case CHECK_CONTACT_BEFORE_VERIFY_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

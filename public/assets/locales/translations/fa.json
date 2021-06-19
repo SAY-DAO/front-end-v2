@@ -69,7 +69,7 @@
   "placeholder": {
     "name": "نام",
     "lastname": "نام خانوادگی",
-    "username": "نام کاربری",
+    "userName": "نام کاربری",
     "password": "گذرواژه",
     "repeatPassword": "تکرار گذرواژه",
     "email": "ایمیل",
@@ -216,7 +216,7 @@
       "lastName": "نام خانوادگی",
       "phoneNumber": "شماره موبایل",
       "email": "ایمیل",
-      "username": "نام کاربری",
+      "userName": "نام کاربری",
       "gender": {
         "title": "جنسیت",
         "male": "مرد",

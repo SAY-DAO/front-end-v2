@@ -1,14 +1,16 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import {
   userStepReducer,
-  checkBeforeVerifyReducer,
+  checkContactReducer,
+  checkUserNameReducer,
   userVerifyReducer,
   codeVerifyReducer,
 } from './userReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
-  checkBeforeVerify: checkBeforeVerifyReducer,
+  checkContact: checkContactReducer,
+  checkUserName: checkUserNameReducer,
   verifyInfo: userVerifyReducer,
   verifyCode: codeVerifyReducer,
 });

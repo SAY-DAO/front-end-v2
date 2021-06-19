@@ -1,8 +1,11 @@
 import sayBase from '../apis/sayBase';
 import {
-  CHECK_BEFORE_VERIFY_REQUEST,
-  CHECK_BEFORE_VERIFY_SUCCESS,
-  CHECK_BEFORE_VERIFY_FAIL,
+  CHECK_CONTACT_BEFORE_VERIFY_REQUEST,
+  CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
+  CHECK_CONTACT_BEFORE_VERIFY_FAIL,
+  CHECK_USERNAME_BEFORE_VERIFY_REQUEST,
+  CHECK_USERNAME_BEFORE_VERIFY_SUCCESS,
+  CHECK_USERNAME_BEFORE_VERIFY_FAIL,
   CHANGE_VERIFY_STEP,
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
@@ -33,41 +36,64 @@ export const changeVerifyStep = (step) => async (dispatch) => {
   });
 };
 
-export const checkContactBeforeVerify =
-  (theKey, value, countryCode) => async (dispatch) => {
-    console.log(theKey, value, countryCode);
+export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
+  try {
+    dispatch({ type: CHECK_CONTACT_BEFORE_VERIFY_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
 
-    try {
-      dispatch({ type: CHECK_BEFORE_VERIFY_REQUEST });
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      };
+    // eslint-disable-next-line no-undef
+    const formData = new FormData();
+    formData.append(theKey, value); // phone_number, +989121234565
 
-      // eslint-disable-next-line no-undef
-      const formData = new FormData();
-      formData.append(theKey, value); // phone_number, +989121234565
+    const { data } = await sayBase.get(
+      `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
+      formData,
+      {
+        config,
+      }
+    );
+    dispatch({
+      type: CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHECK_CONTACT_BEFORE_VERIFY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
-      const { data } = await sayBase.get(
-        `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
-        formData,
-        {
-          config,
-        }
-      );
-      dispatch({
-        type: CHECK_BEFORE_VERIFY_SUCCESS,
-        payload: data,
-      });
-    } catch (e) {
-      // check for generic and custom message to return using ternary statement
-      dispatch({
-        type: CHECK_BEFORE_VERIFY_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
-    }
-  };
+export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
+  try {
+    dispatch({ type: CHECK_USERNAME_BEFORE_VERIFY_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+
+    const { data } = await sayBase.get(`/check/username/${userName}`, {
+      config,
+    });
+
+    dispatch({
+      type: CHECK_USERNAME_BEFORE_VERIFY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHECK_USERNAME_BEFORE_VERIFY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 // verify user by otp - theKey:email, value:akbar@gmail.com
 export const verifyUser = (theKey, value) => async (dispatch) => {
@@ -137,12 +163,12 @@ export const verifyCode = (id, code) => async (dispatch) => {
 };
 
 export const register =
-  (username, password, theKey, value, countryCode, theVerifyCode) =>
+  (userName, password, theKey, value, countryCode, theVerifyCode) =>
   async (dispatch) => {
     try {
       // eslint-disable-next-line no-undef
       const formData = new FormData();
-      formData.set('username', username);
+      formData.set('userName', userName);
       formData.set('password', password);
       formData.set(theKey, value);
       formData.set('verifyCode', theVerifyCode);
@@ -193,7 +219,7 @@ export const register =
 // 			},
 // 		};
 // 		const { data } = await sayBase.post("/api/users/login/", {
-// 			username: email,
+// 			userName: email,
 // 			password,
 // 			config,
 // 		});
