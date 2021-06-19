@@ -18,7 +18,7 @@ import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
-import { USER_VERIFY_RESET } from '../../constants/userConstants';
+import { CHECK_CONTACT_RESET } from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -58,42 +58,49 @@ const EntryForm = () => {
     success: successCheck,
   } = checkContact;
 
-  // check email every 1000 ms when typing
-  useEffect(() => {
-    const result = validateEmail(email);
-    if (result && result.errorMessage) {
-      const timeout = setTimeout(() => {
-        setValidateErr(t(result.errorMessage));
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-    if (!result && email) {
-      const timeout = setTimeout(() => {
-        dispatch(checkContactBeforeVerify('email', email));
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [email]);
-
   // check phone every 1000 ms when typing
   useEffect(() => {
-    const result = validatePhone(phoneNumber, countryCode);
-    if (result && result.errorMessage) {
-      const timeout = setTimeout(() => {
-        setValidateErr(t(result.errorMessage));
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-    if (!result && phoneNumber) {
+    if (phoneNumber) {
       setValidateErr('');
-      const timeout = setTimeout(() => {
-        dispatch(
-          checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
-        );
-      }, 1000);
-      return () => clearTimeout(timeout);
+      const phoneResult = validatePhone(phoneNumber, countryCode);
+      if (phoneResult && phoneResult.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(phoneResult.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!phoneResult && phoneNumber) {
+        setValidateErr('');
+        const timeout = setTimeout(() => {
+          dispatch(
+            checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
+          );
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [phoneNumber]);
+
+  // check email every 1000 ms when typing
+  useEffect(() => {
+    if (email) {
+      setValidateErr('');
+      console.log(phoneNumber);
+      const emailResult = validateEmail(email);
+      if (emailResult && emailResult.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(emailResult.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!emailResult && email) {
+        const timeout = setTimeout(() => {
+          dispatch(checkContactBeforeVerify('email', email));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [email]);
 
   // change step
   useEffect(() => {
@@ -113,23 +120,23 @@ const EntryForm = () => {
 
   // disable button
   useEffect(() => {
-    if (!successCheck || errorCheck || validateErr || !(phoneNumber || email)) {
-      setIsDisabled(true);
-    } else {
+    if (successCheck) {
       setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
     }
-  }, [validateErr, email, phoneNumber, errorCheck, errorVerify, successCheck]);
+  }, [successCheck]);
 
   // email changes
   const handleChangeEmail = (event) => {
-    dispatch({ type: USER_VERIFY_RESET });
+    dispatch({ type: CHECK_CONTACT_RESET });
     setEmail(event.target.value);
     setPhoneNumber(countryCode);
   };
 
   // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
-    dispatch({ type: USER_VERIFY_RESET });
+    dispatch({ type: CHECK_CONTACT_RESET });
     setEmail('');
     setPhoneNumber(formattedValue);
     setCountryCode(data.countryCode);

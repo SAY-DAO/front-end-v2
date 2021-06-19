@@ -1,11 +1,11 @@
 import sayBase from '../apis/sayBase';
 import {
-  CHECK_CONTACT_BEFORE_VERIFY_REQUEST,
-  CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
-  CHECK_CONTACT_BEFORE_VERIFY_FAIL,
-  CHECK_USERNAME_BEFORE_VERIFY_REQUEST,
-  CHECK_USERNAME_BEFORE_VERIFY_SUCCESS,
-  CHECK_USERNAME_BEFORE_VERIFY_FAIL,
+  CHECK_CONTACT_REQUEST,
+  CHECK_CONTACT_SUCCESS,
+  CHECK_CONTACT_FAIL,
+  CHECK_USERNAME_REQUEST,
+  CHECK_USERNAME_SUCCESS,
+  CHECK_USERNAME_FAIL,
   CHANGE_VERIFY_STEP,
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
@@ -38,7 +38,7 @@ export const changeVerifyStep = (step) => async (dispatch) => {
 
 export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
   try {
-    dispatch({ type: CHECK_CONTACT_BEFORE_VERIFY_REQUEST });
+    dispatch({ type: CHECK_CONTACT_REQUEST });
     const config = {
       headers: {
         'Content-type': 'application/json',
@@ -57,13 +57,13 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
       }
     );
     dispatch({
-      type: CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
+      type: CHECK_CONTACT_SUCCESS,
       payload: data,
     });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
-      type: CHECK_CONTACT_BEFORE_VERIFY_FAIL,
+      type: CHECK_CONTACT_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
@@ -71,7 +71,7 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
 
 export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
   try {
-    dispatch({ type: CHECK_USERNAME_BEFORE_VERIFY_REQUEST });
+    dispatch({ type: CHECK_USERNAME_REQUEST });
     const config = {
       headers: {
         'Content-type': 'application/json',
@@ -83,13 +83,13 @@ export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
     });
 
     dispatch({
-      type: CHECK_USERNAME_BEFORE_VERIFY_SUCCESS,
+      type: CHECK_USERNAME_SUCCESS,
       payload: data,
     });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
-      type: CHECK_USERNAME_BEFORE_VERIFY_FAIL,
+      type: CHECK_USERNAME_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

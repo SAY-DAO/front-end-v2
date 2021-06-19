@@ -1,7 +1,11 @@
 import {
-  CHECK_CONTACT_BEFORE_VERIFY_REQUEST,
-  CHECK_CONTACT_BEFORE_VERIFY_SUCCESS,
-  CHECK_CONTACT_BEFORE_VERIFY_FAIL,
+  CHECK_CONTACT_REQUEST,
+  CHECK_CONTACT_SUCCESS,
+  CHECK_CONTACT_FAIL,
+  CHECK_CONTACT_RESET,
+  CHECK_USERNAME_REQUEST,
+  CHECK_USERNAME_SUCCESS,
+  CHECK_USERNAME_FAIL,
   CHANGE_VERIFY_STEP,
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
@@ -38,11 +42,13 @@ export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
 
 export const checkContactReducer = (state = { checkResult: {} }, action) => {
   switch (action.type) {
-    case CHECK_CONTACT_BEFORE_VERIFY_REQUEST:
+    case CHECK_CONTACT_REQUEST:
       return { loading: true, ...state };
-    case CHECK_CONTACT_BEFORE_VERIFY_SUCCESS:
+    case CHECK_CONTACT_SUCCESS:
       return { loading: false, success: true, checkResult: action.payload };
-    case CHECK_CONTACT_BEFORE_VERIFY_FAIL:
+    case CHECK_CONTACT_FAIL:
+      return { loading: false, error: action.payload };
+    case CHECK_CONTACT_RESET:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -51,11 +57,11 @@ export const checkContactReducer = (state = { checkResult: {} }, action) => {
 
 export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
   switch (action.type) {
-    case CHECK_CONTACT_BEFORE_VERIFY_REQUEST:
+    case CHECK_USERNAME_REQUEST:
       return { loading: true, ...state };
-    case CHECK_CONTACT_BEFORE_VERIFY_SUCCESS:
+    case CHECK_USERNAME_SUCCESS:
       return { loading: false, success: true, checkResult: action.payload };
-    case CHECK_CONTACT_BEFORE_VERIFY_FAIL:
+    case CHECK_USERNAME_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;
