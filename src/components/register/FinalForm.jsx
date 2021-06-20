@@ -54,12 +54,12 @@ const FinalForm = () => {
   } = checkUserName;
 
   // check userName every 1000 ms when typing
-  useEffect(() => {
+  useEffect(async () => {
     setValidateErr('');
     setUserNameErr(true);
     dispatch({ type: CHECK_USERNAME_RESET });
     if (userName) {
-      const result = validateUsername(userName);
+      const result = await validateUsername(userName);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));
@@ -78,11 +78,11 @@ const FinalForm = () => {
   }, [userName]);
 
   // check password every 1000 ms when typing
-  useEffect(() => {
+  useEffect(async () => {
     setValidateErr('');
     setPasswordErr(true);
     if (password) {
-      const result = validatePassword(password);
+      const result = await validatePassword(password);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));
@@ -94,11 +94,11 @@ const FinalForm = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect(() => {
+  useEffect(async () => {
     setValidateErr('');
     setRepeatPasswordErr(true);
     if (repeatPassword) {
-      const result = validateRepeatPassword(password, repeatPassword);
+      const result = await validateRepeatPassword(password, repeatPassword);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));

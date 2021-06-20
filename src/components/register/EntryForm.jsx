@@ -63,10 +63,10 @@ const EntryForm = () => {
   } = checkContact;
 
   // check phone every 1000 ms when typing
-  useEffect(() => {
+  useEffect(async () => {
     if (phoneNumber) {
       setValidateErr('');
-      const phoneResult = validatePhone(phoneNumber, countryCode);
+      const phoneResult = await validatePhone(phoneNumber, countryCode);
       if (phoneResult && phoneResult.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(phoneResult.errorMessage));
@@ -86,11 +86,11 @@ const EntryForm = () => {
   }, [phoneNumber]);
 
   // check email every 1000 ms when typing
-  useEffect(() => {
+  useEffect(async () => {
     if (email) {
       setValidateErr('');
       console.log(phoneNumber);
-      const emailResult = validateEmail(email);
+      const emailResult = await validateEmail(email);
       if (emailResult && emailResult.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(emailResult.errorMessage));
