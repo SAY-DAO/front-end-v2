@@ -6,6 +6,7 @@ import {
   CHECK_USERNAME_REQUEST,
   CHECK_USERNAME_SUCCESS,
   CHECK_USERNAME_FAIL,
+  CHECK_USERNAME_RESET,
   CHANGE_VERIFY_STEP,
   USER_VERIFY_REQUEST,
   USER_VERIFY_SUCCESS,
@@ -49,7 +50,7 @@ export const checkContactReducer = (state = { checkResult: {} }, action) => {
     case CHECK_CONTACT_FAIL:
       return { loading: false, error: action.payload };
     case CHECK_CONTACT_RESET:
-      return { loading: false, error: action.payload };
+      return {};
     default:
       return state;
   }
@@ -63,6 +64,8 @@ export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
       return { loading: false, success: true, checkResult: action.payload };
     case CHECK_USERNAME_FAIL:
       return { loading: false, error: action.payload };
+    case CHECK_USERNAME_RESET:
+      return {};
     default:
       return state;
   }

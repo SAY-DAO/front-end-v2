@@ -183,7 +183,7 @@ const EntryForm = () => {
   };
 
   const handleClick = () => {
-    if (!(phoneNumber || email)) {
+    if (!phoneNumber || !email) {
       setValidateErr(t(contents.fillOne));
     } else {
       console.log('verifying...');

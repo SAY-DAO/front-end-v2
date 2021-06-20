@@ -14,10 +14,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
+import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
+import { CHECK_USERNAME_RESET } from '../../constants/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -33,9 +36,10 @@ const FinalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [userNameErr, setUserNameErr] = useState('');
-  const [passwordErr, setPasswordErr] = useState('');
-  const [repeatPasswordErr, setRepeatPasswordErr] = useState('');
+  const [validateErr, setValidateErr] = useState('');
+  const [userNameErr, setUserNameErr] = useState(false);
+  const [passwordErr, setPasswordErr] = useState(false);
+  const [repeatPasswordErr, setRepeatPasswordErr] = useState(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -51,52 +55,59 @@ const FinalForm = () => {
 
   // check userName every 1000 ms when typing
   useEffect(() => {
+    setValidateErr('');
+    setUserNameErr(true);
+    dispatch({ type: CHECK_USERNAME_RESET });
     if (userName) {
-      setUserNameErr('');
       const result = validateUsername(userName);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
-          setUserNameErr(t(result.errorMessage));
+          setValidateErr(t(result.errorMessage));
         }, 1000);
         return () => clearTimeout(timeout);
       }
-      if (!result && userName) {
-        setUserNameErr('');
+      if (!result.errorMessage && userName) {
         const timeout = setTimeout(() => {
+          setUserNameErr(false);
           dispatch(checkUserNameBeforeVerify(userName));
         }, 1000);
         return () => clearTimeout(timeout);
       }
     }
+    setUserNameErr(false);
   }, [userName]);
 
   // check password every 1000 ms when typing
   useEffect(() => {
+    setValidateErr('');
+    setPasswordErr(true);
     if (password) {
-      setPasswordErr('');
       const result = validatePassword(password);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
-          setPasswordErr(t(result.errorMessage));
-        }, 1000);
-        return () => clearTimeout(timeout);
-      }
-      if (!result && password) {
-        setPasswordErr('');
-        const timeout = setTimeout(() => {
-          dispatch(checkUserNameBeforeVerify(password));
+          setValidateErr(t(result.errorMessage));
         }, 1000);
         return () => clearTimeout(timeout);
       }
     }
-  }, [password]);
+    setPasswordErr(false);
+  }, [password, repeatPassword]);
 
-  // // change step
-  // useEffect(() => {
-  //   if (successVerify) {
-  //     dispatch(changeVerifyStep('VerifyCodeForm'));
-  //   }
-  // }, [successVerify]);
+  // check password every 1000 ms when typing
+  useEffect(() => {
+    setValidateErr('');
+    setRepeatPasswordErr(true);
+    if (repeatPassword) {
+      const result = validateRepeatPassword(password, repeatPassword);
+      if (result && result.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(result.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+    setRepeatPasswordErr(false);
+  }, [password, repeatPassword]);
 
   // loading button
   useEffect(() => {
@@ -109,12 +120,30 @@ const FinalForm = () => {
 
   // disable button
   useEffect(() => {
-    if (!successCheck || errorCheck || !(userName || password)) {
+    if (
+      !successCheck ||
+      userNameErr ||
+      passwordErr ||
+      repeatPasswordErr ||
+      errorCheck ||
+      !userName ||
+      !password ||
+      !repeatPassword
+    ) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [userName, password, errorCheck, successCheck]);
+  }, [
+    userName,
+    password,
+    repeatPassword,
+    userNameErr,
+    passwordErr,
+    repeatPasswordErr,
+    errorCheck,
+    successCheck,
+  ]);
 
   const handleClick = () => {
     dispatch();
@@ -160,9 +189,9 @@ const FinalForm = () => {
             onChange={handleChangeUserName}
             endAdornment={
               <InputAdornment position="end">
-                {userNameErr ? (
+                {loadingCheck ? null : userNameErr || errorCheck ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : !userNameErr && userName ? (
+                ) : !userNameErr && successCheck && userName ? (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
                 ) : null}
               </InputAdornment>
@@ -186,7 +215,7 @@ const FinalForm = () => {
               <InputAdornment position="end">
                 {passwordErr ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : !passwordErr && password ? (
+                ) : !passwordErr.result && password ? (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
                 ) : null}
               </InputAdornment>
@@ -234,14 +263,14 @@ const FinalForm = () => {
         </LoadingButton>
       </Grid>
       <Grid item xs={12}>
-        {(errorCheck || userNameErr || passwordErr || repeatPasswordErr) && (
+        {(errorCheck || validateErr) && (
           <Message
             icon={false}
             backError={errorCheck}
             variant="outlined"
             severity="error"
           >
-            {userNameErr || passwordErr || repeatPasswordErr}
+            {validateErr}
           </Message>
         )}
       </Grid>
