@@ -59,7 +59,7 @@ const FinalForm = () => {
     setUserNameErr(true);
     dispatch({ type: CHECK_USERNAME_RESET });
     if (userName) {
-      const result = await validateUsername(userName);
+      const result = validateUsername(userName);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));
@@ -82,7 +82,7 @@ const FinalForm = () => {
     setValidateErr('');
     setPasswordErr(true);
     if (password) {
-      const result = await validatePassword(password);
+      const result = validatePassword(password);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));
@@ -98,11 +98,11 @@ const FinalForm = () => {
     setValidateErr('');
     setRepeatPasswordErr(true);
     if (repeatPassword) {
-      const result = await validateRepeatPassword(password, repeatPassword);
+      const result = validateRepeatPassword(password, repeatPassword);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(result.errorMessage));
-        }, 1000);
+        }, 100);
         return () => clearTimeout(timeout);
       }
     }
