@@ -144,10 +144,11 @@ const theTheme = createTheme({
     MuiAlert: {
       styleOverrides: {
         root: {
-          margin: 4,
+          marginTop: 6,
+          fontSize: '0.75rem',
         },
         outlinedError: {
-          // color: "#ff4569",
+          color: '#f44336',
           borderColor: 'transparent',
         },
         outlinedSuccess: {

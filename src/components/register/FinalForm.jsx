@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
@@ -16,6 +17,7 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
+import validatePassword from '../../inputsValidation/validatePassword';
 
 const useStyles = makeStyles({
   root: {
@@ -31,6 +33,9 @@ const FinalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const [userNameErr, setUserNameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [repeatPasswordErr, setRepeatPasswordErr] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -46,15 +51,45 @@ const FinalForm = () => {
 
   // check userName every 1000 ms when typing
   useEffect(() => {
-    const result = validateUsername(userName);
-
-    if (!result.errorMessage) {
-      const timeout = setTimeout(() => {
-        dispatch(checkUserNameBeforeVerify(userName));
-      }, 1000);
-      return () => clearTimeout(timeout);
+    if (userName) {
+      setUserNameErr('');
+      const result = validateUsername(userName);
+      if (result && result.errorMessage) {
+        const timeout = setTimeout(() => {
+          setUserNameErr(t(result.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!result && userName) {
+        setUserNameErr('');
+        const timeout = setTimeout(() => {
+          dispatch(checkUserNameBeforeVerify(userName));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
     }
   }, [userName]);
+
+  // check password every 1000 ms when typing
+  useEffect(() => {
+    if (password) {
+      setPasswordErr('');
+      const result = validatePassword(password);
+      if (result && result.errorMessage) {
+        const timeout = setTimeout(() => {
+          setPasswordErr(t(result.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!result && password) {
+        setPasswordErr('');
+        const timeout = setTimeout(() => {
+          dispatch(checkUserNameBeforeVerify(password));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [password]);
 
   // // change step
   // useEffect(() => {
@@ -118,17 +153,18 @@ const FinalForm = () => {
       <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
+            error={userNameErr}
             id="outlined-adornment-userName"
             type="text"
             value={userName}
             onChange={handleChangeUserName}
             endAdornment={
               <InputAdornment position="end">
-                {userName ? (
+                {userNameErr ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : (
+                ) : !userNameErr && userName ? (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                )}
+                ) : null}
               </InputAdornment>
             }
             label="userName"
@@ -141,17 +177,18 @@ const FinalForm = () => {
       <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
+            error={passwordErr}
             id="outlined-adornment-password"
             type="password"
             value={password}
             onChange={handleChangePassword}
             endAdornment={
               <InputAdornment position="end">
-                {password ? (
+                {passwordErr ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : (
+                ) : !passwordErr && password ? (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                )}
+                ) : null}
               </InputAdornment>
             }
             label="password"
@@ -164,17 +201,18 @@ const FinalForm = () => {
       <Grid item xs={12} sx={{ marginTop: 4 }}>
         <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
           <OutlinedInput
+            error={repeatPasswordErr}
             id="outlined-adornment-repeatPassword"
             type="password"
             value={repeatPassword}
             onChange={handleChangeRepeatPassword}
             endAdornment={
               <InputAdornment position="end">
-                {repeatPassword ? (
+                {repeatPasswordErr ? (
                   <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : (
+                ) : !repeatPasswordErr && repeatPassword ? (
                   <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                )}
+                ) : null}
               </InputAdornment>
             }
             label="repeatPassword"
@@ -196,12 +234,15 @@ const FinalForm = () => {
         </LoadingButton>
       </Grid>
       <Grid item xs={12}>
-        {errorCheck && (
+        {(errorCheck || userNameErr || passwordErr || repeatPasswordErr) && (
           <Message
-            // backError={errorVerifyCode}
-            variant="filled"
+            icon={false}
+            backError={errorCheck}
+            variant="outlined"
             severity="error"
-          />
+          >
+            {userNameErr || passwordErr || repeatPasswordErr}
+          </Message>
         )}
       </Grid>
     </Grid>

@@ -2,9 +2,11 @@ import * as React from 'react';
 import Alert from '@material-ui/core/Alert';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import contents from '../inputsValidation/Contents';
 
 export default function Message({
+  icon,
   frontError,
   backError,
   variant,
@@ -48,17 +50,17 @@ export default function Message({
       if (backError.status === 400) {
         return t(contents.wrongCode);
       }
-      // return t(contents.sthIsWrong);
     }
   };
   return (
-    <Alert variant={variant} severity={severity}>
+    <Alert icon={icon} variant={variant} severity={severity}>
       {children || onRequestCheck()}
     </Alert>
   );
 }
 
 Message.propTypes = {
+  icon: PropTypes.node,
   frontError: PropTypes.object,
   backError: PropTypes.object,
   variant: PropTypes.string.isRequired,
@@ -67,6 +69,7 @@ Message.propTypes = {
 };
 
 Message.defaultProps = {
+  icon: <CheckCircleOutlineIcon fontSize="inherit" />,
   frontError: {},
   backError: {},
   children: '',

@@ -6,26 +6,24 @@ export default function validateUsername(userName) {
   const validLength = /^.{4,12}$/;
   let result = '';
 
-  if (userName !== '') {
-    if (!userName.match(valid)) {
-      if (userName.match(invalidStart)) {
-        // 1. start
-        result = {
-          errorMessage: contents.usernameStart,
-        };
-      } else if (!userName.match(validLength)) {
-        // 2. length
-        result = {
-          errorMessage: contents.usernameLength,
-        };
-      } else if (!userName.match(valid)) {
-        // 3. valid
-        result = {
-          errorMessage: contents.wrongUsername,
-        };
-      }
-      return result;
+  if (!userName.match(valid)) {
+    if (userName.match(invalidStart)) {
+      // 1. start
+      result = {
+        errorMessage: contents.usernameStart,
+      };
+    } else if (!userName.match(validLength)) {
+      // 2. length
+      result = {
+        errorMessage: contents.usernameLength,
+      };
+    } else if (!userName.match(valid)) {
+      // 3. valid
+      result = {
+        errorMessage: contents.wrongUsername,
+      };
     }
+    return result;
   }
   return { errorMessage: '', erUsername: '' };
 }

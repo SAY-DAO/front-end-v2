@@ -45,7 +45,7 @@
     "wrongEmail": "Please enter a valid email address",
     "wrongPhone": "The number you entered is incomplete",
     "usernameStart": "Username cannot contain any punctuation marks.",
-    "usernameLength": "Username must contain 3 to 12 characters.",
+    "usernameLength": "Username must contain 4 to 12 characters.",
     "wrongUsername": "Do not use the Persian alphabets for the Persian userName.",
     "usernameExists": "This userName is already in use",
     "phoneExists": "This phone number is already in use",
