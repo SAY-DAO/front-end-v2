@@ -66,7 +66,7 @@ const EntryForm = () => {
   useEffect(async () => {
     if (phoneNumber) {
       setValidateErr('');
-      const phoneResult = await validatePhone(phoneNumber, countryCode);
+      const phoneResult = validatePhone(phoneNumber, countryCode);
       if (phoneResult && phoneResult.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(phoneResult.errorMessage));
@@ -90,7 +90,7 @@ const EntryForm = () => {
     if (email) {
       setValidateErr('');
       console.log(phoneNumber);
-      const emailResult = await validateEmail(email);
+      const emailResult = validateEmail(email);
       if (emailResult && emailResult.errorMessage) {
         const timeout = setTimeout(() => {
           setValidateErr(t(emailResult.errorMessage));
