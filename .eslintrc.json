@@ -1,15 +1,5 @@
 {
-    "extends": ["airbnb", "prettier"],
-    "plugins": [ "prettier"],
-    "rules": {
-        "prettier/prettier":"error",
-        "no-unused-vars":"warn",
-        "no-console":"off",
-        "func-names":"off",
-        "object-shorthand":"off",
-        "consistent-return":"off",
-        "react/jsx-filename-extension": "off",
-        "react/forbid-prop-types": "off",
-        "react/jsx-boolean-value": "off"
-    }
-}
+    "extends": [
+      "wesbos"
+    ]
+  }

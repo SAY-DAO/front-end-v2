@@ -1,3 +1,5 @@
+/* global localStorage, FormData */
+
 import sayBase from '../apis/sayBase';
 import {
   CHECK_CONTACT_REQUEST,
@@ -45,7 +47,6 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
       },
     };
 
-    // eslint-disable-next-line no-undef
     const formData = new FormData();
     formData.append(theKey, value); // phone_number, +989121234565
 
@@ -105,7 +106,6 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
       },
     };
 
-    // eslint-disable-next-line no-undef
     const formData = new FormData();
     formData.append(theKey, value); // phone_number, +989121234565
 
@@ -121,7 +121,6 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
       type: USER_VERIFY_SUCCESS,
       payload: data,
     });
-    // eslint-disable-next-line no-undef
     localStorage.setItem('localVerifyInfo', JSON.stringify(data));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
@@ -142,7 +141,6 @@ export const verifyCode = (id, code) => async (dispatch) => {
       },
     };
 
-    // eslint-disable-next-line no-undef
     const formData = new FormData();
     formData.append('code', code);
 
@@ -166,7 +164,6 @@ export const register =
   (userName, password, theKey, value, countryCode, theVerifyCode) =>
   async (dispatch) => {
     try {
-      // eslint-disable-next-line no-undef
       const formData = new FormData();
       formData.set('userName', userName);
       formData.set('password', password);
@@ -189,14 +186,12 @@ export const register =
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
-      // eslint-disable-next-line no-undef
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: data,
       });
-      // eslint-disable-next-line no-undef
       localStorage.removeItem('localVerifyInfo');
     } catch (e) {
       // check for generic and custom message to return using ternary statement
