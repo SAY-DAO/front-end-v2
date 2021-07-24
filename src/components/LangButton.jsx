@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 
 const LangButton = () => {
   let lang;
-  // eslint-disable-next-line no-undef
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
   const clickHandler = () => {

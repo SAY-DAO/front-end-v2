@@ -54,7 +54,6 @@ const VerifyCodeForm = () => {
     loading: loadingVerifyCode,
   } = theVerifyCode;
 
-  // eslint-disable-next-line no-undef
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
 
   useEffect(() => {

@@ -45,6 +45,9 @@ const FinalForm = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [theKey, setTheKey] = useState('');
+  const [value, setValue] = useState('');
+  const [otp, setOtp] = useState('');
 
   const checkUserName = useSelector((state) => state.checkUserName);
   const {
@@ -52,6 +55,10 @@ const FinalForm = () => {
     error: errorCheck,
     success: successCheck,
   } = checkUserName;
+
+  const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
+  const localOTP = JSON.parse(localStorage.getItem('localOTP'));
+  const localDialCode = JSON.parse(localStorage.getItem('dialCode'));
 
   // check userName every 1000 ms when typing
   useEffect(() => {
@@ -145,10 +152,20 @@ const FinalForm = () => {
     successCheck,
   ]);
 
+  useEffect(() => {
+    setOtp(localOTP);
+    if (localVerifyInfo.type === 'phone') {
+      setTheKey('phone');
+      setValue(localVerifyInfo.phone_number);
+    } else if (localVerifyInfo.type === 'email') {
+      setTheKey('email');
+      setValue(localVerifyInfo.email);
+    }
+  }, [localVerifyInfo, localOTP]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('efg');
-    // dispatch(register(userName, password, countryCode, theVerifyCode));
+    dispatch(register(userName, password, theKey, value, localDialCode, otp));
   };
 
   const handleChangeUserName = (event) => {

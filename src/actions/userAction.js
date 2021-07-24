@@ -28,6 +28,7 @@ import {
   // USER_UPDATE_PROFILE_SUCCESS,
   // USER_UPDATE_PROFILE_FAIL,
 } from '../constants/userConstants';
+import { standalone } from '../standalone';
 
 export const changeVerifyStep = (step) => async (dispatch) => {
   dispatch({
@@ -95,7 +96,7 @@ export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
 };
 
 // verify user by otp - theKey:email, value:akbar@gmail.com
-export const verifyUser = (theKey, value) => async (dispatch) => {
+export const verifyUser = (theKey, value, dialCode) => async (dispatch) => {
   try {
     dispatch({ type: USER_VERIFY_REQUEST });
     const config = {
@@ -120,6 +121,7 @@ export const verifyUser = (theKey, value) => async (dispatch) => {
       payload: data,
     });
     localStorage.setItem('localVerifyInfo', JSON.stringify(data));
+    localStorage.setItem('localDialCode', JSON.stringify(dialCode));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
@@ -149,6 +151,7 @@ export const verifyCode = (id, code) => async (dispatch) => {
       type: CODE_VERIFY_SUCCESS,
       payload: data,
     });
+    localStorage.setItem('localOTP', code);
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
@@ -159,17 +162,24 @@ export const verifyCode = (id, code) => async (dispatch) => {
 };
 
 export const register =
-  (userName, password, theKey, value, countryCode, theVerifyCode) =>
-  async (dispatch) => {
+  (userName, password, theKey, value, dialCode, otp) => async (dispatch) => {
     try {
+      const _standalone = standalone() ? 1 : 0;
+
       const formData = new FormData();
-      formData.set('userName', userName);
+      formData.set('username', userName);
       formData.set('password', password);
-      formData.set(theKey, value);
-      formData.set('verifyCode', theVerifyCode);
-      if (theKey === 'phone' && countryCode) {
-        formData.set('countryCode', countryCode);
+      formData.set('verifyCode', otp);
+      if (theKey === 'phone' && dialCode) {
+        formData.set('countryCode', dialCode);
       }
+      if (theKey === 'email') {
+        formData.set('email', value);
+      }
+      if (theKey === 'phone') {
+        formData.set('phone_number', value);
+      }
+      formData.set('isInstalled', _standalone);
 
       dispatch({ type: USER_REGISTER_REQUEST });
       const config = {
@@ -177,7 +187,7 @@ export const register =
           'Content-type': 'application/json',
         },
       };
-      const { data } = await sayBase.post('/auth/register/', formData, {
+      const { data } = await sayBase.post('/auth/register', formData, {
         config,
       });
       dispatch({

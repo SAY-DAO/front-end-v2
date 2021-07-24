@@ -24,7 +24,6 @@ ReactDOM.render(
       </Router>
     </Suspense>
   </ThemeProvider>,
-  // eslint-disable-next-line no-undef
   document.getElementById('root')
 );
 swDev();

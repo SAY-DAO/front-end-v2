@@ -153,19 +153,17 @@ const EntryForm = () => {
   };
 
   const validateTheEmail = async () => {
-    dispatch(checkContactBeforeVerify('email', email, countryCode));
+    dispatch(checkContactBeforeVerify('email', email));
     if (!errorCheck) {
-      dispatch(verifyUser('email', email, countryCode));
+      dispatch(verifyUser('email', email));
     }
   };
 
   const validateThePhone = async () => {
-    dispatch(
-      checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
-    );
+    dispatch(checkContactBeforeVerify('phone_number', phoneNumber, dialCode));
     if (!errorCheck) {
       const thePhoneNumber = phoneNumber.split(' ').join('');
-      dispatch(verifyUser('phone_number', thePhoneNumber));
+      dispatch(verifyUser('phone_number', thePhoneNumber, dialCode));
     }
   };
 
