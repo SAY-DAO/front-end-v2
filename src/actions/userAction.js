@@ -1,5 +1,3 @@
-/* global localStorage, FormData */
-
 import sayBase from '../apis/sayBase';
 import {
   CHECK_CONTACT_REQUEST,

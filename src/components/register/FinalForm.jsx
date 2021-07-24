@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
@@ -53,7 +54,7 @@ const FinalForm = () => {
   } = checkUserName;
 
   // check userName every 1000 ms when typing
-  useEffect(async () => {
+  useEffect(() => {
     setValidateErr('');
     setUserNameErr(true);
     dispatch({ type: CHECK_USERNAME_RESET });
@@ -77,7 +78,7 @@ const FinalForm = () => {
   }, [userName]);
 
   // check password every 1000 ms when typing
-  useEffect(async () => {
+  useEffect(() => {
     setValidateErr('');
     setPasswordErr(true);
     if (password) {
@@ -144,9 +145,10 @@ const FinalForm = () => {
     successCheck,
   ]);
 
-  const handleClick = () => {
-    dispatch();
-    // register(userName, password, theKey, value, countryCode, theVerifyCode)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('efg');
+    // dispatch(register(userName, password, countryCode, theVerifyCode));
   };
 
   const handleChangeUserName = (event) => {
@@ -178,100 +180,113 @@ const FinalForm = () => {
           alt="otp page"
         />
       </Grid>
-      <Grid item xs={12} sx={{ marginTop: 4 }}>
-        <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-          <OutlinedInput
-            error={userNameErr}
-            id="outlined-adornment-userName"
-            type="text"
-            value={userName}
-            onChange={handleChangeUserName}
-            endAdornment={
-              <InputAdornment position="end">
-                {loadingCheck ? null : userNameErr || errorCheck ? (
-                  <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : !userNameErr && successCheck && userName ? (
-                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                ) : null}
-              </InputAdornment>
-            }
-            label="userName"
-          />
-          <InputLabel htmlFor="userName">
-            {t('placeholder.userName')}
-          </InputLabel>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        item
+        sx={{ direction: 'ltr' }}
+      >
+        <FormControl onSubmit={handleSubmit} variant="outlined">
+          <form>
+            <Grid item xs={12} sx={{ marginTop: 4 }}>
+              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+                <OutlinedInput
+                  error={userNameErr}
+                  id="outlined-adornment-userName"
+                  type="text"
+                  value={userName}
+                  onChange={handleChangeUserName}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {loadingCheck ? null : userNameErr || errorCheck ? (
+                        <CancelRoundedIcon sx={{ color: 'red' }} />
+                      ) : !userNameErr && successCheck && userName ? (
+                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                      ) : null}
+                    </InputAdornment>
+                  }
+                  label="userName"
+                />
+                <InputLabel htmlFor="userName">
+                  {t('placeholder.userName')}
+                </InputLabel>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sx={{ marginTop: 4 }}>
+              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+                <OutlinedInput
+                  error={passwordErr}
+                  id="outlined-adornment-password"
+                  type="password"
+                  value={password}
+                  onChange={handleChangePassword}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {passwordErr ? (
+                        <CancelRoundedIcon sx={{ color: 'red' }} />
+                      ) : !passwordErr.result && password ? (
+                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                      ) : null}
+                    </InputAdornment>
+                  }
+                  label="password"
+                />
+                <InputLabel htmlFor="password">
+                  {t('placeholder.password')}
+                </InputLabel>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sx={{ marginTop: 4 }}>
+              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+                <OutlinedInput
+                  error={repeatPasswordErr}
+                  id="outlined-adornment-repeatPassword"
+                  type="password"
+                  value={repeatPassword}
+                  onChange={handleChangeRepeatPassword}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {repeatPasswordErr ? (
+                        <CancelRoundedIcon sx={{ color: 'red' }} />
+                      ) : !repeatPasswordErr && repeatPassword ? (
+                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
+                      ) : null}
+                    </InputAdornment>
+                  }
+                  label="repeatPassword"
+                />
+                <InputLabel htmlFor="repeatPassword">
+                  {t('placeholder.repeatPassword')}
+                </InputLabel>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>
+              <LoadingButton
+                variant="contained"
+                color="primary"
+                disabled={isDisabled}
+                loading={isLoading}
+                type="submit"
+              >
+                {t('button.submit')}
+              </LoadingButton>
+            </Grid>
+            <Grid item xs={12}>
+              {(errorCheck || validateErr) && (
+                <Message
+                  icon={false}
+                  backError={errorCheck}
+                  variant="outlined"
+                  severity="error"
+                >
+                  {validateErr}
+                </Message>
+              )}
+            </Grid>
+          </form>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} sx={{ marginTop: 4 }}>
-        <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-          <OutlinedInput
-            error={passwordErr}
-            id="outlined-adornment-password"
-            type="password"
-            value={password}
-            onChange={handleChangePassword}
-            endAdornment={
-              <InputAdornment position="end">
-                {passwordErr ? (
-                  <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : !passwordErr.result && password ? (
-                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                ) : null}
-              </InputAdornment>
-            }
-            label="password"
-          />
-          <InputLabel htmlFor="password">
-            {t('placeholder.password')}
-          </InputLabel>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sx={{ marginTop: 4 }}>
-        <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-          <OutlinedInput
-            error={repeatPasswordErr}
-            id="outlined-adornment-repeatPassword"
-            type="password"
-            value={repeatPassword}
-            onChange={handleChangeRepeatPassword}
-            endAdornment={
-              <InputAdornment position="end">
-                {repeatPasswordErr ? (
-                  <CancelRoundedIcon sx={{ color: 'red' }} />
-                ) : !repeatPasswordErr && repeatPassword ? (
-                  <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                ) : null}
-              </InputAdornment>
-            }
-            label="repeatPassword"
-          />
-          <InputLabel htmlFor="repeatPassword">
-            {t('placeholder.repeatPassword')}
-          </InputLabel>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sx={{ marginTop: 4 }}>
-        <LoadingButton
-          variant="contained"
-          color="primary"
-          disabled={isDisabled}
-          loading={isLoading}
-          onClick={handleClick}
-        >
-          {t('button.submit')}
-        </LoadingButton>
-      </Grid>
-      <Grid item xs={12}>
-        {(errorCheck || validateErr) && (
-          <Message
-            icon={false}
-            backError={errorCheck}
-            variant="outlined"
-            severity="error"
-          >
-            {validateErr}
-          </Message>
-        )}
       </Grid>
     </Grid>
   );

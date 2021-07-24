@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
@@ -63,7 +64,7 @@ const EntryForm = () => {
   } = checkContact;
 
   // check phone every 1000 ms when typing
-  useEffect(async () => {
+  useEffect(() => {
     if (phoneNumber) {
       setValidateErr('');
       const phoneResult = validatePhone(phoneNumber, countryCode);
@@ -83,10 +84,10 @@ const EntryForm = () => {
         return () => clearTimeout(timeout);
       }
     }
-  }, [phoneNumber]);
+  }, [phoneNumber, countryCode]);
 
   // check email every 1000 ms when typing
-  useEffect(async () => {
+  useEffect(() => {
     if (email) {
       setValidateErr('');
       console.log(phoneNumber);
@@ -182,8 +183,9 @@ const EntryForm = () => {
     }
   };
 
-  const handleClick = () => {
-    if (!phoneNumber || !email) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!phoneNumber && !email) {
       setValidateErr(t(contents.fillOne));
     } else {
       console.log('verifying...');
@@ -210,47 +212,58 @@ const EntryForm = () => {
           alt="register"
         />
       </Grid>
-      <Grid item xs={12} sx={{ direction: 'ltr' }}>
-        <FormControl variant="outlined">
-          <PhoneInput
-            specialLabel={t('placeholder.phoneNumber')}
-            country="ir"
-            value={phoneNumber}
-            disableDropdown="false"
-            onChange={handleChangePhoneNumber}
-            inputProps={{
-              name: 'phone',
-            }}
-            defaultMask="... ... .. ..."
-            countryCodeEditable={false}
-          />
-          <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
-            <Typography variant="subtitle1">{t('divider.register')}</Typography>
-          </Divider>
-          <TextField
-            type="email"
-            id="outlined-adornment-email"
-            label={t('placeholder.email')}
-            value={email}
-            onChange={handleChangeEmail}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'email',
-            }}
-          />
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        item
+        sx={{ direction: 'ltr' }}
+      >
+        <FormControl onSubmit={handleSubmit} variant="outlined">
+          <form>
+            <PhoneInput
+              specialLabel={t('placeholder.phoneNumber')}
+              country="ir"
+              value={phoneNumber}
+              disableDropdown="false"
+              onChange={handleChangePhoneNumber}
+              inputProps={{
+                name: 'phone',
+              }}
+              defaultMask="... ... .. ..."
+              countryCodeEditable={false}
+            />
+            <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
+              <Typography variant="subtitle1">
+                {t('divider.register')}
+              </Typography>
+            </Divider>
+            <TextField
+              type="email"
+              id="outlined-adornment-email"
+              label={t('placeholder.email')}
+              value={email}
+              onChange={handleChangeEmail}
+              aria-describedby="outlined-weight-helper-text"
+              inputProps={{
+                'aria-label': 'email',
+              }}
+            />
+            <Grid item xs={12} sx={{ marginTop: 8, textAlign: 'center' }}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isDisabled}
+                loading={isLoading}
+                sx={{ bottom: 5 }}
+              >
+                {t('button.submit')}
+              </LoadingButton>
+            </Grid>
+          </form>
         </FormControl>
-      </Grid>
-      <Grid item xs={12} sx={{ marginTop: 8 }}>
-        <LoadingButton
-          variant="contained"
-          color="primary"
-          onClick={handleClick}
-          disabled={isDisabled}
-          loading={isLoading}
-          sx={{ bottom: 5 }}
-        >
-          {t('button.submit')}
-        </LoadingButton>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 2 }}>
         <Typography variant="subtitle1">

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@material-ui/core';
@@ -129,7 +130,8 @@ const VerifyCodeForm = () => {
     setCode(event.value);
   };
 
-  const handleClick = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(verifyCode(localVerifyInfo.id, code));
   };
 
@@ -165,16 +167,18 @@ const VerifyCodeForm = () => {
         )}
       </Grid>
       <Grid item xs={12}>
-        <FormControl variant="outlined">
-          <NumberFormat
-            value={code}
-            onValueChange={handleChange}
-            id="codeInput"
-            placeholder={t('placeholder.code')}
-            customInput={TextField}
-            format="### ###"
-            mask="_"
-          />
+        <FormControl onSubmit={handleSubmit} variant="outlined">
+          <form>
+            <NumberFormat
+              value={code}
+              onValueChange={handleChange}
+              id="codeInput"
+              placeholder={t('placeholder.code')}
+              customInput={TextField}
+              format="### ###"
+              mask="_"
+            />
+          </form>
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 14 }}>
@@ -183,7 +187,6 @@ const VerifyCodeForm = () => {
           color="primary"
           disabled={isDisabled}
           loading={isLoading}
-          onClick={handleClick}
           sx={{
             bottom: 5,
           }}
