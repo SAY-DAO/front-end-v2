@@ -152,8 +152,8 @@ const theTheme = createTheme({
           borderColor: 'transparent',
         },
         outlinedSuccess: {
-          backgroundColor: '#00e676',
-          // color: "#20c997"
+          color: '#20c997',
+          borderColor: 'transparent',
         },
         filledWarning: {
           backgroundColor: '#ffee58',

@@ -4,6 +4,7 @@ const contents = {
   wrongPhone: 'error.wrongPhone',
   phoneExists: 'error.phoneExists',
   wrongCode: 'error.wrongCode',
+  wrongUserOrPass: 'error.wrongUserOrPass',
   usernameStart: 'error.usernameStart',
   usernameLength: 'error.usernameLength',
   wrongUsername: 'error.wrongUsername',

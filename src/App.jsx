@@ -6,6 +6,9 @@ import Splash from './pages/Splash';
 import Intro from './pages/Intro';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
+import SearchChild from './pages/SearchChild';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import SetNewPassword from './pages/SetNewPassword';
 
 const App = () => (
   <>
@@ -18,6 +21,9 @@ const App = () => (
             <Route exact path="/intro" component={Intro} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/setpassword" component={SetNewPassword} />
+            <Route exact path="/search" component={SearchChild} />
           </Switch>
         </React.StrictMode>
       </Container>

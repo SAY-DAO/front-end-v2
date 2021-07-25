@@ -1,3 +1,4 @@
+import LogRocket from 'logrocket';
 import sayBase from '../apis/sayBase';
 import {
   CHECK_CONTACT_REQUEST,
@@ -16,10 +17,16 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
-  USER_LOGOUT,
+  // USER_LOGOUT,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_PASSWORD_FORGOT_REQUEST,
+  USER_PASSWORD_FORGOT_SUCCESS,
+  USER_PASSWORD_FORGOT_FAIL,
+  USER_PASSWORD_RESET_REQUEST,
+  USER_PASSWORD_RESET_SUCCESS,
+  USER_PASSWORD_RESET_FAIL,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -134,7 +141,7 @@ export const verifyUser = (theKey, value, dialCode) => async (dispatch) => {
 };
 
 // verify the code
-export const verifyCode = (id, code) => async (dispatch) => {
+export const userVerifyCode = (id, code) => async (dispatch) => {
   try {
     dispatch({ type: CODE_VERIFY_REQUEST });
     const config = {
@@ -169,15 +176,14 @@ export const register =
       const formData = new FormData();
       formData.set('username', userName);
       formData.set('password', password);
-      formData.set('verifyCode', otp);
-      if (theKey === 'phone' && dialCode) {
-        formData.set('countryCode', dialCode);
-      }
+      formData.set('userVerifyCode', otp);
+
       if (theKey === 'email') {
         formData.set('email', value);
       }
       if (theKey === 'phone') {
         formData.set('phone_number', value);
+        formData.set('countryCode', dialCode);
       }
       formData.set('isInstalled', _standalone);
 
@@ -221,6 +227,7 @@ export const login = (userName, password) => async (dispatch) => {
     const formData = new FormData();
     formData.set('username', userName);
     formData.set('password', password);
+    // required for back-end
     formData.set('isInstalled', _standalone);
 
     const { data } = await sayBase.post('/auth/login', formData, {
@@ -232,6 +239,11 @@ export const login = (userName, password) => async (dispatch) => {
       payload: data,
     });
     localStorage.setItem('userInfo', JSON.stringify(data));
+
+    // LogRocket
+    LogRocket.identify(data.user.id, {
+      username: data.user.userName,
+    });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
@@ -248,4 +260,73 @@ export const login = (userName, password) => async (dispatch) => {
 // 	dispatch({ type: USER_LOGOUT });
 // 	dispatch({ type: USER_DETAILS_RESET });
 // 	// cleanMyOrders();
+// };
+
+export const forgotPassword = (theKey, value) => async (dispatch) => {
+  let resetType;
+  try {
+    dispatch({ type: USER_PASSWORD_FORGOT_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const formData = new FormData();
+    if (theKey === 'email') {
+      formData.set('email', value);
+      resetType = 'email';
+    }
+    if (theKey === 'phone_number') {
+      // To be consistent with back-end this line phone_number is phoneNumber
+      formData.set('phoneNumber', value);
+      resetType = 'phone';
+    }
+
+    const { data } = await sayBase.post(
+      `/auth/password/reset/${resetType}`,
+      formData,
+      {
+        config,
+      }
+    );
+    dispatch({
+      type: USER_PASSWORD_FORGOT_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_PASSWORD_FORGOT_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+// export const resetPassword = (theKey, value) => async (dispatch) => {
+//   try {
+//     dispatch({ type: USER_PASSWORD_RESET_REQUEST });
+//     const config = {
+//       headers: {
+//         'Content-type': 'application/json',
+//       },
+//     };
+//     const formData = new FormData();
+//     formData.set('password', this.state.password);
+
+//     const { data } = await sayBase.post(
+//       `/auth/password/reset/confirm/token=${resetType}`,
+//       formData,
+//       {
+//         config,
+//       }
+//     );
+//     dispatch({
+//       type: USER_PASSWORD_RESET_SUCCESS,
+//       payload: data,
+//     });
+//   } catch (e) {
+//     dispatch({
+//       type: USER_PASSWORD_RESET_FAIL,
+//       payload: e.response && e.response.status ? e.response : e.message,
+//     });
+//   }
 // };

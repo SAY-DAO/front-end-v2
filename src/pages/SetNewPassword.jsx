@@ -1,53 +1,37 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 import { useTranslation } from 'react-i18next';
-// Customized "react-phone-input-2/lib/material.css"
-import '../../resources/styles/css/material.css';
+import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import Message from '../Message';
-import validateUsername from '../../inputsValidation/validateUsername';
-import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
-import validatePassword from '../../inputsValidation/validatePassword';
-import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-import { CHECK_USERNAME_RESET } from '../../constants/userConstants';
+import { forgotPassword } from '../actions/userAction';
+import Message from '../components/Message';
+import contents from '../inputsValidation/Contents';
+import validatePassword from '../inputsValidation/validatePassword';
+import validateRepeatPassword from '../inputsValidation/validateRepeatPassword';
+// Customized "react-phone-input-2/lib/material.css"
+import '../resources/styles/css/material.css';
 
-const useStyles = makeStyles({
-  root: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    maxHeight: '300px',
-  },
-});
-
-const FinalForm = () => {
+const SetNewPassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
-  const [userNameErr, setUserNameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
   const [repeatPasswordErr, setRepeatPasswordErr] = useState(false);
-  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [theKey, setTheKey] = useState('');
-  const [value, setValue] = useState('');
-  const [otp, setOtp] = useState('');
 
   const checkUserName = useSelector((state) => state.checkUserName);
   const {
@@ -55,34 +39,6 @@ const FinalForm = () => {
     error: errorCheck,
     success: successCheck,
   } = checkUserName;
-
-  const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
-  const localOTP = JSON.parse(localStorage.getItem('localOTP'));
-  const localDialCode = JSON.parse(localStorage.getItem('dialCode'));
-
-  // check userName every 1000 ms when typing
-  useEffect(() => {
-    setValidateErr('');
-    setUserNameErr(true);
-    dispatch({ type: CHECK_USERNAME_RESET });
-    if (userName) {
-      const result = validateUsername(userName);
-      if (result && result.errorMessage) {
-        const timeout = setTimeout(() => {
-          setValidateErr(t(result.errorMessage));
-        }, 1000);
-        return () => clearTimeout(timeout);
-      }
-      if (!result.errorMessage && userName) {
-        const timeout = setTimeout(() => {
-          setUserNameErr(false);
-          dispatch(checkUserNameBeforeVerify(userName));
-        }, 1000);
-        return () => clearTimeout(timeout);
-      }
-    }
-    setUserNameErr(false);
-  }, [userName]);
 
   // check password every 1000 ms when typing
   useEffect(() => {
@@ -129,11 +85,9 @@ const FinalForm = () => {
   useEffect(() => {
     if (
       !successCheck ||
-      userNameErr ||
       passwordErr ||
       repeatPasswordErr ||
       errorCheck ||
-      !userName ||
       !password ||
       !repeatPassword
     ) {
@@ -142,36 +96,17 @@ const FinalForm = () => {
       setIsDisabled(false);
     }
   }, [
-    userName,
     password,
     repeatPassword,
-    userNameErr,
     passwordErr,
     repeatPasswordErr,
     errorCheck,
     successCheck,
   ]);
 
-  useEffect(() => {
-    setOtp(localOTP);
-    if (localVerifyInfo) {
-      if (localVerifyInfo.type === 'phone') {
-        setTheKey('phone');
-        setValue(localVerifyInfo.phone_number);
-      } else if (localVerifyInfo.type === 'email') {
-        setTheKey('email');
-        setValue(localVerifyInfo.email);
-      }
-    }
-  }, [localVerifyInfo, localOTP]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(register(userName, password, theKey, value, localDialCode, otp));
-  };
-
-  const handleChangeUserName = (event) => {
-    setUserName(event.target.value);
+    // dispatch(register(userName, password, theKey, value, localDialCode, otp));
   };
 
   const handleChangePassword = (event) => {
@@ -182,7 +117,6 @@ const FinalForm = () => {
     setRepeatPassword(event.target.value);
   };
 
-  const classes = useStyles();
   return (
     <Grid
       container
@@ -191,48 +125,22 @@ const FinalForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Grid item xs={12}>
-        <img
-          src="/images/finalForm.svg"
-          width="100%"
-          className={classes.root}
-          alt="otp page"
-        />
-      </Grid>
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
+        sx={{ direction: 'ltr', marginTop: 10 }}
       >
+        <Typography
+          variant="h5"
+          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
+        >
+          {t('change-password.title')}
+        </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
-            <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-                <OutlinedInput
-                  error={userNameErr}
-                  id="outlined-adornment-userName"
-                  type="text"
-                  value={userName}
-                  onChange={handleChangeUserName}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {loadingCheck ? null : userNameErr || errorCheck ? (
-                        <CancelRoundedIcon sx={{ color: 'red' }} />
-                      ) : !userNameErr && successCheck && userName ? (
-                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                      ) : null}
-                    </InputAdornment>
-                  }
-                  label="userName"
-                />
-                <InputLabel htmlFor="userName">
-                  {t('placeholder.userName')}
-                </InputLabel>
-              </FormControl>
-            </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
               <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
                 <OutlinedInput
@@ -312,4 +220,4 @@ const FinalForm = () => {
   );
 };
 
-export default FinalForm;
+export default SetNewPassword;

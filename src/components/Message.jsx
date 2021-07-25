@@ -18,7 +18,7 @@ export default function Message({
   const onRequestCheck = () => {
     if (frontError.status) {
       if (frontError.status === 400) {
-        return t(contents.wrongEmail);
+        return t(contents.wrongUserOrPass);
       }
       if (frontError.status === 422) {
         return t(contents.emailExists);

@@ -4,39 +4,20 @@ import { Grid, Divider, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  changeVerifyStep,
-  verifyUser,
-  checkContactBeforeVerify,
-} from '../../actions/userAction';
+import { forgotPassword } from '../../actions/userAction';
+import Message from '../../components/Message';
+import contents from '../../inputsValidation/Contents';
+import Back from '../../components/Back';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
-import Message from '../Message';
-import contents from '../../inputsValidation/Contents';
-import Back from '../Back';
-import {
-  CHECK_CONTACT_RESET,
-  USER_VERIFY_RESET,
-} from '../../constants/userConstants';
+import { USER_PASSWORD_FORGOT_RESET } from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
-const useStyles = makeStyles({
-  root: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    maxHeight: '300px',
-  },
-});
-
-const EntryForm = () => {
+const ForgotPassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -49,12 +30,12 @@ const EntryForm = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
+  const userResetPass = useSelector((state) => state.userResetPass);
   const {
-    loading: loadingVerify,
-    error: errorVerify,
-    success: successVerify,
-  } = userVerifyInfo;
+    loading: loadingReset,
+    error: errorReset,
+    success: successReset,
+  } = userResetPass;
 
   // check phone every 1000 ms when typing
   useEffect(() => {
@@ -68,17 +49,8 @@ const EntryForm = () => {
         }, 1000);
         return () => clearTimeout(timeout);
       }
-      if (!phoneResult && phoneNumber) {
-        setValidateErr('');
-        const timeout = setTimeout(() => {
-          dispatch(
-            checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
-          );
-        }, 1000);
-        return () => clearTimeout(timeout);
-      }
     }
-  }, [phoneNumber, countryCode]);
+  }, [phoneNumber]);
 
   // check email every 1000 ms when typing
   useEffect(() => {
@@ -92,97 +64,58 @@ const EntryForm = () => {
         }, 1000);
         return () => clearTimeout(timeout);
       }
-      if (!emailResult && email) {
-        const timeout = setTimeout(() => {
-          dispatch(checkContactBeforeVerify('email', email));
-        }, 1000);
-        return () => clearTimeout(timeout);
-      }
     }
   }, [email]);
 
-  // change step
-  useEffect(() => {
-    if (successVerify) {
-      dispatch(changeVerifyStep('VerifyCodeForm'));
-    }
-    return () => dispatch({ type: CHECK_CONTACT_RESET });
-  }, [successVerify]);
-
   // loading button
   useEffect(() => {
-    if (loadingVerify) {
+    if (loadingReset) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingVerify]);
+  }, [loadingReset, phoneNumber, email]);
 
   // disable button
   useEffect(() => {
-    if (successVerify) {
+    if ((!validateErr && phoneNumber) || email || !successReset) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successVerify]);
+  }, [validateErr, phoneNumber, email, successReset]);
 
   // email changes
   const handleChangeEmail = (event) => {
-    // dispatch({ type: CHECK_CONTACT_RESET });
-    // dispatch({ type: USER_VERIFY_RESET });
+    dispatch({ type: USER_PASSWORD_FORGOT_RESET });
     setEmail(event.target.value);
   };
 
   // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
-    // dispatch({ type: CHECK_CONTACT_RESET });
-    // dispatch({ type: USER_VERIFY_RESET });
+    dispatch({ type: USER_PASSWORD_FORGOT_RESET });
     setPhoneNumber(formattedValue);
-    setCountryCode(data.countryCode);
     setDialCode(data.dialCode);
+    setCountryCode(data.countryCode);
   };
 
-  const validateTheEmail = async () => {
-    dispatch(checkContactBeforeVerify('email', email));
-    if (!errorVerify) {
-      dispatch(verifyUser('email', email));
-    }
-  };
-
-  const validateThePhone = async () => {
-    dispatch(checkContactBeforeVerify('phone_number', phoneNumber, dialCode));
-    if (!errorVerify) {
-      const thePhoneNumber = phoneNumber.split(' ').join('');
-      dispatch(verifyUser('phone_number', thePhoneNumber, dialCode));
-    }
-  };
-
-  const handleVerify = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (validateErr === '') {
       if (email) {
         console.log('verifying email...');
-        validateTheEmail();
+        dispatch(forgotPassword('email', email));
       } else if (phoneNumber) {
         console.log('verifying phone number...');
-        validateThePhone();
+        dispatch(forgotPassword('phone_number', phoneNumber));
       }
+    } else if (!phoneNumber && !email) {
+      setValidateErr(t(contents.fillOne));
     } else {
       setValidateErr('verification logic error');
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!phoneNumber && !email) {
-      setValidateErr(t(contents.fillOne));
-    } else {
-      console.log('verifying...');
-      handleVerify();
-    }
-  };
-
-  const classes = useStyles();
   return (
     <Grid
       container
@@ -191,24 +124,21 @@ const EntryForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" />
-      <Grid item xs={12}>
-        <img
-          src="/images/register.svg"
-          width="100%"
-          style={{ paddingBottom: '20px' }}
-          className={classes.root}
-          alt="register"
-        />
-      </Grid>
+      <Back to="/login" />
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
+        sx={{ direction: 'ltr', marginTop: 10 }}
       >
+        <Typography
+          variant="h5"
+          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
+        >
+          {t('forgot-password.title')}
+        </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <PhoneInput
@@ -254,18 +184,15 @@ const EntryForm = () => {
           </form>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sx={{ marginTop: 2 }}>
-        <Typography variant="subtitle1">
-          <Trans i18nKey="join.alreadyJoined">
-            If already joined tap
-            <Link to="/Login">here</Link>
-          </Trans>
-        </Typography>
-      </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {(validateErr || errorVerify) && (
-          <Message frontError={errorVerify} variant="filled" severity="error">
+        {(validateErr || errorReset) && (
+          <Message frontError={errorReset} variant="filled" severity="error">
             {validateErr}
+          </Message>
+        )}
+        {(!validateErr || !errorReset) && successReset && (
+          <Message variant="filled" severity="success">
+            {t('forgot-password.successNotif')}
           </Message>
         )}
       </Grid>
@@ -273,4 +200,4 @@ const EntryForm = () => {
   );
 };
 
-export default EntryForm;
+export default ForgotPassword;

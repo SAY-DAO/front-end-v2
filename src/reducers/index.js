@@ -7,14 +7,16 @@ import {
   codeVerifyReducer,
   userLoginReducer,
   userRegisterReducer,
+  userPasswordResetReducer,
 } from './userReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,
   checkUserName: checkUserNameReducer,
-  verifyInfo: userVerifyReducer,
-  verifyCode: codeVerifyReducer,
+  userVerifyInfo: userVerifyReducer,
+  userVerifyCode: codeVerifyReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userResetPass: userPasswordResetReducer,
 });

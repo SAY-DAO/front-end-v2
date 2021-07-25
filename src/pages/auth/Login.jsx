@@ -1,18 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import { Link } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
@@ -33,9 +29,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [validateErr, setValidateErr] = useState('');
-  const [userNameErr, setUserNameErr] = useState(false);
-  const [passwordErr, setPasswordErr] = useState(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
@@ -50,7 +43,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     dispatch(login(userName, password));
   };
 
@@ -78,16 +70,13 @@ const Login = () => {
     } else {
       setIsDisabled(false);
     }
-  }, [userName, password, userNameErr, passwordErr, errorLogin, successLogin]);
+  }, [userName, password, errorLogin, successLogin]);
 
-  // check phone every 1000 ms when typing
   useEffect(() => {
-    if (!errorLogin) {
-      setValidateErr('');
-    } else if (errorLogin.status === 400) {
-      setValidateErr(t('error.wrongUserOrPass'));
+    if (successLogin) {
+      history.push('/search');
     }
-  }, [errorLogin, successLogin]);
+  }, [successLogin]);
 
   const classes = useStyles();
   return (
@@ -121,7 +110,6 @@ const Login = () => {
             <Grid item xs={12} sx={{ marginTop: 4 }}>
               <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
                 <OutlinedInput
-                  error={userNameErr}
                   id="outlined-adornment-userName"
                   type="text"
                   value={userName}
@@ -136,7 +124,6 @@ const Login = () => {
             <Grid item xs={12} sx={{ marginTop: 4 }}>
               <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
                 <OutlinedInput
-                  error={passwordErr}
                   id="outlined-adornment-password"
                   type="password"
                   value={password}
@@ -161,16 +148,26 @@ const Login = () => {
             </Grid>
           </form>
         </FormControl>
-        <Grid item xs={12}>
-          {(errorLogin || validateErr) && (
+        <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
+          <Typography variant="subtitle1">
+            <Trans i18nKey="comeback.noAccount">
+              Don't have an account yet?
+              <Link to="/register" className="link" />
+            </Trans>
+          </Typography>
+          <Typography variant="subtitle1">
+            <Link to="/forgot-password" className="link">
+              {t('forgot-password.title')}
+            </Link>
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: 'center' }}>
+          {errorLogin && (
             <Message
-              icon={false}
-              backError={errorLogin}
-              variant="outlined"
+              frontError={errorLogin}
+              variant="filled"
               severity="error"
-            >
-              {validateErr}
-            </Message>
+            />
           )}
         </Grid>
       </Grid>

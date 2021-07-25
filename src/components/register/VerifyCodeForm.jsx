@@ -16,7 +16,7 @@ import NumberFormat from 'react-number-format';
 import Back from '../Back';
 import {
   verifyUser,
-  verifyCode,
+  userVerifyCode,
   changeVerifyStep,
 } from '../../actions/userAction';
 import Message from '../Message';
@@ -47,7 +47,7 @@ const VerifyCodeForm = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const theVerifyCode = useSelector((state) => state.verifyCode);
+  const theVerifyCode = useSelector((state) => state.userVerifyCode);
   const {
     error: errorVerifyCode,
     success: successVerifyCode,
@@ -111,7 +111,7 @@ const VerifyCodeForm = () => {
   useEffect(() => {
     if (code.length === 6) {
       dispatch({ type: CODE_VERIFY_RESET });
-      dispatch(verifyCode(localVerifyInfo.id, code));
+      dispatch(userVerifyCode(localVerifyInfo.id, code));
     }
     return () => {
       dispatch({ type: CODE_VERIFY_RESET });
@@ -131,7 +131,7 @@ const VerifyCodeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(verifyCode(localVerifyInfo.id, code));
+    dispatch(userVerifyCode(localVerifyInfo.id, code));
   };
 
   const classes = useStyles();
@@ -231,7 +231,7 @@ const VerifyCodeForm = () => {
           </Grid>
         )}
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {errorVerifyCode && (
           <Message
             backError={errorVerifyCode}

@@ -8,7 +8,7 @@ const localVerifyInfo = localStorage.getItem('localVerifyInfo')
   : {};
 
 const initialState = {
-  verifyInfo: {
+  userVerifyInfo: {
     local: localVerifyInfo,
   },
 };
