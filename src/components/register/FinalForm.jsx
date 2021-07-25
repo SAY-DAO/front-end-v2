@@ -154,12 +154,14 @@ const FinalForm = () => {
 
   useEffect(() => {
     setOtp(localOTP);
-    if (localVerifyInfo.type === 'phone') {
-      setTheKey('phone');
-      setValue(localVerifyInfo.phone_number);
-    } else if (localVerifyInfo.type === 'email') {
-      setTheKey('email');
-      setValue(localVerifyInfo.email);
+    if (localVerifyInfo) {
+      if (localVerifyInfo.type === 'phone') {
+        setTheKey('phone');
+        setValue(localVerifyInfo.phone_number);
+      } else if (localVerifyInfo.type === 'email') {
+        setTheKey('email');
+        setValue(localVerifyInfo.email);
+      }
     }
   }, [localVerifyInfo, localOTP]);
 
@@ -290,20 +292,21 @@ const FinalForm = () => {
                 {t('button.submit')}
               </LoadingButton>
             </Grid>
-            <Grid item xs={12}>
-              {(errorCheck || validateErr) && (
-                <Message
-                  icon={false}
-                  backError={errorCheck}
-                  variant="outlined"
-                  severity="error"
-                >
-                  {validateErr}
-                </Message>
-              )}
-            </Grid>
           </form>
         </FormControl>
+        <Grid item xs={12}>
+          {(errorCheck || validateErr) && (
+            <Message
+              sx={{ justifyContent: 'center' }}
+              icon={false}
+              backError={errorCheck}
+              variant="outlined"
+              severity="error"
+            >
+              {validateErr}
+            </Message>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

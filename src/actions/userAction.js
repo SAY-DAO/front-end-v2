@@ -30,6 +30,8 @@ import {
 } from '../constants/userConstants';
 import { standalone } from '../standalone';
 
+const _standalone = standalone() ? 1 : 0;
+
 export const changeVerifyStep = (step) => async (dispatch) => {
   dispatch({
     type: CHANGE_VERIFY_STEP,
@@ -164,8 +166,6 @@ export const verifyCode = (id, code) => async (dispatch) => {
 export const register =
   (userName, password, theKey, value, dialCode, otp) => async (dispatch) => {
     try {
-      const _standalone = standalone() ? 1 : 0;
-
       const formData = new FormData();
       formData.set('username', userName);
       formData.set('password', password);
@@ -205,43 +205,41 @@ export const register =
       // check for generic and custom message to return using ternary statement
       dispatch({
         type: USER_REGISTER_FAIL,
-        payload:
-          e.response && e.response.data.detail
-            ? e.response.data.detail
-            : e.message,
+        payload: e.response && e.response.status ? e.response : e.message,
       });
     }
   };
 
-// export const login = (email, password) => async (dispatch) => {
-// 	try {
-// 		dispatch({ type: USER_LOGIN_REQUEST });
-// 		const config = {
-// 			headers: {
-// 				"Content-type": "application/json",
-// 			},
-// 		};
-// 		const { data } = await sayBase.post("/api/users/login/", {
-// 			userName: email,
-// 			password,
-// 			config,
-// 		});
-// 		dispatch({
-// 			type: USER_LOGIN_SUCCESS,
-// 			payload: data,
-// 		});
-// 		localStorage.setItem("userInfo", JSON.stringify(data));
-// 	} catch (e) {
-// 		// check for generic and custom message to return using ternary statement
-// 		dispatch({
-// 			type: USER_LOGIN_FAIL,
-// 			payload:
-// 			e.response && e.response.data.detail
-// 				? e.response.data.detail
-// 				: e.message,
-// 		});
-// 	}
-// };
+export const login = (userName, password) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOGIN_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const formData = new FormData();
+    formData.set('username', userName);
+    formData.set('password', password);
+    formData.set('isInstalled', _standalone);
+
+    const { data } = await sayBase.post('/auth/login', formData, {
+      config,
+    });
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 // export const logout = () => (dispatch) => {
 // 	localStorage.removeItem("userInfo");

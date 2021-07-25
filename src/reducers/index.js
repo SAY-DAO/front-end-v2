@@ -5,6 +5,8 @@ import {
   checkUserNameReducer,
   userVerifyReducer,
   codeVerifyReducer,
+  userLoginReducer,
+  userRegisterReducer,
 } from './userReducer';
 
 export default combineReducers({
@@ -13,4 +15,6 @@ export default combineReducers({
   checkUserName: checkUserNameReducer,
   verifyInfo: userVerifyReducer,
   verifyCode: codeVerifyReducer,
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
 });
