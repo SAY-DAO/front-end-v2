@@ -301,7 +301,7 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
   }
 };
 
-export const resetPassword = (theKey, value) => async (dispatch) => {
+export const resetPassword = (password, token) => async (dispatch) => {
   try {
     dispatch({ type: USER_RESET_PASSWORD_REQUEST });
     const config = {
@@ -310,10 +310,10 @@ export const resetPassword = (theKey, value) => async (dispatch) => {
       },
     };
     const formData = new FormData();
-    formData.set('password', this.state.password);
+    formData.set('password', password);
 
     const { data } = await sayBase.post(
-      `/auth/password/reset/confirm/token=`,
+      `/auth/password/reset/confirm/token=${token}`,
       formData,
       {
         config,

@@ -64,6 +64,7 @@ const theTheme = createTheme({
         },
         containedPrimary: {
           minWidth: '240px',
+          minHeight: '40px',
           background: 'linear-gradient(90deg, #F59E39 0%, #F05A31 100%)',
           borderRadius: '48px',
           color: 'white',

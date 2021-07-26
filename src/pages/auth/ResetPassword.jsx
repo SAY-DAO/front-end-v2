@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -13,14 +15,14 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { resetPassword } from '../../actions/userAction';
 import Message from '../../components/Message';
-import contents from '../../inputsValidation/Contents';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-// Customized "react-phone-input-2/lib/material.css"
-import '../../resources/styles/css/material.css';
+import Back from '../../components/Back';
+import { USER_RESET_PASSWORD_RESET } from '../../constants/userConstants';
 
 const ResetPassword = () => {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
@@ -30,13 +32,17 @@ const ResetPassword = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [messageInput, setMessageInput] = useState('');
-  const checkUserName = useSelector((state) => state.checkUserName);
+  const userResetPass = useSelector((state) => state.userResetPass);
   const {
-    loading: loadingCheck,
-    error: errorCheck,
-    success: successCheck,
-  } = checkUserName;
+    loading: loadingReset,
+    error: errorReset,
+    success: successReset,
+  } = userResetPass;
+
+  // cleanup the state error after leaving the page - this runs every reload
+  useEffect(() => {
+    dispatch({ type: USER_RESET_PASSWORD_RESET });
+  }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
   useEffect(() => {
@@ -72,20 +78,19 @@ const ResetPassword = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingCheck) {
+    if (loadingReset) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingCheck]);
+  }, [loadingReset]);
 
   // disable button
   useEffect(() => {
     if (
-      !successCheck ||
       passwordErr ||
       repeatPasswordErr ||
-      errorCheck ||
+      errorReset ||
       !password ||
       !repeatPassword
     ) {
@@ -98,13 +103,15 @@ const ResetPassword = () => {
     repeatPassword,
     passwordErr,
     repeatPasswordErr,
-    errorCheck,
-    successCheck,
+    errorReset,
+    successReset,
   ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(register(userName, password, theKey, value, localDialCode, otp));
+    let token = history.location.search;
+    token = token.split('?token=')[1].split('&')[0];
+    dispatch(resetPassword(password, token));
   };
 
   const handleChangePassword = (event) => {
@@ -123,6 +130,8 @@ const ResetPassword = () => {
       alignItems="center"
       maxWidth
     >
+      <Back to="/intro" />
+
       <Grid
         container
         direction="column"
@@ -201,11 +210,11 @@ const ResetPassword = () => {
           </form>
         </FormControl>
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
-          {(errorCheck || validateErr) && (
+          {(errorReset || validateErr) && (
             <Message
               sx={{ justifyContent: 'center' }}
               icon={false}
-              backError={errorCheck}
+              backError={errorReset}
               variant="filled"
               severity="error"
             >

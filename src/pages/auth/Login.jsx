@@ -84,7 +84,7 @@ const Login = () => {
     if (successLogin) {
       history.push('/search');
     }
-  }, [successLogin]);
+  }, [successLogin, history]);
 
   const classes = useStyles();
   return (

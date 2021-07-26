@@ -8,6 +8,7 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userForgotPasswordReducer,
+  userResetPasswordReducer,
 } from './userReducer';
 
 export default combineReducers({
@@ -18,5 +19,6 @@ export default combineReducers({
   userVerifyCode: codeVerifyReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
-  userResetPass: userForgotPasswordReducer,
+  userForgotPass: userForgotPasswordReducer,
+  userResetPass: userResetPasswordReducer,
 });

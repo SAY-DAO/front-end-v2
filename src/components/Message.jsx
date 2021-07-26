@@ -60,6 +60,7 @@ export default function Message({
       if (backError.status === 400) {
         return t(contents.wrongCode);
       }
+      return t(contents.sthIsWrong);
     }
   };
   return (

@@ -37,6 +37,7 @@ const ForgotPassword = () => {
     success: successReset,
   } = userResetPass;
 
+  // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
     dispatch({ type: USER_FORGOT_PASSWORD_RESET });
   }, [phoneNumber, email]);
@@ -192,12 +193,12 @@ const ForgotPassword = () => {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {(validateErr || errorReset) && (
-          <Message input={messageInput} frontError={errorReset} variant="filled" severity="error">
+          <Message frontError={errorReset} variant="filled" severity="error">
             {validateErr}
           </Message>
         )}
         {(!validateErr || !errorReset) && successReset && (
-          <Message input={messageInput} variant="filled" severity="success">
+          <Message variant="filled" severity="success">
             {t('forgot-password.successNotif')}
           </Message>
         )}

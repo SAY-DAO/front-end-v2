@@ -152,7 +152,7 @@ export const userForgotPasswordReducer = (state = {}, action) => {
   }
 };
 
-export const userSetPasswordReducer = (state = {}, action) => {
+export const userResetPasswordReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_RESET_PASSWORD_REQUEST:
       return { loading: true };
