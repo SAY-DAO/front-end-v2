@@ -1,27 +1,25 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
 import { useTranslation } from 'react-i18next';
-import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import { forgotPassword } from '../actions/userAction';
-import Message from '../components/Message';
-import contents from '../inputsValidation/Contents';
-import validatePassword from '../inputsValidation/validatePassword';
-import validateRepeatPassword from '../inputsValidation/validateRepeatPassword';
+import { resetPassword } from '../../actions/userAction';
+import Message from '../../components/Message';
+import contents from '../../inputsValidation/Contents';
+import validatePassword from '../../inputsValidation/validatePassword';
+import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
 // Customized "react-phone-input-2/lib/material.css"
-import '../resources/styles/css/material.css';
+import '../../resources/styles/css/material.css';
 
-const SetNewPassword = () => {
+const ResetPassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -32,7 +30,7 @@ const SetNewPassword = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [messageInput, setMessageInput] = useState('');
   const checkUserName = useSelector((state) => state.checkUserName);
   const {
     loading: loadingCheck,
@@ -208,7 +206,7 @@ const SetNewPassword = () => {
               sx={{ justifyContent: 'center' }}
               icon={false}
               backError={errorCheck}
-              variant="outlined"
+              variant="filled"
               severity="error"
             >
               {validateErr}
@@ -220,4 +218,4 @@ const SetNewPassword = () => {
   );
 };
 
-export default SetNewPassword;
+export default ResetPassword;

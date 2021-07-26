@@ -23,10 +23,14 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
-  USER_PASSWORD_FORGOT_REQUEST,
-  USER_PASSWORD_FORGOT_SUCCESS,
-  USER_PASSWORD_FORGOT_FAIL,
-  USER_PASSWORD_FORGOT_RESET,
+  USER_FORGOT_PASSWORD_REQUEST,
+  USER_FORGOT_PASSWORD_SUCCESS,
+  USER_FORGOT_PASSWORD_FAIL,
+  USER_FORGOT_PASSWORD_RESET,
+  USER_RESET_PASSWORD_REQUEST,
+  USER_RESET_PASSWORD_SUCCESS,
+  USER_RESET_PASSWORD_FAIL,
+  USER_RESET_PASSWORD_RESET,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -133,15 +137,30 @@ export const userLoginReducer = (state = {}, action) => {
   }
 };
 
-export const userPasswordResetReducer = (state = {}, action) => {
+export const userForgotPasswordReducer = (state = {}, action) => {
   switch (action.type) {
-    case USER_PASSWORD_FORGOT_REQUEST:
+    case USER_FORGOT_PASSWORD_REQUEST:
       return { loading: true };
-    case USER_PASSWORD_FORGOT_SUCCESS:
+    case USER_FORGOT_PASSWORD_SUCCESS:
       return { loading: false, success: true, resetPass: action.payload };
-    case USER_PASSWORD_FORGOT_FAIL:
+    case USER_FORGOT_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
-    case USER_PASSWORD_FORGOT_RESET:
+    case USER_FORGOT_PASSWORD_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userSetPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_RESET_PASSWORD_REQUEST:
+      return { loading: true };
+    case USER_RESET_PASSWORD_SUCCESS:
+      return { loading: false, success: true, resetPass: action.payload };
+    case USER_RESET_PASSWORD_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_RESET_PASSWORD_RESET:
       return {};
     default:
       return state;

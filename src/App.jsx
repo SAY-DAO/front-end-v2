@@ -8,7 +8,7 @@ import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import SearchChild from './pages/SearchChild';
 import ForgotPassword from './pages/auth/ForgotPassword';
-import SetNewPassword from './pages/SetNewPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 const App = () => (
   <>
@@ -22,7 +22,7 @@ const App = () => (
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
-            <Route exact path="/setpassword" component={SetNewPassword} />
+            <Route exact path="/setpassword" component={ResetPassword} />
             <Route exact path="/search" component={SearchChild} />
           </Switch>
         </React.StrictMode>

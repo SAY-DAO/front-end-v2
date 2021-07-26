@@ -21,12 +21,12 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
-  USER_PASSWORD_FORGOT_REQUEST,
-  USER_PASSWORD_FORGOT_SUCCESS,
-  USER_PASSWORD_FORGOT_FAIL,
-  USER_PASSWORD_RESET_REQUEST,
-  USER_PASSWORD_RESET_SUCCESS,
-  USER_PASSWORD_RESET_FAIL,
+  USER_FORGOT_PASSWORD_REQUEST,
+  USER_FORGOT_PASSWORD_SUCCESS,
+  USER_FORGOT_PASSWORD_FAIL,
+  USER_RESET_PASSWORD_REQUEST,
+  USER_RESET_PASSWORD_SUCCESS,
+  USER_RESET_PASSWORD_FAIL,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -265,7 +265,7 @@ export const login = (userName, password) => async (dispatch) => {
 export const forgotPassword = (theKey, value) => async (dispatch) => {
   let resetType;
   try {
-    dispatch({ type: USER_PASSWORD_FORGOT_REQUEST });
+    dispatch({ type: USER_FORGOT_PASSWORD_REQUEST });
     const config = {
       headers: {
         'Content-type': 'application/json',
@@ -290,43 +290,43 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
       }
     );
     dispatch({
-      type: USER_PASSWORD_FORGOT_SUCCESS,
+      type: USER_FORGOT_PASSWORD_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: USER_PASSWORD_FORGOT_FAIL,
+      type: USER_FORGOT_PASSWORD_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
 };
 
-// export const resetPassword = (theKey, value) => async (dispatch) => {
-//   try {
-//     dispatch({ type: USER_PASSWORD_RESET_REQUEST });
-//     const config = {
-//       headers: {
-//         'Content-type': 'application/json',
-//       },
-//     };
-//     const formData = new FormData();
-//     formData.set('password', this.state.password);
+export const resetPassword = (theKey, value) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_RESET_PASSWORD_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const formData = new FormData();
+    formData.set('password', this.state.password);
 
-//     const { data } = await sayBase.post(
-//       `/auth/password/reset/confirm/token=${resetType}`,
-//       formData,
-//       {
-//         config,
-//       }
-//     );
-//     dispatch({
-//       type: USER_PASSWORD_RESET_SUCCESS,
-//       payload: data,
-//     });
-//   } catch (e) {
-//     dispatch({
-//       type: USER_PASSWORD_RESET_FAIL,
-//       payload: e.response && e.response.status ? e.response : e.message,
-//     });
-//   }
-// };
+    const { data } = await sayBase.post(
+      `/auth/password/reset/confirm/token=`,
+      formData,
+      {
+        config,
+      }
+    );
+    dispatch({
+      type: USER_RESET_PASSWORD_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_RESET_PASSWORD_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};

@@ -19,10 +19,7 @@ import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
-import {
-  CHECK_CONTACT_RESET,
-  USER_VERIFY_RESET,
-} from '../../constants/userConstants';
+import { CHECK_CONTACT_RESET } from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -48,6 +45,7 @@ const EntryForm = () => {
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageInput, setMessageInput] = useState('');
 
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const {
@@ -55,6 +53,16 @@ const EntryForm = () => {
     error: errorVerify,
     success: successVerify,
   } = userVerifyInfo;
+
+  // Message input for 422 status error
+  useEffect(() => {
+    if (email) {
+      setMessageInput('email');
+    }
+    if (phoneNumber) {
+      setMessageInput('phoneNumber');
+    }
+  }, [email, phoneNumber]);
 
   // check phone every 1000 ms when typing
   useEffect(() => {
@@ -264,7 +272,12 @@ const EntryForm = () => {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {(validateErr || errorVerify) && (
-          <Message frontError={errorVerify} variant="filled" severity="error">
+          <Message
+            input={messageInput}
+            frontError={errorVerify}
+            variant="filled"
+            severity="error"
+          >
             {validateErr}
           </Message>
         )}

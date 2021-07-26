@@ -33,6 +33,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageInput, setMessageInput] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
   const {
@@ -53,6 +54,13 @@ const Login = () => {
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
   };
+
+  // Message input for 422 status error
+  useEffect(() => {
+    if (userName) {
+      setMessageInput('userName');
+    }
+  }, [userName]);
 
   // loading button
   useEffect(() => {
@@ -164,6 +172,7 @@ const Login = () => {
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           {errorLogin && (
             <Message
+              input={messageInput}
               frontError={errorLogin}
               variant="filled"
               severity="error"

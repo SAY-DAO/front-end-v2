@@ -16,6 +16,7 @@ const contents = {
   fillOne: 'error.fillOne',
   or: 'search.or',
   submit: 'button.submit',
+  codeExpired: 'error.codeExpired',
 };
 
 export default contents;

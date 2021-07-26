@@ -7,6 +7,7 @@ import contents from '../inputsValidation/Contents';
 
 export default function Message({
   icon,
+  input,
   frontError,
   backError,
   variant,
@@ -20,11 +21,20 @@ export default function Message({
       if (frontError.status === 400) {
         return t(contents.wrongUserOrPass);
       }
-      if (frontError.status === 422) {
+      if (frontError.status === 422 && input === 'userName') {
+        return t(contents.usernameExists);
+      }
+      if (frontError.status === 422 && input === 'email') {
         return t(contents.emailExists);
+      }
+      if (frontError.status === 422 && input === 'phoneNumber') {
+        return t(contents.phoneExists);
       }
       if (frontError.status === 429) {
         return t(contents.manyRequest);
+      }
+      if (frontError.status === 499) {
+        return t(contents.codeExpired);
       }
       return t(contents.sthIsWrong);
     }
@@ -61,6 +71,7 @@ export default function Message({
 
 Message.propTypes = {
   icon: PropTypes.node,
+  input: PropTypes.string,
   frontError: PropTypes.object,
   backError: PropTypes.object,
   variant: PropTypes.string.isRequired,
@@ -70,6 +81,7 @@ Message.propTypes = {
 
 Message.defaultProps = {
   icon: <CheckCircleOutlineIcon fontSize="inherit" />,
+  input: '',
   frontError: {},
   backError: {},
   children: '',

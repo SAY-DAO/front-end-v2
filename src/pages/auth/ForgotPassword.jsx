@@ -13,7 +13,7 @@ import contents from '../../inputsValidation/Contents';
 import Back from '../../components/Back';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
-import { USER_PASSWORD_FORGOT_RESET } from '../../constants/userConstants';
+import { USER_FORGOT_PASSWORD_RESET } from '../../constants/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -37,6 +37,10 @@ const ForgotPassword = () => {
     success: successReset,
   } = userResetPass;
 
+  useEffect(() => {
+    dispatch({ type: USER_FORGOT_PASSWORD_RESET });
+  }, [phoneNumber, email]);
+
   // check phone every 1000 ms when typing
   useEffect(() => {
     if (phoneNumber) {
@@ -47,7 +51,9 @@ const ForgotPassword = () => {
         const timeout = setTimeout(() => {
           setValidateErr(t(phoneResult.errorMessage));
         }, 1000);
-        return () => clearTimeout(timeout);
+        return () => {
+          clearTimeout(timeout);
+        };
       }
     }
   }, [phoneNumber]);
@@ -62,7 +68,9 @@ const ForgotPassword = () => {
         const timeout = setTimeout(() => {
           setValidateErr(t(emailResult.errorMessage));
         }, 1000);
-        return () => clearTimeout(timeout);
+        return () => {
+          clearTimeout(timeout);
+        };
       }
     }
   }, [email]);
@@ -87,13 +95,11 @@ const ForgotPassword = () => {
 
   // email changes
   const handleChangeEmail = (event) => {
-    dispatch({ type: USER_PASSWORD_FORGOT_RESET });
     setEmail(event.target.value);
   };
 
   // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
-    dispatch({ type: USER_PASSWORD_FORGOT_RESET });
     setPhoneNumber(formattedValue);
     setDialCode(data.dialCode);
     setCountryCode(data.countryCode);
@@ -186,12 +192,12 @@ const ForgotPassword = () => {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {(validateErr || errorReset) && (
-          <Message frontError={errorReset} variant="filled" severity="error">
+          <Message input={messageInput} frontError={errorReset} variant="filled" severity="error">
             {validateErr}
           </Message>
         )}
         {(!validateErr || !errorReset) && successReset && (
-          <Message variant="filled" severity="success">
+          <Message input={messageInput} variant="filled" severity="success">
             {t('forgot-password.successNotif')}
           </Message>
         )}

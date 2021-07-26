@@ -48,6 +48,7 @@ const FinalForm = () => {
   const [theKey, setTheKey] = useState('');
   const [value, setValue] = useState('');
   const [otp, setOtp] = useState('');
+  const [messageInput, setMessageInput] = useState('');
 
   const checkUserName = useSelector((state) => state.checkUserName);
   const {
@@ -59,6 +60,13 @@ const FinalForm = () => {
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
   const localOTP = JSON.parse(localStorage.getItem('localOTP'));
   const localDialCode = JSON.parse(localStorage.getItem('dialCode'));
+
+  // Message input for 422 status error
+  useEffect(() => {
+    if (userName) {
+      setMessageInput('userName');
+    }
+  }, [userName]);
 
   // check userName every 1000 ms when typing
   useEffect(() => {
@@ -297,10 +305,11 @@ const FinalForm = () => {
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           {(errorCheck || validateErr) && (
             <Message
+              input={messageInput}
               sx={{ justifyContent: 'center' }}
               icon={false}
               backError={errorCheck}
-              variant="outlined"
+              variant="filled"
               severity="error"
             >
               {validateErr}
