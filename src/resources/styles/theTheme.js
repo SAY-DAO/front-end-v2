@@ -43,13 +43,13 @@ const theTheme = createTheme({
         subtitle1: {
           color: '#636363',
           fontWeight: 500,
-          fontSize: '12px',
+          fontSize: '14px',
           lineHeight: '14px',
         },
         body1: {
           color: '#000000',
           fontWeight: 200,
-          fontSize: '10px',
+          fontSize: '12px',
           lineHeight: '14px',
         },
       },
