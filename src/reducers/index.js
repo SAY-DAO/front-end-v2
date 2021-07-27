@@ -10,6 +10,10 @@ import {
   userForgotPasswordReducer,
   userResetPasswordReducer,
 } from './userReducer';
+import {
+  childRandomSearchReducer,
+  childSearchResultReducer,
+} from './childReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -21,4 +25,6 @@ export default combineReducers({
   userRegister: userRegisterReducer,
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
+  childRandomSearch: childRandomSearchReducer,
+  childSearchResult: childSearchResultReducer,
 });

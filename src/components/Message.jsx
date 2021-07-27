@@ -15,7 +15,7 @@ export default function Message({
   severity,
 }) {
   const { t } = useTranslation();
-
+  console.log(backError);
   const onRequestCheck = () => {
     if (frontError.status) {
       if (frontError.status === 400) {
@@ -62,6 +62,9 @@ export default function Message({
       }
       return t(contents.sthIsWrong);
     }
+    if (typeof backError === 'string' || typeof frontError === 'string') {
+      return backError || frontError;
+    }
   };
   return (
     <Alert icon={icon} variant={variant} severity={severity}>
@@ -73,8 +76,8 @@ export default function Message({
 Message.propTypes = {
   icon: PropTypes.node,
   input: PropTypes.string,
-  frontError: PropTypes.object,
-  backError: PropTypes.object,
+  frontError: PropTypes.any,
+  backError: PropTypes.any,
   variant: PropTypes.string.isRequired,
   children: PropTypes.string,
   severity: PropTypes.string.isRequired,
@@ -83,7 +86,7 @@ Message.propTypes = {
 Message.defaultProps = {
   icon: <CheckCircleOutlineIcon fontSize="inherit" />,
   input: '',
-  frontError: {},
-  backError: {},
+  frontError: '',
+  backError: '',
   children: '',
 };

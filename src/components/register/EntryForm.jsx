@@ -137,15 +137,11 @@ const EntryForm = () => {
 
   // email changes
   const handleChangeEmail = (event) => {
-    // dispatch({ type: CHECK_CONTACT_RESET });
-    // dispatch({ type: USER_VERIFY_RESET });
     setEmail(event.target.value);
   };
 
   // phone changes
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
-    // dispatch({ type: CHECK_CONTACT_RESET });
-    // dispatch({ type: USER_VERIFY_RESET });
     setPhoneNumber(formattedValue);
     setCountryCode(data.countryCode);
     setDialCode(data.dialCode);

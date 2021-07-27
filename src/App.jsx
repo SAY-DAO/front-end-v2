@@ -6,9 +6,10 @@ import Splash from './pages/Splash';
 import Intro from './pages/Intro';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
-import SearchChild from './pages/SearchChild';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
+import SearchChild from './pages/child/SearchChild';
+import SearchResult from './pages/child/SearchResult';
 
 const App = () => (
   <>
@@ -24,6 +25,7 @@ const App = () => (
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/setpassword" component={ResetPassword} />
             <Route exact path="/search" component={SearchChild} />
+            <Route exact path="/search-result" component={SearchResult} />
           </Switch>
         </React.StrictMode>
       </Container>
