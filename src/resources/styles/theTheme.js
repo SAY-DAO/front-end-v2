@@ -58,6 +58,10 @@ const theTheme = createTheme({
           fontSize: '12px',
           lineHeight: '14px',
         },
+        body2: {
+          fontSize: '11px',
+          lineHeight: '18px',
+        },
       },
     },
     MuiButton: {
