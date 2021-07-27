@@ -24,6 +24,7 @@ const LangButton = () => {
 
   const clickHandler = () => {
     const currentLang = getLanguage();
+
     switch (currentLang) {
       case 'en':
         lang = 'fa';

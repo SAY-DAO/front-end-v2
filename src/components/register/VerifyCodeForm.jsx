@@ -28,11 +28,12 @@ function capitalize(str) {
 
 const useStyles = makeStyles({
   root: {
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    maxHeight: '320px',
   },
 });
 
@@ -46,6 +47,7 @@ const VerifyCodeForm = () => {
   const [code, setCode] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageInput, setMessageInput] = useState('');
 
   const theVerifyCode = useSelector((state) => state.userVerifyCode);
   const {
@@ -55,6 +57,13 @@ const VerifyCodeForm = () => {
   } = theVerifyCode;
 
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
+
+  // Message input for 422 status error
+  useEffect(() => {
+    if (code) {
+      setMessageInput('code');
+    }
+  }, [code]);
 
   useEffect(() => {
     if (localVerifyInfo.type === 'phone') {
@@ -147,12 +156,7 @@ const VerifyCodeForm = () => {
     >
       <Back step="EntryForm" />
       <Grid item xs={12}>
-        <img
-          src="/images/otp.svg"
-          width="100%"
-          className={classes.root}
-          alt="otp page"
-        />
+        <img src="/images/otp.svg" className={classes.root} alt="otp page" />
       </Grid>
       <Grid item xs={12} sx={{ marginBottom: 2 }}>
         {localVerifyInfo && (
@@ -234,6 +238,7 @@ const VerifyCodeForm = () => {
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {errorVerifyCode && (
           <Message
+            input={messageInput}
             backError={errorVerifyCode}
             variant="filled"
             severity="error"

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import { ParallaxProvider } from 'react-scroll-parallax';
+import sayBase from '../../apis/sayBase';
 import { fetchChildResult } from '../../actions/childAction';
 import Message from '../../components/Message';
 
@@ -17,7 +19,34 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    height: '375px',
+  },
+
+  childAvatar: {
+    width: 100,
+    height: 100,
+    top: '20%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f9d6af',
+    boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
+  },
+
+  childSayName: {
+    color: 'white',
+    top: '32%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+  },
+
+  childAge: {
+    color: 'white',
+    top: '35%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
   },
 });
 
@@ -42,32 +71,49 @@ const SearchResult = () => {
     dispatch(fetchChildResult(token));
   }, []);
 
+  const getAge = (DOB) => {
+    const today = new Date();
+    const birthDate = new Date(DOB);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age -= 1;
+    }
+    return age;
+  };
+
   const classes = useStyles();
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-      sx={{ marginTop: 36 }}
-    >
-      <Grid item xs={12}>
-        <img
-          src="/images/child/background.png"
-          width="100%"
-          style={{ paddingBottom: '20px' }}
-          className={classes.root}
-          alt="register"
-        />
-      </Grid>
-      <Grid>
-        {theChild.avatarUrl && (
-          <Avatar
-            // alt={`${theChild.sayName}`}
-            src={theChild.avatarUrl}
-            sx={{ width: 56, height: 56 }}
-          />
+    <Grid sx={{ marginTop: 36 }}>
+      <Grid
+        item
+        xs={12}
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {theChild && theChild.sayName && (
+          <>
+            <img
+              className={classes.root}
+              src="/images/child/background.png"
+              width="100%"
+              alt="register"
+            />
+
+            <Avatar
+              className={classes.childAvatar}
+              alt={`${theChild.sayName}`}
+              src={`https://sayapp.company${theChild.avatarUrl}`}
+            />
+            <Typography className={classes.childSayName} variant="subtitle1">
+              {theChild.sayName}
+            </Typography>
+            <Typography className={classes.childAge} variant="subtitle2">
+              {getAge(theChild.birthDate) + t('assets.age')}
+            </Typography>
+          </>
         )}
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>

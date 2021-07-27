@@ -1,4 +1,4 @@
-import sayBase from '../apis/sayBase';
+import { publicApi } from '../apis/sayBase';
 import {
   CHILD_RANDOM_SEARCH_REQUEST,
   CHILD_RANDOM_SEARCH_SUCCESS,
@@ -17,7 +17,7 @@ export const fetchRandomChild = () => async (dispatch) => {
       },
     };
 
-    const { data } = await sayBase.post('/search/random', {
+    const { data } = await publicApi.post('/search/random', {
       config,
     });
 
@@ -43,7 +43,7 @@ export const fetchChildResult = (invitationToken) => async (dispatch) => {
       },
     };
 
-    const { data } = await sayBase.get(
+    const { data } = await publicApi.get(
       `/child/invitations/${invitationToken}`,
       {
         config,

@@ -13,7 +13,7 @@ const Register = () => {
     switch (step) {
       case 'EntryForm':
         return (
-          <Grid xs={12} item sx={{ marginTop: 36 }}>
+          <Grid xs={12} item sx={{ marginTop: 40 }}>
             <EntryForm />
           </Grid>
         );

@@ -24,11 +24,12 @@ import { CHECK_USERNAME_RESET } from '../../constants/userConstants';
 
 const useStyles = makeStyles({
   root: {
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    maxHeight: '320px',
   },
 });
 
@@ -57,14 +58,21 @@ const FinalForm = () => {
     success: successCheck,
   } = checkUserName;
 
+  const userRegister = useSelector((state) => state.userRegister);
+  const {
+    loading: loadingRegister,
+    error: errorRegister,
+    success: successRegister,
+  } = userRegister;
+
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
   const localOTP = JSON.parse(localStorage.getItem('localOTP'));
   const localDialCode = JSON.parse(localStorage.getItem('dialCode'));
 
-  // Message input for 422 status error
+  // Message input for status error
   useEffect(() => {
     if (userName) {
-      setMessageInput('userName');
+      setMessageInput('register');
     }
   }, [userName]);
 
@@ -126,21 +134,23 @@ const FinalForm = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingCheck) {
+    if (loadingCheck || loadingRegister || successRegister) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingCheck]);
+  }, [loadingCheck, loadingRegister, successRegister]);
 
   // disable button
   useEffect(() => {
     if (
+      successRegister ||
       !successCheck ||
       userNameErr ||
       passwordErr ||
       repeatPasswordErr ||
       errorCheck ||
+      errorRegister ||
       !userName ||
       !password ||
       !repeatPassword
@@ -158,6 +168,8 @@ const FinalForm = () => {
     repeatPasswordErr,
     errorCheck,
     successCheck,
+    errorRegister,
+    successRegister,
   ]);
 
   useEffect(() => {
@@ -202,7 +214,6 @@ const FinalForm = () => {
       <Grid item xs={12}>
         <img
           src="/images/finalForm.svg"
-          width="100%"
           className={classes.root}
           alt="otp page"
         />
@@ -303,12 +314,12 @@ const FinalForm = () => {
           </form>
         </FormControl>
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
-          {(errorCheck || validateErr) && (
+          {(errorCheck || validateErr || errorRegister) && (
             <Message
               input={messageInput}
               sx={{ justifyContent: 'center' }}
               icon={false}
-              backError={errorCheck}
+              backError={errorCheck || errorRegister}
               variant="filled"
               severity="error"
             >

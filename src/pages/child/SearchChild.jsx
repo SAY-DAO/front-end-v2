@@ -11,11 +11,12 @@ import Message from '../../components/Message';
 
 const useStyles = makeStyles({
   root: {
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    maxHeight: '320px',
   },
 });
 
@@ -64,9 +65,7 @@ const SearchChild = () => {
     >
       <Grid item xs={12}>
         <img
-          src="/images/searchChild.png"
-          width="100%"
-          style={{ paddingBottom: '20px' }}
+          src="/images/child/searchChild.png"
           className={classes.root}
           alt="register"
         />
@@ -99,7 +98,7 @@ const SearchChild = () => {
             loading={isLoading}
             sx={{ bottom: 5 }}
           >
-            {t('search.childRandomSearch')}
+            {t('search.randomSearch')}
           </LoadingButton>
         </Grid>
         <Divider sx={{ marginTop: 4, marginBottom: 4, width: '100%' }}>

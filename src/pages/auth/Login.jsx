@@ -13,14 +13,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { login } from '../../actions/userAction';
+import { USER_LOGOUT } from '../../constants/userConstants';
 
 const useStyles = makeStyles({
   root: {
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    maxHeight: '320px',
   },
 });
 
@@ -42,20 +44,12 @@ const Login = () => {
     success: successLogin,
   } = userLogin;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(userName, password));
-  };
+  // cleanup the state error after leaving the page - this runs every reload
+  useEffect(() => {
+    dispatch({ type: USER_LOGOUT });
+  }, [userName, password]);
 
-  const handleChangeUserName = (event) => {
-    setUserName(event.target.value);
-  };
-
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
-
-  // Message input for 422 status error
+  // Message input for some status error (422)
   useEffect(() => {
     if (userName) {
       setMessageInput('userName');
@@ -86,6 +80,19 @@ const Login = () => {
     }
   }, [successLogin, history]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(userName, password));
+  };
+
+  const handleChangeUserName = (event) => {
+    setUserName(event.target.value);
+  };
+
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
   const classes = useStyles();
   return (
     <Grid
@@ -98,12 +105,7 @@ const Login = () => {
     >
       <Back to="/intro" />
       <Grid item xs={12}>
-        <img
-          src="/images/register.svg"
-          style={{ paddingBottom: '20px', width: '100%' }}
-          className={classes.root}
-          alt="Login"
-        />
+        <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
       <Grid
         container
@@ -173,7 +175,7 @@ const Login = () => {
           {errorLogin && (
             <Message
               input={messageInput}
-              frontError={errorLogin}
+              backError={errorLogin}
               variant="filled"
               severity="error"
             />

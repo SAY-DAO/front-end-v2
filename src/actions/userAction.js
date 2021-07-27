@@ -1,5 +1,5 @@
 import LogRocket from 'logrocket';
-import sayBase from '../apis/sayBase';
+import { publicApi } from '../apis/sayBase';
 import {
   CHECK_CONTACT_REQUEST,
   CHECK_CONTACT_SUCCESS,
@@ -58,7 +58,7 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
     const formData = new FormData();
     formData.append(theKey, value); // phone_number, +989121234565
 
-    const { data } = await sayBase.get(
+    const { data } = await publicApi.get(
       `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
       formData,
       {
@@ -87,7 +87,7 @@ export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
       },
     };
 
-    const { data } = await sayBase.get(`/check/username/${userName}`, {
+    const { data } = await publicApi.get(`/check/username/${userName}`, {
       config,
     });
 
@@ -117,7 +117,7 @@ export const verifyUser = (theKey, value, dialCode) => async (dispatch) => {
     const formData = new FormData();
     formData.append(theKey, value); // phone_number, +989121234565
 
-    const { data } = await sayBase.post(
+    const { data } = await publicApi.post(
       `/auth/verify/${theKey === 'email' ? 'email' : 'phone'}`,
       formData,
 
@@ -153,7 +153,7 @@ export const userVerifyCode = (id, code) => async (dispatch) => {
     const formData = new FormData();
     formData.append('code', code);
 
-    const { data } = await sayBase.patch(`/auth/verify/${id}`, formData, {
+    const { data } = await publicApi.patch(`/auth/verify/${id}`, formData, {
       config,
     });
     dispatch({
@@ -193,7 +193,7 @@ export const register =
           'Content-type': 'application/json',
         },
       };
-      const { data } = await sayBase.post('/auth/register', formData, {
+      const { data } = await publicApi.post('/auth/register', formData, {
         config,
       });
       dispatch({
@@ -230,7 +230,7 @@ export const login = (userName, password) => async (dispatch) => {
     // required for back-end
     formData.set('isInstalled', _standalone);
 
-    const { data } = await sayBase.post('/auth/login', formData, {
+    const { data } = await publicApi.post('/auth/login', formData, {
       config,
     });
 
@@ -282,7 +282,7 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
       resetType = 'phone';
     }
 
-    const { data } = await sayBase.post(
+    const { data } = await publicApi.post(
       `/auth/password/reset/${resetType}`,
       formData,
       {
@@ -312,7 +312,7 @@ export const resetPassword = (password, token) => async (dispatch) => {
     const formData = new FormData();
     formData.set('password', password);
 
-    const { data } = await sayBase.post(
+    const { data } = await publicApi.post(
       `/auth/password/reset/confirm/token=${token}`,
       formData,
       {

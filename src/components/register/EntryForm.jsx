@@ -25,11 +25,12 @@ import '../../resources/styles/css/material.css';
 
 const useStyles = makeStyles({
   root: {
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    maxHeight: '300px',
+    maxHeight: '320px',
   },
 });
 
@@ -53,6 +54,13 @@ const EntryForm = () => {
     error: errorVerify,
     success: successVerify,
   } = userVerifyInfo;
+
+  const checkContact = useSelector((state) => state.checkContact);
+  const {
+    loading: loadingCheck,
+    error: errorCheck,
+    success: successCheck,
+  } = checkContact;
 
   // Message input for 422 status error
   useEffect(() => {
@@ -128,12 +136,12 @@ const EntryForm = () => {
 
   // disable button
   useEffect(() => {
-    if (successVerify) {
+    if (successCheck && !validateErr && !errorVerify && !errorCheck) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successVerify]);
+  }, [successCheck, validateErr]);
 
   // email changes
   const handleChangeEmail = (event) => {
@@ -200,7 +208,6 @@ const EntryForm = () => {
         <img
           src="/images/register.svg"
           width="100%"
-          style={{ paddingBottom: '20px' }}
           className={classes.root}
           alt="register"
         />
@@ -267,10 +274,10 @@ const EntryForm = () => {
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {(validateErr || errorVerify) && (
+        {(validateErr || errorVerify || errorCheck) && (
           <Message
             input={messageInput}
-            frontError={errorVerify}
+            backError={errorCheck || errorVerify}
             variant="filled"
             severity="error"
           >

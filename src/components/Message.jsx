@@ -15,27 +15,8 @@ export default function Message({
   severity,
 }) {
   const { t } = useTranslation();
-  console.log(backError);
   const onRequestCheck = () => {
     if (frontError.status) {
-      if (frontError.status === 400) {
-        return t(contents.wrongUserOrPass);
-      }
-      if (frontError.status === 422 && input === 'userName') {
-        return t(contents.usernameExists);
-      }
-      if (frontError.status === 422 && input === 'email') {
-        return t(contents.emailExists);
-      }
-      if (frontError.status === 422 && input === 'phoneNumber') {
-        return t(contents.phoneExists);
-      }
-      if (frontError.status === 429) {
-        return t(contents.manyRequest);
-      }
-      if (frontError.status === 499) {
-        return t(contents.codeExpired);
-      }
       return t(contents.sthIsWrong);
     }
     if (backError.status) {
@@ -57,8 +38,29 @@ export default function Message({
       if (backError.status === 731) {
         return t(contents.phoneExists);
       }
-      if (backError.status === 400) {
+      if (backError.status === 400 && input === 'register') {
+        return t(contents.sthIsWrong);
+      }
+      if (backError.status === 400 && input === 'code') {
         return t(contents.wrongCode);
+      }
+      if (backError.status === 400 && input === 'userName') {
+        return t(contents.wrongUserOrPass);
+      }
+      if (backError.status === 422 && input === 'userName') {
+        return t(contents.usernameExists);
+      }
+      if (backError.status === 422 && input === 'email') {
+        return t(contents.emailExists);
+      }
+      if (backError.status === 422 && input === 'phoneNumber') {
+        return t(contents.phoneExists);
+      }
+      if (backError.status === 429) {
+        return t(contents.manyRequest);
+      }
+      if (backError.status === 499) {
+        return t(contents.codeExpired);
       }
       return t(contents.sthIsWrong);
     }

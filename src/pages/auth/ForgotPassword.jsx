@@ -87,7 +87,7 @@ const ForgotPassword = () => {
 
   // disable button
   useEffect(() => {
-    if ((!validateErr && phoneNumber) || email || !successReset) {
+    if (!validateErr && (phoneNumber || email)) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);

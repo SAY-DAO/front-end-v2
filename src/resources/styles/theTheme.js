@@ -46,6 +46,12 @@ const theTheme = createTheme({
           fontSize: '14px',
           lineHeight: '14px',
         },
+        subtitle2: {
+          color: '#636363',
+          fontWeight: 300,
+          fontSize: '12px',
+          lineHeight: '14px',
+        },
         body1: {
           color: '#000000',
           fontWeight: 200,
