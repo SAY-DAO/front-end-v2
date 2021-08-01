@@ -16,7 +16,8 @@ const urlsToCache = [
   '/index.html',
   '/manifest.json',
   '/',
-  '/offline.html',
+  // '/offline.html',
+  'https://cdn.lr-ingest.io/logger-1.min.js',
 ];
 
 const self = this;

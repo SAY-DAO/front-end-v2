@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -9,11 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { ParallaxProvider } from 'react-scroll-parallax';
+import Sound from 'react-sound';
 import sayBase from '../../apis/sayBase';
 import { fetchChildResult } from '../../actions/childAction';
 import Message from '../../components/Message';
-// import VoiceBar from '../../components/VoiceBar';
+import VoiceBar from '../../components/VoiceBar';
 
 const useStyles = makeStyles({
   root: {
@@ -71,6 +72,16 @@ const useStyles = makeStyles({
     marginLeft: 2,
     marginRight: 2,
   },
+  voice: {
+    position: 'absolute',
+    top: '75%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    textAlign: 'center',
+    width: '100%',
+    marginLeft: 2,
+    marginRight: 2,
+  },
 });
 
 const SearchResult = () => {
@@ -96,6 +107,24 @@ const SearchResult = () => {
     token = token.split('?token=')[1].split('&')[0];
     dispatch(fetchChildResult(token));
   }, []);
+
+  // useEffect(() => {
+  //   if (voiceStatus === 'PAUSED') {
+  //     setVoiceStatus('PLAYING')
+  //     setState({
+  //       voiceIcon: PauseIcon,
+  //       voicebar: PlayEq,
+  //       voice: true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       voiceStatus: 'PAUSED',
+  //       voiceIcon: PlayIcon,
+  //       voicebar: StopEq,
+  //       voice: false,
+  //     });
+  //   }
+  // }, [input]);
 
   const getAge = (DOB) => {
     const today = new Date();
@@ -123,16 +152,9 @@ const SearchResult = () => {
 
   const classes = useStyles();
   return (
-    <Grid sx={{ marginTop: 36 }}>
-      <Grid
-        item
-        xs={12}
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item>
+    <>
+      <Grid sx={{ marginTop: 36 }}>
+        <Grid item xs={12}>
           {theChild && theChild.sayName && (
             <>
               <div
@@ -162,20 +184,22 @@ const SearchResult = () => {
                       : t('assets.readMore.more')}
                   </Link>
                 </Typography>
+                <Grid item xs={12}>
+                  {theChild && (
+                    <VoiceBar
+                      className={classes.voice}
+                      url={theChild.voiceUrl}
+                      status="PAUSED"
+                      autoLoad={false}
+                    />
+                  )}
+                </Grid>
               </Box>
             </>
           )}
         </Grid>
-        <Grid item sx={{ marginTop: 10 }}>
-          <figure>
-            <audio controls src="/media/cc0-audio/t-rex-roar.mp3">
-              Your browser does not support the
-              <code>audio</code> element.
-            </audio>
-          </figure>
-        </Grid>
       </Grid>
-      <Grid item xs={12} sx={{ textAlign: 'center' }}>
+      <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorSearchResult && (
           <Message
             backError={errorSearchResult}
@@ -184,7 +208,7 @@ const SearchResult = () => {
           />
         )}
       </Grid>
-    </Grid>
+    </>
   );
 };
 
