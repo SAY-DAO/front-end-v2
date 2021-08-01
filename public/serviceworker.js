@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+// Guideline: https://web.dev/offline-cookbook/
 const staticCacheName = 'SAY-v0.0.0';
 const urlsToCache = [
   '/static/js/main.chunk.js',
@@ -17,67 +17,55 @@ const urlsToCache = [
   '/manifest.json',
   '/',
   // '/offline.html',
-  'https://cdn.lr-ingest.io/logger-1.min.js',
 ];
 
 const self = this;
 
 // install Service Worker and save cache to Application - Cache
 self.addEventListener('install', (event) => {
-  // console.log('Attempting to install service worker and cache static assets');
+  console.log('Attempting to install service worker and cache static assets');
   event.waitUntil(
-    caches.open(staticCacheName).then((cache) =>
-      // console.log('Opened cache');
-      cache.addAll(urlsToCache)
-    )
+    caches.open(staticCacheName).then((cache) => cache.addAll(urlsToCache))
   );
 });
-
 // Serve files from the cache
 self.addEventListener('fetch', (event) => {
-  // console.log('Fetch event for ', event.request.url);
+  console.log('Fetch event for ', event.request.url);
   event.respondWith(
-    // Check the cache for the requested resource
     caches
       .match(event.request)
       .then((response) => {
         if (response) {
-          // console.log('Found ', event.request.url, ' in cache');
+          console.log('Found ', event.request.url, ' in cache');
           return response;
         }
-        // If fails, we send the request to the network.
-        // console.log('Network request for ', event.request.url);
-        return fetch(event.request).then((response) =>
-          // TODO 5 - Respond with custom 404 page
-          caches.open(staticCacheName).then((cache) => {
-            cache.put(event.request.url, response.clone());
-            return response;
-          })
-        );
+        console.log('Network request for ', event.request.url);
+        return fetch(event.request);
+
+        // TODO 4 - Add fetched files to the cache
+      })
+      .then((response) => {
+        // TODO 5 - Respond with custom 404 page
+        caches.open(staticCacheName).then((cache) => {
+          cache.put(event.request.url, response.clone());
+          return response;
+        });
       })
       .catch((error) => {
-        // Respond with custom offline page
+        // TODO 6 - Respond with custom offline page
         console.log('offline error ', error);
-        // return caches.match('offline.html'); // will ineterfere with action error responses
       })
   );
 });
 
 // Delete outdated caches
 self.addEventListener('activate', (event) => {
-  // console.log('Activating new service worker...');
-
-  const cacheAllowlist = [staticCacheName];
-
+  console.log('Activating new service worker...');
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheAllowlist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
+    caches
+      .keys()
+      .then((cacheNames) =>
+        Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)))
       )
-    )
   );
 });
