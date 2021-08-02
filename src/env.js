@@ -1,6 +1,10 @@
-import * as Sentry from '@sentry/browser';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import LogRocket from 'logrocket';
+
+const history = createBrowserHistory();
 
 const env = process.env.NODE_ENV || 'local';
 
@@ -24,6 +28,8 @@ if (env !== 'local') {
     normalizeDepth: 10, // Or however deep you want your state context to be.
     environment: process.env.NODE_ENV,
     integrations: [new Integrations.BrowserTracing()],
+    // Can also use reactRouterV3Instrumentation or reactRouterV4Instrumentation
+    routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
     tracesSampleRate: 1.0,
   });
 

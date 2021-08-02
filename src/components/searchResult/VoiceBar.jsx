@@ -1,12 +1,11 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-undef */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sound from 'react-sound';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import PlayCircleIcon from '@material-ui/icons/PlayCircle';
 import PauseCircleIcon from '@material-ui/icons/PauseCircle';
 import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
 
 // from material-ui customized slider
 const PrettoSlider = withStyles({
@@ -28,10 +27,11 @@ const PrettoSlider = withStyles({
   },
   active: {},
   valueLabel: {
-    // left: "calc(-50% + 4px)"
+    left: 'calc(-50% + 4px)',
     display: 'none',
   },
   track: {
+    left: '0 !important',
     height: 8,
     borderRadius: 4,
   },
@@ -42,13 +42,17 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 export default function VoiceBar({ url }) {
-  const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('STOPPED');
-  const [from, setFrom] = useState(0);
   const [autoLoad, setAutoLoad] = useState(false);
+  const [sound, setSound] = useState();
+
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    const theSound = soundManager.getSoundById(soundManager.soundIDs[0]);
+    setSound(theSound);
+  }, []);
 
   const timeHandler = () => {
-    const sound = soundManager.getSoundById(soundManager.soundIDs[0]);
     const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
     const newTime = (w.split('%')[0] / 100) * sound.duration;
     // this.setState({ from: newTime });
@@ -56,7 +60,7 @@ export default function VoiceBar({ url }) {
   };
 
   const handleChange = () => {
-    const sound = soundManager.getSoundById(soundManager.soundIDs[0]);
+    console.log('bye');
     const p = document.getElementById('demo');
     // let pb = document.getElementById("pb1");
     if (sound != null && p != null) {
@@ -116,17 +120,17 @@ export default function VoiceBar({ url }) {
         onFinishedPlaying={() => {
           setStatus('PAUSED');
           setAutoLoad(false);
-          setFrom(0);
         }}
       />
 
       <div className="player">
         <IconButton
           aria-label="delete"
-          color="primary"
+          sx={{ color: 'white' }}
           onClick={voiceChangeStatus}
+          size="medium"
         >
-          {status === 'PLAYING ? ' ? <PauseCircleIcon /> : <PlayCircleIcon />}
+          {status === 'PLAYING' ? <PauseCircleIcon /> : <PlayCircleIcon />}
         </IconButton>
         <div className="progressBarNew">
           {/* <div className="progressBarNewAll"></div>
@@ -144,3 +148,7 @@ export default function VoiceBar({ url }) {
     </div>
   );
 }
+
+VoiceBar.propTypes = {
+  url: PropTypes.string.isRequired,
+};

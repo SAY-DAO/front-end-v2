@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 const staticCacheName = 'SAY-v0.0.0';
 const urlsToCache = [

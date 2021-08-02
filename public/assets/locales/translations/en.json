@@ -196,6 +196,8 @@
       "5": "You are about to lose a child"
     },
     "title": "Family Members",
+    "tab1": "Family Members",
+    "tab2": "Your Role",
     "getRole": "I like to be",
     "adoptModal": {
       "desc": "Are you sure you want to be {{childname}}'s {{roles}}?"

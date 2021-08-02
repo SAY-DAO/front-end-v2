@@ -3,6 +3,7 @@ import Alert from '@material-ui/core/Alert';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import * as Sentry from '@sentry/react';
 import contents from '../inputsValidation/Contents';
 
 export default function Message({
@@ -68,6 +69,8 @@ export default function Message({
       return backError || frontError;
     }
   };
+  Sentry.captureException(children, frontError, backError.message);
+
   return (
     <Alert icon={icon} variant={variant} severity={severity}>
       {children || onRequestCheck()}

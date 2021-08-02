@@ -1,0 +1,18 @@
+{
+  "roles": [
+    "family.roles.father",
+    "family.roles.mother",
+    "family.roles.uncle",
+    "family.roles.aunt",
+    "family.roles.daei",
+    "family.roles.ame"
+      ],
+  "rolesRelative" : [
+    "family.rolesRelative.e",
+    "family.rolesRelative.e",
+    "family.rolesRelative.ye",
+    "family.rolesRelative.ye",
+    "family.rolesRelative.e",
+    "family.rolesRelative.ye"
+  ]
+}
