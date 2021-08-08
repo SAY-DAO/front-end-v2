@@ -101,9 +101,9 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
-      sx={{ marginTop: 36 }}
+      sx={{ marginTop: 34 }}
     >
-      <Back to="/intro" />
+      <Back to="/intro" isOrange />
       <Grid item xs={12}>
         <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
@@ -159,13 +159,13 @@ const Login = () => {
           </form>
         </FormControl>
         <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
-          <Typography variant="subtitle1">
+          <Typography variant="subtitle2">
             <Trans i18nKey="comeback.noAccount">
               Don't have an account yet?
               <Link to="/register" className="link" />
             </Trans>
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography variant="subtitle2">
             <Link to="/forgot-password" className="link">
               {t('forgot-password.title')}
             </Link>

@@ -130,7 +130,7 @@ const ResetPassword = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" />
+      <Back to="/intro" isOrange />
 
       <Grid
         container

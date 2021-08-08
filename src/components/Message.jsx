@@ -16,6 +16,7 @@ export default function Message({
   severity,
 }) {
   const { t } = useTranslation();
+  console.log(children);
   const onRequestCheck = () => {
     if (frontError.status) {
       return t(contents.sthIsWrong);

@@ -11,8 +11,8 @@ import Message from '../../components/Message';
 
 const useStyles = makeStyles({
   root: {
-    width: '100%',
-    position: 'absolute',
+    // width: '100%',
+    // position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
@@ -61,10 +61,10 @@ const SearchChild = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
-      sx={{ marginTop: 36 }}
     >
       <Grid item xs={12}>
         <img
+          width="100%"
           src="/images/child/searchChild.png"
           className={classes.root}
           alt="register"

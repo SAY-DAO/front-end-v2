@@ -13,7 +13,11 @@ import { fetchChildResult } from '../../actions/childAction';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
-import roles from '../../apis/roles';
+import Back from '../../components/Back';
+import {
+  CHILD_RANDOM_SEARCH_RESET,
+  CHILD_SEARCH_RESULT_RESET,
+} from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -67,28 +71,9 @@ const SearchResult = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [userRole, setUserRole] = useState();
-  const [isGone, setIsGone] = useState(false);
-  const [childId, setChildId] = useState('');
-  const [familyId, setFamilyId] = useState('');
-  const [family, setFamily] = useState([]);
-  const [currentMember, setCurrentMember] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
   const [imageHeight, setImageHeight] = useState('375px');
-  const [previousRole, setPreviousRole] = useState();
-  const [warnText, setWarnText] = useState('');
-  const [childName, setChildName] = useState('');
-  const [rolesRelative, setRolesRelative] = useState();
-  const [backToPrevRoleIsOpen, setBackToPrevRoleIsOpen] = useState();
-  const [backToPrevRole, setBackToPrevRole] = useState(false);
-  const [adoptPopupIsOpen, setAdoptPopupIsOpen] = useState();
-  const [isFather, setIsFather] = useState(false);
-  const [isMother, setIsMother] = useState(false);
-  const [father, setFather] = useState('');
-  const [mother, setMother] = useState('');
-  const [alreadyInFamily, setAlreadyInFamily] = useState(false);
 
   const childSearchResult = useSelector((state) => state.childSearchResult);
   const {
@@ -99,62 +84,15 @@ const SearchResult = () => {
   } = childSearchResult;
 
   useEffect(() => {
-    if (theChild) {
-      setFamily(theChild.childFamilyMembers);
-      setUserRole(theChild.userRole);
-      const userId = JSON.parse(localStorage.getItem('userInfo')).user.id;
-      if (family) {
-        for (let f = 0; f < family.length; f += 1) {
-          const member = family[f];
-          if (member.isDeleted) {
-            if (member.user_id !== null) {
-              if (member.user_id === userId) {
-                setPreviousRole(member.role);
-              }
-
-              if (userRole !== null && userRole !== previousRole) {
-                setBackToPrevRole(true);
-              }
-            }
-          }
-          currentMember.push(member);
-
-          if (member.role === 0) {
-            setFather(member.username);
-            setIsFather(true);
-          }
-
-          if (member.role === 1) {
-            setIsMother(true);
-            setMother(member.username);
-          }
-
-          if (userId && userId === member.user_id) {
-            setAlreadyInFamily(true);
-          }
-        }
-      }
-    }
-  }, [theChild]);
-
-  useEffect(() => {
     if (!theChild) {
-      let token = history.location.search;
-      token = token.split('?token=')[1].split('&')[0];
-      dispatch(fetchChildResult(token));
-    }
-    if (theChild) {
-      if (theChild.userRole === 0) {
-        setIsFather(true);
-      }
-      if (theChild.userRole === 1) {
-        setIsMother(true);
+      try {
+        let token = history.location.search;
+        token = token.split('?token=')[1].split('&')[0];
+        dispatch(fetchChildResult(token));
+      } catch (e) {
+        console.log(e);
       }
     }
-    return () => {
-      setIsFather(false);
-      setIsMother(false);
-    };
   }, [theChild]);
 
   const getAge = (DOB) => {
@@ -180,21 +118,17 @@ const SearchResult = () => {
       setReadLess(true);
     }
   };
-
-  const openPopup = (r) => {
-    console.log(r);
-    if (previousRole !== null && r !== previousRole) {
-      setPreviousRole(roles[previousRole]);
-      setWarnText(t('error.adoption.backToPrevRole'));
-      setChildName(theChild.sayName);
-      setRolesRelative(roles.rolesRelative[previousRole]);
-    }
+  const handleBack = () => {
+    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+    dispatch({ type: CHILD_SEARCH_RESULT_RESET });
   };
 
   const classes = useStyles();
   return (
     <>
       <Grid container sx={{ marginTop: 36 }}>
+        <Back to="/search" isOrange={false} handleClickHere={handleBack} />
+
         <Grid item xs={12}>
           {theChild && theChild.sayName && (
             <>
@@ -240,14 +174,7 @@ const SearchResult = () => {
                     )}
                   </Grid>
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
-                    <InfoTabs
-                      theChild={theChild}
-                      openPopup={openPopup}
-                      father={father}
-                      mother={mother}
-                      isMother={isMother}
-                      isFather={isFather}
-                    />
+                    <InfoTabs />
                   </Grid>
                 </Grid>
               </Box>
@@ -255,7 +182,6 @@ const SearchResult = () => {
           )}
         </Grid>
       </Grid>
-
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorSearchResult && (
           <Message

@@ -38,14 +38,18 @@
     "password": "At least 6 characters, special characters and Upper Case alphabets for more security"
   },
   "error": {
+    "weak": "weak",
+    "okay": "okay",
+    "good": "good",
+    "strong": "strong",
     "fillOne": "Please fill one of the options",
     "allRequired": "Please fill in all the required fields",
     "passwordMatch": "Password entries don’t match",
     "wrongPassword": "Password is too short",
     "wrongEmail": "Please enter a valid email address",
     "wrongPhone": "The number you entered is incomplete",
-    "usernameStart": "Username cannot start with punctuation marks.",
-    "usernameLength": "Username must contain 4 to 12 characters.",
+    "usernameStart": "Username cannot start with punctuation marks or numbers.",
+    "usernameLength": "Username must contain 8 to 16 characters.",
     "wrongUsername": "User name can only contain alphabets, numbers and dot.",
     "usernameExists": "This userName is already in use",
     "phoneExists": "This phone number is already in use",
@@ -59,11 +63,11 @@
     "addressLength": "Please enter a shorter address!",
     "postalCodeLength": "Postal code must have 10 digits!",
     "adoption": {
-      "goneChild": "دیگر دیر شده و {{childName}} نمی‌تواند یک {{roles}}{{rolesRelative}} تازه داشته باشد. {{childName}} دیگر در بینِ ما نیست.",
-      "cannotBeMemberInvite": "شما پیش از دعوت {{previousRole}}{{rolesRelative}} {{childName}} بودید ولی او را ترک کردید و یک نفر دیگر اکنون {{previousRole}}{{rolesRelative}} {{childName}} است. شما دیگر نمی‌توانید به این خانواده باز گردید.",
-      "cannotBeMember": "بعد از این که خانواده را ترک کردید فرد دیگری {{previousRole}}{{rolesRelative}} {{childName}} شد و شما دیگر نمی‌توانید به این خانواده باز گردید.",
-      "backToPrevRole": "شما پیش از ترک این خانواده {{previousRole}}{{rolesRelative}} {{childName}} بودید و در این لحظه تنها می‌توانید به عنوان {{previousRole}}{{rolesRelative}} {{childName}} به خانواده باز گردید.",
-      "FaMoTaken": "دیر رسیدید و یک نفر دیگر اکنون {{roles}}{{rolesRelative}} {{childName}} است."
+      "goneChild": "دیگر دیر شده و {{childSayName}} نمی‌تواند یک {{roles}}{{rolesRelative}} تازه داشته باشد. {{childSayName}} دیگر در بینِ ما نیست.",
+      "cannotBeMemberInvite": "شما پیش از دعوت {{previousRole}}{{rolesRelative}} {{childSayName}} بودید ولی او را ترک کردید و یک نفر دیگر اکنون {{previousRole}}{{rolesRelative}} {{childSayName}} است. شما دیگر نمی‌توانید به این خانواده باز گردید.",
+      "cannotBeMember": "بعد از این که خانواده را ترک کردید فرد دیگری {{previousRole}}{{rolesRelative}} {{childSayName}} شد و شما دیگر نمی‌توانید به این خانواده باز گردید.",
+      "backToPrevRole": "شما پیش از ترک این خانواده {{previousRole}}{{rolesRelative}} {{childSayName}} بودید و در این لحظه تنها می‌توانید به عنوان {{previousRole}}{{rolesRelative}} {{childSayName}} به خانواده باز گردید.",
+      "FaMoTaken": "دیر رسیدید و یک نفر دیگر اکنون {{roles}}{{rolesRelative}} {{childSayName}} است."
     },
     "timeout": "Oh..! <1/>Something is not working. Check back latter"
   },
@@ -188,27 +192,27 @@
     "justRegisterModalDesc": "شما همیشه می‌توانید اطلاعات خود را از قسمت پروفایل ویرایش کنید!"
   },
   "search-result": {
-    "exitQoute": {
+    "exitQuote": {
       "1": "What you read was real",
       "2": "Every child is unique",
       "3": "What you heard was real",
-      "4": "You are about to miss an opportunity",
-      "5": "You are about to lose a child"
+      "4": "Every child is unique",
+      "5": "You are about to lose this child"
     },
     "title": "Family Members",
     "tab1": "Family Members",
     "tab2": "Your Role",
     "getRole": "I like to be",
     "adoptModal": {
-      "desc": "Are you sure you want to be {{childname}}'s {{roles}}?"
+      "desc": "Are you sure you want to be {{childSayName}}'s {{roles}}?"
     },
     "authWarn": {
-      "desc": "Enter if you want to be {{childname}}'s {{roles}}."
+      "desc": "Enter if you want to be {{childSayName}}'s {{roles}}."
     },
     "takenRole": {
-      "1": "We're sorry, in the meantime another user has become {{childname}}'s {{roles}}.",
-      "2": "Too late! Someone else has become {{childname}}'s {{roles}} earlier.",
-      "3": "It's too late to become {{childname}}'s {{roles}}."
+      "1": "We're sorry, in the meantime another user has become {{childSayName}}'s {{roles}}.",
+      "2": "Too late! Someone else has become {{childSayName}}'s {{roles}} earlier.",
+      "3": "It's too late to become {{childSayName}}'s {{roles}}."
     }
   },
   "profile": {
@@ -408,12 +412,12 @@
       "share": {
         "btn": "Share!",
         "title": "انتخاب‌هایی که داریم",
-        "text": "سلام \nیه اپلیکیشنی هست که توش می‌تونی خانواده درست کنی، یه خانواده که مجازیه اما آدم‌هاش مثل من و تو واقعی‌اند و تو می‌تونی آدم‌هایی که می‌شناسی رو دعوت کنی، مثل من که دارم تو رو دعوت می‌کنم به این خانواده و هر خانواده‌ای یه بچه‌ی واقعی داره. یه بچه‌ای که قصه‌ی زندگی‌اش رو اهل خانواده می‌تونن بخونن و صداش رو بشنون. تو این اپلیکیشن من شدم {{roles}}{{rolesRelative}} {{childname}} و فکر کردم تو هم می‌تونی {{inviteRoles}}{{invteRolesRelative}} {{childname}} باشی. بقیه‌اش رو هم خودت می‌تونی ببینی:\n"
+        "text": "سلام \nیه اپلیکیشنی هست که توش می‌تونی خانواده درست کنی، یه خانواده که مجازیه اما آدم‌هاش مثل من و تو واقعی‌اند و تو می‌تونی آدم‌هایی که می‌شناسی رو دعوت کنی، مثل من که دارم تو رو دعوت می‌کنم به این خانواده و هر خانواده‌ای یه بچه‌ی واقعی داره. یه بچه‌ای که قصه‌ی زندگی‌اش رو اهل خانواده می‌تونن بخونن و صداش رو بشنون. تو این اپلیکیشن من شدم {{roles}}{{rolesRelative}} {{childSayName}} و فکر کردم تو هم می‌تونی {{inviteRoles}}{{invteRolesRelative}} {{childSayName}} باشی. بقیه‌اش رو هم خودت می‌تونی ببینی:\n"
       }
     },
     "selectRoleModalDesc": "You can grow your family by inviting others. For this to happen, choose a role and create an invitation link.",
     "copyModalDesc": "لینک دعوت کپی شد.",
-    "leaveModalDesc": "You won't be {{childname}}'s {{roles}} anymore.",
+    "leaveModalDesc": "You won't be {{childSayName}}'s {{roles}} anymore.",
     "permanentGoneMsg": "Some things are unpredictable and out of control, and {{sayName}} changing residence, is one of those things. They are gone, and the NGO doesn’t have access to them, no more. We have made sure everything you have provided has reached {{hisHer}} hands up-to today.\n We wish {{himHer}} well, and as a remembrance of who {{heShe}} was and what we have achieved together, {{hisHer}} profile will be kept open.",
     "temporaryGoneMsg": "Somethings are out of our predictions and capacity and {{sayName}}’s temporary being away is one of those things. At the moment the NGO cannot reach {{himHer}} and {{hisHer}} family, so we decided to temporarily put this message on {{hisHer}} page and keep it semi-active. And wait with you for {{himHer}} return."
   },
@@ -434,7 +438,7 @@
   },
   "needPage": {
     "needInfo": "Need's Info",
-    "serviceDetail": "{{childName}}’s SW has written something, about the {{needName}}:",
+    "serviceDetail": "{{childSayName}}’s SW has written something, about the {{needName}}:",
     "payTitle": "Payment",
     "payContent": "Choose your method of payment and the amount you’d like to fund",
     "paySome": "Pay some",
@@ -453,7 +457,7 @@
       "othersModal": "This part of the payment has been paid by the ones who are no longer part of this family.",
       "SAYModal": "The price for the service/product was changed after the payment was done, SAY paid the rest."
     },
-    "holidayModal": "You can pay for the {{needName}} at this moment, but it will be delivered to {{childName}} after the holidays."
+    "holidayModal": "You can pay for the {{needName}} at this moment, but it will be delivered to {{childSayName}} after the holidays."
   },
   "needStatus": {
     "0": "Money transfer receipt",

@@ -43,7 +43,7 @@ const theTheme = createTheme({
         subtitle1: {
           color: '#636363',
           fontWeight: 500,
-          fontSize: '14px',
+          fontSize: '13px',
           lineHeight: '14px',
         },
         subtitle2: {
@@ -138,7 +138,7 @@ const theTheme = createTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          width: '300px',
+          minWidth: '250px',
         },
       },
     },

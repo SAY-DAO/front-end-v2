@@ -203,7 +203,7 @@ const EntryForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" />
+      <Back to="/intro" isOrange />
       <Grid item xs={12}>
         <img
           src="/images/register.svg"
@@ -235,7 +235,7 @@ const EntryForm = () => {
               countryCodeEditable={false}
             />
             <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle2">
                 {t('divider.register')}
               </Typography>
             </Divider>
@@ -266,7 +266,7 @@ const EntryForm = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ marginTop: 2 }}>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle2">
           <Trans i18nKey="join.alreadyJoined">
             If already joined tap
             <Link to="/Login">here</Link>

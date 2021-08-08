@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import PasswordStrengthBar from 'react-password-strength-bar';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
@@ -274,9 +275,23 @@ const FinalForm = () => {
                 <InputLabel htmlFor="password">
                   {t('placeholder.password')}
                 </InputLabel>
+                <PasswordStrengthBar
+                  id="pass-checker"
+                  password={password}
+                  shortScoreWord={t('error.weak')}
+                  minLength={6}
+                  scoreWords={[
+                    t('error.weak'),
+                    t('error.weak'),
+                    t('error.okay'),
+                    t('error.good'),
+                    t('error.strong'),
+                  ]}
+                  style={{ fontSize: '10px' }}
+                />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sx={{ marginTop: 4 }}>
+            <Grid item xs={12} sx={{ marginTop: 1 }}>
               <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
                 <OutlinedInput
                   error={repeatPasswordErr}

@@ -5,6 +5,8 @@ import {
   CHILD_SEARCH_RESULT_REQUEST,
   CHILD_SEARCH_RESULT_SUCCESS,
   CHILD_SEARCH_RESULT_FAIL,
+  CHILD_RANDOM_SEARCH_RESET,
+  CHILD_SEARCH_RESULT_RESET,
 } from '../constants/childConstants';
 
 export const childRandomSearchReducer = (state = {}, action) => {
@@ -15,6 +17,8 @@ export const childRandomSearchReducer = (state = {}, action) => {
       return { loading: false, success: true, theChildToken: action.payload };
     case CHILD_RANDOM_SEARCH_FAIL:
       return { loading: false, error: action.payload };
+    case CHILD_RANDOM_SEARCH_RESET:
+      return {};
     default:
       return state;
   }
@@ -28,6 +32,8 @@ export const childSearchResultReducer = (state = {}, action) => {
       return { loading: false, success: true, theChild: action.payload };
     case CHILD_SEARCH_RESULT_FAIL:
       return { loading: false, error: action.payload };
+    case CHILD_SEARCH_RESULT_RESET:
+      return {};
     default:
       return state;
   }

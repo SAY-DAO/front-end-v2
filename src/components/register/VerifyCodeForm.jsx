@@ -154,7 +154,7 @@ const VerifyCodeForm = () => {
       maxWidth
       sx={{ marginTop: 4 }}
     >
-      <Back step="EntryForm" />
+      <Back step="EntryForm" isOrange />
       <Grid item xs={12}>
         <img src="/images/otp.svg" className={classes.root} alt="otp page" />
       </Grid>

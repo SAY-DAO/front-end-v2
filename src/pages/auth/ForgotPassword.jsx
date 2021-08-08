@@ -131,7 +131,7 @@ const ForgotPassword = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/login" />
+      <Back to="/login" isOrange />
       <Grid
         container
         direction="column"
