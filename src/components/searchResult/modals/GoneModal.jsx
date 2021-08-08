@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export default function ChildModal({ childSayName, roles, rolesRelative }) {
+export default function GoneModal({ childSayName, roles, rolesRelative }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = React.useState(false);
@@ -86,7 +86,7 @@ export default function ChildModal({ childSayName, roles, rolesRelative }) {
   );
 }
 
-ChildModal.propTypes = {
+GoneModal.propTypes = {
   childSayName: PropTypes.string,
   roles: PropTypes.string,
   rolesRelative: PropTypes.string,

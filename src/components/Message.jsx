@@ -40,6 +40,25 @@ export default function Message({
       if (backError.status === 731) {
         return t(contents.phoneExists);
       }
+      if (backError.status === 743) {
+        // family not found
+        return t(contents.sthIsWrong);
+      }
+      if (backError.status === 744) {
+        // cannot join this family:
+        // role had taken by some one else
+        return t(contents.sthIsWrong);
+      }
+      if (backError.status === 746) {
+        // you must back to your old role
+        return t(contents.sthIsWrong);
+      }
+      if (backError.status === 747) {
+        // you already take this role
+        // you already join this family
+        return t(contents.sthIsWrong);
+      }
+
       if (backError.status === 400 && input === 'register') {
         return t(contents.sthIsWrong);
       }

@@ -15,8 +15,9 @@ import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/core/styles';
 import roles from '../../apis/roles';
 import { fetchChildResult } from '../../actions/childAction';
-import ChildModal from './modals/ChildModal';
+import ChildModal from './modals/GoneModal';
 import LeaveModel from './modals/LeaveModal';
+import AdoptModel from './modals/AdoptionModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +72,6 @@ export default function InfoTabs() {
   const [isMother, setIsMother] = useState(false);
   const [father, setFather] = useState('');
   const [mother, setMother] = useState('');
-  const [currentMember, setCurrentMember] = useState([]);
   const [family, setFamily] = useState([]);
   const [childId, setChildId] = useState('');
   const [familyId, setFamilyId] = useState('');
@@ -86,51 +86,24 @@ export default function InfoTabs() {
   const childSearchResult = useSelector((state) => state.childSearchResult);
   const { theChild } = childSearchResult;
 
+  // check family
   useEffect(() => {
-    if (!theChild) {
-      let token = history.location.search;
-      token = token.split('?token=')[1].split('&')[0];
-      dispatch(fetchChildResult(token));
-    }
-    if (theChild) {
-      if (theChild.userRole === 0) {
-        setIsFather(true);
-      }
-      if (theChild.userRole === 1) {
-        setIsMother(true);
-      }
-    }
-    return () => {
-      setIsFather(false);
-      setIsMother(false);
-    };
-  }, [theChild, history, dispatch]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  useEffect(() => {
+    const currentMember = [];
     const userId = localStorage.getItem('userInfo')
       ? JSON.parse(localStorage.getItem('userInfo'))
       : {};
 
-    if (theChild && userId) {
-      setFamily(theChild.childFamilyMembers);
-      setUserRole(theChild.userRole);
+    if (family && userId) {
+      for (let f = 0; f < family.length; f += 1) {
+        const member = family[f];
+        if (member.isDeleted) {
+          if (member.user_id !== null) {
+            if (member.user_id === userId) {
+              setPreviousRole(member.role);
+            }
 
-      if (family) {
-        for (let f = 0; f < family.length; f += 1) {
-          const member = family[f];
-          if (member.isDeleted) {
-            if (member.user_id !== null) {
-              if (member.user_id === userId) {
-                setPreviousRole(member.role);
-              }
-
-              if (userRole !== null && userRole !== previousRole) {
-                setBackToPrevRole(true);
-              }
+            if (userRole !== null && userRole !== previousRole) {
+              setBackToPrevRole(true);
             }
           }
           currentMember.push(member);
@@ -151,7 +124,34 @@ export default function InfoTabs() {
         }
       }
     }
-  }, [theChild, currentMember, family, previousRole, userRole]);
+  }, [theChild, family, previousRole, userRole]);
+
+  useEffect(() => {
+    if (!theChild) {
+      let token = history.location.search;
+      token = token.split('?token=')[1].split('&')[0];
+      dispatch(fetchChildResult(token));
+    }
+    if (theChild) {
+      setUserRole(theChild.userRole);
+      setFamily(theChild.childFamilyMembers);
+
+      if (userRole === 0) {
+        setIsFather(true);
+      }
+      if (userRole === 1) {
+        setIsMother(true);
+      }
+    }
+    return () => {
+      setIsFather(false);
+      setIsMother(false);
+    };
+  }, [userRole, theChild, history, dispatch]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const openPopup = (r) => {
     console.log(r);
@@ -372,6 +372,13 @@ export default function InfoTabs() {
       {/* Leave warn popup */}
       <LeaveModel />
       {/* Adoption popup */}
+      <AdoptModel
+        family={family}
+        userRole={userRole}
+        childSayName={theChild.sayName}
+        roles={`${t(roles.roles[userRole])}`}
+        rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+      />
     </>
   );
 }
