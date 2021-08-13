@@ -14,10 +14,7 @@ import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
-import {
-  CHILD_RANDOM_SEARCH_RESET,
-  CHILD_SEARCH_RESULT_RESET,
-} from '../../constants/childConstants';
+import LeaveModel from '../../components/searchResult/modals/LeaveModal';
 
 const useStyles = makeStyles({
   root: {
@@ -74,6 +71,7 @@ const SearchResult = () => {
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
   const [imageHeight, setImageHeight] = useState('375px');
+  const [backIsTrue, setBackIsTrue] = useState(false);
 
   const childSearchResult = useSelector((state) => state.childSearchResult);
   const {
@@ -119,15 +117,14 @@ const SearchResult = () => {
     }
   };
   const handleBack = () => {
-    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    dispatch({ type: CHILD_SEARCH_RESULT_RESET });
+    setBackIsTrue(true);
   };
 
   const classes = useStyles();
   return (
     <>
       <Grid container sx={{ marginTop: 36 }}>
-        <Back to="/search" isOrange={false} handleClickHere={handleBack} />
+        <Back isOrange={false} handleClickOverride={handleBack} />
 
         <Grid item xs={12}>
           {theChild && theChild.sayName && (
@@ -181,6 +178,8 @@ const SearchResult = () => {
             </>
           )}
         </Grid>
+        {/* Leave warn popup */}
+        <LeaveModel setBackIsTrue={setBackIsTrue} backIsTrue={backIsTrue} />
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorSearchResult && (

@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@material-ui/core';
 import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -24,6 +23,11 @@ const style = {
 };
 
 export default function AdoptionModal({
+  successLogin,
+  roleSelecting,
+  setRoleSelecting,
+  selectedRole,
+  family,
   userRole,
   childSayName,
   roles,
@@ -33,20 +37,50 @@ export default function AdoptionModal({
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [content, setContent] = useState();
+  const [adoptText, setAdoptText] = useState('');
+  const [authWarnText, setAuthWarnText] = useState('');
+
+  const childRandomSearch = useSelector((state) => state.childRandomSearch);
+  const { theChildToken } = childRandomSearch;
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { success: successLogin } = userLogin;
+  // modal contents when selecting a role
+  useEffect(() => {
+    setAuthWarnText(
+      t('search-result.authWarn.desc', {
+        childSayName,
+        roles,
+        rolesRelative,
+      })
+    );
+    setAdoptText(
+      t('search-result.adoptModal.desc', {
+        childSayName,
+        roles,
+        rolesRelative,
+      })
+    );
+    if (!successLogin) {
+      console.log(roles);
+      setContent(authWarnText);
+    } else {
+      setContent(adoptText);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [childSayName, roles, rolesRelative, roleSelecting]);
 
-  const childRandomRSearch = useSelector((state) => state.childRandomRSearch);
-  const { theChildToken } = childRandomRSearch;
+  useEffect(() => {
+    if (roleSelecting) {
+      handleOpen();
+      setRoleSelecting(false);
+    }
+  }, [roleSelecting, setRoleSelecting, childSayName]);
 
-  const invite = () => {
-    const { selectedRole } = this.state;
-    const { familyId } = this.state;
-
+  const handleJoin = () => {
     if (
       userRole != null &&
       userRole === selectedRole &&
@@ -58,35 +92,34 @@ export default function AdoptionModal({
       history.push('/login');
     } else {
       const formData = new FormData();
-      formData.set('family_id', familyId);
+      formData.set('family_id', family.id);
       formData.set('role', selectedRole);
-      api
-        .request({
-          url: '/invitations/',
-          method: 'POST',
-          data: formData,
-        })
-        .then((res) => {
-          const result = res.data;
-          this.setState(
-            {
-              invitationToken: result.token,
-            },
-            isLoggedIn() ? this.addToFamily : this.saveToken
-          );
-        })
-        .catch((err) => {
-          // TODO: error handling
-          // 404 = family not found, when child gone for example
-          // this condition may happen in get child by token
-          // 500 error
-        });
+      // api
+      //   .request({
+      //     url: '/invitations/',
+      //     method: 'POST',
+      //     data: formData,
+      //   })
+      //   .then((res) => {
+      //     const result = res.data;
+      //     this.setState(
+      //       {
+      //         invitationToken: result.token,
+      //       },
+      //       isLoggedIn() ? this.addToFamily : this.saveToken
+      //     );
+      // })
+      // .catch((err) => {
+      //   // TODO: error handling
+      //   // 404 = family not found, when child gone for example
+      //   // this condition may happen in get child by token
+      //   // 500 error
+      // });
     }
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Adopt</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -119,11 +152,7 @@ export default function AdoptionModal({
                   variant="body2"
                   component="h2"
                 >
-                  {t('search-result.adoptModal.desc', {
-                    childSayName,
-                    roles,
-                    rolesRelative,
-                  })}
+                  {content}
                 </Typography>
               </Grid>
               <Grid
@@ -142,7 +171,7 @@ export default function AdoptionModal({
                       fontSize: '0.8rem',
                       fontWeight: 'bolder',
                     }}
-                    onClick={handleClose}
+                    onClick={handleJoin}
                   >
                     {t('button.accept.yes')}
                   </Link>
@@ -169,9 +198,13 @@ export default function AdoptionModal({
 }
 
 AdoptionModal.propTypes = {
-  family: PropTypes.array,
+  successLogin: PropTypes.bool,
+  roleSelecting: PropTypes.bool.isRequired,
+  setRoleSelecting: PropTypes.func,
+  selectedRole: PropTypes.number,
+  family: PropTypes.array.isRequired,
   userRole: PropTypes.number,
-  childSayName: PropTypes.string,
-  roles: PropTypes.string,
-  rolesRelative: PropTypes.string,
+  childSayName: PropTypes.string.isRequired,
+  roles: PropTypes.string.isRequired,
+  rolesRelative: PropTypes.string.isRequired,
 };

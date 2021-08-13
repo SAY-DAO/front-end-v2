@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@material-ui/core';
 import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -20,16 +19,26 @@ const style = {
   p: 4,
 };
 
-export default function GoneModal({ childSayName, roles, rolesRelative }) {
+export default function GoneModal({
+  isGone,
+  childSayName,
+  roles,
+  rolesRelative,
+}) {
   const { t } = useTranslation();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useEffect(() => {
+    if (isGone) {
+      handleOpen();
+    }
+  }, [isGone]);
+
   return (
     <div>
-      <Button onClick={handleOpen}>is Gone</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -87,7 +96,8 @@ export default function GoneModal({ childSayName, roles, rolesRelative }) {
 }
 
 GoneModal.propTypes = {
-  childSayName: PropTypes.string,
-  roles: PropTypes.string,
-  rolesRelative: PropTypes.string,
+  isGone: PropTypes.bool.isRequired,
+  childSayName: PropTypes.string.isRequired,
+  roles: PropTypes.string.isRequired,
+  rolesRelative: PropTypes.string.isRequired,
 };

@@ -5,15 +5,15 @@ import PropTypes from 'prop-types';
 import { changeVerifyStep } from '../actions/userAction';
 import { USER_VERIFY_RESET } from '../constants/userConstants';
 
-const Back = ({ step, to, isOrange, handleClickHere }) => {
+const Back = ({ step, to, isOrange, handleClickOverride }) => {
   const dispatch = useDispatch();
 
   const clickHandle = () => {
-    if (!handleClickHere) {
+    if (!handleClickOverride) {
       dispatch(changeVerifyStep(step));
       dispatch({ type: USER_VERIFY_RESET });
     } else {
-      handleClickHere();
+      handleClickOverride();
     }
   };
 
@@ -54,7 +54,7 @@ Back.propTypes = {
   step: PropTypes.string,
   to: PropTypes.string,
   isOrange: PropTypes.bool.isRequired,
-  handleClickHere: PropTypes.func,
+  handleClickOverride: PropTypes.func,
 };
 
 Back.defaultProps = {

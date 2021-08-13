@@ -8,8 +8,6 @@ const history = createBrowserHistory();
 
 const env = process.env.NODE_ENV || 'local';
 
-console.log(process.env);
-
 let envApiUrl = '';
 
 if (env === 'prod') {

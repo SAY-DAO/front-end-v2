@@ -1,11 +1,17 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@material-ui/core';
 import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import exitQuote from '../../../apis/quote.json';
+import {
+  CHILD_RANDOM_SEARCH_RESET,
+  CHILD_SEARCH_RESULT_RESET,
+} from '../../../constants/childConstants';
 
 const style = {
   position: 'absolute',
@@ -20,16 +26,30 @@ const style = {
   p: 4,
 };
 
-export default function LeaveModel() {
+export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleLeave = () => {
+    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+    dispatch({ type: CHILD_SEARCH_RESULT_RESET });
+    history.push('/search ');
+    handleClose();
+  };
+
+  useEffect(() => {
+    if (backIsTrue) {
+      handleOpen();
+      setBackIsTrue(false);
+    }
+  }, [backIsTrue, setBackIsTrue]);
 
   return (
     <div>
-      <Button onClick={handleOpen}>leave</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -78,7 +98,7 @@ export default function LeaveModel() {
                       fontSize: '0.8rem',
                       fontWeight: 'bolder',
                     }}
-                    onClick={handleClose}
+                    onClick={handleLeave}
                   >
                     {t('button.leave.yes')}
                   </Link>
@@ -103,3 +123,8 @@ export default function LeaveModel() {
     </div>
   );
 }
+
+LeaveModel.propTypes = {
+  backIsTrue: PropTypes.bool.isRequired,
+  setBackIsTrue: PropTypes.func,
+};
