@@ -22,7 +22,7 @@ export default function Message({
       return t(contents.sthIsWrong);
     }
     if (backError.status) {
-      if (frontError.status === 710) {
+      if (backError.status === 710) {
         return t(contents.wrongUsername);
       }
       if (backError.status === 711) {
