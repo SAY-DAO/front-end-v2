@@ -69,7 +69,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
               justifyContent="center"
               alignItems="center"
             >
-              <Grid item xs={12} sx={{ margin: 2 }}>
+              <Grid item xs={12} sx={{ margin: 2, textAlign: 'center' }}>
                 <Typography
                   id="transition-modal-title"
                   variant="body2"

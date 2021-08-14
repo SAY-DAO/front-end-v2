@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { joinMyFamily } from '../../../actions/familyAction';
+import { virtualFamilyToken } from '../../../actions/familyAction';
 
 const style = {
   position: 'absolute',
@@ -81,19 +81,17 @@ export default function AdoptionModal({
   }, [roleSelecting, setRoleSelecting, childSayName]);
 
   const handleJoin = () => {
+    console.log('hi');
     if (
       userRole != null &&
       userRole === selectedRole &&
       successLogin &&
       theChildToken
     ) {
-      dispatch(joinMyFamily(theChildToken.token));
+      dispatch(virtualFamilyToken(family.id && selectedRole));
     } else if (!successLogin) {
       history.push('/login');
     } else {
-      const formData = new FormData();
-      formData.set('family_id', family.id);
-      formData.set('role', selectedRole);
       // api
       //   .request({
       //     url: '/invitations/',
@@ -146,7 +144,7 @@ export default function AdoptionModal({
                   style={{ minWidth: '45px' }}
                 />
               </Grid>
-              <Grid item xs={12} sx={{ marginTop: 2 }}>
+              <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
                 <Typography
                   id="transition-modal-title"
                   variant="body2"

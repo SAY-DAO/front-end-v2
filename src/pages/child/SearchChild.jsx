@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
@@ -35,20 +34,26 @@ const SearchChild = () => {
     success: successRandomSearch,
   } = childRandomSearch;
 
+  const localToken = localStorage.getItem('randomChildToken');
+
   // loading button
   useEffect(() => {
-    if (loadingRandomSearch) {
+    if (loadingRandomSearch || localToken) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingRandomSearch]);
+  }, [loadingRandomSearch, localToken]);
 
+  // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
       history.push(`/search-result?token=${theChildToken.token}`);
     }
-  }, [successRandomSearch]);
+    if (localToken) {
+      history.push(`/search-result?token=${localToken}`);
+    }
+  }, [successRandomSearch, history, theChildToken]);
 
   const onClick = () => {
     dispatch(fetchRandomChild());

@@ -1,16 +1,16 @@
 import {
-  JOIN_FAMILY_REQUEST,
-  JOIN_FAMILY_SUCCESS,
-  JOIN_FAMILY_FAIL,
+  VIRTUAL_FAMILY_TOKEN_REQUEST,
+  VIRTUAL_FAMILY_TOKEN_SUCCESS,
+  VIRTUAL_FAMILY_TOKEN_FAIL,
 } from '../constants/familyConstants';
 
 export const joinFamilyReducer = (state = {}, action) => {
   switch (action.type) {
-    case JOIN_FAMILY_REQUEST:
+    case VIRTUAL_FAMILY_TOKEN_REQUEST:
       return { loading: true };
-    case JOIN_FAMILY_SUCCESS:
+    case VIRTUAL_FAMILY_TOKEN_SUCCESS:
       return { loading: false, success: true, theChildToken: action.payload };
-    case JOIN_FAMILY_FAIL:
+    case VIRTUAL_FAMILY_TOKEN_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

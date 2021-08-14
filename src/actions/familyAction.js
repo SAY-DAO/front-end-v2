@@ -1,33 +1,36 @@
 import { publicApi } from '../apis/sayBase';
 import {
-  JOIN_FAMILY_REQUEST,
-  JOIN_FAMILY_SUCCESS,
-  JOIN_FAMILY_FAIL,
+  VIRTUAL_FAMILY_TOKEN_REQUEST,
+  VIRTUAL_FAMILY_TOKEN_SUCCESS,
+  VIRTUAL_FAMILY_TOKEN_FAIL,
 } from '../constants/familyConstants';
 
-export const joinMyFamily = (invitationToken) => async (dispatch) => {
-  try {
-    dispatch({ type: JOIN_FAMILY_REQUEST });
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    };
+// wee get this token to use it for joining a family by calling joinVirtualFamily()
+export const virtualFamilyToken =
+  (familyId, selectedRole) => async (dispatch) => {
+    try {
+      dispatch({ type: VIRTUAL_FAMILY_TOKEN_REQUEST });
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      };
 
-    const formData = new FormData();
-    formData.set('invitationToken', invitationToken);
+      const formData = new FormData();
+      formData.set('family_id', familyId);
+      formData.set('role', selectedRole);
 
-    const { data } = await publicApi.post(`/family/add`, formData, {
-      config,
-    });
-    dispatch({
-      type: JOIN_FAMILY_SUCCESS,
-      payload: data,
-    });
-  } catch (e) {
-    dispatch({
-      type: JOIN_FAMILY_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
-    });
-  }
-};
+      const { data } = await publicApi.post(`/invitations`, formData, {
+        config,
+      });
+      dispatch({
+        type: VIRTUAL_FAMILY_TOKEN_SUCCESS,
+        payload: data,
+      });
+    } catch (e) {
+      dispatch({
+        type: VIRTUAL_FAMILY_TOKEN_FAIL,
+        payload: e.response && e.response.status ? e.response : e.message,
+      });
+    }
+  };

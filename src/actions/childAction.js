@@ -34,7 +34,7 @@ export const fetchRandomChild = () => async (dispatch) => {
   }
 };
 
-export const fetchChildResult = (invitationToken) => async (dispatch) => {
+export const fetchChildResult = (token) => async (dispatch) => {
   try {
     dispatch({ type: CHILD_SEARCH_RESULT_REQUEST });
     const config = {
@@ -43,17 +43,15 @@ export const fetchChildResult = (invitationToken) => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.get(
-      `/child/invitations/${invitationToken}`,
-      {
-        config,
-      }
-    );
+    const { data } = await publicApi.get(`/child/invitations/${token}`, {
+      config,
+    });
 
     dispatch({
       type: CHILD_SEARCH_RESULT_SUCCESS,
       payload: data,
     });
+    localStorage.setItem('randomChildToken', JSON.stringify(token));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({

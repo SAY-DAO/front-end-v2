@@ -65,7 +65,7 @@ export default function GoneModal({
                   style={{ minWidth: '45px' }}
                 />
               </Grid>
-              <Grid item xs={12} sx={{ marginTop: 2 }}>
+              <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
                 <Typography
                   id="transition-modal-title"
                   variant="body2"
