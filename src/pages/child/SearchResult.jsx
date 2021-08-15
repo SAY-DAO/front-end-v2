@@ -117,6 +117,7 @@ const SearchResult = () => {
     }
   };
   const handleBack = () => {
+    // leave modal pops up
     setBackIsTrue(true);
   };
 

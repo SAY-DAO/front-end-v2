@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeVerifyStep } from '../actions/userAction';
@@ -7,18 +8,20 @@ import { USER_VERIFY_RESET } from '../constants/userConstants';
 
 const Back = ({ step, to, isOrange, handleClickOverride }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const clickHandle = () => {
     if (!handleClickOverride) {
       dispatch(changeVerifyStep(step));
       dispatch({ type: USER_VERIFY_RESET });
+      history.push(to);
     } else {
       handleClickOverride();
     }
   };
 
   return (
-    <Link to={to || '#'} onClick={clickHandle}>
+    <Link to={to} onClick={clickHandle}>
       {isOrange ? (
         <img
           src="/images/back_orange.svg"

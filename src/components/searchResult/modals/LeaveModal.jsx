@@ -3,8 +3,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@material-ui/core';
 import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
-import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import exitQuote from '../../../apis/quote.json';
@@ -31,14 +31,27 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [redirect, setRedirect] = useState();
+
+  useEffect(() => {
+    setRedirect(
+      // eslint-disable-next-line no-restricted-globals
+      location.search.split('=')[2] || location.search.split('=')[2]
+    );
+  }, []);
+
+  // eslint-disable-next-line no-restricted-globals
+  console.log(location.search.split('='));
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleLeave = () => {
     dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     dispatch({ type: CHILD_SEARCH_RESULT_RESET });
-    history.push('/search ');
+    localStorage.removeItem('randomChildToken');
     handleClose();
+    history.push(redirect);
   };
 
   useEffect(() => {

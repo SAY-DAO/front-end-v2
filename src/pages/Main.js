@@ -25,13 +25,18 @@ const Main = () => {
 
   const path = location.pathname;
   return (
-    <Grid container>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       {path === '/main/profile' ? (
         <Profile />
       ) : path === '/main/cart' ? (
         <Cart />
       ) : path === '/main/search' ? (
-        <Search />
+        <Search sx={{ minHeight: '100vh' }} />
       ) : (
         <Home />
       )}

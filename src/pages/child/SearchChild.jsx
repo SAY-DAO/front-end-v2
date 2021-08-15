@@ -48,10 +48,12 @@ const SearchChild = () => {
   // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(`/search-result?token=${theChildToken.token}`);
+      history.push(
+        `/search-result?token=${theChildToken.token}&redirect=/search-child`
+      );
     }
     if (localToken) {
-      history.push(`/search-result?token=${localToken}`);
+      history.push(`/search-result?token=${localToken}&redirect=/search-child`);
     }
   }, [successRandomSearch, history, theChildToken]);
 

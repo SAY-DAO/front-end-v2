@@ -48,14 +48,16 @@ const Search = () => {
   // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(`/search-result?token=${theChildToken.token}`);
+      history.push(
+        `/search-result?token=${theChildToken.token}&redirect=/main/search`
+      );
     }
     if (localToken) {
-      history.push(`/search-result?token=${localToken}`);
+      history.push(`/search-result?token=${localToken}&redirect=/main/search`);
     }
   }, [successRandomSearch, history, theChildToken]);
 
-  const onClick = () => {
+  const handleClick = () => {
     dispatch(fetchRandomChild());
   };
   const classes = useStyles();
@@ -99,7 +101,7 @@ const Search = () => {
           <LoadingButton
             variant="contained"
             color="primary"
-            onClick={onClick}
+            onClick={handleClick}
             loading={isLoading}
             sx={{ bottom: 5 }}
           >

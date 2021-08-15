@@ -7,6 +7,17 @@ import Paper from '@material-ui/core/Paper';
 import { useHistory } from 'react-router';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+    color: 'green',
+    '&$selected': {
+      color: 'red',
+    },
+  },
+  selected: {},
+});
 
 export default function FixedBottomNavigation() {
   const history = useHistory();
@@ -29,8 +40,10 @@ export default function FixedBottomNavigation() {
     }
   }, [value]);
 
+  const classes = useStyles();
+
   return (
-    <Box sx={{ pb: 7 }}>
+    <Box>
       <CssBaseline />
       <Paper
         sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
@@ -39,6 +52,11 @@ export default function FixedBottomNavigation() {
         <BottomNavigation value={value} onChange={handleChange}>
           <BottomNavigationAction
             value="profile"
+            label="home"
+            sx={{
+              maxWidth: value === 'profile' ? '170px' : '20px',
+              backgroundColor: value === 'profile' ? '#ffdfc1' : 'transparent',
+            }}
             icon={
               <img
                 src={
@@ -47,12 +65,22 @@ export default function FixedBottomNavigation() {
                     : '/images/appBar/profile.svg'
                 }
                 alt="Profile Icon"
-                style={{ maxWidth: '30px', position: 'absolute' }}
+                style={{
+                  maxWidth: '25px',
+                  position: 'absolute',
+                  right: value === 'profile' ? 5 : 35,
+                  bottom: 15,
+                }}
               />
             }
           />
           <BottomNavigationAction
             value="cart"
+            label="home"
+            sx={{
+              maxWidth: value === 'cart' ? '170px' : '20px',
+              backgroundColor: value === 'cart' ? '#ffdfc1' : 'transparent',
+            }}
             icon={
               <img
                 src={
@@ -61,12 +89,22 @@ export default function FixedBottomNavigation() {
                     : '/images/appBar/cart.svg'
                 }
                 alt="Cart Icon"
-                style={{ maxWidth: '30px', position: 'absolute' }}
+                style={{
+                  maxWidth: '25px',
+                  position: 'absolute',
+                  right: value === 'cart' ? 5 : 35,
+                  bottom: 15,
+                }}
               />
             }
           />
           <BottomNavigationAction
             value="search"
+            label="home"
+            sx={{
+              maxWidth: value === 'search' ? '170px' : '20px',
+              backgroundColor: value === 'search' ? '#ffdfc1' : 'transparent',
+            }}
             icon={
               <img
                 src={
@@ -75,12 +113,22 @@ export default function FixedBottomNavigation() {
                     : '/images/appBar/search.svg'
                 }
                 alt="Search Icon"
-                style={{ maxWidth: '30px', position: 'absolute' }}
+                style={{
+                  maxWidth: '25px',
+                  position: 'absolute',
+                  right: value === 'search' ? 5 : 35,
+                  bottom: 15,
+                }}
               />
             }
           />
           <BottomNavigationAction
             value="home"
+            label="home"
+            sx={{
+              maxWidth: value === 'home' ? '170px' : '20px',
+              backgroundColor: value === 'home' ? '#ffdfc1' : 'transparent',
+            }}
             icon={
               <img
                 src={
@@ -89,7 +137,12 @@ export default function FixedBottomNavigation() {
                     : '/images/appBar/home.svg'
                 }
                 alt="Home Icon"
-                style={{ maxWidth: '30px', position: 'absolute' }}
+                style={{
+                  maxWidth: '25px',
+                  position: 'absolute',
+                  right: value === 'home' ? 5 : 35,
+                  bottom: 15,
+                }}
               />
             }
           />
