@@ -10,6 +10,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import SearchChild from './pages/child/SearchChild';
 import SearchResult from './pages/child/SearchResult';
+import Main from './pages/Main';
 
 const App = () => (
   <>
@@ -26,6 +27,12 @@ const App = () => (
             <Route exact path="/setpassword" component={ResetPassword} />
             <Route exact path="/search" component={SearchChild} />
             <Route exact path="/search-result" component={SearchResult} />
+            <Route exact path="/main" component={Main} />
+            <Route exact path="/main/profile" component={Main} />
+            <Route exact path="/main/cart" component={Main} />
+            <Route exact path="/main/search" component={Main} />
+            <Route exact path="/main/home" component={Main} />
+            {/* <Route exact path="/family/child/:childId" component={ChildRoom} /> */}
           </Switch>
         </React.StrictMode>
       </Container>

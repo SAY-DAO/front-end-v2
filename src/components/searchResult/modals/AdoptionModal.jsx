@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { virtualFamilyToken } from '../../../actions/familyAction';
+import { inviteToMyFamily } from '../../../actions/familyAction';
 
 const style = {
   position: 'absolute',
@@ -82,13 +82,8 @@ export default function AdoptionModal({
 
   const handleJoin = () => {
     console.log('hi');
-    if (
-      userRole != null &&
-      userRole === selectedRole &&
-      successLogin &&
-      theChildToken
-    ) {
-      dispatch(virtualFamilyToken(family.id && selectedRole));
+    if (userRole != null && successLogin && 'theInvite') {
+      dispatch(inviteToMyFamily(family.id && selectedRole));
     } else if (!successLogin) {
       history.push('/login');
     } else {

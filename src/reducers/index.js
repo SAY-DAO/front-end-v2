@@ -14,7 +14,7 @@ import {
   childRandomSearchReducer,
   childSearchResultReducer,
 } from './childReducer';
-import { joinFamilyReducer } from './familyReducer';
+import { invitationReducer } from './familyReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -28,5 +28,5 @@ export default combineReducers({
   userResetPass: userResetPasswordReducer,
   childRandomSearch: childRandomSearchReducer,
   childSearchResult: childSearchResultReducer,
-  JoinNewFamily: joinFamilyReducer,
+  JoinNewFamily: invitationReducer,
 });

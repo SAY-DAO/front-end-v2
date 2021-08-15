@@ -1,16 +1,29 @@
 import {
-  VIRTUAL_FAMILY_TOKEN_REQUEST,
-  VIRTUAL_FAMILY_TOKEN_SUCCESS,
-  VIRTUAL_FAMILY_TOKEN_FAIL,
+  INVITE_TO_MY_FAMILY_REQUEST,
+  INVITE_TO_MY_FAMILY_SUCCESS,
+  INVITE_TO_MY_FAMILY_FAIL,
 } from '../constants/familyConstants';
+
+export const invitationReducer = (state = {}, action) => {
+  switch (action.type) {
+    case INVITE_TO_MY_FAMILY_REQUEST:
+      return { loading: true };
+    case INVITE_TO_MY_FAMILY_SUCCESS:
+      return { loading: false, success: true, theInvite: action.payload };
+    case INVITE_TO_MY_FAMILY_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 export const joinFamilyReducer = (state = {}, action) => {
   switch (action.type) {
-    case VIRTUAL_FAMILY_TOKEN_REQUEST:
+    case INVITE_TO_MY_FAMILY_REQUEST:
       return { loading: true };
-    case VIRTUAL_FAMILY_TOKEN_SUCCESS:
-      return { loading: false, success: true, theChildToken: action.payload };
-    case VIRTUAL_FAMILY_TOKEN_FAIL:
+    case INVITE_TO_MY_FAMILY_SUCCESS:
+      return { loading: false, success: true, theInvite: action.payload };
+    case INVITE_TO_MY_FAMILY_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

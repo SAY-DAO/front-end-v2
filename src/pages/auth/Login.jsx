@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
@@ -30,6 +31,11 @@ const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+  // eslint-disable-next-line no-restricted-globals
+  const redirect = location.search
+    ? // eslint-disable-next-line no-restricted-globals
+      location.search.split('redirect=')[1]
+    : 'search';
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -39,15 +45,31 @@ const Login = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const {
+    local,
     loading: loadingLogin,
     error: errorLogin,
     success: successLogin,
   } = userLogin;
 
+  const localUserInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : {};
+
+  useEffect(() => {
+    if (
+      successLogin ||
+      (localUserInfo && localUserInfo.accessToken !== undefined)
+    ) {
+      history.push(`/${redirect}`);
+    }
+  }, [history, localUserInfo, redirect, successLogin]);
+
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
-    dispatch({ type: USER_LOGOUT });
-  }, [userName, password]);
+    if (!successLogin && !localUserInfo) {
+      dispatch({ type: USER_LOGOUT });
+    }
+  }, [userName, password, successLogin, dispatch]);
 
   // Message input for some status error (422)
   useEffect(() => {
@@ -73,12 +95,6 @@ const Login = () => {
       setIsDisabled(false);
     }
   }, [userName, password, errorLogin, successLogin]);
-
-  useEffect(() => {
-    if (successLogin) {
-      history.push('/search');
-    }
-  }, [successLogin, history]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

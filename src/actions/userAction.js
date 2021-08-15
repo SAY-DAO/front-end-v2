@@ -17,7 +17,6 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
-  // USER_LOGOUT,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
@@ -253,14 +252,12 @@ export const login = (userName, password) => async (dispatch) => {
   }
 };
 
-// export const logout = () => (dispatch) => {
-// 	localStorage.removeItem("userInfo");
-// 	localStorage.removeItem("cartItems");
-// 	localStorage.removeItem("shippingAddress");
-// 	dispatch({ type: USER_LOGOUT });
-// 	dispatch({ type: USER_DETAILS_RESET });
-// 	// cleanMyOrders();
-// };
+export const logout = () => (dispatch) => {
+  localStorage.clear();
+  // dispatch({ type: USER_LOGOUT });
+  // dispatch({ type: USER_DETAILS_RESET });
+  // cleanMyOrders();
+};
 
 export const forgotPassword = (theKey, value) => async (dispatch) => {
   let resetType;

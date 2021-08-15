@@ -10,11 +10,18 @@ import {
 
 const localVerifyInfo = localStorage.getItem('localVerifyInfo')
   ? JSON.parse(localStorage.getItem('localVerifyInfo'))
-  : {};
+  : null;
+
+const localUserLogin = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null;
 
 const initialState = {
   userVerifyInfo: {
-    local: localVerifyInfo,
+    localVerifyInfo,
+  },
+  userLogin: {
+    localUserLogin,
   },
 };
 
