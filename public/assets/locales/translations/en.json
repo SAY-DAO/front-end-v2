@@ -177,7 +177,8 @@
     "dashboard": "Dashboard",
     "search": "Search",
     "profile": "Profile",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "cart": "Shopping Cart"
   },
   "dashboard": {
     "title": "Children"

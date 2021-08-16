@@ -7,7 +7,7 @@ import AppBar from '../components/main/AppBar';
 import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
 import Cart from '../components/main/Cart';
-import Home from '../components/main/Home';
+import Dashboard from '../components/main/Dashboard';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Main = () => {
       ) : path === '/main/search' ? (
         <Search sx={{ minHeight: '100vh' }} />
       ) : (
-        <Home />
+        <Dashboard />
       )}
       <AppBar />
     </Grid>

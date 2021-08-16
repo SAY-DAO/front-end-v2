@@ -177,7 +177,9 @@
     "dashboard": "داشبورد",
     "search": "جستجو",
     "profile": "پروفایل",
-    "notifications": "اعلان‌ها"
+    "notifications": "اعلان‌ها",
+    "cart": "سبد خرید"
+
   },
   "dashboard": {
     "title": "کودکان"

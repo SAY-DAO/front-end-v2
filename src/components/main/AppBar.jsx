@@ -4,25 +4,24 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Paper from '@material-ui/core/Paper';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
-    color: 'green',
-    '&$selected': {
-      color: 'red',
+    '& .Mui-selected': {
+      position: 'absolute',
+      left: 15,
     },
   },
-  selected: {},
 });
 
 export default function FixedBottomNavigation() {
+  const { t } = useTranslation();
   const history = useHistory();
 
-  const [value, setValue] = useState();
+  const [value, setValue] = useState('dashboard');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -35,26 +34,39 @@ export default function FixedBottomNavigation() {
       history.push('/main/cart');
     } else if (value === 'search') {
       history.push('/main/search');
-    } else if (value === 'home') {
-      history.push('/main/home');
+    } else if (value === 'dashboard') {
+      history.push('/main/dashboard');
     }
   }, [value]);
 
   const classes = useStyles();
-
   return (
     <Box>
       <CssBaseline />
       <Paper
-        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
-        elevation={3}
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          pt: 1,
+          pb: 1,
+        }}
+        elevation={0}
       >
-        <BottomNavigation value={value} onChange={handleChange}>
+        <BottomNavigation
+          value={value}
+          onChange={handleChange}
+          sx={{ height: '45px' }}
+        >
           <BottomNavigationAction
             value="profile"
-            label="home"
+            label={t('userLayout.profile')}
+            className={classes.root}
             sx={{
-              maxWidth: value === 'profile' ? '170px' : '20px',
+              maxWidth: value === 'profile' ? '180px' : '25px',
+              minWidth: '60px',
+              borderRadius: '25px',
               backgroundColor: value === 'profile' ? '#ffdfc1' : 'transparent',
             }}
             icon={
@@ -66,19 +78,22 @@ export default function FixedBottomNavigation() {
                 }
                 alt="Profile Icon"
                 style={{
-                  maxWidth: '25px',
+                  maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'profile' ? 5 : 35,
-                  bottom: 15,
+                  right: value === 'profile' ? 8 : 35,
+                  bottom: 10,
                 }}
               />
             }
           />
           <BottomNavigationAction
             value="cart"
-            label="home"
+            className={classes.root}
+            label={t('userLayout.cart')}
             sx={{
-              maxWidth: value === 'cart' ? '170px' : '20px',
+              maxWidth: value === 'cart' ? '180px' : '25px',
+              minWidth: '65px',
+              borderRadius: '25px',
               backgroundColor: value === 'cart' ? '#ffdfc1' : 'transparent',
             }}
             icon={
@@ -90,19 +105,22 @@ export default function FixedBottomNavigation() {
                 }
                 alt="Cart Icon"
                 style={{
-                  maxWidth: '25px',
+                  maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'cart' ? 5 : 35,
-                  bottom: 15,
+                  right: value === 'cart' ? 8 : 35,
+                  bottom: 10,
                 }}
               />
             }
           />
           <BottomNavigationAction
             value="search"
-            label="home"
+            className={classes.root}
+            label={t('userLayout.search')}
             sx={{
-              maxWidth: value === 'search' ? '170px' : '20px',
+              maxWidth: value === 'search' ? '180px' : '25px',
+              minWidth: '60px',
+              borderRadius: '25px',
               backgroundColor: value === 'search' ? '#ffdfc1' : 'transparent',
             }}
             icon={
@@ -114,34 +132,38 @@ export default function FixedBottomNavigation() {
                 }
                 alt="Search Icon"
                 style={{
-                  maxWidth: '25px',
+                  maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'search' ? 5 : 35,
-                  bottom: 15,
+                  right: value === 'search' ? 8 : 35,
+                  bottom: 10,
                 }}
               />
             }
           />
           <BottomNavigationAction
-            value="home"
-            label="home"
+            value="dashboard"
+            className={classes.root}
+            label={t('userLayout.dashboard')}
             sx={{
-              maxWidth: value === 'home' ? '170px' : '20px',
-              backgroundColor: value === 'home' ? '#ffdfc1' : 'transparent',
+              maxWidth: value === 'dashboard' ? '180px' : '25px',
+              minWidth: '60px',
+              borderRadius: '25px',
+              backgroundColor:
+                value === 'dashboard' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'home'
-                    ? '/images/appBar/homeActive.svg'
-                    : '/images/appBar/home.svg'
+                  value === 'dashboard'
+                    ? '/images/appBar/dashboardActive.svg'
+                    : '/images/appBar/dashboard.svg'
                 }
-                alt="Home Icon"
+                alt="Dashboard Icon"
                 style={{
-                  maxWidth: '25px',
+                  maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'home' ? 5 : 35,
-                  bottom: 15,
+                  right: value === 'dashboard' ? 8 : 35,
+                  bottom: 10,
                 }}
               />
             }
