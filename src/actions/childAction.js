@@ -17,9 +17,7 @@ export const fetchRandomChild = () => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.post('/search/random', {
-      config,
-    });
+    const { data } = await publicApi.post('/search/random', config);
 
     dispatch({
       type: CHILD_RANDOM_SEARCH_SUCCESS,
@@ -43,9 +41,7 @@ export const fetchChildResult = (token) => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.get(`/child/invitations/${token}`, {
-      config,
-    });
+    const { data } = await publicApi.get(`/child/invitations/${token}`, config);
 
     dispatch({
       type: CHILD_SEARCH_RESULT_SUCCESS,

@@ -49,9 +49,7 @@ export const joinVirtualFamily = (invite) => async (dispatch) => {
     const formData = new FormData();
     formData.set('invite', invite);
 
-    const { data } = await publicApi.post(`/family/add`, formData, {
-      config,
-    });
+    const { data } = await publicApi.post(`/family/add`, formData, config);
     dispatch({
       type: INVITE_TO_MY_FAMILY_SUCCESS,
       payload: data,

@@ -6,7 +6,7 @@ const theTheme = createTheme({
 
   palette: {
     background: {
-      default: '#f7f7f7', // CSSBaseline is needed for this
+      default: '#f9f5f1', // CSSBaseline is needed for this
     },
     primary: {
       // light: will be calculated from palette.primary.main,

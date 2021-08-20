@@ -19,6 +19,7 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "history": "^5.0.0",
+    "http-proxy-middleware": "^2.0.1",
     "i18next": "^20.3.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-http-backend": "^1.2.4",

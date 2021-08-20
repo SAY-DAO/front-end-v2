@@ -60,9 +60,7 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
     const { data } = await publicApi.get(
       `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
       formData,
-      {
-        config,
-      }
+      config
     );
     dispatch({
       type: CHECK_CONTACT_SUCCESS,
@@ -86,9 +84,7 @@ export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.get(`/check/username/${userName}`, {
-      config,
-    });
+    const { data } = await publicApi.get(`/check/username/${userName}`, config);
 
     dispatch({
       type: CHECK_USERNAME_SUCCESS,
@@ -152,9 +148,11 @@ export const userVerifyCode = (id, code) => async (dispatch) => {
     const formData = new FormData();
     formData.append('code', code);
 
-    const { data } = await publicApi.patch(`/auth/verify/${id}`, formData, {
-      config,
-    });
+    const { data } = await publicApi.patch(
+      `/auth/verify/${id}`,
+      formData,
+      config
+    );
     dispatch({
       type: CODE_VERIFY_SUCCESS,
       payload: data,
@@ -229,9 +227,7 @@ export const login = (userName, password) => async (dispatch) => {
     // required for back-end
     formData.set('isInstalled', _standalone);
 
-    const { data } = await publicApi.post('/auth/login', formData, {
-      config,
-    });
+    const { data } = await publicApi.post('/auth/login', formData, config);
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -282,9 +278,7 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
     const { data } = await publicApi.post(
       `/auth/password/reset/${resetType}`,
       formData,
-      {
-        config,
-      }
+      config
     );
     dispatch({
       type: USER_FORGOT_PASSWORD_SUCCESS,
@@ -312,9 +306,7 @@ export const resetPassword = (password, token) => async (dispatch) => {
     const { data } = await publicApi.post(
       `/auth/password/reset/confirm/token=${token}`,
       formData,
-      {
-        config,
-      }
+      config
     );
     dispatch({
       type: USER_RESET_PASSWORD_SUCCESS,

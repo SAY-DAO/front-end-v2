@@ -6,6 +6,10 @@ export const publicApi = axios.create({
   baseURL: apiUrl,
 });
 
+export const api = axios.create({
+  baseURL: apiUrl,
+});
+
 const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
 publicApi.interceptors.request.use(function (configuration) {
