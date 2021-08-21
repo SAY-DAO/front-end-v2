@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
@@ -8,11 +8,14 @@ import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
 import Cart from '../components/main/Cart';
 import Dashboard from '../components/main/Dashboard';
+import MyChildPage from '../components/MyChildPage';
 
 const Main = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+
+  const [content, setContent] = useState('dashboard');
 
   const userLogin = useSelector((state) => state.userLogin);
   const { localUserLogin, success: successLogin } = userLogin;
@@ -37,8 +40,10 @@ const Main = () => {
         <Cart />
       ) : path === '/main/search' ? (
         <Search sx={{ minHeight: '100vh' }} />
+      ) : content === 'dashboard' ? (
+        <Dashboard setContent={setContent} />
       ) : (
-        <Dashboard />
+        <MyChildPage setContent={setContent} />
       )}
       <AppBar />
     </Grid>

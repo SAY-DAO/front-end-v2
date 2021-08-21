@@ -12,7 +12,6 @@ export const fetchMyDashboard = () => async (dispatch, getState) => {
       userLogin: { userInfo, localUserLogin },
     } = getState();
 
-    console.log(localUserLogin);
     const config = {
       headers: {
         'Content-type': 'application/json',

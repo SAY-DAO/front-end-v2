@@ -62,6 +62,11 @@ const theTheme = createTheme({
           fontSize: '11px',
           lineHeight: '18px',
         },
+        span: {
+          color: '#636363',
+          fontSize: '10px',
+          lineHeight: '18px',
+        },
       },
     },
     MuiButton: {

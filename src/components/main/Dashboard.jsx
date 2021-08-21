@@ -6,21 +6,17 @@ import {
   Typography,
   Avatar,
   Card,
-  Box,
+  CardActionArea,
 } from '@material-ui/core';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import PropTypes from 'prop-types';
 import { fetchMyDashboard } from '../../actions/main/dashboardAction';
 import Message from '../Message';
+import { fetchMyChildById } from '../../actions/childAction';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -39,18 +35,34 @@ const useStyles = makeStyles(() => ({
     height: 80,
   },
   childAvatar: {
-    width: 50,
-    height: 50,
+    width: 55,
+    height: 55,
+    margin: 'auto',
   },
   theCard: {
     marginBottom: 10,
-    pt: 1,
-    pb: 1,
+    padding: 10,
     minHeight: '70px',
+  },
+  icons: {
+    width: 14,
+    height: 14,
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  sayName: {
+    textAlign: 'right',
+    padding: 5,
+    margin: 'auto',
+  },
+  actionArea: {
+    width: '100%',
+    margin: 0,
+    padding: 0,
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = ({ setContent }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -62,6 +74,11 @@ const Dashboard = () => {
       dispatch(fetchMyDashboard());
     }
   }, [successDashboard]);
+
+  const handleClick = (child) => {
+    dispatch(fetchMyChildById(child.id));
+    setContent('myChildPage');
+  };
 
   const classes = useStyles();
 
@@ -126,29 +143,58 @@ const Dashboard = () => {
           >
             {children &&
               children.map((child) => (
-                <Card elevation={4} className={classes.theCard}>
-                  <Grid
-                    container
-                    item
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
+                <Card key={child.id} elevation={4} className={classes.theCard}>
+                  <CardActionArea
+                    className={classes.actionArea}
+                    onClick={handleClick(child)}
                   >
-                    <Grid item xs={4}>
-                      hi
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Grid item xs={6} sx={{ textAlign: 'right', margin: 1 }}>
-                        <Typography variant="body1">{`${child.sayName}`}</Typography>
+                    <Grid
+                      container
+                      item
+                      direction="row"
+                      justifyContent="space-between"
+                    >
+                      <Grid
+                        container
+                        item
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="flex-end"
+                        xs={7}
+                      >
+                        <Grid item xs sx={{ display: 'flex' }}>
+                          <Typography variant="span">
+                            {t('currency.toman') +
+                              child.spent_credit.toLocaleString()}
+                          </Typography>
+                          <img
+                            src="/images/icons/Money.svg"
+                            alt="money icon"
+                            className={classes.icons}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sx={{ display: 'flex' }}>
+                          <Typography variant="span">
+                            {child.done_needs_count}
+                          </Typography>
+                          <img
+                            src="/images/icons/Task.svg"
+                            alt="done icon"
+                            className={classes.icons}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={3} className={classes.sayName}>
+                        <Typography variant="body1">{child.sayName}</Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Avatar
+                          src={child.avatarUrl}
+                          className={classes.childAvatar}
+                        />
                       </Grid>
                     </Grid>
-                    <Grid item xs={2}>
-                      <Avatar
-                        src={child.avatarUrl}
-                        className={classes.childAvatar}
-                      />
-                    </Grid>
-                  </Grid>
+                  </CardActionArea>
                 </Card>
               ))}
           </Grid>
@@ -161,3 +207,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+Dashboard.propTypes = {
+  setContent: PropTypes.func,
+};

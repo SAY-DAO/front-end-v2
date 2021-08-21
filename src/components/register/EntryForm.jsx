@@ -38,7 +38,6 @@ const EntryForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  // const [_isLoggedIn, setIsLoggedIn] = useState(false);
   const [validateErr, setValidateErr] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
