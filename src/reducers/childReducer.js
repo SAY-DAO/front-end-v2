@@ -7,6 +7,13 @@ import {
   CHILD_SEARCH_RESULT_FAIL,
   CHILD_RANDOM_SEARCH_RESET,
   CHILD_SEARCH_RESULT_RESET,
+  CHILD_BY_ID_REQUEST,
+  CHILD_BY_ID_SUCCESS,
+  CHILD_BY_ID_FAIL,
+  CHILD_BY_ID_RESET,
+  CHILD_NEEDS_REQUEST,
+  CHILD_NEEDS_SUCCESS,
+  CHILD_NEEDS_FAIL,
 } from '../constants/childConstants';
 
 export const childRandomSearchReducer = (state = {}, action) => {
@@ -34,6 +41,34 @@ export const childSearchResultReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case CHILD_SEARCH_RESULT_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const myChildReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHILD_BY_ID_REQUEST:
+      return { loading: true };
+    case CHILD_BY_ID_SUCCESS:
+      return { loading: false, success: true, theChild: action.payload };
+    case CHILD_BY_ID_FAIL:
+      return { loading: false, error: action.payload };
+    case CHILD_BY_ID_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const childNeedsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHILD_NEEDS_REQUEST:
+      return { loading: true };
+    case CHILD_NEEDS_SUCCESS:
+      return { loading: false, success: true, theNeeds: action.payload };
+    case CHILD_NEEDS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

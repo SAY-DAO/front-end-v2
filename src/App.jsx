@@ -16,7 +16,16 @@ const App = () => (
   <>
     <BrowserRouter>
       <CssBaseline />
-      <Container maxWidth="xs" sx={{ paddingBottom: 10 }}>
+      <Container
+        maxWidth="xs"
+        sx={{
+          margin: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingBottom: 10,
+          overflow: 'hidden',
+        }}
+      >
         <React.StrictMode>
           <Switch>
             <Route exact path="/" component={Splash} />

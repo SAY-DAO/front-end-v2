@@ -138,7 +138,7 @@ const SearchResult = () => {
               <Avatar
                 className={classes.childAvatar}
                 alt={`${theChild.sayName}`}
-                src={`https://sayapp.company${theChild.avatarUrl}`}
+                src={theChild.avatarUrl}
               />
               <Typography className={classes.childSayName} variant="subtitle1">
                 {theChild.sayName}

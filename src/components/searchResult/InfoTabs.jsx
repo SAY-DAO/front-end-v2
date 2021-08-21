@@ -15,8 +15,9 @@ import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/core/styles';
 import roles from '../../apis/roles';
 import { fetchChildResult } from '../../actions/childAction';
-import ChildModal from './modals/GoneModal';
+import GoneModal from './modals/GoneModal';
 import AdoptModel from './modals/AdoptionModal';
+import ChildFamily from '../child/ChildFamily';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -186,12 +187,7 @@ export default function InfoTabs() {
     <>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            centered
-          >
+          <Tabs value={value} onChange={handleChange} centered>
             <Tab
               label={
                 <Typography variant="body1">
@@ -211,45 +207,7 @@ export default function InfoTabs() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <Stack direction="column" spacing={1}>
-            {theChild.childFamilyMembers.map((member) => (
-              <Chip
-                key={member.username}
-                avatar={
-                  <Avatar
-                    alt={member.username}
-                    src="/static/images/avatar/1.jpg"
-                    sx={{
-                      width: '35px !important',
-                      height: '35px !important',
-                      marginRight: '5px !important',
-                    }}
-                  />
-                }
-                sx={{
-                  textAlign: 'left',
-                  minHeight: 45,
-                }}
-                label={
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ minWidth: 220 }}
-                  >
-                    <Typography variant="subtitle2">
-                      {`${t(roles.roles[member.role])}`}
-                    </Typography>
-                    <Typography variant="subtitle2" style={{ right: 0 }}>
-                      {`${member.username}`}
-                    </Typography>
-                  </Grid>
-                }
-                size="medium"
-              />
-            ))}
-          </Stack>
+          <ChildFamily theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           {/* Father */}
@@ -497,8 +455,8 @@ export default function InfoTabs() {
           </Stack>
         </TabPanel>
       </Box>
-      {/* Leave warn popup */}
-      <ChildModal
+      {/* Gone warn popup */}
+      <GoneModal
         isGone={isGone}
         childSayName={theChild.sayName}
         roles={`${t(roles.roles[userRole])}`}

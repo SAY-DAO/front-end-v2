@@ -111,7 +111,7 @@ export default function VoiceBar({ url }) {
   return (
     <div>
       <Sound
-        url={`https://sayapp.company${url}`}
+        url={url}
         playStatus={status}
         // playFromPosition={from}
         autoLoad={autoLoad}

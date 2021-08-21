@@ -13,6 +13,8 @@ import {
 import {
   childRandomSearchReducer,
   childSearchResultReducer,
+  myChildReducer,
+  childNeedsReducer,
 } from './childReducer';
 import { invitationReducer } from './familyReducer';
 
@@ -32,4 +34,6 @@ export default combineReducers({
   childSearchResult: childSearchResultReducer,
   JoinNewFamily: invitationReducer,
   myDashboard: dashboardReducer,
+  myChild: myChildReducer,
+  childNeeds: childNeedsReducer,
 });

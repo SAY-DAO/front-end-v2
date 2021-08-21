@@ -1,22 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   Divider,
   Typography,
   Avatar,
-  Card,
-  CardActionArea,
+  makeStyles,
 } from '@material-ui/core';
-import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { fetchMyDashboard } from '../../actions/main/dashboardAction';
-import Message from '../Message';
-import { fetchMyChildById } from '../../actions/childAction';
+import { fetchMyDashboard } from '../../../actions/main/dashboardAction';
+import Message from '../../Message';
+import { CHILD_BY_ID_RESET } from '../../../constants/childConstants';
+import ChildCard from '../../child/ChildCard';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -26,8 +24,8 @@ const useStyles = makeStyles(() => ({
     fontWeight: 900,
     lineHeight: '56px',
     whiteSpace: 'nowrap',
-    left: 'calc(100vw - 450px)',
-    top: '40px',
+    left: 'calc(100vw - 400px)',
+    top: '30px',
     float: 'left',
   },
   userAvatar: {
@@ -37,6 +35,7 @@ const useStyles = makeStyles(() => ({
   childAvatar: {
     width: 55,
     height: 55,
+    backgroundColor: '#FDE1C1',
     margin: 'auto',
   },
   theCard: {
@@ -62,7 +61,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Dashboard = ({ setContent }) => {
+const Dashboard = ({ setContent, setMyChildId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -70,14 +69,15 @@ const Dashboard = ({ setContent }) => {
   const { user, children, success: successDashboard } = myDashboard;
 
   useEffect(() => {
+    dispatch({ type: CHILD_BY_ID_RESET });
     if (!successDashboard) {
       dispatch(fetchMyDashboard());
     }
   }, [successDashboard]);
 
-  const handleClick = (child) => {
-    dispatch(fetchMyChildById(child.id));
+  const handleMyChildPage = (child) => {
     setContent('myChildPage');
+    setMyChildId(child.id);
   };
 
   const classes = useStyles();
@@ -89,6 +89,7 @@ const Dashboard = ({ setContent }) => {
       justifyContent="center"
       alignItems="center"
       maxWidth
+      sx={{ paddingLeft: 2, paddingRight: 2 }}
     >
       {successDashboard && user && children ? (
         <>
@@ -142,60 +143,12 @@ const Dashboard = ({ setContent }) => {
             sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
           >
             {children &&
-              children.map((child) => (
-                <Card key={child.id} elevation={4} className={classes.theCard}>
-                  <CardActionArea
-                    className={classes.actionArea}
-                    onClick={handleClick(child)}
-                  >
-                    <Grid
-                      container
-                      item
-                      direction="row"
-                      justifyContent="space-between"
-                    >
-                      <Grid
-                        container
-                        item
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="flex-end"
-                        xs={7}
-                      >
-                        <Grid item xs sx={{ display: 'flex' }}>
-                          <Typography variant="span">
-                            {t('currency.toman') +
-                              child.spent_credit.toLocaleString()}
-                          </Typography>
-                          <img
-                            src="/images/icons/Money.svg"
-                            alt="money icon"
-                            className={classes.icons}
-                          />
-                        </Grid>
-                        <Grid item xs={4} sx={{ display: 'flex' }}>
-                          <Typography variant="span">
-                            {child.done_needs_count}
-                          </Typography>
-                          <img
-                            src="/images/icons/Task.svg"
-                            alt="done icon"
-                            className={classes.icons}
-                          />
-                        </Grid>
-                      </Grid>
-                      <Grid item xs={3} className={classes.sayName}>
-                        <Typography variant="body1">{child.sayName}</Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Avatar
-                          src={child.avatarUrl}
-                          className={classes.childAvatar}
-                        />
-                      </Grid>
-                    </Grid>
-                  </CardActionArea>
-                </Card>
+              children.map((myChild) => (
+                <ChildCard
+                  key={myChild.id}
+                  handleMyChildPage={handleMyChildPage}
+                  myChild={myChild}
+                />
               ))}
           </Grid>
         </>
@@ -210,4 +163,5 @@ export default Dashboard;
 
 Dashboard.propTypes = {
   setContent: PropTypes.func,
+  setMyChildId: PropTypes.func,
 };

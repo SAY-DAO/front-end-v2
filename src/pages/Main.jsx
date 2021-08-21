@@ -7,8 +7,8 @@ import AppBar from '../components/main/AppBar';
 import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
 import Cart from '../components/main/Cart';
-import Dashboard from '../components/main/Dashboard';
-import MyChildPage from '../components/MyChildPage';
+import Dashboard from '../components/main/dashboard/Dashboard';
+import MyChildPage from '../components/main/dashboard/MyChildPage';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -16,6 +16,7 @@ const Main = () => {
   const location = useLocation();
 
   const [content, setContent] = useState('dashboard');
+  const [myChildId, setMyChildId] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { localUserLogin, success: successLogin } = userLogin;
@@ -33,6 +34,7 @@ const Main = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
+      sx={{ margin: 0, padding: 0 }}
     >
       {path === '/main/profile' ? (
         <Profile />
@@ -41,9 +43,13 @@ const Main = () => {
       ) : path === '/main/search' ? (
         <Search sx={{ minHeight: '100vh' }} />
       ) : content === 'dashboard' ? (
-        <Dashboard setContent={setContent} />
+        <Dashboard setContent={setContent} setMyChildId={setMyChildId} />
       ) : (
-        <MyChildPage setContent={setContent} />
+        <MyChildPage
+          sx={{ margin: 0, padding: 0 }}
+          setContent={setContent}
+          myChildId={myChildId}
+        />
       )}
       <AppBar />
     </Grid>

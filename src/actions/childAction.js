@@ -9,6 +9,9 @@ import {
   CHILD_BY_ID_REQUEST,
   CHILD_BY_ID_SUCCESS,
   CHILD_BY_ID_FAIL,
+  CHILD_NEEDS_REQUEST,
+  CHILD_NEEDS_SUCCESS,
+  CHILD_NEEDS_FAIL,
 } from '../constants/childConstants';
 
 export const fetchRandomChild = () => async (dispatch) => {
@@ -60,7 +63,7 @@ export const fetchChildResult = (token) => async (dispatch) => {
   }
 };
 
-export const fetchMyChildById = (id) => async (dispatch, getState) => {
+export const fetchMyChildById = (childId) => async (dispatch, getState) => {
   try {
     dispatch({ type: CHILD_BY_ID_REQUEST });
 
@@ -76,7 +79,7 @@ export const fetchMyChildById = (id) => async (dispatch, getState) => {
       },
     };
     const { data } = await publicApi.get(
-      `/child/childId=${id}&confirm=1`,
+      `/child/childId=${childId}&confirm=1`,
       config
     );
 
@@ -88,6 +91,39 @@ export const fetchMyChildById = (id) => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: CHILD_BY_ID_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchChildNeeds = (childId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CHILD_NEEDS_REQUEST });
+
+    const {
+      userLogin: { userInfo, localUserLogin },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo
+          ? userInfo.accessToken
+          : localUserLogin.accessToken,
+      },
+    };
+    const { data } = await publicApi.get(
+      `/child/${childId}/needs/summary`,
+      config
+    );
+
+    dispatch({
+      type: CHILD_NEEDS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHILD_NEEDS_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
