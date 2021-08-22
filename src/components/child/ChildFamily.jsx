@@ -9,7 +9,7 @@ export default function ChildFamily({ theChild }) {
 
   return (
     <div>
-      <Stack direction="column" spacing={1}>
+      <Stack direction="column" spacing={1} alignItems="center">
         {theChild.childFamilyMembers.map((member) => (
           <Chip
             key={member.username}

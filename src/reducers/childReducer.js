@@ -14,6 +14,7 @@ import {
   CHILD_NEEDS_REQUEST,
   CHILD_NEEDS_SUCCESS,
   CHILD_NEEDS_FAIL,
+  CHILD_NEEDS_RESET,
 } from '../constants/childConstants';
 
 export const childRandomSearchReducer = (state = {}, action) => {
@@ -69,6 +70,8 @@ export const childNeedsReducer = (state = {}, action) => {
       return { loading: false, success: true, theNeeds: action.payload };
     case CHILD_NEEDS_FAIL:
       return { loading: false, error: action.payload };
+    case CHILD_NEEDS_RESET:
+      return {};
     default:
       return state;
   }

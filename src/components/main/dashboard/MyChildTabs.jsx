@@ -1,17 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Tabs,
-  Tab,
-  Grid,
-  Box,
-  Avatar,
-  Chip,
-  Stack,
-  Typography,
-  Link,
-} from '@material-ui/core';
+import { Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +11,7 @@ import { fetchChildResult } from '../../../actions/childAction';
 import GoneModal from '../../searchResult/modals/GoneModal';
 import AdoptModel from '../../searchResult/modals/AdoptionModal';
 import ChildFamily from '../../child/ChildFamily';
-import ChildNeeds from '../../child/ChildNeedCard';
+import ChildNeeds from '../../child/ChildNeed';
 import ChildStory from '../../child/ChildStory';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +91,12 @@ export default function MyChildTabs({ theChild }) {
     <>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} centered>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            centered
+            sx={{ backgroundColor: 'white' }}
+          >
             <Tab
               label={
                 <Typography variant="subtitle2">

@@ -116,7 +116,7 @@ const MyChildPage = ({ setContent, myChildId }) => {
               )}
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          <Grid sx={{ maxWidth: '100% !important' }}>
             {theChild && <MyChildTabs theChild={theChild} />}
           </Grid>
         </Grid>

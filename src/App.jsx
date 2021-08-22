@@ -17,7 +17,7 @@ const App = () => (
     <BrowserRouter>
       <CssBaseline />
       <Container
-        maxWidth="xs"
+        maxWidth="sm"
         sx={{
           margin: 0,
           paddingLeft: 0,

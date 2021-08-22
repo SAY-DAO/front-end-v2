@@ -13,7 +13,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import { fetchMyDashboard } from '../../../actions/main/dashboardAction';
 import Message from '../../Message';
-import { CHILD_BY_ID_RESET } from '../../../constants/childConstants';
+import {
+  CHILD_BY_ID_RESET,
+  CHILD_NEEDS_RESET,
+} from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
 
 const useStyles = makeStyles(() => ({
@@ -70,6 +73,8 @@ const Dashboard = ({ setContent, setMyChildId }) => {
 
   useEffect(() => {
     dispatch({ type: CHILD_BY_ID_RESET });
+    dispatch({ type: CHILD_NEEDS_RESET });
+
     if (!successDashboard) {
       dispatch(fetchMyDashboard());
     }
