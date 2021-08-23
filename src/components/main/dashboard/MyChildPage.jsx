@@ -16,6 +16,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
+    minHeight: '290px',
     backgroundRepeat: 'no-repeat',
     backgroundImage: 'url("/images/child/background.png")',
     margin: 0,
@@ -50,10 +51,6 @@ const useStyles = makeStyles({
 const MyChildPage = ({ setContent, myChildId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  const [readMore, setReadMore] = useState(false);
-  const [readLess, setReadLess] = useState(true);
 
   const myChild = useSelector((state) => state.myChild);
   const {

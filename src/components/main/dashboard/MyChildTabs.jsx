@@ -61,7 +61,7 @@ export default function MyChildTabs({ theChild }) {
   const history = useHistory();
 
   const [isGone, setIsGone] = useState(false);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(2);
   const [userRole, setUserRole] = useState();
   const [isFather, setIsFather] = useState(false);
   const [isMother, setIsMother] = useState(false);
@@ -124,7 +124,7 @@ export default function MyChildTabs({ theChild }) {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          {/* <ChildStory theChild={theChild} /> */}
+          <ChildStory theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ChildFamily theChild={theChild} />

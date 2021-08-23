@@ -184,6 +184,17 @@ const theTheme = createTheme({
         },
       },
     },
+    MuiAvatarGroup: {
+      styleOverrides: {
+        root: {
+          '.MuiAvatarGroup-avatar': {
+            width: 20,
+            height: 20,
+            fontSize: '0.8rem',
+          },
+        },
+      },
+    },
   },
 });
 

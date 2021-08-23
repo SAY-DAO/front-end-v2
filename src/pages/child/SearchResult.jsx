@@ -162,14 +162,7 @@ const SearchResult = () => {
                   </Grid>
 
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
-                    {theChild && (
-                      <VoiceBar
-                        className={classes.voice}
-                        url={theChild.voiceUrl}
-                        status="PAUSED"
-                        autoLoad={false}
-                      />
-                    )}
+                    {theChild && <VoiceBar url={theChild.voiceUrl} />}
                   </Grid>
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
                     <InfoTabs />

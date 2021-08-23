@@ -7,8 +7,10 @@ import {
   Card,
   CardActionArea,
   makeStyles,
+  AvatarGroup,
 } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
   imageUrl: {
@@ -21,10 +23,17 @@ const useStyles = makeStyles(() => ({
     padding: 5,
     minHeight: '60px',
   },
+  needCost: {
+    fontWeight: 'normal',
+    fontSize: '11px',
+    color: '#f05a31',
+    marginBottom: '2px',
+    marginTop: '4px',
+  },
   needName: {
     textAlign: 'right',
     padding: 5,
-    margin: 'auto',
+    marginBottom: '5px',
   },
   actionArea: {
     width: '100%',
@@ -44,6 +53,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function NeedCard({ need, handleCardClick }) {
+  const { t } = useTranslation();
+
   const classes = useStyles();
   return (
     <Card elevation={3} className={classes.theCard}>
@@ -60,19 +71,30 @@ export default function NeedCard({ need, handleCardClick }) {
             alignItems="flex-end"
             xs={3}
           >
-            <Grid item xs sx={{ display: 'flex' }}>
-              <Typography variant="body1">{need.cost}</Typography>
+            <Grid item xs container direction="column" sx={{ display: 'flex' }}>
+              <Grid item>
+                <AvatarGroup max={3}>
+                  {need.participants.map((user, index) => (
+                    <Avatar
+                      key={index}
+                      alt="user image"
+                      src={user.user_avatar}
+                    />
+                  ))}
+                </AvatarGroup>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" className={classes.needCost}>
+                  {t('currency.toman') + need.cost}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-          <Grid
-            item
-            xs={6}
-            container
-            direction="column"
-            className={classes.needName}
-          >
+          <Grid item xs={6} container direction="column">
             <Grid item>
-              <Typography variant="subtitle2">{need.name}</Typography>
+              <Typography variant="subtitle2" className={classes.needName}>
+                {need.name}
+              </Typography>
             </Grid>
             <Grid item container direction="row">
               <Grid item xs={10}>

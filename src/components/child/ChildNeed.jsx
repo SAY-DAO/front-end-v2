@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography,
   Grid,
   Stack,
   CircularProgress,
