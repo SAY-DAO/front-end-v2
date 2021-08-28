@@ -65,7 +65,6 @@ export default function AdoptionModal({
       })
     );
     if (!successLogin) {
-      console.log(roles);
       setContent(authWarnText);
     } else {
       setContent(adoptText);
@@ -81,7 +80,6 @@ export default function AdoptionModal({
   }, [roleSelecting, setRoleSelecting, childSayName]);
 
   const handleJoin = () => {
-    console.log('hi');
     if (userRole != null && successLogin && 'theInvite') {
       dispatch(inviteToMyFamily(family.id && selectedRole));
     } else if (!successLogin) {

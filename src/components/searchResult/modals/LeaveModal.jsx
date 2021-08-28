@@ -40,9 +40,6 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
     );
   }, []);
 
-  // eslint-disable-next-line no-restricted-globals
-  console.log(location.search.split('='));
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

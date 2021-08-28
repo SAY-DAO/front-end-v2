@@ -8,15 +8,12 @@ import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
 import Cart from '../components/main/Cart';
 import Dashboard from '../components/main/dashboard/Dashboard';
-import MyChildPage from '../components/main/dashboard/MyChildPage';
+import MyChildPage from './MyChildPage';
+import NeedPage from './NeedPage';
 
 const Main = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-
-  const [content, setContent] = useState('dashboard');
-  const [myChildId, setMyChildId] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { localUserLogin, success: successLogin } = userLogin;
@@ -42,15 +39,13 @@ const Main = () => {
         <Cart />
       ) : path === '/main/search' ? (
         <Search sx={{ minHeight: '100vh' }} />
-      ) : content === 'dashboard' ? (
-        <Dashboard setContent={setContent} setMyChildId={setMyChildId} />
-      ) : (
-        <MyChildPage
-          sx={{ margin: 0, padding: 0 }}
-          setContent={setContent}
-          myChildId={myChildId}
-        />
-      )}
+      ) : path === '/main/dashboard' ? (
+        <Dashboard />
+      ) : path.indexOf('/needs') > -1 ? (
+        <NeedPage sx={{ margin: 0, padding: 0 }} />
+      ) : path.indexOf('/child') > -1 ? (
+        <MyChildPage sx={{ margin: 0, padding: 0 }} />
+      ) : null}
       <AppBar />
     </Grid>
   );

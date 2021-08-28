@@ -8,6 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
@@ -64,9 +65,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Dashboard = ({ setContent, setMyChildId }) => {
+const Dashboard = ({ setComponent, setMyChildId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const myDashboard = useSelector((state) => state.myDashboard);
   const { user, children, success: successDashboard } = myDashboard;
@@ -81,8 +83,7 @@ const Dashboard = ({ setContent, setMyChildId }) => {
   }, [successDashboard]);
 
   const handleMyChildPage = (child) => {
-    setContent('myChildPage');
-    setMyChildId(child.id);
+    history.push(`/child/${child.id}`);
   };
 
   const classes = useStyles();
@@ -167,6 +168,6 @@ const Dashboard = ({ setContent, setMyChildId }) => {
 export default Dashboard;
 
 Dashboard.propTypes = {
-  setContent: PropTypes.func,
+  setComponent: PropTypes.func,
   setMyChildId: PropTypes.func,
 };

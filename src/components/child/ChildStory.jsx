@@ -1,15 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import {
-  Typography,
-  Grid,
-  Avatar,
-  Chip,
-  Stack,
-  Divider,
-} from '@material-ui/core';
-import roles from '../../apis/roles';
+import { Typography, Grid, Divider } from '@material-ui/core';
 import VoiceBar from '../searchResult/VoiceBar';
 
 export default function ChildStory({ theChild }) {

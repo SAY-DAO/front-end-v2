@@ -15,6 +15,7 @@ import {
   childSearchResultReducer,
   myChildReducer,
   childNeedsReducer,
+  childOneNeedReducer,
 } from './childReducer';
 import { invitationReducer } from './familyReducer';
 
@@ -36,4 +37,5 @@ export default combineReducers({
   myDashboard: dashboardReducer,
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,
+  ChildOneNeed: childOneNeedReducer,
 });

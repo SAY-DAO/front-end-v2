@@ -50,6 +50,10 @@ export default function VoiceBar({ url }) {
     // eslint-disable-next-line no-undef
     const theSound = soundManager.getSoundById(soundManager.soundIDs[0]);
     setSound(theSound);
+    return () => {
+      setStatus('STOPPED');
+      setSound('');
+    };
   }, []);
 
   const timeHandler = () => {
@@ -60,11 +64,11 @@ export default function VoiceBar({ url }) {
   };
 
   const handleChange = () => {
-    console.log('bye');
+    console.log('baha');
     const p = document.getElementById('demo');
     // let pb = document.getElementById("pb1");
     if (sound != null && p != null) {
-      setInterval(() => {
+      const theInterval = setInterval(() => {
         let s = Math.floor(sound.position);
         let d = Math.floor(sound.duration);
 
@@ -79,7 +83,7 @@ export default function VoiceBar({ url }) {
             'MuiSlider-thumb'
           )[0].style.left = `${percent.toString()}%`;
         } catch (error) {
-          console.log(error);
+          clearInterval(theInterval);
         }
 
         const ms = s % 1000;
@@ -99,7 +103,7 @@ export default function VoiceBar({ url }) {
 
   const voiceChangeStatus = () => {
     console.warn('hey!');
-    if (status === 'PAUSED') {
+    if (status === 'PAUSED' || status === 'STOPPED') {
       setStatus('PLAYING');
       setAutoLoad(true);
     } else {
@@ -110,41 +114,45 @@ export default function VoiceBar({ url }) {
 
   return (
     <div>
-      <Sound
-        url={url}
-        playStatus={status}
-        // playFromPosition={from}
-        autoLoad={autoLoad}
-        onLoad={handleChange}
-        onBufferChange={handleChange}
-        onFinishedPlaying={() => {
-          setStatus('PAUSED');
-          setAutoLoad(false);
-        }}
-      />
-
-      <div className="player">
-        <IconButton
-          aria-label="delete"
-          sx={{ color: 'white' }}
-          onClick={voiceChangeStatus}
-          size="medium"
-        >
-          {status === 'PLAYING' ? <PauseCircleIcon /> : <PlayCircleIcon />}
-        </IconButton>
-        <div className="progressBarNew">
-          {/* <div className="progressBarNewAll"></div>
-              <div id="pb1" className="progressBarNewDone"></div> */}
-          <PrettoSlider
-            valueLabelDisplay="auto"
-            aria-label="pretto slider"
-            defaultValue={0}
-            onChange={timeHandler}
-            onClick={timeHandler}
+      {url && (
+        <>
+          <Sound
+            url={url}
+            playStatus={status}
+            // playFromPosition={from}
+            autoLoad={autoLoad}
+            onLoad={handleChange}
+            onBufferChange={handleChange}
+            onFinishedPlaying={() => {
+              setStatus('PAUSED');
+              setAutoLoad(false);
+            }}
           />
-        </div>
-        <p id="demo" className="progressBarTime" />
-      </div>
+
+          <div className="player">
+            <IconButton
+              aria-label="delete"
+              sx={{ color: 'white' }}
+              onClick={voiceChangeStatus}
+              size="medium"
+            >
+              {status === 'PLAYING' ? <PauseCircleIcon /> : <PlayCircleIcon />}
+            </IconButton>
+            <div className="progressBarNew">
+              {/* <div className="progressBarNewAll"></div>
+              <div id="pb1" className="progressBarNewDone"></div> */}
+              <PrettoSlider
+                valueLabelDisplay="auto"
+                aria-label="pretto slider"
+                defaultValue={0}
+                onChange={timeHandler}
+                onClick={timeHandler}
+              />
+            </div>
+            <p id="demo" className="progressBarTime" />
+          </div>
+        </>
+      )}
     </div>
   );
 }

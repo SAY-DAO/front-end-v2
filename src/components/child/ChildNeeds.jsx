@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
 
@@ -53,6 +54,7 @@ const useStyles = makeStyles(() => ({
 export default function ChildNeedCard({ theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // [[urgent], [growth], ...]
   const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
@@ -77,8 +79,10 @@ export default function ChildNeedCard({ theChild }) {
         // Sorts needs by done date Ascending
         return new Date(b.doneAt) - new Date(a.doneAt);
       });
+
       // [[urgent], [growth], ...]
       const allNeeds = [[], [], [], [], [], []];
+
       for (let i = 0; i < sortedNeeds.length; i++) {
         if (sortedNeeds[i].isDone) {
           allNeeds[5].push(sortedNeeds[i]);
@@ -121,8 +125,8 @@ export default function ChildNeedCard({ theChild }) {
     }
   }, [needsArray, category]);
 
-  const handleCardClick = (needId) => {
-    console.log(needId);
+  const handleNeedCardClick = (needId, childId) => {
+    history.push(`/child/${childId}/needs/${needId}`);
   };
 
   const handleClick = (index) => {
@@ -145,8 +149,14 @@ export default function ChildNeedCard({ theChild }) {
         width: '100%',
       }}
     >
+      {/* TODO: pagination is needed here */}
       {needsArray[category].map((need) => (
-        <NeedCard key={need.id} handleCardClick={handleCardClick} need={need} />
+        <NeedCard
+          key={need.id}
+          handleNeedCardClick={handleNeedCardClick}
+          need={need}
+          childId={theChild.id}
+        />
       ))}
     </Stack>
   );

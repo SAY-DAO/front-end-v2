@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useParams, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import PropTypes from 'prop-types';
-import Message from '../../Message';
-import MyChildTabs from './MyChildTabs';
-import { fetchMyChildById } from '../../../actions/childAction';
-import Back from '../../Back';
+import Message from '../components/Message';
+import MyChildTabs from '../components/main/dashboard/MyChildTabs';
+import { fetchMyChildById } from '../actions/childAction';
+import Back from '../components/Back';
+import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -48,23 +48,25 @@ const useStyles = makeStyles({
   },
 });
 
-const MyChildPage = ({ setContent, myChildId }) => {
+const MyChildPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { childId } = useParams();
 
   const myChild = useSelector((state) => state.myChild);
   const {
     theChild,
     loading: loadingMyChild,
-    error: errorSearchResult,
+    error: errorMyChild,
     success: successMyChild,
   } = myChild;
 
   useEffect(() => {
-    if (!successMyChild) {
-      dispatch(fetchMyChildById(myChildId));
+    dispatch({ type: CHILD_ONE_NEED_RESET });
+    if (!successMyChild && childId) {
+      dispatch(fetchMyChildById(childId));
     }
-  }, [successMyChild]);
+  }, [successMyChild, childId]);
 
   const getAge = (DOB) => {
     const today = new Date();
@@ -88,7 +90,7 @@ const MyChildPage = ({ setContent, myChildId }) => {
             <Back
               isOrange={false}
               to="/main/dashboard"
-              handleClickOverride={() => setContent('dashboard')}
+              // handleClickOverride={() => setComponent('dashboard')}
             />
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
@@ -119,12 +121,8 @@ const MyChildPage = ({ setContent, myChildId }) => {
         </Grid>
       )}
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorSearchResult && (
-          <Message
-            backError={errorSearchResult}
-            variant="filled"
-            severity="error"
-          />
+        {errorMyChild && (
+          <Message backError={errorMyChild} variant="filled" severity="error" />
         )}
       </Grid>
     </>
@@ -132,8 +130,3 @@ const MyChildPage = ({ setContent, myChildId }) => {
 };
 
 export default MyChildPage;
-
-MyChildPage.propTypes = {
-  setContent: PropTypes.func,
-  myChildId: PropTypes.number,
-};

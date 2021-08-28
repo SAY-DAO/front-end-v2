@@ -52,7 +52,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function NeedCard({ need, handleCardClick }) {
+export default function NeedCard({ need, handleNeedCardClick, childId }) {
   const { t } = useTranslation();
 
   const classes = useStyles();
@@ -60,7 +60,7 @@ export default function NeedCard({ need, handleCardClick }) {
     <Card elevation={3} className={classes.theCard}>
       <CardActionArea
         className={classes.actionArea}
-        onClick={() => handleCardClick(need.id)}
+        onClick={() => handleNeedCardClick(need.id, childId)}
       >
         <Grid container item direction="row" justifyContent="space-between">
           <Grid
@@ -122,5 +122,6 @@ export default function NeedCard({ need, handleCardClick }) {
 
 NeedCard.propTypes = {
   need: PropTypes.object.isRequired,
-  handleCardClick: PropTypes.func.isRequired,
+  childId: PropTypes.number.isRequired,
+  handleNeedCardClick: PropTypes.func.isRequired,
 };

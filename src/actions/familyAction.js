@@ -37,7 +37,7 @@ export const inviteToMyFamily =
     }
   };
 
-export const joinVirtualFamily = (invite) => async (dispatch) => {
+export const joinVirtualFamily = (familyId) => async (dispatch) => {
   try {
     dispatch({ type: INVITE_TO_MY_FAMILY_REQUEST });
     const config = {
@@ -47,9 +47,13 @@ export const joinVirtualFamily = (invite) => async (dispatch) => {
     };
 
     const formData = new FormData();
-    formData.set('invite', invite);
+    formData.set('familyId', familyId);
 
-    const { data } = await publicApi.post(`/family/add`, formData, config);
+    const { data } = await publicApi.post(
+      `/family/join/${familyId}`,
+      formData,
+      config
+    );
     dispatch({
       type: INVITE_TO_MY_FAMILY_SUCCESS,
       payload: data,
