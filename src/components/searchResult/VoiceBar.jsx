@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sound from 'react-sound';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Slider from '@material-ui/core/Slider';
 import PlayCircleIcon from '@material-ui/icons/PlayCircle';
 import PauseCircleIcon from '@material-ui/icons/PauseCircle';

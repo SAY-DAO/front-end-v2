@@ -1,6 +1,15 @@
 import { createTheme } from '@material-ui/core/styles';
 
 const theTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 400,
+      md: 600,
+      lg: 900,
+      xl: 1200,
+    },
+  },
   direction: 'rtl',
   fontFamily: 'iranyekan',
 

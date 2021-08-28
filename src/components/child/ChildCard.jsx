@@ -7,8 +7,8 @@ import {
   Avatar,
   Card,
   CardActionArea,
-  makeStyles,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(() => ({
   childAvatar: {
@@ -29,7 +29,6 @@ const useStyles = makeStyles(() => ({
     marginRight: 4,
   },
   sayName: {
-    textAlign: 'right',
     padding: 5,
     margin: 'auto',
   },
@@ -45,33 +44,48 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <Card elevation={4} className={classes.theCard}>
         <CardActionArea
           className={classes.actionArea}
           onClick={() => handleMyChildPage(myChild)}
         >
-          <Grid container item direction="row" justifyContent="space-between">
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-end"
+          >
             <Grid
               container
-              item
               direction="row"
-              justifyContent="space-between"
-              alignItems="flex-end"
-              xs={7}
+              justifyContent="flex-start"
+              alignItems="center"
+              item
+              spacing={1}
+              xs={6}
             >
-              <Grid item xs sx={{ display: 'flex' }}>
-                <Typography variant="span">
-                  {t('currency.toman') + myChild.spent_credit.toLocaleString()}
-                </Typography>
-                <img
-                  src="/images/icons/Money.svg"
-                  alt="money icon"
-                  className={classes.icons}
+              <Grid item xs={6}>
+                <Avatar
+                  src={myChild.avatarUrl}
+                  className={classes.childAvatar}
                 />
               </Grid>
-              <Grid item xs={4} sx={{ display: 'flex' }}>
-                <Typography variant="span">
+              <Grid item xs={6}>
+                <Typography variant="body1">{myChild.sayName}</Typography>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              item
+              spacing={1}
+              xs={6}
+            >
+              <Grid item sx={{ display: 'flex' }}>
+                <Typography component="span">
                   {myChild.done_needs_count}
                 </Typography>
                 <img
@@ -80,17 +94,21 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
                   className={classes.icons}
                 />
               </Grid>
-            </Grid>
-            <Grid item xs={3} className={classes.sayName}>
-              <Typography variant="body1">{myChild.sayName}</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Avatar src={myChild.avatarUrl} className={classes.childAvatar} />
+              <Grid item sx={{ display: 'flex' }}>
+                <Typography component="span">
+                  {t('currency.toman') + myChild.spent_credit.toLocaleString()}
+                </Typography>
+                <img
+                  src="/images/icons/Money.svg"
+                  alt="money icon"
+                  className={classes.icons}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </CardActionArea>
       </Card>
-    </div>
+    </>
   );
 }
 

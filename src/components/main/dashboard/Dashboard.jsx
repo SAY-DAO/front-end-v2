@@ -1,19 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import {
-  Grid,
-  Divider,
-  Typography,
-  Avatar,
-  makeStyles,
-} from '@material-ui/core';
+import { Grid, Divider, Typography, Avatar } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import PropTypes from 'prop-types';
 import { fetchMyDashboard } from '../../../actions/main/dashboardAction';
-import Message from '../../Message';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
@@ -65,7 +58,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Dashboard = ({ setComponent, setMyChildId }) => {
+const Dashboard = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -92,7 +85,6 @@ const Dashboard = ({ setComponent, setMyChildId }) => {
     <Grid
       container
       direction="column"
-      justifyContent="center"
       alignItems="center"
       maxWidth
       sx={{ paddingLeft: 2, paddingRight: 2 }}
@@ -101,61 +93,61 @@ const Dashboard = ({ setComponent, setMyChildId }) => {
         <>
           <Grid
             container
-            direction="row"
-            justifyContent="center"
+            direction="column"
             alignItems="center"
+            sx={{ marginTop: 4 }}
           >
             <Grid
               item
               container
               direction="row"
-              justifyContent="space-between"
+              justifyContent="flex-start"
               alignItems="center"
-              sx={{ margin: 4 }}
+              sx={{ marginTop: 1 }}
             >
-              <Grid item xs>
+              <Grid item xs={3} md={2}>
+                <Avatar src={user.avatarUrl} className={classes.userAvatar} />
+              </Grid>
+              <Grid item xs sx={{ padding: 2 }}>
+                <Typography variant="subtitle1">{`${user.firstName} ${user.lastName}`}</Typography>
+              </Grid>
+              <Grid item>
                 <Typography className={classes.nameTitle}>
                   {`${user.firstName} ${user.lastName}`}
                 </Typography>
               </Grid>
-              <Grid item xs={6} sx={{ textAlign: 'right', margin: 1 }}>
-                <Typography variant="subtitel1">{`${user.firstName} ${user.lastName}`}</Typography>
-              </Grid>
+            </Grid>
+            <Grid
+              item
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ marginTop: 4 }}
+            >
               <Grid item xs={2}>
-                <Avatar src={user.avatarUrl} className={classes.userAvatar} />
+                <Typography variant="subtitle1">
+                  {t('dashboard.title')}
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Divider sx={{ width: '95%' }} />
               </Grid>
             </Grid>
-          </Grid>
-
-          <Grid
-            item
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Grid item xs={10}>
-              <Divider sx={{ width: '95%' }} />
+            <Grid
+              item
+              xs={12}
+              sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
+            >
+              {children &&
+                children.map((myChild) => (
+                  <ChildCard
+                    key={myChild.id}
+                    handleMyChildPage={handleMyChildPage}
+                    myChild={myChild}
+                  />
+                ))}
             </Grid>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">
-                {t('dashboard.title')}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
-          >
-            {children &&
-              children.map((myChild) => (
-                <ChildCard
-                  key={myChild.id}
-                  handleMyChildPage={handleMyChildPage}
-                  myChild={myChild}
-                />
-              ))}
           </Grid>
         </>
       ) : (
@@ -166,8 +158,3 @@ const Dashboard = ({ setComponent, setMyChildId }) => {
 };
 
 export default Dashboard;
-
-Dashboard.propTypes = {
-  setComponent: PropTypes.func,
-  setMyChildId: PropTypes.func,
-};

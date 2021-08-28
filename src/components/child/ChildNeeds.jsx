@@ -1,14 +1,8 @@
 /* eslint-disable no-plusplus */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  Stack,
-  CircularProgress,
-  Chip,
-  Box,
-  makeStyles,
-} from '@material-ui/core';
+import { Grid, Stack, CircularProgress, Chip, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';

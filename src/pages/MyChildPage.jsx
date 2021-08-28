@@ -3,7 +3,7 @@ import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Message from '../components/Message';
 import MyChildTabs from '../components/main/dashboard/MyChildTabs';
@@ -87,11 +87,7 @@ const MyChildPage = () => {
       ) : (
         <Grid container direction="column">
           <Grid item xs={12} className={classes.root}>
-            <Back
-              isOrange={false}
-              to="/main/dashboard"
-              // handleClickOverride={() => setComponent('dashboard')}
-            />
+            <Back isOrange={false} to="/main/dashboard" />
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
                 <>

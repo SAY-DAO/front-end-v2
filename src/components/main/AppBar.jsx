@@ -6,13 +6,12 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Paper from '@material-ui/core/Paper';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
   root: {
     '& .Mui-selected': {
       position: 'absolute',
-      left: 15,
     },
   },
 });
@@ -60,27 +59,28 @@ export default function FixedBottomNavigation() {
           sx={{ height: '45px' }}
         >
           <BottomNavigationAction
-            value="profile"
-            label={t('userLayout.profile')}
+            value="dashboard"
             className={classes.root}
+            label={t('userLayout.dashboard')}
             sx={{
-              maxWidth: value === 'profile' ? '180px' : '25px',
+              maxWidth: value === 'dashboard' ? '180px' : '25px',
               minWidth: '60px',
               borderRadius: '25px',
-              backgroundColor: value === 'profile' ? '#ffdfc1' : 'transparent',
+              backgroundColor:
+                value === 'dashboard' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'profile'
-                    ? '/images/appBar/profileActive.svg'
-                    : '/images/appBar/profile.svg'
+                  value === 'dashboard'
+                    ? '/images/appBar/dashboardActive.svg'
+                    : '/images/appBar/dashboard.svg'
                 }
-                alt="Profile Icon"
+                alt="Dashboard Icon"
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'profile' ? 8 : 35,
+                  right: value === 'dashboard' ? 8 : 35,
                   bottom: 10,
                 }}
               />
@@ -141,28 +141,27 @@ export default function FixedBottomNavigation() {
             }
           />
           <BottomNavigationAction
-            value="dashboard"
+            value="profile"
+            label={t('userLayout.profile')}
             className={classes.root}
-            label={t('userLayout.dashboard')}
             sx={{
-              maxWidth: value === 'dashboard' ? '180px' : '25px',
-              minWidth: '60px',
+              maxWidth: value === 'profile' ? '180px' : '2px',
+              minWidth: '70px',
               borderRadius: '25px',
-              backgroundColor:
-                value === 'dashboard' ? '#ffdfc1' : 'transparent',
+              backgroundColor: value === 'profile' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'dashboard'
-                    ? '/images/appBar/dashboardActive.svg'
-                    : '/images/appBar/dashboard.svg'
+                  value === 'profile'
+                    ? '/images/appBar/profileActive.svg'
+                    : '/images/appBar/profile.svg'
                 }
-                alt="Dashboard Icon"
+                alt="Profile Icon"
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'dashboard' ? 8 : 35,
+                  right: value === 'profile' ? 8 : 35,
                   bottom: 10,
                 }}
               />

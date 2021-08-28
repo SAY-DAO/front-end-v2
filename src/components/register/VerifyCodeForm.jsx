@@ -10,7 +10,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import NumberFormat from 'react-number-format';
 import Back from '../Back';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Grid,
   Typography,
@@ -6,10 +6,15 @@ import {
   Avatar,
   Box,
   Card,
+  Divider,
+  CardContent,
+  CardMedia,
+  Skeleton,
+  Checkbox,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -60,7 +65,6 @@ const useStyles = makeStyles({
     left: '50%',
     position: 'absolute',
     transform: 'translate(-50%, 0%)',
-    textAlign: 'center',
     width: '100%',
     marginLeft: 2,
     marginRight: 2,
@@ -73,14 +77,14 @@ const useStyles = makeStyles({
     color: '#f05a31',
     fontWeight: 500,
     fontSize: '12px',
+    padding: '10px',
   },
   theCard1: {
     margin: 1,
     width: '75%',
     textAlign: 'center',
     padding: 5,
-    // marginLeft: 20,
-    // marginRight: 20,
+
     borderRadius: 5,
   },
   theCard2: {
@@ -98,6 +102,9 @@ export default function NeedPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { childId, needId } = useParams();
+
+  const [imageSkeleton, setImageSkeleton] = useState(true);
+  const [checked, setChecked] = React.useState(true);
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -122,6 +129,10 @@ export default function NeedPage() {
       history.push('/main/dashboard');
     }
   }, [theChild, history]);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
   const classes = useStyles();
   return (
@@ -154,7 +165,7 @@ export default function NeedPage() {
                     </Typography>
 
                     <Box>
-                      <Grid className={classes.needDesc}>
+                      <Grid container className={classes.needDesc}>
                         <Grid
                           sx={{
                             marginLeft: 3,
@@ -163,7 +174,10 @@ export default function NeedPage() {
                         >
                           {theChild && (
                             <Grid item container sx={{ marginTop: 2 }}>
-                              <Grid item sx={{ margin: 'auto' }}>
+                              <Grid
+                                item
+                                sx={{ margin: 'auto', textAlign: 'center' }}
+                              >
                                 <Typography variant="body1">
                                   {oneNeed.description}
                                 </Typography>
@@ -224,8 +238,105 @@ export default function NeedPage() {
                             </Grid>
                           )}
                         </Grid>
-                        <Grid item xs={12} sx={{ marginTop: 4 }}>
-                          hi
+                        <Grid
+                          item
+                          container
+                          direction="row"
+                          sx={{ marginTop: 5, padding: 2, textAlign: 'center' }}
+                        >
+                          <Grid item xs={9}>
+                            <Divider sx={{ width: '95%', margin: 1 }} />
+                          </Grid>
+                          <Grid item xs={3}>
+                            <Typography variant="subtitle2">
+                              {t('needPage.needInfo')}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Card
+                            sx={{
+                              display: 'flex',
+                              marginLeft: 2,
+                              marginRight: 2,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                              }}
+                            >
+                              <CardContent sx={{ flex: '1 0 auto' }}>
+                                <Typography
+                                  variant="subtitle2"
+                                  sx={{ minWidth: '150px' }}
+                                >
+                                  {oneNeed.title}
+                                </Typography>
+                                <Typography variant="subtitle2">
+                                  {oneNeed.cost}
+                                </Typography>
+                              </CardContent>
+                            </Box>
+                            <Skeleton
+                              sx={
+                                imageSkeleton
+                                  ? {
+                                      width: 100,
+                                      height: 100,
+                                      margin: 1,
+                                    }
+                                  : {
+                                      display: 'none',
+                                    }
+                              }
+                            />
+                            <CardMedia
+                              component="img"
+                              sx={
+                                imageSkeleton
+                                  ? {
+                                      display: 'none',
+                                    }
+                                  : {
+                                      width: 100,
+                                    }
+                              }
+                              image={oneNeed.img}
+                              alt="Need image"
+                              onLoad={() => setImageSkeleton(false)}
+                            />
+                          </Card>
+                        </Grid>
+                        <Grid
+                          item
+                          container
+                          direction="row"
+                          justifyContent="center"
+                          alignItems="center"
+                          sx={{ marginTop: 5, padding: 2, textAlign: 'center' }}
+                        >
+                          <Grid item xs={9}>
+                            <Divider sx={{ width: '95%' }} />
+                          </Grid>
+                          <Grid item xs={3}>
+                            <Typography variant="subtitle2">
+                              {t('needPage.payTitle')}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid item sx={{ margin: 1 }}>
+                          <Typography variant="body2">
+                            {t('needPage.payContent')}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Checkbox
+                            checked={checked}
+                            onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                          />
                         </Grid>
                       </Grid>
                     </Box>

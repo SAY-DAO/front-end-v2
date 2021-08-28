@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Stack from '@material-ui/core/Stack';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import roles from '../../apis/roles';
 import { fetchChildResult } from '../../actions/childAction';
 import GoneModal from './modals/GoneModal';
