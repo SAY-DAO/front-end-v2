@@ -172,44 +172,14 @@ export default function ChildNeedCard({ theChild }) {
                 }}
               >
                 <Stack direction="row" spacing={1}>
-                  {needsArray[5][1] && (
+                  {needsArray[0][1] && (
                     <Chip
-                      label={t('childData.needCategory.done')}
-                      onClick={() => handleClick(5)}
-                      variant="outlined"
+                      label={t('childData.needCategory.urgent')}
                       className={
-                        activeCat !== 5 ? classes.chip : classes.chipActive
-                      }
-                    />
-                  )}
-                  {needsArray[4][1] && (
-                    <Chip
-                      label={t('childData.needCategory.surroundings')}
-                      onClick={() => handleClick(4)}
-                      variant="outlined"
-                      className={
-                        activeCat !== 4 ? classes.chip : classes.chipActive
-                      }
-                    />
-                  )}
-                  {needsArray[3][1] && (
-                    <Chip
-                      label={t('childData.needCategory.health')}
-                      className={
-                        activeCat !== 3 ? classes.chip : classes.chipActive
+                        activeCat !== 0 ? classes.chip : classes.chipActive
                       }
                       variant="outlined"
-                      onClick={() => handleClick(3)}
-                    />
-                  )}
-                  {needsArray[2][1] && (
-                    <Chip
-                      label={t('childData.needCategory.joy')}
-                      className={
-                        activeCat !== 2 ? classes.chip : classes.chipActive
-                      }
-                      variant="outlined"
-                      onClick={() => handleClick(2)}
+                      onClick={() => handleClick(0)}
                     />
                   )}
                   {needsArray[1][1] && (
@@ -222,14 +192,45 @@ export default function ChildNeedCard({ theChild }) {
                       onClick={() => handleClick(1)}
                     />
                   )}
-                  {needsArray[0][1] && (
+                  {needsArray[2][1] && (
                     <Chip
-                      label={t('childData.needCategory.urgent')}
+                      label={t('childData.needCategory.joy')}
                       className={
-                        activeCat !== 0 ? classes.chip : classes.chipActive
+                        activeCat !== 2 ? classes.chip : classes.chipActive
                       }
                       variant="outlined"
-                      onClick={() => handleClick(0)}
+                      onClick={() => handleClick(2)}
+                    />
+                  )}
+                  {needsArray[3][1] && (
+                    <Chip
+                      label={t('childData.needCategory.health')}
+                      className={
+                        activeCat !== 3 ? classes.chip : classes.chipActive
+                      }
+                      variant="outlined"
+                      onClick={() => handleClick(3)}
+                    />
+                  )}
+                  {needsArray[4][1] && (
+                    <Chip
+                      label={t('childData.needCategory.surroundings')}
+                      onClick={() => handleClick(4)}
+                      variant="outlined"
+                      className={
+                        activeCat !== 4 ? classes.chip : classes.chipActive
+                      }
+                    />
+                  )}
+
+                  {needsArray[5][1] && (
+                    <Chip
+                      label={t('childData.needCategory.done')}
+                      onClick={() => handleClick(5)}
+                      variant="outlined"
+                      className={
+                        activeCat !== 5 ? classes.chip : classes.chipActive
+                      }
                     />
                   )}
                 </Stack>

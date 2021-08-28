@@ -31,9 +31,9 @@ const useStyles = makeStyles(() => ({
     marginTop: '4px',
   },
   needName: {
-    textAlign: 'right',
+    // textAlign: 'right',
     padding: 5,
-    marginBottom: '5px',
+    marginTop: '5px',
   },
   actionArea: {
     width: '100%',
@@ -63,6 +63,37 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
         onClick={() => handleNeedCardClick(need.id, childId)}
       >
         <Grid container item direction="row" justifyContent="space-between">
+          <Grid item xs={2}>
+            <Avatar src={need.imageUrl} className={classes.imageUrl} />
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item>
+              <Typography variant="subtitle2" className={classes.needName}>
+                {need.name}
+              </Typography>
+            </Grid>
+            <Grid item container direction="row">
+              <Grid item xs={10}>
+                <LinearProgress
+                  variant="determinate"
+                  value={need.progress}
+                  className={classes.progressBar}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle2" className={classes.percentage}>
+                  %{need.progress}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid
             container
             item
@@ -89,30 +120,6 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                 </Typography>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={6} container direction="column">
-            <Grid item>
-              <Typography variant="subtitle2" className={classes.needName}>
-                {need.name}
-              </Typography>
-            </Grid>
-            <Grid item container direction="row">
-              <Grid item xs={10}>
-                <LinearProgress
-                  variant="determinate"
-                  value={need.progress}
-                  className={classes.progressBar}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle2" className={classes.percentage}>
-                  %{need.progress}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={2}>
-            <Avatar src={need.imageUrl} className={classes.imageUrl} />
           </Grid>
         </Grid>
       </CardActionArea>

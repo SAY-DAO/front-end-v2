@@ -183,16 +183,6 @@ export default function NeedPage() {
                                 </Typography>
                               </Grid>
                               <Grid item container sx={{ marginTop: 4 }}>
-                                <Card
-                                  className={classes.theCard2}
-                                  elevation={1}
-                                >
-                                  <Grid item xs={2}>
-                                    <Typography className={classes.percentage}>
-                                      %{oneNeed.progress}
-                                    </Typography>
-                                  </Grid>
-                                </Card>
                                 <Card className={classes.theCard1}>
                                   <Grid item xs={10} sx={{ margin: 'auto' }}>
                                     <Grid
@@ -234,6 +224,16 @@ export default function NeedPage() {
                                     />
                                   </Grid>
                                 </Card>
+                                <Card
+                                  className={classes.theCard2}
+                                  elevation={1}
+                                >
+                                  <Grid item xs={2}>
+                                    <Typography className={classes.percentage}>
+                                      %{oneNeed.progress}
+                                    </Typography>
+                                  </Grid>
+                                </Card>
                               </Grid>
                             </Grid>
                           )}
@@ -244,13 +244,13 @@ export default function NeedPage() {
                           direction="row"
                           sx={{ marginTop: 5, padding: 2, textAlign: 'center' }}
                         >
-                          <Grid item xs={9}>
-                            <Divider sx={{ width: '95%', margin: 1 }} />
-                          </Grid>
                           <Grid item xs={3}>
                             <Typography variant="subtitle2">
                               {t('needPage.needInfo')}
                             </Typography>
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Divider sx={{ width: '95%', margin: 1 }} />
                           </Grid>
                         </Grid>
                         <Grid item>
@@ -261,6 +261,21 @@ export default function NeedPage() {
                               marginRight: 2,
                             }}
                           >
+                            <CardMedia
+                              component="img"
+                              sx={
+                                imageSkeleton
+                                  ? {
+                                      display: 'none',
+                                    }
+                                  : {
+                                      width: 100,
+                                    }
+                              }
+                              image={oneNeed.img}
+                              alt="Need image"
+                              onLoad={() => setImageSkeleton(false)}
+                            />
                             <Box
                               sx={{
                                 display: 'flex',
@@ -292,21 +307,6 @@ export default function NeedPage() {
                                     }
                               }
                             />
-                            <CardMedia
-                              component="img"
-                              sx={
-                                imageSkeleton
-                                  ? {
-                                      display: 'none',
-                                    }
-                                  : {
-                                      width: 100,
-                                    }
-                              }
-                              image={oneNeed.img}
-                              alt="Need image"
-                              onLoad={() => setImageSkeleton(false)}
-                            />
                           </Card>
                         </Grid>
                         <Grid
@@ -317,13 +317,13 @@ export default function NeedPage() {
                           alignItems="center"
                           sx={{ marginTop: 5, padding: 2, textAlign: 'center' }}
                         >
-                          <Grid item xs={9}>
-                            <Divider sx={{ width: '95%' }} />
-                          </Grid>
                           <Grid item xs={3}>
                             <Typography variant="subtitle2">
                               {t('needPage.payTitle')}
                             </Typography>
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Divider sx={{ width: '95%' }} />
                           </Grid>
                         </Grid>
                         <Grid item sx={{ margin: 1 }}>

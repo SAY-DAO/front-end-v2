@@ -59,7 +59,7 @@ export default function MyChildTabs({ theChild }) {
   const dispatch = useDispatch();
 
   const [isGone, setIsGone] = useState(false);
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
   const [isFather, setIsFather] = useState(false);
   const [isMother, setIsMother] = useState(false);
@@ -98,7 +98,7 @@ export default function MyChildTabs({ theChild }) {
             <Tab
               label={
                 <Typography variant="subtitle2">
-                  {t('childPage.childTab.story')}
+                  {t('childPage.childTab.requirements')}
                 </Typography>
               }
               {...a11yProps(0)}
@@ -114,21 +114,22 @@ export default function MyChildTabs({ theChild }) {
             <Tab
               label={
                 <Typography variant="subtitle2">
-                  {t('childPage.childTab.requirements')}
+                  {t('childPage.childTab.story')}
                 </Typography>
               }
               {...a11yProps(2)}
             />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0}>
-          <ChildStory theChild={theChild} />
+          <ChildNeeds theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ChildFamily theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <ChildNeeds theChild={theChild} />
+          <ChildStory theChild={theChild} />
         </TabPanel>
       </Box>
       {/* Gone warn popup */}
