@@ -19,7 +19,7 @@ import {
 } from './childReducer';
 import { invitationReducer } from './familyReducer';
 
-import { dashboardReducer } from './main/dashboardReducer';
+import { homeReducer } from './main/homeReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -34,7 +34,7 @@ export default combineReducers({
   childRandomSearch: childRandomSearchReducer,
   childSearchResult: childSearchResultReducer,
   JoinNewFamily: invitationReducer,
-  myDashboard: dashboardReducer,
+  myHome: homeReducer,
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,
   ChildOneNeed: childOneNeedReducer,

@@ -7,12 +7,20 @@ import {
   Box,
   Divider,
   Checkbox,
+  FormControlLabel,
+  FormGroup,
+  InputAdornment,
+  OutlinedInput,
+  FormControl,
 } from '@material-ui/core';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
+import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
 import Back from '../components/Back';
 import Message from '../components/Message';
 import { fetchChildOneNeed } from '../actions/childAction';
@@ -74,7 +82,15 @@ export default function NeedPage() {
   const history = useHistory();
   const { childId, needId } = useParams();
 
-  const [checked, setChecked] = React.useState(true);
+  const [payAll, setPayAll] = useState(true);
+  const [paySome, setPaySome] = useState(false);
+  const [supportSAY, setSupportSAY] = useState(false);
+  const [someAmount, setSomeAmount] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // sample error for checkboxes
+  const error = [paySome, payAll].filter((v) => v).length !== 1;
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -87,6 +103,24 @@ export default function NeedPage() {
     success: successOneNeed,
   } = ChildOneNeed;
 
+  // // loading button
+  // useEffect(() => {
+  //   if (loadingVerify) {
+  //     setIsLoading(true);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [loadingVerify]);
+
+  // // disable button
+  // useEffect(() => {
+  //   if (successCheck && !validateErr && !errorVerify && !errorCheck) {
+  //     setIsDisabled(false);
+  //   } else {
+  //     setIsDisabled(true);
+  //   }
+  // }, [successCheck, validateErr]);
+
   useEffect(() => {
     if (!successOneNeed && needId) {
       dispatch(fetchChildOneNeed(needId));
@@ -96,12 +130,29 @@ export default function NeedPage() {
   // In case the child is not in the state
   useEffect(() => {
     if (!theChild) {
-      history.push('/main/dashboard');
+      history.push('/main/home');
     }
   }, [theChild, history]);
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleCheckChange = (event) => {
+    if (event.target.name === 'payAll') {
+      setSomeAmount(0);
+      setPayAll(true);
+      setPaySome(false);
+    } else if (event.target.name === 'paySome') {
+      setPayAll(false);
+      setPaySome(true);
+    } else if (event.target.name === 'supportSAY') {
+      if (supportSAY === true) {
+        setSupportSAY(false);
+      } else {
+        setSupportSAY(true);
+      }
+    }
+  };
+
+  const handlePaySomeAmount = (event) => {
+    setSomeAmount(event.target.value);
   };
 
   const classes = useStyles();
@@ -155,11 +206,12 @@ export default function NeedPage() {
                           <Divider sx={{ width: '95%', margin: 1 }} />
                         </Grid>
                       </Grid>
-                      <Grid item>
+                      <Grid item xs={12}>
                         <NeedPageProduct oneNeed={oneNeed} />
                       </Grid>
                       <Grid
                         item
+                        xs={12}
                         container
                         direction="row"
                         justifyContent="center"
@@ -180,15 +232,64 @@ export default function NeedPage() {
                           {t('needPage.payContent')}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12}>
-                        <Checkbox
-                          checked={checked}
-                          onChange={handleChange}
-                          inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                        <Typography variant="subtitle2">
-                          {t('needPage.payAll')}
-                        </Typography>
+                      <Grid item xs={12} sx={{ margin: 1 }}>
+                        <FormControl
+                          required
+                          error={error}
+                          component="fieldset"
+                          sx={{ ml: 3, mr: 3 }}
+                          variant="standard"
+                        >
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={payAll}
+                                  onChange={handleCheckChange}
+                                  name="payAll"
+                                  icon={<CircleOutlinedIcon />}
+                                  checkedIcon={<CheckCircleOutlinedIcon />}
+                                />
+                              }
+                              label={t('needPage.payAll')}
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={paySome}
+                                  onChange={handleCheckChange}
+                                  name="paySome"
+                                  icon={<CircleOutlinedIcon />}
+                                  checkedIcon={<CheckCircleOutlinedIcon />}
+                                />
+                              }
+                              label={t('needPage.paySome')}
+                            />
+                          </FormGroup>
+                          {paySome && (
+                            <OutlinedInput
+                              sx={{ direction: 'rtl' }}
+                              type="number"
+                              id="filled-adornment-someAmount"
+                              value={someAmount}
+                              onChange={handlePaySomeAmount}
+                              startAdornment={
+                                <InputAdornment position="start">
+                                  {t('currency.toman')}
+                                </InputAdornment>
+                              }
+                            />
+                          )}
+                          <LoadingButton
+                            variant="contained"
+                            color="primary"
+                            disabled={isDisabled}
+                            loading={isLoading}
+                            type="submit"
+                          >
+                            {t('button.addToCart')}
+                          </LoadingButton>
+                        </FormControl>
                       </Grid>
                     </Grid>
                   </Box>

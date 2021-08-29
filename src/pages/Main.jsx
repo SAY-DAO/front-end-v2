@@ -7,7 +7,7 @@ import AppBar from '../components/main/AppBar';
 import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
 import Cart from '../components/main/Cart';
-import Dashboard from '../components/main/dashboard/Dashboard';
+import Home from '../components/main/home/Home';
 import MyChildPage from './MyChildPage';
 import NeedPage from './NeedPage';
 
@@ -39,8 +39,8 @@ const Main = () => {
         <Cart />
       ) : path === '/main/search' ? (
         <Search sx={{ minHeight: '100vh' }} />
-      ) : path === '/main/dashboard' ? (
-        <Dashboard />
+      ) : path === '/main/home' ? (
+        <Home />
       ) : path.indexOf('/needs') > -1 ? (
         <NeedPage sx={{ margin: 0, padding: 0 }} />
       ) : path.indexOf('/child') > -1 ? (

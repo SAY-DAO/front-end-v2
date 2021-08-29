@@ -35,7 +35,7 @@ const Login = () => {
   const redirect = location.search
     ? // eslint-disable-next-line no-restricted-globals
       location.search.split('redirect=')[1]
-    : 'main/dashboard';
+    : 'main/home';
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');

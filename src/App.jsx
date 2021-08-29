@@ -63,7 +63,7 @@ const App = () => (
                 <Route exact path="/main/profile" component={Main} />
                 <Route exact path="/main/cart" component={Main} />
                 <Route exact path="/main/search" component={Main} />
-                <Route exact path="/main/dashboard" component={Main} />
+                <Route exact path="/main/home" component={Main} />
                 <Route exact path="/child/:childId" component={MyChildPage} />
                 <Route
                   exact

@@ -6,7 +6,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Message from '../components/Message';
-import MyChildTabs from '../components/main/dashboard/MyChildTabs';
+import MyChildTabs from '../components/main/home/MyChildTabs';
 import { fetchMyChildById } from '../actions/childAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
@@ -87,7 +87,7 @@ const MyChildPage = () => {
       ) : (
         <Grid container direction="column">
           <Grid item xs={12} className={classes.root}>
-            <Back isOrange={false} to="/main/dashboard" />
+            <Back isOrange={false} to="/main/home" />
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
                 <>

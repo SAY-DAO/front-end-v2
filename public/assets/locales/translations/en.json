@@ -7,6 +7,7 @@
     "understand": "I understand",
     "save": "Save",
     "pay": "Pay",
+    "addToCart": "Add to Cart",
     "unpayable": "Unavaliable",
     "payFromCredit": "Pay from wallet",
     "leave": {
@@ -174,13 +175,13 @@
     "changePhone": "Change phone number"
   },
   "userLayout": {
-    "dashboard": "Dashboard",
+    "home": "Home",
     "search": "Search",
     "profile": "Profile",
     "notifications": "Notifications",
     "cart": "Shopping Cart"
   },
-  "dashboard": {
+  "Home": {
     "title": "Children"
   },
   "search": {

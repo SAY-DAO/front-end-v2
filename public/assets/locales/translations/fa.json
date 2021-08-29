@@ -7,6 +7,7 @@
     "understand": "فهمیدم",
     "save": "ثبت",
     "pay": "پرداخت کنید",
+    "addToCart": "افزودن به سبد خرید",
     "unpayable": "ناموجود",
     "payFromCredit": "پرداخت از کیف پول",
     "leave": {
@@ -174,14 +175,14 @@
     "changePhone": "تغییر شماره موبایل"
   },
   "userLayout": {
-    "dashboard": "داشبورد",
+    "home": "خانه",
     "search": "جستجو",
     "profile": "پروفایل",
     "notifications": "اعلان‌ها",
     "cart": "سبد خرید"
 
   },
-  "dashboard": {
+  "home": {
     "title": "کودکان"
   },
   "search": {

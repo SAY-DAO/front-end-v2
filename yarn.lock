@@ -11422,6 +11422,13 @@ react-sound@^1.2.0:
     prop-types "^15.5.7"
     soundmanager2 "^2.97.20170602"
 
+react-swipe-to-delete-component@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/react-swipe-to-delete-component/-/react-swipe-to-delete-component-0.5.5.tgz#218a031e6d9c57bdeaa2359c9e65d8b1200e4dfe"
+  integrity sha512-UGPcUWYH80QKaSSPpCDyhChVl2eMEXbO4jaCyUn3c1oQa3cxoIZ5pXhnISd012bM36gN62LDndDlSmf7ISXbkA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 react-transition-group@^4.4.0, react-transition-group@^4.4.1:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"

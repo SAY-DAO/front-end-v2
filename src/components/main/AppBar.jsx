@@ -20,7 +20,7 @@ export default function FixedBottomNavigation() {
   const { t } = useTranslation();
   const history = useHistory();
 
-  const [value, setValue] = useState('dashboard');
+  const [value, setValue] = useState('home');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,8 +33,8 @@ export default function FixedBottomNavigation() {
       history.push('/main/cart');
     } else if (value === 'search') {
       history.push('/main/search');
-    } else if (value === 'dashboard') {
-      history.push('/main/dashboard');
+    } else if (value === 'home') {
+      history.push('/main/home');
     }
   }, [value]);
 
@@ -59,28 +59,27 @@ export default function FixedBottomNavigation() {
           sx={{ height: '45px' }}
         >
           <BottomNavigationAction
-            value="dashboard"
+            value="home"
             className={classes.root}
-            label={t('userLayout.dashboard')}
+            label={t('userLayout.home')}
             sx={{
-              maxWidth: value === 'dashboard' ? '180px' : '25px',
+              maxWidth: value === 'home' ? '180px' : '25px',
               minWidth: '60px',
               borderRadius: '25px',
-              backgroundColor:
-                value === 'dashboard' ? '#ffdfc1' : 'transparent',
+              backgroundColor: value === 'home' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'dashboard'
-                    ? '/images/appBar/dashboardActive.svg'
-                    : '/images/appBar/dashboard.svg'
+                  value === 'home'
+                    ? '/images/appBar/homeActive.svg'
+                    : '/images/appBar/home.svg'
                 }
-                alt="Dashboard Icon"
+                alt="Home Icon"
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'dashboard' ? 8 : 35,
+                  right: value === 'home' ? 8 : 35,
                   bottom: 10,
                 }}
               />
