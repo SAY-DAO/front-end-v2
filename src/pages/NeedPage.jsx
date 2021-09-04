@@ -21,11 +21,15 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import Back from '../components/Back';
 import Message from '../components/Message';
 import { fetchChildOneNeed } from '../actions/childAction';
 import NeedPageTop from '../components/need/NeedPageTop';
 import NeedPageProduct from '../components/need/NeedPageProduct';
+import Donation from '../components/payment/DonationPercentage';
+import Wallet from '../components/payment/Wallet';
 
 const useStyles = makeStyles({
   root: {
@@ -82,15 +86,10 @@ export default function NeedPage() {
   const history = useHistory();
   const { childId, needId } = useParams();
 
-  const [payAll, setPayAll] = useState(true);
-  const [paySome, setPaySome] = useState(false);
-  const [supportSAY, setSupportSAY] = useState(false);
   const [someAmount, setSomeAmount] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
-  // sample error for checkboxes
-  const error = [paySome, payAll].filter((v) => v).length !== 1;
+  const [method, setMethod] = useState('addToCart');
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -134,20 +133,14 @@ export default function NeedPage() {
     }
   }, [theChild, history]);
 
-  const handleCheckChange = (event) => {
-    if (event.target.name === 'payAll') {
+  const handlePaymentMethod = (event) => {
+    if (event.target.value === 'payAll') {
       setSomeAmount(0);
-      setPayAll(true);
-      setPaySome(false);
-    } else if (event.target.name === 'paySome') {
-      setPayAll(false);
-      setPaySome(true);
-    } else if (event.target.name === 'supportSAY') {
-      if (supportSAY === true) {
-        setSupportSAY(false);
-      } else {
-        setSupportSAY(true);
-      }
+      setMethod('payAll');
+    } else if (event.target.value === 'paySome') {
+      setMethod('paySome');
+    } else if (event.target.value === 'addToCart') {
+      setMethod('addToCart');
     }
   };
 
@@ -216,7 +209,7 @@ export default function NeedPage() {
                         direction="row"
                         justifyContent="center"
                         alignItems="center"
-                        sx={{ marginTop: 5, padding: 2, textAlign: 'center' }}
+                        sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
                       >
                         <Grid item xs={3}>
                           <Typography variant="subtitle2">
@@ -228,67 +221,90 @@ export default function NeedPage() {
                         </Grid>
                       </Grid>
                       <Grid item sx={{ margin: 1 }}>
-                        <Typography variant="body2">
+                        <Typography variant="body2" sx={{ margin: 1 }}>
                           {t('needPage.payContent')}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} sx={{ margin: 1 }}>
+                      <Grid item xs={12}>
                         <FormControl
                           required
-                          error={error}
                           component="fieldset"
-                          sx={{ ml: 3, mr: 3 }}
+                          sx={{ pl: 2, pr: 2, width: '100%' }}
                           variant="standard"
                         >
                           <FormGroup>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={payAll}
-                                  onChange={handleCheckChange}
-                                  name="payAll"
-                                  icon={<CircleOutlinedIcon />}
-                                  checkedIcon={<CheckCircleOutlinedIcon />}
-                                />
-                              }
-                              label={t('needPage.payAll')}
-                            />
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={paySome}
-                                  onChange={handleCheckChange}
-                                  name="paySome"
-                                  icon={<CircleOutlinedIcon />}
-                                  checkedIcon={<CheckCircleOutlinedIcon />}
-                                />
-                              }
-                              label={t('needPage.paySome')}
-                            />
+                            <RadioGroup
+                              name="controlled-radio-buttons-group"
+                              value={method}
+                              onChange={handlePaymentMethod}
+                            >
+                              <FormControlLabel
+                                value="payAll"
+                                control={<Radio />}
+                                label={t('needPage.payAll')}
+                              />
+                              <FormControlLabel
+                                value="addToCart"
+                                control={<Radio />}
+                                label={t('needPage.addToCart')}
+                              />
+                              <FormControlLabel
+                                value="paySome"
+                                control={<Radio />}
+                                label={t('needPage.paySome')}
+                              />
+                            </RadioGroup>
                           </FormGroup>
-                          {paySome && (
-                            <OutlinedInput
-                              sx={{ direction: 'rtl' }}
-                              type="number"
-                              id="filled-adornment-someAmount"
-                              value={someAmount}
-                              onChange={handlePaySomeAmount}
-                              startAdornment={
-                                <InputAdornment position="start">
-                                  {t('currency.toman')}
-                                </InputAdornment>
-                              }
-                            />
+                          {method === 'paySome' ? (
+                            <>
+                              <OutlinedInput
+                                sx={{ direction: 'rtl' }}
+                                type="number"
+                                id="filled-adornment-someAmount"
+                                value={someAmount}
+                                onChange={handlePaySomeAmount}
+                                startAdornment={
+                                  <InputAdornment position="start">
+                                    {t('currency.toman')}
+                                  </InputAdornment>
+                                }
+                              />
+
+                              <Donation />
+                              <Wallet />
+                              <LoadingButton
+                                variant="contained"
+                                color="primary"
+                                disabled={isDisabled}
+                                loading={isLoading}
+                                type="submit"
+                                sx={{ marginTop: 2, marginBottom: 4 }}
+                              >
+                                {t('button.pay')}
+                              </LoadingButton>
+                            </>
+                          ) : (
+                            <>
+                              {method === 'payAll' && (
+                                <>
+                                  <Donation /> <Wallet />
+                                </>
+                              )}
+
+                              <LoadingButton
+                                variant="contained"
+                                color="primary"
+                                disabled={isDisabled}
+                                loading={isLoading}
+                                type="submit"
+                                sx={{ marginTop: 1, marginBottom: 4 }}
+                              >
+                                {method === 'payAll'
+                                  ? t('button.pay')
+                                  : t('button.addToCart')}
+                              </LoadingButton>
+                            </>
                           )}
-                          <LoadingButton
-                            variant="contained"
-                            color="primary"
-                            disabled={isDisabled}
-                            loading={isLoading}
-                            type="submit"
-                          >
-                            {t('button.addToCart')}
-                          </LoadingButton>
                         </FormControl>
                       </Grid>
                     </Grid>

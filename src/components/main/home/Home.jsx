@@ -126,7 +126,7 @@ const Home = () => {
               sx={{ marginTop: 4 }}
             >
               <Grid item xs={2}>
-                <Typography variant="subtitle1">{t('Home.title')}</Typography>
+                <Typography variant="subtitle1">{t('home.title')}</Typography>
               </Grid>
               <Grid item xs={10}>
                 <Divider sx={{ width: '95%' }} />

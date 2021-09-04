@@ -66,19 +66,6 @@ export default function NeedPageProduct({ oneNeed }) {
             alt="Need image"
             onLoad={() => setImageSkeleton(false)}
           />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <CardContent sx={{ flex: '1 0 auto' }}>
-              <Typography variant="subtitle2" sx={{ minWidth: '150px' }}>
-                {oneNeed.title}
-              </Typography>
-              <Typography variant="subtitle2">{oneNeed.cost}</Typography>
-            </CardContent>
-          </Box>
           <Skeleton
             sx={
               imageSkeleton
@@ -92,6 +79,19 @@ export default function NeedPageProduct({ oneNeed }) {
                   }
             }
           />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <CardContent sx={{ flex: '1 0 auto' }}>
+              <Typography variant="subtitle2" sx={{ minWidth: '150px' }}>
+                {oneNeed.title}
+              </Typography>
+              <Typography variant="subtitle2">{oneNeed.cost}</Typography>
+            </CardContent>
+          </Box>
         </Card>
       </Grid>
     </>

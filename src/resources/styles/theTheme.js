@@ -204,6 +204,13 @@ const theTheme = createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: '#8c8c8c',
+        },
+      },
+    },
   },
 });
 

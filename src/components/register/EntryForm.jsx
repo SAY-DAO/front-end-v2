@@ -217,7 +217,7 @@ const EntryForm = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
+        sx={{ direction: 'rtl' }}
       >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>

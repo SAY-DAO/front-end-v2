@@ -10,16 +10,17 @@ import PropTypes from 'prop-types';
 // from material-ui customized slider
 const PrettoSlider = withStyles({
   root: {
-    width: '100%',
+    width: '95%',
     color: '#fff',
     height: 8,
+    left: '5px',
   },
   thumb: {
     height: 16,
     width: 16,
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -4,
+    // marginTop: -4,
     marginLeft: -6,
     '&:focus,&:hover,&$active': {
       boxShadow: 'inherit',
@@ -38,6 +39,7 @@ const PrettoSlider = withStyles({
   rail: {
     height: 8,
     borderRadius: 4,
+    right: '8px',
   },
 })(Slider);
 
@@ -113,7 +115,7 @@ export default function VoiceBar({ url }) {
   };
 
   return (
-    <div>
+    <div style={{ direction: 'ltr' }}>
       {url && (
         <>
           <Sound

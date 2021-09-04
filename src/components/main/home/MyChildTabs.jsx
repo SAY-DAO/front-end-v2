@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../../apis/roles';
-import { fetchChildResult } from '../../../actions/childAction';
 import GoneModal from '../../searchResult/modals/GoneModal';
 import AdoptModel from '../../searchResult/modals/AdoptionModal';
 import ChildFamily from '../../child/ChildFamily';
@@ -56,7 +54,6 @@ function a11yProps(index) {
 
 export default function MyChildTabs({ theChild }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
@@ -67,9 +64,6 @@ export default function MyChildTabs({ theChild }) {
   const [mother, setMother] = useState('');
   const [family, setFamily] = useState([]);
   const [previousRole, setPreviousRole] = useState();
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { success: successLogin } = userLogin;
 
   // child is gone
   useEffect(() => {
