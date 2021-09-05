@@ -46,6 +46,7 @@
     "react-swipe-to-delete-component": "^0.5.5",
     "redux-thunk": "^2.3.0",
     "serve": "^11.3.2",
+    "simple-react-weather": "^1.0.2",
     "styled-components": "^5.3.0",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.0",

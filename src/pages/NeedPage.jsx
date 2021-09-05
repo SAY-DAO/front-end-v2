@@ -239,14 +239,14 @@ export default function NeedPage() {
                               onChange={handlePaymentMethod}
                             >
                               <FormControlLabel
-                                value="payAll"
-                                control={<Radio />}
-                                label={t('needPage.payAll')}
-                              />
-                              <FormControlLabel
                                 value="addToCart"
                                 control={<Radio />}
                                 label={t('needPage.addToCart')}
+                              />
+                              <FormControlLabel
+                                value="payAll"
+                                control={<Radio />}
+                                label={t('needPage.payAll')}
                               />
                               <FormControlLabel
                                 value="paySome"
@@ -269,7 +269,16 @@ export default function NeedPage() {
                                   </InputAdornment>
                                 }
                               />
-
+                              <Grid item xs={12}>
+                                <Divider
+                                  sx={{
+                                    width: '80%',
+                                    margin: 'auto',
+                                    marginTop: 3,
+                                    textAlign: 'center',
+                                  }}
+                                />
+                              </Grid>
                               <Donation />
                               <Wallet />
                               <LoadingButton
@@ -287,7 +296,17 @@ export default function NeedPage() {
                             <>
                               {method === 'payAll' && (
                                 <>
-                                  <Donation /> <Wallet />
+                                  <Grid item xs={12}>
+                                    <Divider
+                                      sx={{
+                                        width: '80%',
+                                        margin: 'auto',
+                                        textAlign: 'center',
+                                      }}
+                                    />
+                                  </Grid>
+                                  <Donation />
+                                  <Wallet />
                                 </>
                               )}
 

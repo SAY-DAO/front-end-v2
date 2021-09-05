@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Typography,
@@ -9,62 +9,75 @@ import {
   FormControlLabel,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
-export default function Donation() {
+export default function Donation({ method, theNeed }) {
   const { t } = useTranslation();
 
   const [donationAmount, setDonationAmount] = useState(0);
-  const [width1, setWidth1] = useState(1.5);
-  const [width2, setWidth2] = useState(1.5);
+  const [width2, setWidth2] = useState(5);
   const [width3, setWidth3] = useState(1.5);
   const [width4, setWidth4] = useState(1.5);
   const [width5, setWidth5] = useState(1.5);
   const [width6, setWidth6] = useState(1.5);
+  const [amount, setAmount] = useState(0);
+  const [remainingAmount, setRemainingAmount] = useState(0);
   const [checked, setChecked] = React.useState(false);
 
+  useEffect(() => {
+    if (theNeed) {
+      const { cost } = theNeed;
+      const paid = theNeed.cost;
+      const remainingCost = cost - paid;
+      setAmount(remainingCost);
+    }
+  }, []);
+
+  const calculateDonation = (percentage) => {
+    if (method === 'payAll') {
+      return (
+        (percentage * remainingAmount) / 100 -
+        (((percentage * remainingAmount) / 100) % 100)
+      );
+    }
+    if (method === 'paySome') {
+      return (
+        (percentage * remainingAmount) / 100 -
+        (((percentage * remainingAmount) / 100) % 100)
+      );
+    }
+  };
   const handleWidth = (value) => {
-    if (value === 0) {
-      setWidth1(4.5);
-      setWidth2(1.5);
-      setWidth3(1.5);
-      setWidth4(1.5);
-      setWidth5(1.5);
-      setWidth6(1.5);
-    } else if (value === 5) {
-      setWidth1(1.5);
-      setWidth2(4.5);
+    if (value === 5) {
+      setWidth2(6);
       setWidth3(1.5);
       setWidth4(1.5);
       setWidth5(1.5);
       setWidth6(1.5);
     } else if (value === 10) {
-      setWidth1(1.5);
       setWidth2(1.5);
-      setWidth3(4.5);
+      setWidth3(6);
       setWidth4(1.5);
       setWidth5(1.5);
       setWidth6(1.5);
     } else if (value === 15) {
-      setWidth1(1.5);
       setWidth2(1.5);
       setWidth3(1.5);
-      setWidth4(4.5);
+      setWidth4(6);
       setWidth5(1.5);
       setWidth6(1.5);
     } else if (value === 20) {
-      setWidth1(1.5);
       setWidth2(1.5);
       setWidth3(1.5);
       setWidth4(1.5);
-      setWidth5(4.5);
+      setWidth5(6);
       setWidth6(1.5);
     } else if (value === 25) {
-      setWidth1(1.5);
       setWidth2(1.5);
       setWidth3(1.5);
       setWidth4(1.5);
       setWidth5(1.5);
-      setWidth6(4.5);
+      setWidth6(6);
     }
   };
 
@@ -73,7 +86,7 @@ export default function Donation() {
   };
 
   return (
-    <Grid sx={{ marginTop: 2, marginBottom: 2 }}>
+    <Grid sx={{ marginTop: 1 }}>
       <FormControlLabel
         label={
           <Typography variant="subtitle2">
@@ -97,33 +110,6 @@ export default function Donation() {
           sx={{ textAlign: 'center' }}
           spacing={0.5}
         >
-          <Grid item xs={width1}>
-            <Card
-              sx={{
-                maxWidth: 345,
-                background:
-                  width1 !== 1.5
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
-                    : '#dcdcdc',
-                color: width1 !== 1.5 && 'white',
-              }}
-            >
-              <CardActionArea onClick={() => handleWidth(0)}>
-                <CardContent
-                  sx={{
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                    paddingBottom: 1,
-                    paddingTop: 1,
-                  }}
-                >
-                  <Typography gutterBottom variant="body2" component="div">
-                    0%
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
           <Grid item xs={width2}>
             <Card
               sx={{
@@ -264,3 +250,8 @@ export default function Donation() {
     </Grid>
   );
 }
+
+Donation.propTypes = {
+  method: PropTypes.string,
+  theNeed: PropTypes.object,
+};

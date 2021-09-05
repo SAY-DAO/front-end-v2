@@ -11287,6 +11287,11 @@ react-i18next@^11.8.15:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
 
+react-icons-weather@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-icons-weather/-/react-icons-weather-1.0.5.tgz#c327f22c66f59565061bb82118d4c3b32482f7b9"
+  integrity sha512-FdFL3Pbtby2kg0/40FkUNDyn5hyFGqwRH8/IGAflr9L7m76DPnW5E7c+V4dGpvqoAR1ua7AlEt2MeKxSYESasg==
+
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -12399,6 +12404,13 @@ simple-plist@^1.0.0:
     bplist-creator "0.0.8"
     bplist-parser "0.2.0"
     plist "^3.0.1"
+
+simple-react-weather@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/simple-react-weather/-/simple-react-weather-1.0.2.tgz#c831711db70f5a7286e1cb38293c15b95269dab2"
+  integrity sha512-80wSPAkGxwQj4QmeByEXziORPQ7hQMiJmhdM0IuNzg6G62EsVsG5gq7vgFchDWyT+mSQuRJEAow/hS6IXwHLyw==
+  dependencies:
+    react-icons-weather "^1.0.5"
 
 simple-swizzle@^0.2.2:
   version "0.2.2"

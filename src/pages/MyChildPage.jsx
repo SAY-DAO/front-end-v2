@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Weather from 'simple-react-weather';
 import Message from '../components/Message';
 import MyChildTabs from '../components/main/home/MyChildTabs';
 import { fetchMyChildById } from '../actions/childAction';
@@ -107,6 +108,11 @@ const MyChildPage = () => {
                   <Typography className={classes.childAge} variant="subtitle2">
                     {getAge(theChild.birthDate) + t('assets.age')}
                   </Typography>
+                  <Weather
+                    unit="C"
+                    city="Karaj"
+                    appid="ed56fab00ca239bf1003eee32c78057b"
+                  />
                 </>
               )}
             </Grid>

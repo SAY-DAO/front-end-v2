@@ -29,22 +29,27 @@ export default function Donation() {
       container
       direction="row"
       justifyContent="space-between"
-      alignItems="center"
+      alignItems="flex-end"
+      sx={{ margin: 2 }}
     >
       <Grid item xs container direction="column">
-        <Grid item>
+        <Grid item sx={{ marginBottom: 1 }}>
           <Typography variant="subtitle2">
             {t('needPage.useCredit.title')}
           </Typography>
         </Grid>
-        <Grid item>
-          <img src="/images/icons/wallet.svg" alt="done icon" />
-          <Typography component="span" variant="subtitle2">
-            {t('profile.credit')} : {userCredit}
-          </Typography>
+        <Grid item container direction="row">
+          <Grid>
+            <img src="/images/icons/wallet.svg" alt="wallet icon" />
+          </Grid>
+          <Grid>
+            <Typography component="span" variant="body1">
+              {t('profile.credit')} : {userCredit} {t('currency.toman')}
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <Switch
           checked={checked}
           onChange={handleChange}
