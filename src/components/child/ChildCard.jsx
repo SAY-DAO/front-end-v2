@@ -96,7 +96,7 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
               </Grid>
               <Grid item sx={{ display: 'flex' }}>
                 <Typography component="span">
-                  {t('currency.toman') + myChild.spent_credit.toLocaleString()}
+                  {myChild.spent_credit.toLocaleString() + t('currency.toman')}
                 </Typography>
                 <img
                   src="/images/icons/Money.svg"

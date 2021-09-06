@@ -16,12 +16,19 @@ const localUserLogin = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+const cartItemFromStorage = localStorage.getItem('cartItems')
+  ? JSON.parse(localStorage.getItem('cartItems'))
+  : [];
+
 const initialState = {
   userVerifyInfo: {
     localVerifyInfo,
   },
   userLogin: {
     localUserLogin,
+  },
+  theCart: {
+    cartItems: cartItemFromStorage,
   },
 };
 

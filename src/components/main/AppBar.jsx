@@ -7,6 +7,9 @@ import Paper from '@material-ui/core/Paper';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -16,15 +19,34 @@ const useStyles = makeStyles({
   },
 });
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+    color: 'white',
+  },
+}));
+
 export default function FixedBottomNavigation() {
   const { t } = useTranslation();
   const history = useHistory();
 
   const [value, setValue] = useState('home');
+  const [badgeNumber, setBadgeNumber] = useState();
+
+  const theCart = useSelector((state) => state.theCart);
+  const { cartItems } = theCart;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // cart badge number
+  useEffect(() => {
+    if (cartItems) {
+      setBadgeNumber(cartItems.length);
+    }
+  }, [cartItems]);
 
   useEffect(() => {
     if (value === 'profile') {
@@ -36,7 +58,7 @@ export default function FixedBottomNavigation() {
     } else if (value === 'home') {
       history.push('/main/home');
     }
-  }, [value]);
+  }, [value, history]);
 
   const classes = useStyles();
   return (
@@ -96,20 +118,27 @@ export default function FixedBottomNavigation() {
               backgroundColor: value === 'cart' ? '#ffdfc1' : 'transparent',
             }}
             icon={
-              <img
-                src={
-                  value === 'cart'
-                    ? '/images/appBar/cartActive.svg'
-                    : '/images/appBar/cart.svg'
-                }
-                alt="Cart Icon"
+              <StyledBadge
+                badgeContent={badgeNumber}
+                color="primary"
                 style={{
-                  maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'cart' ? 8 : 35,
+                  right: value === 'cart' ? 8 : 32,
                   bottom: 10,
                 }}
-              />
+              >
+                <img
+                  src={
+                    value === 'cart'
+                      ? '/images/appBar/cartActive.svg'
+                      : '/images/appBar/cart.svg'
+                  }
+                  alt="Cart Icon"
+                  style={{
+                    maxWidth: '22px',
+                  }}
+                />
+              </StyledBadge>
             }
           />
           <BottomNavigationAction

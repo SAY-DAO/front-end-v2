@@ -116,7 +116,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
               </Grid>
               <Grid item>
                 <Typography variant="body1" className={classes.needCost}>
-                  {t('currency.toman') + need.cost}
+                  {need.cost.toLocaleString() + t('currency.toman')}
                 </Typography>
               </Grid>
             </Grid>

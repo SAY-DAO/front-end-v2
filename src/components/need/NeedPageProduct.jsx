@@ -39,11 +39,13 @@ const useStyles = makeStyles({
   },
 });
 export default function NeedPageProduct({ oneNeed }) {
+  const { t } = useTranslation();
+
   const [imageSkeleton, setImageSkeleton] = useState(true);
 
   return (
     <>
-      <Grid item>
+      <Grid>
         <Card
           sx={{
             display: 'flex',
@@ -85,11 +87,30 @@ export default function NeedPageProduct({ oneNeed }) {
               flexDirection: 'column',
             }}
           >
-            <CardContent sx={{ flex: '1 0 auto' }}>
+            <CardContent
+              sx={{ flex: '1 0 auto', paddingBottom: '0 !important' }}
+            >
               <Typography variant="subtitle2" sx={{ minWidth: '150px' }}>
                 {oneNeed.title}
               </Typography>
-              <Typography variant="subtitle2">{oneNeed.cost}</Typography>
+              <Grid
+                item
+                sx={{ display: 'flex', justifyContent: 'right', marginTop: 4 }}
+              >
+                <img
+                  src="/images/icons/Money.svg"
+                  alt="money icon"
+                  style={{
+                    width: 14,
+                    height: 14,
+                    marginLeft: 4,
+                    marginRight: 4,
+                  }}
+                />
+                <Typography variant="subtitle2">
+                  {oneNeed.cost.toLocaleString() + t('currency.toman')}
+                </Typography>
+              </Grid>
             </CardContent>
           </Box>
         </Card>

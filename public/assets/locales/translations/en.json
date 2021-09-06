@@ -8,6 +8,7 @@
     "save": "Save",
     "pay": "Pay",
     "addToCart": "Add to Cart",
+    "continueShopping": "Continue Shopping",
     "unpayable": "Unavaliable",
     "payFromCredit": "Pay from wallet",
     "leave": {
@@ -183,6 +184,9 @@
   },
   "Home": {
     "title": "Children"
+  },
+  "cart": {
+    "title": "Shopping Cart"
   },
   "search": {
     "title": "Adopt a child",
@@ -450,7 +454,7 @@
     "donateCheckbox": "Support the path",
     "donateModal": "SAY does not take any contributions from the donations made for the children. Pitch in to help the cycle continue.",
     "otherDonate": "Other",
-    "payWarningModal": "Unfortunately you cannot pay less than {{paylimit}} Tomans.",
+    "payWarningModal": "Unfortunately you cannot pay less than {{payLimit}} Tomans.",
     "useCredit": {
       "title": "Use your remaining balance"
     },

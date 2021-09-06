@@ -10,74 +10,56 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import IconButton from '@mui/material/IconButton';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DonationModal from '../searchResult/modals/DonationModal';
 
 export default function Donation({ method, theNeed }) {
   const { t } = useTranslation();
 
-  const [donationAmount, setDonationAmount] = useState(0);
+  const [donationPercentage, setDonationPercentage] = useState(0);
   const [width2, setWidth2] = useState(5);
-  const [width3, setWidth3] = useState(1.5);
-  const [width4, setWidth4] = useState(1.5);
-  const [width5, setWidth5] = useState(1.5);
-  const [width6, setWidth6] = useState(1.5);
-  const [amount, setAmount] = useState(0);
-  const [remainingAmount, setRemainingAmount] = useState(0);
+  const [width3, setWidth3] = useState(2);
+  const [width4, setWidth4] = useState(2);
+  const [width5, setWidth5] = useState(2);
   const [checked, setChecked] = React.useState(false);
+  const [modal, setModal] = useState(false);
 
-  useEffect(() => {
-    if (theNeed) {
-      const { cost } = theNeed;
-      const paid = theNeed.cost;
-      const remainingCost = cost - paid;
-      setAmount(remainingCost);
-    }
-  }, []);
+  // const calculateDonation = (percentage) =>
+  //   (percentage * remainingAmount) / 100 -
+  //   (((percentage * remainingAmount) / 100) % 100);
 
-  const calculateDonation = (percentage) => {
-    if (method === 'payAll') {
-      return (
-        (percentage * remainingAmount) / 100 -
-        (((percentage * remainingAmount) / 100) % 100)
-      );
-    }
-    if (method === 'paySome') {
-      return (
-        (percentage * remainingAmount) / 100 -
-        (((percentage * remainingAmount) / 100) % 100)
-      );
-    }
-  };
   const handleWidth = (value) => {
     if (value === 5) {
+      setDonationPercentage(5);
       setWidth2(6);
-      setWidth3(1.5);
-      setWidth4(1.5);
-      setWidth5(1.5);
-      setWidth6(1.5);
+      setWidth3(2);
+      setWidth4(2);
+      setWidth5(2);
     } else if (value === 10) {
-      setWidth2(1.5);
+      setDonationPercentage(10);
+      setWidth2(2);
       setWidth3(6);
-      setWidth4(1.5);
-      setWidth5(1.5);
-      setWidth6(1.5);
+      setWidth4(2);
+      setWidth5(2);
     } else if (value === 15) {
-      setWidth2(1.5);
-      setWidth3(1.5);
+      setDonationPercentage(15);
+      setWidth2(2);
+      setWidth3(2);
       setWidth4(6);
-      setWidth5(1.5);
-      setWidth6(1.5);
+      setWidth5(2);
     } else if (value === 20) {
-      setWidth2(1.5);
-      setWidth3(1.5);
-      setWidth4(1.5);
+      setDonationPercentage(20);
+      setWidth2(2);
+      setWidth3(2);
+      setWidth4(2);
       setWidth5(6);
-      setWidth6(1.5);
     } else if (value === 25) {
-      setWidth2(1.5);
-      setWidth3(1.5);
-      setWidth4(1.5);
-      setWidth5(1.5);
-      setWidth6(6);
+      setDonationPercentage(25);
+      setWidth2(2);
+      setWidth3(2);
+      setWidth4(2);
+      setWidth5(2);
     }
   };
 
@@ -86,12 +68,17 @@ export default function Donation({ method, theNeed }) {
   };
 
   return (
-    <Grid sx={{ marginTop: 1 }}>
+    <Grid sx={{ marginTop: 1, marginBottom: 4 }}>
       <FormControlLabel
         label={
-          <Typography variant="subtitle2">
-            {t('needPage.donateCheckbox')}
-          </Typography>
+          <>
+            <Typography variant="subtitle2" component="span">
+              {t('needPage.donateCheckbox')}
+            </Typography>
+            <IconButton color="primary" onClick={() => setModal(true)}>
+              <InfoOutlinedIcon />
+            </IconButton>
+          </>
         }
         control={
           <Checkbox
@@ -115,10 +102,10 @@ export default function Donation({ method, theNeed }) {
               sx={{
                 maxWidth: 345,
                 background:
-                  width2 !== 1.5
+                  width2 !== 2
                     ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
                     : '#dcdcdc',
-                color: width2 !== 1.5 && 'white',
+                color: width2 !== 2 && 'white',
               }}
             >
               <CardActionArea onClick={() => handleWidth(5)}>
@@ -142,10 +129,10 @@ export default function Donation({ method, theNeed }) {
               sx={{
                 maxWidth: 345,
                 background:
-                  width3 !== 1.5
+                  width3 !== 2
                     ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
                     : '#dcdcdc',
-                color: width3 !== 1.5 && 'white',
+                color: width3 !== 2 && 'white',
               }}
             >
               <CardActionArea onClick={() => handleWidth(10)}>
@@ -169,10 +156,10 @@ export default function Donation({ method, theNeed }) {
               sx={{
                 maxWidth: 345,
                 background:
-                  width4 !== 1.5
+                  width4 !== 2
                     ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
                     : '#dcdcdc',
-                color: width4 !== 1.5 && 'white',
+                color: width4 !== 2 && 'white',
               }}
             >
               <CardActionArea onClick={() => handleWidth(15)}>
@@ -196,10 +183,10 @@ export default function Donation({ method, theNeed }) {
               sx={{
                 maxWidth: 345,
                 background:
-                  width5 !== 1.5
+                  width5 !== 2
                     ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
                     : '#dcdcdc',
-                color: width5 !== 1.5 && 'white',
+                color: width5 !== 2 && 'white',
               }}
             >
               <CardActionArea onClick={() => handleWidth(20)}>
@@ -218,35 +205,9 @@ export default function Donation({ method, theNeed }) {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={width6}>
-            <Card
-              sx={{
-                maxWidth: 345,
-                background:
-                  width6 !== 1.5
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
-                    : '#dcdcdc',
-                color: width6 !== 1.5 && 'white',
-              }}
-            >
-              <CardActionArea onClick={() => handleWidth(25)}>
-                <CardContent
-                  sx={{
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                    paddingBottom: 1,
-                    paddingTop: 1,
-                  }}
-                >
-                  <Typography gutterBottom variant="body2" component="div">
-                    25%
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
         </Grid>
       )}
+      {modal && <DonationModal />}
     </Grid>
   );
 }

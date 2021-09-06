@@ -9,24 +9,23 @@ import {
 export default (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_ADD_REQUEST:
-      return { loading: true };
+      return { loading: true, ...state };
     case CART_ADD_SUCCESS:
       const item = action.payload;
-      const existItem = state.cartItems.find(
-        (x) => x.productId === item.productId
-      );
+      // return object or nothing
+      const existItem = state.cartItems.find((x) => x.needId === item.needId);
       if (existItem) {
         return {
           ...state,
-          loadingCart: false,
+          loading: false,
           cartItems: state.cartItems.map((x) =>
-            x.productId === existItem.productId ? item : x
+            x.needId === existItem.needId ? item : x
           ),
         };
       }
       return {
         ...state,
-        loadingCart: false,
+        loading: false,
         cartItems: [...state.cartItems, item],
       };
 
@@ -37,18 +36,8 @@ export default (state = { cartItems: [] }, action) => {
       };
 
     case CART_REMOVE_ITEMS:
-      return { cartItems: [], shippingAddress: state.shippingAddress };
+      return { cartItems: [] };
     default:
       return state;
   }
 };
-
-// switch (action.type) {
-//     case CHILD_ONE_NEED_REQUEST:
-//       return { loading: true };
-//     case CHILD_ONE_NEED_SUCCESS:
-//       return { loading: false, success: true, oneNeed: action.payload };
-//     case CHILD_ONE_NEED_FAIL:
-//       return { loading: false, error: action.payload };
-//     case CHILD_ONE_NEED_RESET:
-//       return {};
