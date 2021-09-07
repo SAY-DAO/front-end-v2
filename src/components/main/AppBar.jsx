@@ -101,7 +101,7 @@ export default function FixedBottomNavigation() {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'home' ? 8 : 35,
+                  right: value === 'home' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -189,7 +189,7 @@ export default function FixedBottomNavigation() {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'profile' ? 8 : 35,
+                  right: value === 'profile' ? 8 : 30,
                   bottom: 10,
                 }}
               />

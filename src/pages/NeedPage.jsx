@@ -199,13 +199,14 @@ export default function NeedPage() {
     setPayLimit('1000');
   }, [oneNeed, remaining]);
 
+  // set amount
   useEffect(() => {
-    if (method === 'payAll') {
+    if (method === 'paySome') {
       setAmount(remaining);
-    } else if (method === 'paySome') {
+    } else {
       setAmount(remaining);
     }
-  }, [method, oneNeed]);
+  }, [method, remaining]);
 
   // cart
   useEffect(() => {
@@ -242,7 +243,7 @@ export default function NeedPage() {
   // addToCard
   const handleAddToCart = (e) => {
     e.preventDefault();
-    dispatch(addToCart(theChild.id, oneNeed, amount));
+    dispatch(addToCart(theChild, oneNeed, amount));
   };
 
   // addToCard

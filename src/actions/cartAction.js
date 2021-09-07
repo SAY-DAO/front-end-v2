@@ -5,7 +5,7 @@ import {
 } from '../constants/cartConstants';
 
 export const addToCart =
-  (childId, oneNeed, amount) => async (dispatch, getState) => {
+  (theChild, oneNeed, amount) => async (dispatch, getState) => {
     try {
       console.log(oneNeed.paid, amount);
 
@@ -14,7 +14,8 @@ export const addToCart =
       dispatch({
         type: CART_ADD_SUCCESS,
         payload: {
-          childId,
+          childId: theChild.id,
+          childSayName: theChild.sayName,
           needId: oneNeed.id,
           id: oneNeed.id,
           name: oneNeed.name,
