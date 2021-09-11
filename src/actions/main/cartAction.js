@@ -2,7 +2,7 @@ import {
   CART_ADD_REQUEST,
   CART_ADD_SUCCESS,
   CART_ADD_FAIL,
-} from '../constants/cartConstants';
+} from '../../constants/cartConstants';
 
 export const addToCart =
   (theChild, oneNeed, amount) => async (dispatch, getState) => {
@@ -20,6 +20,7 @@ export const addToCart =
           id: oneNeed.id,
           name: oneNeed.name,
           title: oneNeed.title,
+          img: oneNeed.img,
           cost: oneNeed.cost,
           paid: oneNeed.paid,
           amount,
@@ -35,8 +36,8 @@ export const addToCart =
       dispatch({
         type: CART_ADD_FAIL,
         payload:
-          e.response && e.response.data.detail
-            ? e.response.data.detail
+          e.response && e.response.oneNeed.detail
+            ? e.response.oneNeed.detail
             : e.message,
       });
     }

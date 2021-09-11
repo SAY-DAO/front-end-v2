@@ -10,35 +10,10 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/styles';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import IconButton from '@mui/material/IconButton';
 
-const useStyles = makeStyles({
-  progressBar: {
-    width: '100%',
-    margin: 2,
-  },
-  percentage: {
-    color: '#f05a31',
-    fontWeight: 500,
-    fontSize: '12px',
-    padding: '10px',
-  },
-  theCard1: {
-    margin: 1,
-    width: '75%',
-    textAlign: 'center',
-    padding: 5,
-
-    borderRadius: 5,
-  },
-  theCard2: {
-    textAlign: 'center',
-    width: '23%',
-    padding: 5,
-    borderRadius: 5,
-  },
-});
-export default function NeedPageProduct({ oneNeed }) {
+export default function NeedPageProduct({ oneNeed, handleDelete }) {
   const { t } = useTranslation();
 
   const [imageSkeleton, setImageSkeleton] = useState(true);
@@ -51,6 +26,7 @@ export default function NeedPageProduct({ oneNeed }) {
             display: 'flex',
             marginLeft: 2,
             marginRight: 2,
+            padding: 1,
           }}
         >
           <CardMedia
@@ -61,7 +37,8 @@ export default function NeedPageProduct({ oneNeed }) {
                     display: 'none',
                   }
                 : {
-                    width: 100,
+                    maxHeight: handleDelete ? 50 : 100,
+                    maxWidth: handleDelete ? 50 : 100,
                   }
             }
             image={oneNeed.img}
@@ -85,31 +62,69 @@ export default function NeedPageProduct({ oneNeed }) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
+              width: '100%',
             }}
           >
             <CardContent
-              sx={{ flex: '1 0 auto', paddingBottom: '0 !important' }}
+              sx={{
+                paddingBottom: '10px !important',
+                padding: handleDelete && 1,
+              }}
             >
-              <Typography variant="subtitle2" sx={{ minWidth: '150px' }}>
-                {oneNeed.title}
-              </Typography>
               <Grid
-                item
-                sx={{ display: 'flex', justifyContent: 'right', marginTop: 4 }}
+                container
+                direction={handleDelete ? 'row' : 'column'}
+                justifyContent={handleDelete && 'space-between'}
+                alignItems={handleDelete && 'center'}
+                spacing={handleDelete ? 0 : 4}
               >
-                <img
-                  src="/images/icons/Money.svg"
-                  alt="money icon"
-                  style={{
-                    width: 14,
-                    height: 14,
-                    marginLeft: 4,
-                    marginRight: 4,
+                <Grid item xs={5}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      whiteSpace: handleDelete && 'nowrap',
+                      width: handleDelete && '80px',
+                      overflow: handleDelete && 'hidden',
+                      textOverflow: handleDelete && 'ellipsis',
+                    }}
+                  >
+                    {oneNeed.title}
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  xs={4}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'right',
+                    alignItems: 'start',
                   }}
-                />
-                <Typography variant="subtitle2">
-                  {oneNeed.cost.toLocaleString() + t('currency.toman')}
-                </Typography>
+                >
+                  <img
+                    src="/images/icons/Money.svg"
+                    alt="money icon"
+                    style={{
+                      maxWidth: 14,
+                      maxHeight: 14,
+                      marginLeft: 4,
+                      marginRight: 4,
+                    }}
+                  />
+                  <Typography variant="subtitle2">
+                    {oneNeed.cost.toLocaleString() + t('currency.toman')}
+                  </Typography>
+                </Grid>
+                {handleDelete && (
+                  <Grid item xs sx={{ flexGrow: handleDelete && 0 }}>
+                    <IconButton
+                      color="primary"
+                      onClick={handleDelete && (() => handleDelete(oneNeed.id))}
+                    >
+                      <DeleteForeverOutlinedIcon color="warning" />{' '}
+                    </IconButton>
+                  </Grid>
+                )}
               </Grid>
             </CardContent>
           </Box>
@@ -121,4 +136,5 @@ export default function NeedPageProduct({ oneNeed }) {
 
 NeedPageProduct.propTypes = {
   oneNeed: PropTypes.object,
+  handleDelete: PropTypes.func,
 };

@@ -103,7 +103,7 @@ export default function Donation({ method, theNeed }) {
                 maxWidth: 345,
                 background:
                   width2 !== 2
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
+                    ? 'linear-gradient(90deg, #f59e39 0%, #f05a31 100%)'
                     : '#dcdcdc',
                 color: width2 !== 2 && 'white',
               }}
@@ -130,7 +130,7 @@ export default function Donation({ method, theNeed }) {
                 maxWidth: 345,
                 background:
                   width3 !== 2
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
+                    ? 'linear-gradient(90deg, #f59e39 0%, #f05a31 100%)'
                     : '#dcdcdc',
                 color: width3 !== 2 && 'white',
               }}
@@ -157,7 +157,7 @@ export default function Donation({ method, theNeed }) {
                 maxWidth: 345,
                 background:
                   width4 !== 2
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
+                    ? 'linear-gradient(90deg, #f59e39 0%, #f05a31 100%)'
                     : '#dcdcdc',
                 color: width4 !== 2 && 'white',
               }}
@@ -184,7 +184,7 @@ export default function Donation({ method, theNeed }) {
                 maxWidth: 345,
                 background:
                   width5 !== 2
-                    ? 'linear-gradient(90deg, #f59e39 100%, #f05a31 100%)'
+                    ? 'linear-gradient(90deg, #f59e39 0%, #f05a31 100%)'
                     : '#dcdcdc',
                 color: width5 !== 2 && 'white',
               }}

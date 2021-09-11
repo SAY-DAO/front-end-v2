@@ -33,7 +33,7 @@ import NeedPageTop from '../components/need/NeedPageTop';
 import NeedPageProduct from '../components/need/NeedPageProduct';
 import Donation from '../components/payment/DonationPercentage';
 import Wallet from '../components/payment/Wallet';
-import { addToCart } from '../actions/cartAction';
+import { addToCart } from '../actions/main/cartAction';
 
 const useStyles = makeStyles({
   root: {
@@ -249,7 +249,6 @@ export default function NeedPage() {
   // addToCard
   const handleContinueShop = (e) => {
     e.preventDefault();
-    console.log('huh');
     history.push(`/child/${theChild.id}`);
   };
 

@@ -44,7 +44,6 @@
     "react-scripts": "4.0.3",
     "react-scroll-parallax": "^2.4.0",
     "react-sound": "^1.2.0",
-    "react-swipe-to-delete-component": "^0.5.5",
     "redux-thunk": "^2.3.0",
     "serve": "^11.3.2",
     "simple-react-weather": "^1.0.2",
