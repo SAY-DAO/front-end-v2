@@ -20,7 +20,7 @@ import {
   changeVerifyStep,
 } from '../../actions/userAction';
 import Message from '../Message';
-import { CODE_VERIFY_RESET } from '../../constants/userConstants';
+import { CODE_VERIFY_RESET } from '../../constants/main/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

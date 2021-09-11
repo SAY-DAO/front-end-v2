@@ -38,7 +38,7 @@ import {
   // USER_UPDATE_PROFILE_REQUEST,
   // USER_UPDATE_PROFILE_SUCCESS,
   // USER_UPDATE_PROFILE_FAIL,
-} from '../constants/userConstants';
+} from '../constants/main/userConstants';
 
 export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
   switch (action.type) {
@@ -52,7 +52,7 @@ export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
 export const checkContactReducer = (state = { checkResult: {} }, action) => {
   switch (action.type) {
     case CHECK_CONTACT_REQUEST:
-      return { loading: true, ...state };
+      return { loading: true, success: false, ...state };
     case CHECK_CONTACT_SUCCESS:
       return { loading: false, success: true, checkResult: action.payload };
     case CHECK_CONTACT_FAIL:
@@ -67,7 +67,7 @@ export const checkContactReducer = (state = { checkResult: {} }, action) => {
 export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
   switch (action.type) {
     case CHECK_USERNAME_REQUEST:
-      return { loading: true, ...state };
+      return { loading: true, success: false, ...state };
     case CHECK_USERNAME_SUCCESS:
       return { loading: false, success: true, checkResult: action.payload };
     case CHECK_USERNAME_FAIL:
@@ -82,7 +82,7 @@ export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
 export const userVerifyReducer = (state = { verifyInfo: {} }, action) => {
   switch (action.type) {
     case USER_VERIFY_REQUEST:
-      return { loading: true, ...state };
+      return { loading: true, success: false, ...state };
     case USER_VERIFY_SUCCESS:
       return {
         loading: false,
@@ -114,12 +114,12 @@ export const codeVerifyReducer = (state = { success: false }, action) => {
   }
 };
 
-export const userRegisterReducer = (state = {}, action) => {
+export const userRegisterReducer = (state = { success: false }, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
       return { loading: true };
     case USER_REGISTER_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, success: true, userInfo: action.payload };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -130,7 +130,7 @@ export const userRegisterReducer = (state = {}, action) => {
 export const userLoginReducer = (state = { userInfo: {} }, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case USER_LOGIN_SUCCESS:
       return {
         ...state,
@@ -150,7 +150,7 @@ export const userLoginReducer = (state = { userInfo: {} }, action) => {
 export const userForgotPasswordReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_FORGOT_PASSWORD_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case USER_FORGOT_PASSWORD_SUCCESS:
       return { loading: false, success: true, forgotPass: action.payload };
     case USER_FORGOT_PASSWORD_FAIL:

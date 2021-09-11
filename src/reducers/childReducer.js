@@ -24,7 +24,7 @@ import {
 export const childRandomSearchReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_RANDOM_SEARCH_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CHILD_RANDOM_SEARCH_SUCCESS:
       return { loading: false, success: true, theChildToken: action.payload };
     case CHILD_RANDOM_SEARCH_FAIL:
@@ -39,7 +39,7 @@ export const childRandomSearchReducer = (state = {}, action) => {
 export const childSearchResultReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_SEARCH_RESULT_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CHILD_SEARCH_RESULT_SUCCESS:
       return { loading: false, success: true, theChild: action.payload };
     case CHILD_SEARCH_RESULT_FAIL:
@@ -54,7 +54,7 @@ export const childSearchResultReducer = (state = {}, action) => {
 export const myChildReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_BY_ID_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CHILD_BY_ID_SUCCESS:
       return { loading: false, success: true, theChild: action.payload };
     case CHILD_BY_ID_FAIL:
@@ -69,7 +69,7 @@ export const myChildReducer = (state = {}, action) => {
 export const childNeedsReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_NEEDS_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CHILD_NEEDS_SUCCESS:
       return { loading: false, success: true, theNeeds: action.payload };
     case CHILD_NEEDS_FAIL:
@@ -84,7 +84,7 @@ export const childNeedsReducer = (state = {}, action) => {
 export const childOneNeedReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_ONE_NEED_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case CHILD_ONE_NEED_SUCCESS:
       return { loading: false, success: true, oneNeed: action.payload };
     case CHILD_ONE_NEED_FAIL:

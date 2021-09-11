@@ -19,7 +19,7 @@ import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
-import { CHECK_CONTACT_RESET } from '../../constants/userConstants';
+import { CHECK_CONTACT_RESET } from '../../constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 

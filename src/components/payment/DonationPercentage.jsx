@@ -27,7 +27,7 @@ export default function Donation({ method, theNeed }) {
 
   // const calculateDonation = (percentage) =>
   //   (percentage * remainingAmount) / 100 -
-  //   (((percentage * remainingAmount) / 100) % 100);
+  //   (((perce ntage * remainingAmount) / 100) % 100);
 
   const handleWidth = (value) => {
     if (value === 5) {

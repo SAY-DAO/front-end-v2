@@ -21,7 +21,7 @@ import { invitationReducer } from './familyReducer';
 
 import { homeReducer } from './main/homeReducer';
 import { paymentReducer } from './paymentReducder';
-import cartReducer from './cartReducer';
+import { cartAddReducer, cartBadgeReducer } from './cartReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -40,6 +40,7 @@ export default combineReducers({
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,
   ChildOneNeed: childOneNeedReducer,
-  theCart: cartReducer,
+  theCart: cartAddReducer,
+  cartBadge: cartBadgeReducer,
   payment: paymentReducer,
 });

@@ -68,7 +68,9 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
             <CardContent
               sx={{
                 paddingBottom: '10px !important',
-                padding: handleDelete && 1,
+                paddingTop: '10px !important',
+                paddingLeft: 0,
+                paddingRight: 0,
               }}
             >
               <Grid
@@ -86,6 +88,7 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
                       width: handleDelete && '80px',
                       overflow: handleDelete && 'hidden',
                       textOverflow: handleDelete && 'ellipsis',
+                      fontSize: handleDelete && '10px',
                     }}
                   >
                     {oneNeed.title}
@@ -111,7 +114,10 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
                       marginRight: 4,
                     }}
                   />
-                  <Typography variant="subtitle2">
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontSize: handleDelete && '10px' }}
+                  >
                     {oneNeed.cost.toLocaleString() + t('currency.toman')}
                   </Typography>
                 </Grid>
@@ -119,6 +125,7 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
                   <Grid item xs sx={{ flexGrow: handleDelete && 0 }}>
                     <IconButton
                       color="primary"
+                      sx={{ padding: 0 }}
                       onClick={handleDelete && (() => handleDelete(oneNeed.id))}
                     >
                       <DeleteForeverOutlinedIcon color="warning" />{' '}

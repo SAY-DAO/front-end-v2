@@ -21,7 +21,7 @@ import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-import { CHECK_USERNAME_RESET } from '../../constants/userConstants';
+import { CHECK_USERNAME_RESET } from '../../constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {

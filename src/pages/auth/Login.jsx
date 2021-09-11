@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { login } from '../../actions/userAction';
-import { USER_LOGOUT } from '../../constants/userConstants';
+import { USER_LOGOUT } from '../../constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {

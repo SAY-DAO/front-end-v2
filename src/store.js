@@ -6,7 +6,7 @@ import reducers from './reducers';
 import {
   USER_LOGIN_REQUEST,
   USER_REGISTER_REQUEST,
-} from './constants/userConstants';
+} from './constants/main/userConstants';
 
 const localVerifyInfo = localStorage.getItem('localVerifyInfo')
   ? JSON.parse(localStorage.getItem('localVerifyInfo'))

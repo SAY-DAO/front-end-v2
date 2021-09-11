@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeVerifyStep } from '../actions/userAction';
-import { USER_VERIFY_RESET } from '../constants/userConstants';
+import { USER_VERIFY_RESET } from '../constants/main/userConstants';
 
 const Back = ({ step, to, isOrange, handleClickOverride }) => {
   const dispatch = useDispatch();

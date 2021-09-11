@@ -2,34 +2,49 @@ import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, FormControl } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import NeedPageProduct from '../need/NeedPageProduct';
+import { changeCartBadgeNumber } from '../../actions/main/cartAction';
+import Donation from '../payment/DonationPercentage';
+import Wallet from '../payment/Wallet';
 
 export default function CartAccordion({ cartItems }) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   // const [totalChildAmount, setTotalChildAmount] = useState({});
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState('panelFinal');
   const [childrenNeedObj, setChildrenNeedObj] = useState({}); // { id1: {items: [item1, item2,...], sayName: ahmad}, ... }
   const [myCart, setMyCart] = useState([]);
+  const [addedAmount, setAddedAmount] = useState(0);
 
   // sort by child
   useEffect(() => {
     setMyCart(cartItems);
     const sorted = {};
+    let total = 0;
     for (let i = 0; i < myCart.length; i += 1) {
+      total += Number(myCart[i].amount);
+      console.log(total);
+
       const { childId } = myCart[i];
       if (!sorted[childId]) {
         sorted[childId] = {
           items: [],
           sayName: myCart[i].childSayName,
+          totalAmount: 0,
         };
       }
       sorted[childId].items.push(myCart[i]);
+      sorted[childId].totalAmount += myCart[i].amount;
     }
+    setAddedAmount(total);
+    console.log(total);
     setChildrenNeedObj(sorted);
   }, [myCart, cartItems]);
 
@@ -59,6 +74,12 @@ export default function CartAccordion({ cartItems }) {
     console.log(`delete ${deleteIndex}`);
     setMyCart(myCart.splice(deleteIndex, 1));
     localStorage.setItem('cartItems', JSON.stringify(myCart));
+    const badgeNumber = myCart.length;
+    dispatch(changeCartBadgeNumber(badgeNumber));
+  };
+
+  const handlePayment = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -75,14 +96,18 @@ export default function CartAccordion({ cartItems }) {
             id="panel1bh-header"
           >
             <Typography variant="subtitle2" sx={{ width: '33%' }}>
-              {childrenNeedObj[childId].sayName}
+              {childrenNeedObj[childId].sayName}{' '}
+              {`(${childrenNeedObj[childId].items.length})`}
             </Typography>
 
-            <Typography variant="body1" sx={{ width: '33%' }}>
-              {childrenNeedObj[childId].sayName + t('currency.toman')}
+            <Typography variant="body1">
+              {childrenNeedObj[childId].totalAmount.toLocaleString() +
+                t('currency.toman')}
             </Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ padding: 0 }}>
+          <AccordionDetails
+            sx={{ padding: 0, paddingBottom: 2, paddingTop: 1 }}
+          >
             {childrenNeedObj[childId].items.map((item, index) => (
               <Grid key={index} sx={{ marginTop: 1 }}>
                 <NeedPageProduct oneNeed={item} handleDelete={handleDelete} />
@@ -91,6 +116,47 @@ export default function CartAccordion({ cartItems }) {
           </AccordionDetails>
         </Accordion>
       ))}
+      {cartItems[0] && (
+        <Grid item xs={12}>
+          <FormControl
+            required
+            component="fieldset"
+            variant="standard"
+            sx={{ width: '100%' }}
+            onSubmit={handlePayment}
+          >
+            <form
+              style={{
+                width: '100%',
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}
+            >
+              <Donation />
+              <Wallet />
+              <Grid sx={{ textAlign: 'center' }}>
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginTop: 1, marginBottom: 4 }}
+                >
+                  <Typography
+                    component="div"
+                    variant="subtitle1"
+                    sx={{
+                      color: 'white',
+                      display: 'contents',
+                    }}
+                  >
+                    {addedAmount.toLocaleString() + t('currency.toman')}
+                  </Typography>
+                </LoadingButton>
+              </Grid>
+            </form>
+          </FormControl>
+        </Grid>
+      )}
     </div>
   );
 }

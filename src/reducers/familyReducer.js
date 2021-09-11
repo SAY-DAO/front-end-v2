@@ -7,7 +7,7 @@ import {
 export const invitationReducer = (state = {}, action) => {
   switch (action.type) {
     case INVITE_TO_MY_FAMILY_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case INVITE_TO_MY_FAMILY_SUCCESS:
       return { loading: false, success: true, theInvite: action.payload };
     case INVITE_TO_MY_FAMILY_FAIL:
@@ -20,7 +20,7 @@ export const invitationReducer = (state = {}, action) => {
 export const joinFamilyReducer = (state = {}, action) => {
   switch (action.type) {
     case INVITE_TO_MY_FAMILY_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false };
     case INVITE_TO_MY_FAMILY_SUCCESS:
       return { loading: false, success: true, theInvite: action.payload };
     case INVITE_TO_MY_FAMILY_FAIL:

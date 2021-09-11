@@ -9,7 +9,8 @@ import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 
 const useStyles = makeStyles({
   root: {
@@ -29,24 +30,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function FixedBottomNavigation() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const [value, setValue] = useState('home');
-  const [badgeNumber, setBadgeNumber] = useState();
 
-  const theCart = useSelector((state) => state.theCart);
-  const { cartItems } = theCart;
+  const cartBadge = useSelector((state) => state.cartBadge);
+  const { badgeNumber } = cartBadge;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  // cart badge number
-  useEffect(() => {
-    if (cartItems) {
-      setBadgeNumber(cartItems.length);
-    }
-  }, [cartItems]);
 
   useEffect(() => {
     if (value === 'profile') {
@@ -58,7 +52,14 @@ export default function FixedBottomNavigation() {
     } else if (value === 'home') {
       history.push('/main/home');
     }
-  }, [value, history]);
+
+    const cartItems = localStorage.getItem('cartItems')
+      ? JSON.parse(localStorage.getItem('cartItems'))
+      : null;
+    if (cartItems) {
+      dispatch(changeCartBadgeNumber(cartItems.length));
+    }
+  }, [value, history, dispatch]);
 
   const classes = useStyles();
   return (

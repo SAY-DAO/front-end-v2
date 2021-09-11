@@ -18,7 +18,7 @@ import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
 import Back from '../../components/Back';
-import { USER_RESET_PASSWORD_RESET } from '../../constants/userConstants';
+import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
 
 const ResetPassword = () => {
   const { t } = useTranslation();

@@ -13,7 +13,7 @@ import contents from '../../inputsValidation/Contents';
 import Back from '../../components/Back';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
-import { USER_FORGOT_PASSWORD_RESET } from '../../constants/userConstants';
+import { USER_FORGOT_PASSWORD_RESET } from '../../constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 

@@ -211,6 +211,20 @@ const theTheme = createTheme({
         },
       },
     },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#f3f1ee',
+        },
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#f3f1ee',
+        },
+      },
+    },
   },
 });
 

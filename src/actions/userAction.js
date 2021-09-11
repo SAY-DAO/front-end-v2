@@ -33,7 +33,7 @@ import {
   // USER_UPDATE_PROFILE_REQUEST,
   // USER_UPDATE_PROFILE_SUCCESS,
   // USER_UPDATE_PROFILE_FAIL,
-} from '../constants/userConstants';
+} from '../constants/main/userConstants';
 import { standalone } from '../standalone';
 
 const _standalone = standalone() ? 1 : 0;
