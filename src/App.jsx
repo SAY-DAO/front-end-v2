@@ -19,6 +19,7 @@ import SearchResult from './pages/child/SearchResult';
 import Main from './pages/Main';
 import NeedPage from './pages/NeedPage';
 import MyChildPage from './pages/MyChildPage';
+import Settings from './components/main/Settings';
 
 // Configure JSS for RTL
 const jss = create({
@@ -60,6 +61,11 @@ const App = () => (
                 <Route exact path="/search-child" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />
                 <Route exact path="/main" component={Main} />
+                <Route
+                  exact
+                  path="/main/profile/settings"
+                  component={Settings}
+                />
                 <Route exact path="/main/profile" component={Main} />
                 <Route exact path="/main/cart" component={Main} />
                 <Route exact path="/main/search" component={Main} />

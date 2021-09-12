@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography } from '@material-ui/core';
+import { Grid, Divider, Typography } from '@mui/material';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';

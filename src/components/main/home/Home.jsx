@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { Grid, Divider, Typography, Avatar } from '@material-ui/core';
+import { Grid, Divider, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';

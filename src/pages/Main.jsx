@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import AppBar from '../components/main/AppBar';
 import Profile from '../components/main/Profile';
 import Search from '../components/main/Search';
@@ -16,13 +16,13 @@ const Main = () => {
   const location = useLocation();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { localUserLogin, success: successLogin } = userLogin;
+  const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
-    if (!localUserLogin && !successLogin) {
+    if (!userInfo && !successLogin) {
       history.push('/login?redirect=main');
     }
-  }, [localUserLogin, successLogin, history]);
+  }, [userInfo, successLogin, history]);
 
   const path = location.pathname;
   return (

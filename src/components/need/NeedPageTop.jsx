@@ -6,7 +6,7 @@ import {
   Avatar,
   LinearProgress,
   Card,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';

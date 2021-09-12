@@ -2,7 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -45,7 +45,6 @@ const Login = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const {
-    local,
     loading: loadingLogin,
     error: errorLogin,
     success: successLogin,

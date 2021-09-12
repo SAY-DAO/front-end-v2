@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Typography, Grid, FormControl } from '@mui/material';
+import { Typography, Grid, FormControl, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ export default function CartAccordion({ cartItems }) {
   const { t } = useTranslation();
 
   // const [totalChildAmount, setTotalChildAmount] = useState({});
-  const [expanded, setExpanded] = React.useState('panelFinal');
+  const [expanded, setExpanded] = React.useState();
   const [childrenNeedObj, setChildrenNeedObj] = useState({}); // { id1: {items: [item1, item2,...], sayName: ahmad}, ... }
   const [myCart, setMyCart] = useState([]);
   const [addedAmount, setAddedAmount] = useState(0);
@@ -118,6 +118,24 @@ export default function CartAccordion({ cartItems }) {
       ))}
       {cartItems[0] && (
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
+          >
+            <Grid item xs={3}>
+              <Typography variant="subtitle2">
+                {t('needPage.payTitle')}
+              </Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Divider sx={{ width: '95%' }} />
+            </Grid>
+          </Grid>
           <FormControl
             required
             component="fieldset"

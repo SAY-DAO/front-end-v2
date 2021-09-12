@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Switch from '@mui/material/Switch';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,15 +11,15 @@ export default function Donation() {
   const [userCredit, setUserCredit] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, localUserLogin } = userLogin;
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     if (userInfo) {
       setUserCredit(userInfo.user.credit);
-    } else if (!userInfo && localUserLogin) {
-      setUserCredit(localUserLogin.user.credit);
+    } else if (!userInfo) {
+      setUserCredit(userInfo.user.credit);
     }
-  }, [userInfo, localUserLogin]);
+  }, [userInfo]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);

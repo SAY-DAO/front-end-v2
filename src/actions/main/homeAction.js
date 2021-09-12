@@ -15,9 +15,7 @@ export const fetchMyHome = () => async (dispatch, getState) => {
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo
-          ? userInfo.accessToken
-          : localUserLogin.accessToken,
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
 

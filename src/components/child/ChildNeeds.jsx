@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Stack, CircularProgress, Chip, Box } from '@material-ui/core';
+import { Grid, Stack, CircularProgress, Chip, Box } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ChildNeedCard({ theChild }) {
+export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -87,6 +87,9 @@ export default function ChildNeedCard({ theChild }) {
         }
       }
       setNeedsArray(allNeeds);
+
+      // weather display -273 before loading, we pushed this all the way here
+      setWeatherDisplay(true);
     }
     // Cleans up wehn leaves the page
     return () => {
@@ -246,4 +249,5 @@ export default function ChildNeedCard({ theChild }) {
 
 ChildNeedCard.propTypes = {
   theChild: PropTypes.object.isRequired,
+  setWeatherDisplay: PropTypes.func.isRequired,
 };

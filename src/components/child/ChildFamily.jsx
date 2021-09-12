@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, Avatar, Chip, Stack } from '@material-ui/core';
+import { Typography, Grid, Avatar, Chip, Stack } from '@mui/material';
 import roles from '../../apis/roles';
 
 export default function ChildFamily({ theChild }) {

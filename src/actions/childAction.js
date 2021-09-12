@@ -71,14 +71,12 @@ export const fetchMyChildById = (childId) => async (dispatch, getState) => {
     dispatch({ type: CHILD_BY_ID_REQUEST });
 
     const {
-      userLogin: { userInfo, localUserLogin },
+      userLogin: { userInfo },
     } = getState();
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo
-          ? userInfo.accessToken
-          : localUserLogin.accessToken,
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
     const { data } = await publicApi.get(
@@ -104,14 +102,12 @@ export const fetchChildNeeds = (childId) => async (dispatch, getState) => {
     dispatch({ type: CHILD_NEEDS_REQUEST });
 
     const {
-      userLogin: { userInfo, localUserLogin },
+      userLogin: { userInfo },
     } = getState();
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo
-          ? userInfo.accessToken
-          : localUserLogin.accessToken,
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
     const { data } = await publicApi.get(
@@ -137,14 +133,12 @@ export const fetchChildOneNeed = (needId) => async (dispatch, getState) => {
     dispatch({ type: CHILD_ONE_NEED_REQUEST });
 
     const {
-      userLogin: { userInfo, localUserLogin },
+      userLogin: { userInfo },
     } = getState();
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo
-          ? userInfo.accessToken
-          : localUserLogin.accessToken,
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
     const { data } = await publicApi.get(`/need/needId=${needId}`, config);

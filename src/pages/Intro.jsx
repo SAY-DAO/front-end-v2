@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { Typography, Grid, Button } from '@material-ui/core';
+import { Typography, Grid, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LangButton from '../components/LangButton';

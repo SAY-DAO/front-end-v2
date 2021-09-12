@@ -7,7 +7,7 @@ import {
   CardActionArea,
   Checkbox,
   FormControlLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';

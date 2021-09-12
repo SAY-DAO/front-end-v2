@@ -7,7 +7,7 @@ import {
   Card,
   CardActionArea,
   AvatarGroup,
-} from '@material-ui/core';
+} from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';

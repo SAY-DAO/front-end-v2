@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import EntryForm from '../../components/register/EntryForm';
 import VerifyCodeForm from '../../components/register/VerifyCodeForm';

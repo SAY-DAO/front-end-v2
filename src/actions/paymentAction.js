@@ -10,23 +10,18 @@ export const makePayment =
     try {
       dispatch({ type: SHAPARAK_PAYMENT_REQUEST });
       const {
-        userLogin: { userInfo, localUserLogin },
+        userLogin: { userInfo },
       } = getState();
       const config = {
         headers: {
           'Content-type': 'application/json',
-          Authorization: userInfo
-            ? userInfo.accessToken
-            : localUserLogin.accessToken,
+          Authorization: userInfo && userInfo.accessToken,
         },
       };
 
       const formData = new FormData();
       formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
-      formData.append(
-        'userId',
-        userInfo ? userInfo.user.id : localUserLogin.user.id
-      );
+      formData.append('userId', userInfo && userInfo.user.id);
       formData.append('needId', needId);
       formData.append('amount', amount);
       formData.append('donate', donate);

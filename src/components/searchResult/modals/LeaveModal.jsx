@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
-import { Box, Grid, Link, Modal } from '@material-ui/core';
+import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router';

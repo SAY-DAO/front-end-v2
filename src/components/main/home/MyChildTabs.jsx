@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, Box, Typography } from '@material-ui/core';
+import { Tabs, Tab, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../../apis/roles';
@@ -52,7 +52,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MyChildTabs({ theChild }) {
+export default function MyChildTabs({ setWeatherDisplay, theChild }) {
   const { t } = useTranslation();
 
   const [isGone, setIsGone] = useState(false);
@@ -117,7 +117,10 @@ export default function MyChildTabs({ theChild }) {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <ChildNeeds theChild={theChild} />
+          <ChildNeeds
+            theChild={theChild}
+            setWeatherDisplay={setWeatherDisplay}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ChildFamily theChild={theChild} />
@@ -139,4 +142,5 @@ export default function MyChildTabs({ theChild }) {
 
 MyChildTabs.propTypes = {
   theChild: PropTypes.object,
+  setWeatherDisplay: PropTypes.func,
 };

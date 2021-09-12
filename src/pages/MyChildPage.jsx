@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import { Grid, Typography, CircularProgress, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router-dom';
@@ -54,6 +54,7 @@ const MyChildPage = () => {
   const dispatch = useDispatch();
   const { childId } = useParams();
 
+  const [weatherDisplay, setWeatherDisplay] = useState(false);
   const myChild = useSelector((state) => state.myChild);
   const {
     theChild,
@@ -67,7 +68,7 @@ const MyChildPage = () => {
     if (!successMyChild && childId) {
       dispatch(fetchMyChildById(childId));
     }
-  }, [successMyChild, childId]);
+  }, [successMyChild, childId, dispatch]);
 
   const getAge = (DOB) => {
     const today = new Date();
@@ -108,17 +109,26 @@ const MyChildPage = () => {
                   <Typography className={classes.childAge} variant="subtitle2">
                     {getAge(theChild.birthDate) + t('assets.age')}
                   </Typography>
-                  <Weather
-                    unit="C"
-                    city="Karaj"
-                    appid="ed56fab00ca239bf1003eee32c78057b"
-                  />
+                  <Box id="weather">
+                    <Weather
+                      unit="C"
+                      city="Karaj"
+                      onClick={() => console.log('now')}
+                      appid="ed56fab00ca239bf1003eee32c78057b"
+                      style={{ display: !weatherDisplay && 'none' }}
+                    />
+                  </Box>
                 </>
               )}
             </Grid>
           </Grid>
           <Grid sx={{ maxWidth: '100% !important' }}>
-            {theChild && <MyChildTabs theChild={theChild} />}
+            {theChild && (
+              <MyChildTabs
+                theChild={theChild}
+                setWeatherDisplay={setWeatherDisplay}
+              />
+            )}
           </Grid>
         </Grid>
       )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, Divider } from '@material-ui/core';
+import { Typography, Grid, Divider } from '@mui/material';
 import VoiceBar from '../searchResult/VoiceBar';
 
 export default function ChildStory({ theChild }) {

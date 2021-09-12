@@ -3,9 +3,9 @@ import Box from '@material-ui/core/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import CartAccordion from '../cart/CartAccordion';
+import Back from '../Back';
 
-export default function Cart() {
+export default function Settings() {
   const { t } = useTranslation();
 
   const theCart = useSelector((state) => state.theCart);
@@ -20,6 +20,7 @@ export default function Cart() {
 
   return (
     <Grid sx={{ width: '100%' }}>
+      <Back to="/main/profile" isOrange />
       <Box
         sx={{
           p: 2,
@@ -29,9 +30,8 @@ export default function Cart() {
           textAlign: 'center',
         }}
       >
-        <Typography variant="subtitle1">{t('cart.title')}</Typography>
+        <Typography variant="subtitle1">{t('setting.title')}</Typography>
       </Box>
-      <CartAccordion cartItems={cartItems} />
     </Grid>
   );
 }

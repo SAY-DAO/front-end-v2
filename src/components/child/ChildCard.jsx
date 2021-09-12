@@ -7,7 +7,7 @@ import {
   Avatar,
   Card,
   CardActionArea,
-} from '@material-ui/core';
+} from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(() => ({
