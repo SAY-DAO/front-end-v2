@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
+import AppBarBottom from './AppBarBottom';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -58,7 +59,13 @@ const Profile = () => {
   const { t } = useTranslation();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/profile');
+    }
+  }, [userInfo, successLogin, history]);
 
   const classes = useStyles();
 
@@ -134,23 +141,24 @@ const Profile = () => {
           >
             <Grid container direction="row">
               <Grid item xs={6}>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   {t('profile.credit')}
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
                   {userInfo.user.credit.toLocaleString() + t('currency.toman')}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   {t('profile.doneNeeds')}
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
                   {userInfo.user.done_needs_count}
                 </Typography>
               </Grid>
             </Grid>
           </Box>
+          <AppBarBottom path="profile" />
         </>
       ) : (
         <CircularProgress />

@@ -10,8 +10,6 @@ import {
 export const addToCart =
   (theChild, oneNeed, amount) => async (dispatch, getState) => {
     try {
-      console.log(oneNeed.paid, amount);
-
       dispatch({ type: CART_ADD_REQUEST });
 
       dispatch({

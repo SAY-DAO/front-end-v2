@@ -30,7 +30,6 @@ export default function CartAccordion({ cartItems }) {
     let total = 0;
     for (let i = 0; i < myCart.length; i += 1) {
       total += Number(myCart[i].amount);
-      console.log(total);
 
       const { childId } = myCart[i];
       if (!sorted[childId]) {
@@ -44,7 +43,6 @@ export default function CartAccordion({ cartItems }) {
       sorted[childId].totalAmount += myCart[i].amount;
     }
     setAddedAmount(total);
-    console.log(total);
     setChildrenNeedObj(sorted);
   }, [myCart, cartItems]);
 
@@ -70,8 +68,6 @@ export default function CartAccordion({ cartItems }) {
   const handleDelete = (needId) => {
     localStorage.removeItem('cartItems');
     const deleteIndex = myCart.findIndex((item) => item.needId === needId);
-    console.log(needId);
-    console.log(`delete ${deleteIndex}`);
     setMyCart(myCart.splice(deleteIndex, 1));
     localStorage.setItem('cartItems', JSON.stringify(myCart));
     const badgeNumber = myCart.length;

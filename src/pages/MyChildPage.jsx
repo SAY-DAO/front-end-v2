@@ -113,7 +113,6 @@ const MyChildPage = () => {
                     <Weather
                       unit="C"
                       city="Karaj"
-                      onClick={() => console.log('now')}
                       appid="ed56fab00ca239bf1003eee32c78057b"
                       style={{ display: !weatherDisplay && 'none' }}
                     />

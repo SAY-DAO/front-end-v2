@@ -3,13 +3,25 @@ import Box from '@material-ui/core/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
+import AppBarBottom from './AppBarBottom';
 
 export default function Cart() {
+  const history = useHistory();
   const { t } = useTranslation();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
 
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/cart');
+    }
+  }, [userInfo, successLogin, history]);
 
   // cart badge number
   useEffect(() => {
@@ -32,6 +44,7 @@ export default function Cart() {
         <Typography variant="subtitle1">{t('cart.title')}</Typography>
       </Box>
       <CartAccordion cartItems={cartItems} />
+      <AppBarBottom path="cart" />
     </Grid>
   );
 }

@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/styles';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 
 const useStyles = makeStyles({
@@ -28,12 +29,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export default function FixedBottomNavigation() {
+export default function AppBarBottom({ path }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [value, setValue] = useState('home');
+  const [value, setValue] = useState();
 
   const cartBadge = useSelector((state) => state.cartBadge);
   const { badgeNumber } = cartBadge;
@@ -77,7 +78,7 @@ export default function FixedBottomNavigation() {
         elevation={0}
       >
         <BottomNavigation
-          value={value}
+          value={path}
           onChange={handleChange}
           sx={{ height: '45px' }}
         >
@@ -86,15 +87,15 @@ export default function FixedBottomNavigation() {
             className={classes.root}
             label={t('userLayout.home')}
             sx={{
-              maxWidth: value === 'home' ? '180px' : '25px',
+              maxWidth: path === 'home' ? '180px' : '25px',
               minWidth: '60px',
               borderRadius: '25px',
-              backgroundColor: value === 'home' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === 'home' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'home'
+                  path === 'home'
                     ? '/images/appBar/homeActive.svg'
                     : '/images/appBar/home.svg'
                 }
@@ -102,7 +103,7 @@ export default function FixedBottomNavigation() {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'home' ? 8 : 30,
+                  right: path === 'home' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -113,10 +114,10 @@ export default function FixedBottomNavigation() {
             className={classes.root}
             label={t('userLayout.cart')}
             sx={{
-              maxWidth: value === 'cart' ? '180px' : '25px',
+              maxWidth: path === 'cart' ? '180px' : '25px',
               minWidth: '65px',
               borderRadius: '25px',
-              backgroundColor: value === 'cart' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === 'cart' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <StyledBadge
@@ -124,13 +125,13 @@ export default function FixedBottomNavigation() {
                 color="primary"
                 style={{
                   position: 'absolute',
-                  right: value === 'cart' ? 8 : 32,
+                  right: path === 'cart' ? 8 : 32,
                   bottom: 10,
                 }}
               >
                 <img
                   src={
-                    value === 'cart'
+                    path === 'cart'
                       ? '/images/appBar/cartActive.svg'
                       : '/images/appBar/cart.svg'
                   }
@@ -147,15 +148,15 @@ export default function FixedBottomNavigation() {
             className={classes.root}
             label={t('userLayout.search')}
             sx={{
-              maxWidth: value === 'search' ? '180px' : '25px',
+              maxWidth: path === 'search' ? '180px' : '25px',
               minWidth: '60px',
               borderRadius: '25px',
-              backgroundColor: value === 'search' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === 'search' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'search'
+                  path === 'search'
                     ? '/images/appBar/searchActive.svg'
                     : '/images/appBar/search.svg'
                 }
@@ -163,7 +164,7 @@ export default function FixedBottomNavigation() {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'search' ? 8 : 35,
+                  right: path === 'search' ? 8 : 35,
                   bottom: 10,
                 }}
               />
@@ -174,15 +175,15 @@ export default function FixedBottomNavigation() {
             label={t('userLayout.profile')}
             className={classes.root}
             sx={{
-              maxWidth: value === 'profile' ? '180px' : '2px',
+              maxWidth: path === 'profile' ? '180px' : '2px',
               minWidth: '70px',
               borderRadius: '25px',
-              backgroundColor: value === 'profile' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === 'profile' ? '#ffdfc1' : 'transparent',
             }}
             icon={
               <img
                 src={
-                  value === 'profile'
+                  path === 'profile'
                     ? '/images/appBar/profileActive.svg'
                     : '/images/appBar/profile.svg'
                 }
@@ -190,7 +191,7 @@ export default function FixedBottomNavigation() {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: value === 'profile' ? 8 : 30,
+                  right: path === 'profile' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -201,3 +202,7 @@ export default function FixedBottomNavigation() {
     </Box>
   );
 }
+
+AppBarBottom.propTypes = {
+  path: PropTypes.string,
+};

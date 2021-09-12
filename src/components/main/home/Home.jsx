@@ -12,6 +12,7 @@ import {
   CHILD_NEEDS_RESET,
 } from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
+import AppBarBottom from '../AppBarBottom';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -65,6 +66,15 @@ const Home = () => {
 
   const myHome = useSelector((state) => state.myHome);
   const { user, children, success: successHome } = myHome;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/home');
+    }
+  }, [userInfo, successLogin, history]);
 
   useEffect(() => {
     dispatch({ type: CHILD_BY_ID_RESET });
@@ -147,6 +157,7 @@ const Home = () => {
                 ))}
             </Grid>
           </Grid>
+          <AppBarBottom path="home" />
         </>
       ) : (
         <CircularProgress />

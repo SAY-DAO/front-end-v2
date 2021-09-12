@@ -20,6 +20,9 @@ import Main from './pages/Main';
 import NeedPage from './pages/NeedPage';
 import MyChildPage from './pages/MyChildPage';
 import Settings from './components/main/Settings';
+import Profile from './components/main/Profile';
+import Cart from './components/main/Cart';
+import Home from './components/main/home/Home';
 
 // Configure JSS for RTL
 const jss = create({
@@ -60,16 +63,15 @@ const App = () => (
                 <Route exact path="/setpassword" component={ResetPassword} />
                 <Route exact path="/search-child" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />
-                <Route exact path="/main" component={Main} />
                 <Route
                   exact
                   path="/main/profile/settings"
                   component={Settings}
                 />
-                <Route exact path="/main/profile" component={Main} />
-                <Route exact path="/main/cart" component={Main} />
-                <Route exact path="/main/search" component={Main} />
-                <Route exact path="/main/home" component={Main} />
+                <Route exact path="/main/profile" component={Profile} />
+                <Route exact path="/main/cart" component={Cart} />
+                <Route exact path="/main/search" component={SearchChild} />
+                <Route exact path="/main/home" component={Home} />
                 <Route exact path="/child/:childId" component={MyChildPage} />
                 <Route
                   exact

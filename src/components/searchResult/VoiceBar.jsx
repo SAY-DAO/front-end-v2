@@ -66,7 +66,6 @@ export default function VoiceBar({ url }) {
   };
 
   const handleChange = () => {
-    console.log('baha');
     const p = document.getElementById('demo');
     // let pb = document.getElementById("pb1");
     if (sound != null && p != null) {

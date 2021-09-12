@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
+import AppBarBottom from '../../components/main/AppBarBottom';
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +34,15 @@ const SearchChild = () => {
     error: errorRandomSearch,
     success: successRandomSearch,
   } = childRandomSearch;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/search');
+    }
+  }, [userInfo, successLogin, history]);
 
   const localToken = localStorage.getItem('randomChildToken');
 
@@ -131,6 +141,7 @@ const SearchChild = () => {
           )}
         </Grid>
       </Grid>
+      <AppBarBottom path="search" />
     </Grid>
   );
 };
