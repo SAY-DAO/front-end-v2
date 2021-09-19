@@ -21,12 +21,21 @@ import {
   CHILD_ONE_NEED_RESET,
 } from '../constants/childConstants';
 
-export const childRandomSearchReducer = (state = {}, action) => {
+export const childRandomSearchReducer = (
+  state = { token: '', theChild: {} },
+  action
+) => {
   switch (action.type) {
     case CHILD_RANDOM_SEARCH_REQUEST:
       return { loading: true, success: false };
     case CHILD_RANDOM_SEARCH_SUCCESS:
-      return { loading: false, success: true, theChildToken: action.payload };
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        token: action.payload.token,
+        theChild: action.payload.child,
+      };
     case CHILD_RANDOM_SEARCH_FAIL:
       return { loading: false, error: action.payload };
     case CHILD_RANDOM_SEARCH_RESET:
@@ -36,20 +45,20 @@ export const childRandomSearchReducer = (state = {}, action) => {
   }
 };
 
-export const childSearchResultReducer = (state = {}, action) => {
-  switch (action.type) {
-    case CHILD_SEARCH_RESULT_REQUEST:
-      return { loading: true, success: false };
-    case CHILD_SEARCH_RESULT_SUCCESS:
-      return { loading: false, success: true, theChild: action.payload };
-    case CHILD_SEARCH_RESULT_FAIL:
-      return { loading: false, error: action.payload };
-    case CHILD_SEARCH_RESULT_RESET:
-      return {};
-    default:
-      return state;
-  }
-};
+// export const childRandomSearchReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case CHILD_SEARCH_RESULT_REQUEST:
+//       return { loading: true, success: false };
+//     case CHILD_SEARCH_RESULT_SUCCESS:
+//       return { loading: false, success: true, theChild: action.payload };
+//     case CHILD_SEARCH_RESULT_FAIL:
+//       return { loading: false, error: action.payload };
+//     case CHILD_SEARCH_RESULT_RESET:
+//       return {};
+//     default:
+//       return state;
+//   }
+// };
 
 export const myChildReducer = (state = {}, action) => {
   switch (action.type) {

@@ -3,6 +3,7 @@
     "skip": "می‌دانم",
     "register": "ثبت نام",
     "login": "ورود",
+    "confirm": "تایید",
     "submit": "ارسال کد",
     "understand": "فهمیدم",
     "save": "ثبت",
@@ -208,7 +209,7 @@
     },
     "title": "اعضای خانواده",
     "tab1": "اعضای خانواده",
-    "tab2": "نقش شما",
+    "tab2": " انتخاب نقش",
     "getRole": "باشم",
     "adoptModal": {
       "desc": "شما {{roles}}{{rolesRelative}} {{childSayName}} خواهید شد."

@@ -61,7 +61,6 @@ const App = () => (
                   component={ForgotPassword}
                 />
                 <Route exact path="/setpassword" component={ResetPassword} />
-                <Route exact path="/search-child" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />
                 <Route
                   exact

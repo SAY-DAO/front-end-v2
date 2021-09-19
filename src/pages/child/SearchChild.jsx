@@ -29,7 +29,7 @@ const SearchChild = () => {
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
-    theChildToken,
+    token,
     loading: loadingRandomSearch,
     error: errorRandomSearch,
     success: successRandomSearch,
@@ -58,18 +58,17 @@ const SearchChild = () => {
   // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(
-        `/search-result?token=${theChildToken.token}&redirect=/search-child`
-      );
+      history.push(`/search-result?token=${token}&redirect=main/search`);
     }
     if (localToken) {
-      history.push(`/search-result?token=${localToken}&redirect=/search-child`);
+      history.push(`/search-result?token=${localToken}&redirect=main/search`);
     }
-  }, [successRandomSearch, history, theChildToken]);
+  }, [successRandomSearch, history, token, localToken]);
 
   const onClick = () => {
     dispatch(fetchRandomChild());
   };
+
   const classes = useStyles();
   return (
     <Grid

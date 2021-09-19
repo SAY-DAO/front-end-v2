@@ -9,15 +9,20 @@ const history = createBrowserHistory();
 const env = process.env.NODE_ENV || 'local';
 
 let envApiUrl = '';
+let envApiUrl3 = '';
 
 if (env === 'prod') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v2`;
+  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v3`;
 } else if (env === 'stag') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_STAG}/api/v2`;
+  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_STAG}/api/v3`;
 } else if (env === 'development') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v2`;
+  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v3`;
 } else {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v2`;
+  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
 if (env !== 'local') {
@@ -65,4 +70,5 @@ if (env !== 'local') {
   }
 }
 const apiUrl = envApiUrl;
-export default apiUrl;
+const apiUrl3 = envApiUrl3;
+export { apiUrl, apiUrl3 };

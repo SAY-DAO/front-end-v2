@@ -12,7 +12,6 @@ import {
 } from './userReducer';
 import {
   childRandomSearchReducer,
-  childSearchResultReducer,
   myChildReducer,
   childNeedsReducer,
   childOneNeedReducer,
@@ -34,7 +33,7 @@ export default combineReducers({
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
   childRandomSearch: childRandomSearchReducer,
-  childSearchResult: childSearchResultReducer,
+  // childRandomSearch: childRandomSearchReducer,
   JoinNewFamily: invitationReducer,
   myHome: homeReducer,
   myChild: myChildReducer,

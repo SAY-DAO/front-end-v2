@@ -45,27 +45,21 @@ const Login = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const {
+    userInfo,
     loading: loadingLogin,
     error: errorLogin,
     success: successLogin,
   } = userLogin;
 
-  const localUserInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : {};
-
   useEffect(() => {
-    if (
-      successLogin ||
-      (localUserInfo && localUserInfo.accessToken !== undefined)
-    ) {
+    if (successLogin || userInfo) {
       history.push(`/${redirect}`);
     }
-  }, [history, localUserInfo, redirect, successLogin]);
+  }, [history, redirect, successLogin]);
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
-    if (!successLogin && !localUserInfo) {
+    if (!successLogin) {
       dispatch({ type: USER_LOGOUT });
     }
   }, [userName, password, successLogin, dispatch]);

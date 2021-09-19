@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 import { Grid, Box, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
 import AppBarBottom from './AppBarBottom';
+import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -56,12 +57,14 @@ const useStyles = makeStyles(() => ({
 
 const Profile = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
+    dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/profile');
     }
@@ -158,6 +161,20 @@ const Profile = () => {
               </Grid>
             </Grid>
           </Box>
+          <Box
+            sx={{
+              p: 2,
+              marginBottom: 2,
+              width: '100%',
+            }}
+          >
+            <Grid>
+              <Typography variant="body1">
+                {t('profile.creditModal.thumbnail')}
+              </Typography>
+            </Grid>
+          </Box>
+
           <AppBarBottom path="profile" />
         </>
       ) : (

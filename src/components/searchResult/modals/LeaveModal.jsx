@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
-import Fade from '@material-ui/core/Fade';
+import Fade from '@mui/material/Fade';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   useEffect(() => {
     setRedirect(
       // eslint-disable-next-line no-restricted-globals
-      location.search.split('=')[2] || location.search.split('=')[2]
+      location.search.split('=')[2]
     );
   }, []);
 
@@ -48,7 +48,11 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
     dispatch({ type: CHILD_SEARCH_RESULT_RESET });
     localStorage.removeItem('randomChildToken');
     handleClose();
-    history.push(redirect);
+    if (redirect) {
+      history.push(redirect);
+    } else {
+      history.push('/main/search');
+    }
   };
 
   useEffect(() => {

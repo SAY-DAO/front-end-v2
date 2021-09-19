@@ -32,12 +32,23 @@ const ResetPassword = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
   const userResetPass = useSelector((state) => state.userResetPass);
   const {
     loading: loadingReset,
     error: errorReset,
     success: successReset,
   } = userResetPass;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    dispatch({ type: USER_RESET_PASSWORD_RESET });
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=setpassword');
+    }
+  }, [userInfo, successLogin, history]);
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
@@ -107,11 +118,17 @@ const ResetPassword = () => {
     successReset,
   ]);
 
+  useEffect(() => {
+    if (successReset) {
+      history.push('main/profile/settings');
+    }
+  }, [successReset]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    let token = history.location.search;
-    token = token.split('?token=')[1].split('&')[0];
-    dispatch(resetPassword(password, token));
+    if (password) {
+      dispatch(resetPassword(password));
+    }
   };
 
   const handleChangePassword = (event) => {
@@ -130,7 +147,7 @@ const ResetPassword = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" isOrange />
+      <Back to="/main/profile/settings" isOrange />
 
       <Grid
         container
@@ -204,7 +221,7 @@ const ResetPassword = () => {
                 loading={isLoading}
                 type="submit"
               >
-                {t('button.submit')}
+                {t('button.confirm')}
               </LoadingButton>
             </Grid>
           </form>

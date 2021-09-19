@@ -44,7 +44,7 @@ const Back = ({ step, to, isOrange, handleClickOverride }) => {
             left: 0,
             width: '24px',
             margin: '18px',
-            position: 'absolute',
+            position: 'fixed',
             zIndex: 10,
           }}
         />

@@ -6,9 +6,11 @@ import { useParams, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Weather from 'simple-react-weather';
+import { useHistory } from 'react-router';
 import Message from '../components/Message';
 import MyChildTabs from '../components/main/home/MyChildTabs';
 import { fetchMyChildById } from '../actions/childAction';
+import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
 
@@ -51,10 +53,16 @@ const useStyles = makeStyles({
 
 const MyChildPage = () => {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { childId } = useParams();
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
+  const [myChildrenIdList, setMyChildrenIdList] = useState([]);
+
+  const myHome = useSelector((state) => state.myHome);
+  const { children, success: successHome } = myHome;
+
   const myChild = useSelector((state) => state.myChild);
   const {
     theChild,
@@ -63,12 +71,30 @@ const MyChildPage = () => {
     success: successMyChild,
   } = myChild;
 
+  // we get the home date ahead to get our children's ids
+  useEffect(() => {
+    if (!successHome) {
+      dispatch(fetchMyHome());
+    }
+  }, [successHome, dispatch]);
+
+  useEffect(() => {
+    if (children) {
+      for (let i = 0; i < children.length; i += 1) {
+        myChildrenIdList.push(children[i].id);
+      }
+    }
+  }, [children]);
+
+  // when the child is not adopted by user and route to the child's page
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RESET });
-    if (!successMyChild && childId) {
+    if (myChildrenIdList && !myChildrenIdList.includes(Number(childId))) {
+      history.push('/main/home');
+    } else if (!successMyChild && myChildrenIdList.includes(Number(childId))) {
       dispatch(fetchMyChildById(childId));
     }
-  }, [successMyChild, childId, dispatch]);
+  }, [successMyChild, childId, dispatch, myChildrenIdList, history]);
 
   const getAge = (DOB) => {
     const today = new Date();

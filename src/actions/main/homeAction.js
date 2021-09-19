@@ -9,7 +9,7 @@ export const fetchMyHome = () => async (dispatch, getState) => {
   try {
     dispatch({ type: HOME_REQUEST });
     const {
-      userLogin: { userInfo, localUserLogin },
+      userLogin: { userInfo },
     } = getState();
 
     const config = {

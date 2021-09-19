@@ -1,15 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable jsx-a11y/media-has-caption */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Link, Grid, Typography, Box } from '@mui/material';
+import { Link, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { fetchChildResult } from '../../actions/childAction';
+import { useHistory } from 'react-router';
+import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
@@ -65,34 +61,37 @@ const useStyles = makeStyles({
 
 const SearchResult = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
   const [imageHeight, setImageHeight] = useState('375px');
   const [backIsTrue, setBackIsTrue] = useState(false);
 
-  const childSearchResult = useSelector((state) => state.childSearchResult);
-  const {
-    theChild,
-    loading: loadingSearchResult,
-    error: errorSearchResult,
-    success: successSearchResult,
-  } = childSearchResult;
+  const childRandomSearch = useSelector((state) => state.childRandomSearch);
+  const { theChild, error: errorRandomSearch } = childRandomSearch;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/search');
+    }
+  }, [userInfo, successLogin, history]);
 
   useEffect(() => {
     if (!theChild) {
       try {
-        let token = history.location.search;
-        token = token.split('?token=')[1].split('&')[0];
-        dispatch(fetchChildResult(token));
+        dispatch(fetchRandomChild());
       } catch (e) {
         console.log(e);
       }
     }
-  }, [theChild]);
+  }, [theChild, dispatch]);
 
+  // child age
   const getAge = (DOB) => {
     const today = new Date();
     const birthDate = new Date(DOB);
@@ -104,6 +103,7 @@ const SearchResult = () => {
     return age;
   };
 
+  // child story more/less
   const handleMoreOrLess = () => {
     if (readLess) {
       setImageHeight('475px');
@@ -116,6 +116,7 @@ const SearchResult = () => {
       setReadLess(true);
     }
   };
+
   const handleBack = () => {
     // leave modal pops up
     setBackIsTrue(true);
@@ -128,7 +129,9 @@ const SearchResult = () => {
         <Back isOrange={false} handleClickOverride={handleBack} />
 
         <Grid item xs={12}>
-          {theChild && theChild.sayName && (
+          {!theChild ? (
+            <CircularProgress />
+          ) : (
             <>
               <div
                 className={classes.root}
@@ -176,9 +179,9 @@ const SearchResult = () => {
         <LeaveModel setBackIsTrue={setBackIsTrue} backIsTrue={backIsTrue} />
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorSearchResult && (
+        {errorRandomSearch && (
           <Message
-            backError={errorSearchResult}
+            backError={errorRandomSearch}
             variant="filled"
             severity="error"
           />

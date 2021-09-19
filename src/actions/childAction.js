@@ -1,4 +1,4 @@
-import { publicApi } from '../apis/sayBase';
+import { publicApi, publicApi3 } from '../apis/sayBase';
 import {
   CHILD_RANDOM_SEARCH_REQUEST,
   CHILD_RANDOM_SEARCH_SUCCESS,
@@ -26,12 +26,14 @@ export const fetchRandomChild = () => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.post('/search/random', config);
+    const { data } = await publicApi3.post('/search/random', config);
 
     dispatch({
       type: CHILD_RANDOM_SEARCH_SUCCESS,
       payload: data,
     });
+
+    localStorage.setItem('randomChildToken', JSON.stringify(data.token));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
@@ -41,30 +43,30 @@ export const fetchRandomChild = () => async (dispatch) => {
   }
 };
 
-export const fetchChildResult = (token) => async (dispatch) => {
-  try {
-    dispatch({ type: CHILD_SEARCH_RESULT_REQUEST });
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    };
+// export const fetchChildResult = (token) => async (dispatch) => {
+//   try {
+//     dispatch({ type: CHILD_SEARCH_RESULT_REQUEST });
+//     const config = {
+//       headers: {
+//         'Content-type': 'application/json',
+//       },
+//     };
 
-    const { data } = await publicApi.get(`/child/invitations/${token}`, config);
+//     const { data } = await publicApi.get(`/child/invitations/${token}`, config);
 
-    dispatch({
-      type: CHILD_SEARCH_RESULT_SUCCESS,
-      payload: data,
-    });
-    localStorage.setItem('randomChildToken', JSON.stringify(token));
-  } catch (e) {
-    // check for generic and custom message to return using ternary statement
-    dispatch({
-      type: CHILD_SEARCH_RESULT_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
-    });
-  }
-};
+//     dispatch({
+//       type: CHILD_SEARCH_RESULT_SUCCESS,
+//       payload: data,
+//     });
+//     localStorage.setItem('randomChildToken', JSON.stringify(token));
+//   } catch (e) {
+//     // check for generic and custom message to return using ternary statement
+//     dispatch({
+//       type: CHILD_SEARCH_RESULT_FAIL,
+//       payload: e.response && e.response.status ? e.response : e.message,
+//     });
+//   }
+// };
 
 export const fetchMyChildById = (childId) => async (dispatch, getState) => {
   try {
@@ -135,6 +137,7 @@ export const fetchChildOneNeed = (needId) => async (dispatch, getState) => {
     const {
       userLogin: { userInfo },
     } = getState();
+
     const config = {
       headers: {
         'Content-type': 'application/json',

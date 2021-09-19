@@ -292,19 +292,26 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
   }
 };
 
-export const resetPassword = (password, token) => async (dispatch) => {
+export const resetPassword = (password) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_RESET_PASSWORD_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
+
     const formData = new FormData();
     formData.set('password', password);
 
-    const { data } = await publicApi.post(
-      `/auth/password/reset/confirm/token=${token}`,
+    const { data } = await publicApi.patch(
+      `/user/update/userId=me`,
       formData,
       config
     );

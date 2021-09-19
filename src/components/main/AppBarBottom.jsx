@@ -88,7 +88,7 @@ export default function AppBarBottom({ path }) {
             label={t('userLayout.home')}
             sx={{
               maxWidth: path === 'home' ? '180px' : '25px',
-              minWidth: '60px',
+              minWidth: '70px',
               borderRadius: '25px',
               backgroundColor: path === 'home' ? '#ffdfc1' : 'transparent',
             }}
@@ -103,7 +103,7 @@ export default function AppBarBottom({ path }) {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: path === 'home' ? 8 : 30,
+                  right: path === 'home' ? 8 : 35,
                   bottom: 10,
                 }}
               />
@@ -125,7 +125,7 @@ export default function AppBarBottom({ path }) {
                 color="primary"
                 style={{
                   position: 'absolute',
-                  right: path === 'cart' ? 8 : 32,
+                  right: path === 'cart' ? 8 : 35,
                   bottom: 10,
                 }}
               >
@@ -164,7 +164,7 @@ export default function AppBarBottom({ path }) {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: path === 'search' ? 8 : 35,
+                  right: path === 'search' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -175,7 +175,7 @@ export default function AppBarBottom({ path }) {
             label={t('userLayout.profile')}
             className={classes.root}
             sx={{
-              maxWidth: path === 'profile' ? '180px' : '2px',
+              maxWidth: path === 'profile' ? '180px' : '25px',
               minWidth: '70px',
               borderRadius: '25px',
               backgroundColor: path === 'profile' ? '#ffdfc1' : 'transparent',

@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -14,9 +13,10 @@ import Chip from '@material-ui/core/Chip';
 import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../apis/roles';
-import { fetchChildResult } from '../../actions/childAction';
+import { fetchRandomChild } from '../../actions/childAction';
 import GoneModal from './modals/GoneModal';
 import AdoptModel from './modals/AdoptionModal';
+import PrevRoleModal from './modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
 
 const useStyles = makeStyles((theme) => ({
@@ -67,29 +67,24 @@ export default function InfoTabs() {
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
-  const [userRole, setUserRole] = useState();
+  const [userRole, setUserRole] = useState(null);
   const [isFather, setIsFather] = useState(false);
   const [isMother, setIsMother] = useState(false);
   const [father, setFather] = useState('');
   const [mother, setMother] = useState('');
   const [family, setFamily] = useState([]);
-  const [childId, setChildId] = useState('');
-  const [familyId, setFamilyId] = useState('');
-  const [previousRole, setPreviousRole] = useState();
+  // const [familyId, setFamilyId] = useState(''); invite
+  const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [alreadyInFamily, setAlreadyInFamily] = useState(false);
-  const [warnText, setWarnText] = useState('');
-  const [childName, setChildName] = useState('');
-  const [backToPrevRoleIsOpen, setBackToPrevRoleIsOpen] = useState();
-  const [adoptPopupIsOpen, setAdoptPopupIsOpen] = useState();
   const [roleSelecting, setRoleSelecting] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
 
-  const childSearchResult = useSelector((state) => state.childSearchResult);
-  const { theChild } = childSearchResult;
+  const childRandomSearch = useSelector((state) => state.childRandomSearch);
+  const { theChild } = childRandomSearch;
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { success: successLogin } = userLogin;
+  const { userInfo, success: successLogin } = userLogin;
 
   // child is gone
   useEffect(() => {
@@ -101,13 +96,24 @@ export default function InfoTabs() {
     };
   }, [theChild]);
 
-  // check family
+  // setFamily and userRole
   useEffect(() => {
-    const currentMember = [];
-    const userInfo = localStorage.getItem('userInfo')
-      ? JSON.parse(localStorage.getItem('userInfo'))
-      : null;
+    if (!theChild) {
+      dispatch(fetchRandomChild());
+    }
+    if (theChild) {
+      if (theChild.userRole) {
+        setUserRole(theChild.userRole);
+      }
+      setFamily(theChild.childFamilyMembers);
+    }
+  }, [userRole, theChild, history, dispatch]);
 
+  // check family members
+  useEffect(() => {
+    console.log(family);
+
+    const currentMember = [];
     if (family) {
       for (let f = 0; f < family.length; f += 1) {
         const member = family[f];
@@ -116,9 +122,9 @@ export default function InfoTabs() {
             // user_id from back end / userInfo.user.id from local storage
             if (userInfo && member.user_id === userInfo.user.id) {
               setPreviousRole(member.role);
-            }
-            if (userRole !== null && userRole !== previousRole) {
-              setBackToPrevRole(true);
+              if (userRole !== null && userRole !== previousRole) {
+                setBackToPrevRole(true); // Pops up that you only can go back to your previous role for this family
+              }
             }
           }
         }
@@ -139,31 +145,14 @@ export default function InfoTabs() {
         }
       }
     }
-  }, [theChild, family, previousRole, userRole]);
+  }, [theChild, family, previousRole, userRole, userInfo]);
 
-  // setFamily, setFather, setMother
+  // already in family
   useEffect(() => {
-    if (!theChild) {
-      let token = history.location.search;
-      token = token.split('?token=')[1].split('&')[0];
-      dispatch(fetchChildResult(token));
+    if (alreadyInFamily) {
+      history.push(`/child/${theChild.id}`);
     }
-    if (theChild) {
-      setUserRole(theChild.userRole);
-      setFamily(theChild.childFamilyMembers);
-
-      if (userRole === 0) {
-        setIsFather(true);
-      }
-      if (userRole === 1) {
-        setIsMother(true);
-      }
-    }
-    return () => {
-      setIsFather(false);
-      setIsMother(false);
-    };
-  }, [userRole, theChild, history, dispatch]);
+  }, [alreadyInFamily, theChild, history]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -174,8 +163,6 @@ export default function InfoTabs() {
       setIsGone(false);
       setIsGone(true);
     } else if (previousRole && selectedValue !== previousRole) {
-      // setPreviousRole(roles[previousRole]);
-      // setWarnText(t('error.adoption.backToPrevRole'));
       // setChildName(theChild.sayName);
     } else {
       setSelectedRole(selectedValue);
@@ -210,7 +197,6 @@ export default function InfoTabs() {
           <ChildFamily theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {/* Father */}
           <Stack direction="column" spacing={1}>
             {/* Mother 1 */}
             {!isMother ? (
@@ -346,20 +332,24 @@ export default function InfoTabs() {
                     alignItems="center"
                     sx={{ minWidth: 220 }}
                   >
-                    <Typography variant="subtitle1">
-                      {t('family.roles.father')}
-                    </Typography>
-                    {!isGone && (
-                      <Link onClick={() => handleSelectRole(0)}>
-                        <Typography
-                          sx={{ padding: 2, fontWeight: 600 }}
-                          variant="body2"
-                          color="primary"
-                        >
-                          {t('search-result.getRole')}
-                        </Typography>
-                      </Link>
-                    )}
+                    <Grid item xs={6}>
+                      <Typography sx={{ padding: 2 }} variant="subtitle1">
+                        {t('family.roles.father')}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      {!isGone && (
+                        <Link onClick={() => handleSelectRole(0)}>
+                          <Typography
+                            sx={{ padding: 2, fontWeight: 600 }}
+                            variant="body2"
+                            color="primary"
+                          >
+                            {t('search-result.getRole')}
+                          </Typography>
+                        </Link>
+                      )}
+                    </Grid>
                   </Grid>
                 }
               />
@@ -463,6 +453,13 @@ export default function InfoTabs() {
         rolesRelative={`${t(roles.rolesRelative[userRole])}`}
       />
 
+      {/* Back to Previous Role warn popup */}
+      <PrevRoleModal
+        backToPrevRole={backToPrevRole}
+        previousRole={`${t(roles.roles[previousRole])}`}
+        childSayName={theChild.sayName}
+        rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+      />
       {/* Adoption popup */}
       <AdoptModel
         successLogin={successLogin}

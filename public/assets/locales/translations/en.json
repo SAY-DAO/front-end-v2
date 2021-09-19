@@ -3,6 +3,7 @@
     "skip": "Skip",
     "register": "Register",
     "login": "Login",
+    "confirm": "Confirm",
     "submit": "Submit",
     "understand": "I understand",
     "save": "Save",
@@ -157,7 +158,7 @@
     "content": "Enter your email address.",
     "successNotif": "A link has been sent to you for changing your password."
   },
-  "change-password": {
+  " ": {
     "title": "Change password",
     "successNotif": "Password changed"
   },
@@ -207,7 +208,7 @@
     },
     "title": "Family Members",
     "tab1": "Family Members",
-    "tab2": "Your Role",
+    "tab2": "Choose Role",
     "getRole": "I like to be",
     "adoptModal": {
       "desc": "Are you sure you want to be {{childSayName}}'s {{roles}}?"

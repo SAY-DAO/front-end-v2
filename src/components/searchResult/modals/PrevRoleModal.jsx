@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
+import Backdrop from '@mui/material/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
 import Typography from '@material-ui/core/Typography';
@@ -12,30 +12,34 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 280,
-  bgcolor: 'rgba(255, 255, 255, .7)',
+  bgcolor: 'rgba(255, 255, 255, .9)',
   border: '1px solid transparent',
   borderRadius: '3%',
   boxShadow: 24,
   p: 4,
 };
 
-export default function GoneModal({
-  isGone,
+export default function PrevRoleModal({
+  backToPrevRole,
+  previousRole,
   childSayName,
-  roles,
   rolesRelative,
 }) {
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (isGone) {
+    console.log(previousRole);
+    if (backToPrevRole) {
       handleOpen();
+    } else {
+      handleClose();
     }
-  }, [isGone]);
+  }, [backToPrevRole]);
 
   return (
     <div>
@@ -71,10 +75,10 @@ export default function GoneModal({
                   variant="body2"
                   component="h2"
                 >
-                  {t('error.adoption.goneChild', {
-                    childSayName,
-                    roles,
+                  {t('error.adoption.backToPrevRole', {
+                    previousRole,
                     rolesRelative,
+                    childSayName,
                   })}
                 </Typography>
               </Grid>
@@ -95,9 +99,9 @@ export default function GoneModal({
   );
 }
 
-GoneModal.propTypes = {
-  isGone: PropTypes.bool.isRequired,
+PrevRoleModal.propTypes = {
+  previousRole: PropTypes.string.isRequired,
+  backToPrevRole: PropTypes.bool.isRequired,
   childSayName: PropTypes.string.isRequired,
-  roles: PropTypes.string.isRequired,
   rolesRelative: PropTypes.string.isRequired,
 };

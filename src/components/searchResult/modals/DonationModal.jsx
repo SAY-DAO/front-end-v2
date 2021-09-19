@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
-import Fade from '@material-ui/core/Fade';
+import Fade from '@mui/material/Fade';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 
