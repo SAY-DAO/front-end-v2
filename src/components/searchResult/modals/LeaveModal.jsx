@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
-import { Box, Grid, Link, Modal } from '@mui/material';
+import { Box, Grid, Link, Modal, Typography, Backdrop } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -41,19 +39,27 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [leave, setLeave] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleLeave = () => {
-    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    dispatch({ type: CHILD_SEARCH_RESULT_RESET });
-    localStorage.removeItem('randomChildToken');
     handleClose();
-    if (redirect) {
-      history.push(redirect);
-    } else {
-      history.push('/main/search');
-    }
+    setLeave(true);
   };
+
+  useEffect(() => {
+    if (leave && !open) {
+      dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+      dispatch({ type: CHILD_SEARCH_RESULT_RESET });
+      localStorage.removeItem('randomChildToken');
+      if (redirect) {
+        history.push(redirect);
+      } else {
+        history.push('/main/search');
+      }
+    }
+  }, [leave, open, dispatch, history, redirect]);
 
   useEffect(() => {
     if (backIsTrue) {
@@ -65,8 +71,8 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   return (
     <div>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
         open={open}
         onClose={handleClose}
         closeAfterTransition

@@ -111,8 +111,6 @@ export default function InfoTabs() {
 
   // check family members
   useEffect(() => {
-    console.log(family);
-
     const currentMember = [];
     if (family) {
       for (let f = 0; f < family.length; f += 1) {

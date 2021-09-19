@@ -27,13 +27,12 @@ export default function PrevRoleModal({
 }) {
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log(previousRole);
     if (backToPrevRole) {
       handleOpen();
     } else {

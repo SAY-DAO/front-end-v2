@@ -206,7 +206,6 @@ export default function NeedPage() {
 
   // cart
   useEffect(() => {
-    console.log(inCart);
     if (cartItems && oneNeed) {
       const existItem = cartItems.find((x) => x.needId === oneNeed.id);
       if (existItem) {
