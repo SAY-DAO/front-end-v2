@@ -1,4 +1,4 @@
-import { Grid, Button } from '@mui/material';
+import { Grid, Button, Typography } from '@mui/material';
 import React from 'react';
 import i18next from 'i18next';
 import { makeStyles } from '@material-ui/styles';
@@ -40,13 +40,15 @@ const LangButton = () => {
   };
   const classes = useStyles();
   return (
-    <Grid>
+    <Grid container>
       <Button
         variant="outlined"
         className={classes.root}
         onClick={clickHandler}
       >
-        {getLanguage() === 'en' ? 'FA' : 'EN'}
+        <Typography color="primary" variant="subtitle2">
+          {getLanguage() === 'en' ? 'FA' : 'EN'}
+        </Typography>
       </Button>
     </Grid>
   );

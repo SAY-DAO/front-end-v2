@@ -165,7 +165,9 @@ const SearchResult = () => {
                   </Grid>
 
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
-                    {theChild && <VoiceBar url={theChild.voiceUrl} />}
+                    {theChild && theChild.voiceUrl && (
+                      <VoiceBar url={theChild.voiceUrl} />
+                    )}
                   </Grid>
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
                     <InfoTabs />

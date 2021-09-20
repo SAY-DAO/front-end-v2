@@ -21,6 +21,7 @@ const style = {
 
 export default function PrevRoleModal({
   backToPrevRole,
+  setBackToPrevRole,
   previousRole,
   childSayName,
   rolesRelative,
@@ -30,7 +31,10 @@ export default function PrevRoleModal({
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setBackToPrevRole(false);
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (backToPrevRole) {
@@ -99,8 +103,9 @@ export default function PrevRoleModal({
 }
 
 PrevRoleModal.propTypes = {
-  previousRole: PropTypes.string.isRequired,
   backToPrevRole: PropTypes.bool.isRequired,
+  setBackToPrevRole: PropTypes.func.isRequired,
+  previousRole: PropTypes.string.isRequired,
   childSayName: PropTypes.string.isRequired,
   rolesRelative: PropTypes.string.isRequired,
 };

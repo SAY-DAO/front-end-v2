@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { inviteToMyFamily } from '../../../actions/familyAction';
+import { joinVirtualFamily } from '../../../actions/familyAction';
+// import { inviteToMyFamily } from '../../../actions/familyAction';
 
 const style = {
   position: 'absolute',
@@ -23,11 +24,11 @@ const style = {
 };
 
 export default function AdoptionModal({
+  adoption,
+  setAdoption,
   successLogin,
-  roleSelecting,
-  setRoleSelecting,
   selectedRole,
-  family,
+  familyId,
   userRole,
   childSayName,
   roles,
@@ -42,11 +43,11 @@ export default function AdoptionModal({
   const [adoptText, setAdoptText] = useState('');
   const [authWarnText, setAuthWarnText] = useState('');
 
-  const childRandomSearch = useSelector((state) => state.childRandomSearch);
-  const { theChildToken } = childRandomSearch;
-
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setAdoption(false);
+    setOpen(false);
+  };
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -70,42 +71,22 @@ export default function AdoptionModal({
       setContent(adoptText);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [childSayName, roles, rolesRelative, roleSelecting]);
+  }, [childSayName, roles, rolesRelative, selectedRole, open]);
 
   useEffect(() => {
-    if (roleSelecting) {
+    console.log(`wtf${selectedRole}`);
+    if (adoption && selectedRole) {
       handleOpen();
-      setRoleSelecting(false);
+    } else {
+      handleClose();
     }
-  }, [roleSelecting, setRoleSelecting, childSayName]);
+  }, [selectedRole, adoption]);
 
   const handleJoin = () => {
-    if (userRole != null && successLogin && 'theInvite') {
-      dispatch(inviteToMyFamily(family.id && selectedRole));
+    if (userRole === null && successLogin && selectedRole) {
+      dispatch(joinVirtualFamily(selectedRole, familyId));
     } else if (!successLogin) {
       history.push('/login');
-    } else {
-      // api
-      //   .request({
-      //     url: '/invitations/',
-      //     method: 'POST',
-      //     data: formData,
-      //   })
-      //   .then((res) => {
-      //     const result = res.data;
-      //     this.setState(
-      //       {
-      //         invitationToken: result.token,
-      //       },
-      //       isLoggedIn() ? this.addToFamily : this.saveToken
-      //     );
-      // })
-      // .catch((err) => {
-      //   // TODO: error handling
-      //   // 404 = family not found, when child gone for example
-      //   // this condition may happen in get child by token
-      //   // 500 error
-      // });
     }
   };
 
@@ -189,11 +170,11 @@ export default function AdoptionModal({
 }
 
 AdoptionModal.propTypes = {
+  adoption: PropTypes.bool,
+  setAdoption: PropTypes.func,
   successLogin: PropTypes.bool,
-  roleSelecting: PropTypes.bool.isRequired,
-  setRoleSelecting: PropTypes.func,
-  selectedRole: PropTypes.number,
-  family: PropTypes.array.isRequired,
+  selectedRole: PropTypes.number.isRequired,
+  familyId: PropTypes.number.isRequired,
   userRole: PropTypes.number,
   childSayName: PropTypes.string.isRequired,
   roles: PropTypes.string.isRequired,

@@ -110,6 +110,9 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                       key={index}
                       alt="user image"
                       src={user.user_avatar}
+                      sx={{
+                        border: '1px solid #968c8c !important',
+                      }}
                     />
                   ))}
                 </AvatarGroup>

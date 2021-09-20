@@ -16,11 +16,11 @@ import {
   childNeedsReducer,
   childOneNeedReducer,
 } from './childReducer';
-import { invitationReducer } from './familyReducer';
 
 import { homeReducer } from './main/homeReducer';
 import { paymentReducer } from './paymentReducder';
 import { cartAddReducer, cartBadgeReducer } from './cartReducer';
+import { joinVirtualFamilyReducer } from './familyReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -33,8 +33,8 @@ export default combineReducers({
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
   childRandomSearch: childRandomSearchReducer,
-  // childRandomSearch: childRandomSearchReducer,
-  JoinNewFamily: invitationReducer,
+  // JoinNewFamily: invitationReducer,
+  joinResult: joinVirtualFamilyReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,

@@ -76,8 +76,8 @@ export default function InfoTabs() {
   // const [familyId, setFamilyId] = useState(''); invite
   const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
+  const [adoption, setAdoption] = useState(false);
   const [alreadyInFamily, setAlreadyInFamily] = useState(false);
-  const [roleSelecting, setRoleSelecting] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
@@ -112,43 +112,43 @@ export default function InfoTabs() {
   // check family members
   useEffect(() => {
     const currentMember = [];
-    if (family) {
+    if (family && userInfo) {
       for (let f = 0; f < family.length; f += 1) {
         const member = family[f];
         if (member.isDeleted) {
-          if (member.user_id !== null) {
-            // user_id from back end / userInfo.user.id from local storage
-            if (userInfo && member.user_id === userInfo.user.id) {
+          if (member.member_id !== null) {
+            // member_id from back end / userInfo.user.id from local storage
+            if (member.member_id === userInfo.user.id) {
               setPreviousRole(member.role);
               if (userRole !== null && userRole !== previousRole) {
-                setBackToPrevRole(true); // Pops up that you only can go back to your previous role for this family
+                setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
               }
             }
           }
+        } else if (userInfo.user.id === member.member_id) {
+          setAlreadyInFamily(true); // route to child page
         }
         currentMember.push(member);
-
+        // father role is taken
         if (member.role === 0) {
           setFather(member.username);
           setIsFather(true);
         }
-
+        // mother role is taken
         if (member.role === 1) {
           setIsMother(true);
           setMother(member.username);
-        }
-
-        if (userInfo && userInfo.user.id === member.user_id) {
-          setAlreadyInFamily(true);
         }
       }
     }
   }, [theChild, family, previousRole, userRole, userInfo]);
 
   // already in family
+  // Goes to the search page and reset the success state
+  // it invokes the search page to fetch new random child automatically
   useEffect(() => {
     if (alreadyInFamily) {
-      history.push(`/child/${theChild.id}`);
+      history.push(`main/search`);
     }
   }, [alreadyInFamily, theChild, history]);
 
@@ -156,15 +156,17 @@ export default function InfoTabs() {
     setValue(newValue);
   };
 
-  const handleSelectRole = (selectedValue) => {
+  // selecting role
+  const handleSelectRole = async (selectedValue) => {
     if (isGone) {
       setIsGone(false);
       setIsGone(true);
-    } else if (previousRole && selectedValue !== previousRole) {
-      // setChildName(theChild.sayName);
+    } else if (previousRole !== null && selectedValue !== previousRole) {
+      setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
     } else {
+      console.log(previousRole, selectedValue);
+      setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
-      setRoleSelecting(true);
     }
   };
 
@@ -444,32 +446,39 @@ export default function InfoTabs() {
         </TabPanel>
       </Box>
       {/* Gone warn popup */}
-      <GoneModal
-        isGone={isGone}
-        childSayName={theChild.sayName}
-        roles={`${t(roles.roles[userRole])}`}
-        rolesRelative={`${t(roles.rolesRelative[userRole])}`}
-      />
-
+      {theChild && theChild.sayName && (
+        <GoneModal
+          isGone={isGone}
+          childSayName={theChild.sayName}
+          roles={`${t(roles.roles[userRole])}`}
+          rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+        />
+      )}
       {/* Back to Previous Role warn popup */}
-      <PrevRoleModal
-        backToPrevRole={backToPrevRole}
-        previousRole={`${t(roles.roles[previousRole])}`}
-        childSayName={theChild.sayName}
-        rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
-      />
+      {previousRole && (
+        <PrevRoleModal
+          backToPrevRole={backToPrevRole}
+          setBackToPrevRole={setBackToPrevRole}
+          previousRole={`${t(roles.roles[previousRole])}`}
+          childSayName={theChild.sayName}
+          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+        />
+      )}
+
       {/* Adoption popup */}
-      <AdoptModel
-        successLogin={successLogin}
-        roleSelecting={roleSelecting}
-        setRoleSelecting={setRoleSelecting}
-        selectedRole={selectedRole}
-        family={family}
-        userRole={userRole}
-        childSayName={theChild.sayName}
-        roles={`${t(roles.roles[selectedRole])}`}
-        rolesRelative={`${t(roles.rolesRelative[selectedRole])}`}
-      />
+      {selectedRole && (
+        <AdoptModel
+          adoption={adoption}
+          setAdoption={setAdoption}
+          successLogin={successLogin}
+          selectedRole={selectedRole}
+          familyId={theChild.familyId}
+          userRole={userRole}
+          childSayName={theChild.sayName}
+          roles={`${t(roles.roles[selectedRole])}`}
+          rolesRelative={`${t(roles.rolesRelative[selectedRole])}`}
+        />
+      )}
     </>
   );
 }

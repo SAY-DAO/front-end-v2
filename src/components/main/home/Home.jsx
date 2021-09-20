@@ -10,6 +10,7 @@ import { fetchMyHome } from '../../../actions/main/homeAction';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
+  CHILD_RANDOM_SEARCH_RESET,
 } from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
 import AppBarBottom from '../AppBarBottom';
@@ -79,6 +80,7 @@ const Home = () => {
   useEffect(() => {
     dispatch({ type: CHILD_BY_ID_RESET });
     dispatch({ type: CHILD_NEEDS_RESET });
+    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
 
     if (!successHome) {
       dispatch(fetchMyHome());

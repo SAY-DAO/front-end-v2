@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -29,7 +30,6 @@ const SearchChild = () => {
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
-    token,
     loading: loadingRandomSearch,
     error: errorRandomSearch,
     success: successRandomSearch,
@@ -39,31 +39,28 @@ const SearchChild = () => {
   const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
+    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/search');
     }
   }, [userInfo, successLogin, history]);
 
-  const localToken = localStorage.getItem('randomChildToken');
-
   // loading button
   useEffect(() => {
-    if (loadingRandomSearch || localToken) {
+    if (loadingRandomSearch) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingRandomSearch, localToken]);
+  }, [loadingRandomSearch]);
 
   // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(`/search-result?token=${token}&redirect=main/search`);
+      history.push(`/search-result`);
     }
-    if (localToken) {
-      history.push(`/search-result?token=${localToken}&redirect=main/search`);
-    }
-  }, [successRandomSearch, history, token, localToken]);
+  }, [successRandomSearch, history]);
 
   const onClick = () => {
     dispatch(fetchRandomChild());
