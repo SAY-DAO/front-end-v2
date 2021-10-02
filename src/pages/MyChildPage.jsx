@@ -55,23 +55,6 @@ const useStyles = makeStyles({
   },
 });
 
-const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
-  'Hangouts Call',
-  'Luna',
-  'Oberon',
-  'Phobos',
-  'Pyxis',
-  'Sedna',
-  'Titania',
-  'Triton',
-  'Umbriel',
-];
-
 const ITEM_HEIGHT = 20;
 
 const MyChildPage = () => {
@@ -79,6 +62,11 @@ const MyChildPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { childId } = useParams();
+
+  const options = [
+    t('childPage.more.growFamily'),
+    t('childPage.more.leaveFamily'),
+  ];
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
@@ -172,7 +160,6 @@ const MyChildPage = () => {
                 PaperProps={{
                   style: {
                     maxHeight: ITEM_HEIGHT * 4.5,
-                    width: '10ch',
                   },
                 }}
               >
@@ -182,7 +169,7 @@ const MyChildPage = () => {
                     selected={option === 'Pyxis'}
                     onClick={handleClose}
                   >
-                    {option}
+                    <Typography variant="subtitle2">{option}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
