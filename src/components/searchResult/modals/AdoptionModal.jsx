@@ -74,7 +74,6 @@ export default function AdoptionModal({
   }, [childSayName, roles, rolesRelative, selectedRole, open]);
 
   useEffect(() => {
-    console.log(`wtf${selectedRole}`);
     if (adoption && selectedRole) {
       handleOpen();
     } else {

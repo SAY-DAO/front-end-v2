@@ -72,7 +72,9 @@
       "backToPrevRole": "شما پیش از ترک این خانواده {{previousRole}}{{rolesRelative}} {{childSayName}} بودید و در این لحظه تنها می‌توانید به عنوان {{previousRole}}{{rolesRelative}} {{childSayName}} به خانواده باز گردید.",
       "FaMoTaken": "دیر رسیدید و یک نفر دیگر اکنون {{roles}}{{rolesRelative}} {{childSayName}} است."
     },
-    "timeout": "Oh..! <1/>Something is not working. Check back latter"
+    "timeout": "Oh..! <1/>Something is not working. Check back latter",
+    "emptyCart": "Your Cart Is Empty!"
+
   },
   "divider": {
     "register": "OR"
@@ -187,7 +189,8 @@
     "title": "Children"
   },
   "cart": {
-    "title": "Shopping Cart"
+    "title": "Shopping Cart",
+    "subtitle": "Cart"
   },
   "search": {
     "title": "Adopt a child",

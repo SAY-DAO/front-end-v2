@@ -76,10 +76,11 @@ export default function CartAccordion({ cartItems }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
+    console.log('ji');
   };
 
   return (
-    <div>
+    <Grid sx={{ marginBottom: '100px' }}>
       {Object.keys(childrenNeedObj).map((childId) => (
         <Accordion
           key={childId}
@@ -102,7 +103,7 @@ export default function CartAccordion({ cartItems }) {
             </Typography>
           </AccordionSummary>
           <AccordionDetails
-            sx={{ padding: 0, paddingBottom: 2, paddingTop: 1 }}
+            sx={{ padding: 0, paddingTop: 2, paddingBottom: 1 }}
           >
             {childrenNeedObj[childId].items.map((item, index) => (
               <Grid key={index} sx={{ marginTop: 1 }}>
@@ -113,15 +114,18 @@ export default function CartAccordion({ cartItems }) {
         </Accordion>
       ))}
       {cartItems[0] && (
-        <Grid item xs={12}>
+        <Grid
+          container
+          direction="column"
+          justifyContent="flex-end"
+          alignItems="flex-start"
+        >
           <Grid
             item
-            xs={12}
             container
             direction="row"
-            justifyContent="center"
             alignItems="center"
-            sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
+            sx={{ padding: 0, textAlign: 'center', marginTop: 5 }}
           >
             <Grid item xs={3}>
               <Typography variant="subtitle2">
@@ -132,28 +136,34 @@ export default function CartAccordion({ cartItems }) {
               <Divider sx={{ width: '95%' }} />
             </Grid>
           </Grid>
-          <FormControl
-            required
-            component="fieldset"
-            variant="standard"
-            sx={{ width: '100%' }}
-            onSubmit={handlePayment}
-          >
-            <form
-              style={{
-                width: '100%',
-                paddingLeft: 20,
-                paddingRight: 20,
-              }}
-            >
-              <Donation />
-              <Wallet />
-              <Grid sx={{ textAlign: 'center' }}>
+
+          <Grid item sx={{ width: '100%' }}>
+            <FormControl required variant="standard" sx={{ width: '100%' }}>
+              <form
+                style={{
+                  width: '100%',
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                }}
+              >
+                <Donation />
+                <Wallet />
+              </form>
+              <Grid
+                item
+                sx={{
+                  textAlign: 'center',
+                  position: 'fixed',
+                  bottom: 60,
+                  background: 'white',
+                  width: '100%',
+                  padding: 2,
+                }}
+              >
                 <LoadingButton
-                  type="submit"
                   variant="contained"
                   color="primary"
-                  sx={{ marginTop: 1, marginBottom: 4 }}
+                  onClick={handlePayment}
                 >
                   <Typography
                     component="div"
@@ -167,11 +177,11 @@ export default function CartAccordion({ cartItems }) {
                   </Typography>
                 </LoadingButton>
               </Grid>
-            </form>
-          </FormControl>
+            </FormControl>
+          </Grid>
         </Grid>
       )}
-    </div>
+    </Grid>
   );
 }
 

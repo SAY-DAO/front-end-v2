@@ -28,6 +28,7 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
             marginRight: 2,
             padding: 1,
           }}
+          elevation={handleDelete && 3}
         >
           <CardMedia
             component="img"

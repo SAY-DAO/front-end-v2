@@ -15,7 +15,7 @@ const theTheme = createTheme({
 
   palette: {
     background: {
-      default: '#f9f5f1', // CSSBaseline is needed for this
+      default: '#f7f7f7', // CSSBaseline is needed for this
     },
     primary: {
       // light: will be calculated from palette.primary.main,
@@ -214,14 +214,14 @@ const theTheme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          backgroundColor: '#f3f1ee',
+          backgroundColor: 'white',
         },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          backgroundColor: '#f3f1ee',
+          backgroundColor: 'white',
         },
       },
     },

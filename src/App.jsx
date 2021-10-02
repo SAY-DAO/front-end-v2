@@ -61,16 +61,16 @@ const App = () => (
                   component={ForgotPassword}
                 />
                 <Route exact path="/setpassword" component={ResetPassword} />
-                <Route exact path="/search-result" component={SearchResult} />
                 <Route
                   exact
                   path="/main/profile/settings"
                   component={Settings}
                 />
+                <Route exact path="/main/home" component={Home} />
                 <Route exact path="/main/profile" component={Profile} />
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
-                <Route exact path="/main/home" component={Home} />
+                <Route exact path="/search-result" component={SearchResult} />
                 <Route exact path="/child/:childId" component={MyChildPage} />
                 <Route
                   exact

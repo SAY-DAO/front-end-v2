@@ -10,7 +10,6 @@ import {
 
 export const joinVirtualFamily =
   (role, familyId) => async (dispatch, getState) => {
-    console.log(role, familyId);
     try {
       dispatch({ type: JOIN_VIRTUAL_FAMILY_REQUEST });
 
@@ -27,9 +26,7 @@ export const joinVirtualFamily =
       };
 
       const formData = new FormData();
-      formData.set('family_id', familyId);
       formData.set('role', role);
-      console.log(formData, config);
       const { data } = await publicApi3.post(
         `families/${familyId}/join`,
         formData,

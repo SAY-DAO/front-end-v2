@@ -43,6 +43,21 @@ export default function Cart() {
       >
         <Typography variant="subtitle1">{t('cart.title')}</Typography>
       </Box>
+      {!cartItems[0] && (
+        <Box
+          sx={{
+            width: '70%',
+            height: 50,
+            margin: 'auto',
+            bgcolor: 'transparent',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ padding: '15px' }}>
+            {t('error.emptyCart')}
+          </Typography>
+        </Box>
+      )}
       <CartAccordion cartItems={cartItems} />
       <AppBarBottom path="cart" />
     </Grid>

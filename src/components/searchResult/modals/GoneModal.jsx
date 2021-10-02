@@ -71,7 +71,7 @@ export default function GoneModal({
                   variant="body2"
                   component="h2"
                 >
-                  {t('error.adoption.goneChild', {
+                  {t('childPage.permanentGoneMsg', {
                     childSayName,
                     roles,
                     rolesRelative,
