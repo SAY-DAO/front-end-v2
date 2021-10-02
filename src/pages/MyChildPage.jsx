@@ -7,6 +7,10 @@ import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Weather from 'simple-react-weather';
 import { useHistory } from 'react-router';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Message from '../components/Message';
 import MyChildTabs from '../components/main/home/MyChildTabs';
 import { fetchMyChildById } from '../actions/childAction';
@@ -51,6 +55,25 @@ const useStyles = makeStyles({
   },
 });
 
+const options = [
+  'None',
+  'Atria',
+  'Callisto',
+  'Dione',
+  'Ganymede',
+  'Hangouts Call',
+  'Luna',
+  'Oberon',
+  'Phobos',
+  'Pyxis',
+  'Sedna',
+  'Titania',
+  'Triton',
+  'Umbriel',
+];
+
+const ITEM_HEIGHT = 20;
+
 const MyChildPage = () => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -59,6 +82,8 @@ const MyChildPage = () => {
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null); // Menu
+  const open = Boolean(anchorEl); // Menu
 
   const myHome = useSelector((state) => state.myHome);
   const { children, success: successHome } = myHome;
@@ -96,6 +121,7 @@ const MyChildPage = () => {
     }
   }, [successMyChild, childId, dispatch, myChildrenIdList, history]);
 
+  // Age
   const getAge = (DOB) => {
     const today = new Date();
     const birthDate = new Date(DOB);
@@ -107,6 +133,14 @@ const MyChildPage = () => {
     return age;
   };
 
+  // Menu
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const classes = useStyles();
   return (
     <>
@@ -116,6 +150,43 @@ const MyChildPage = () => {
         <Grid container direction="column">
           <Grid item xs={12} className={classes.root}>
             <Back isOrange={false} to="/main/home" />
+            <div>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls="long-menu"
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: '10ch',
+                  },
+                }}
+              >
+                {options.map((option) => (
+                  <MenuItem
+                    key={option}
+                    selected={option === 'Pyxis'}
+                    onClick={handleClose}
+                  >
+                    {option}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </div>
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
                 <>
