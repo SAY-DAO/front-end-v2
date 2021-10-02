@@ -14,6 +14,7 @@ import {
 } from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
 import AppBarBottom from '../AppBarBottom';
+import { HOME_RESET } from '../../../constants/main/homeConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -72,7 +73,7 @@ const Home = () => {
   const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    if (!userInfo) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history]);
@@ -81,11 +82,8 @@ const Home = () => {
     dispatch({ type: CHILD_BY_ID_RESET });
     dispatch({ type: CHILD_NEEDS_RESET });
     dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-
-    if (!successHome) {
-      dispatch(fetchMyHome());
-    }
-  }, [successHome]);
+    dispatch(fetchMyHome());
+  }, []);
 
   const handleMyChildPage = (child) => {
     history.push(`/child/${child.id}`);

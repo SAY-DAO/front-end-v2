@@ -2,6 +2,7 @@ import {
   HOME_REQUEST,
   HOME_SUCCESS,
   HOME_FAIL,
+  HOME_RESET,
 } from '../../constants/main/homeConstants';
 
 export const homeReducer = (state = {}, action) => {
@@ -17,6 +18,8 @@ export const homeReducer = (state = {}, action) => {
       };
     case HOME_FAIL:
       return { loading: false, error: action.payload };
+    case HOME_RESET:
+      return {};
     default:
       return state;
   }

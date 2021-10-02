@@ -470,7 +470,6 @@ export default function InfoTabs() {
         <AdoptModel
           adoption={adoption}
           setAdoption={setAdoption}
-          successLogin={successLogin}
           selectedRole={selectedRole}
           familyId={theChild.familyId}
           userRole={userRole}

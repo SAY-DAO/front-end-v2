@@ -14,9 +14,6 @@ const urlsToCache = [
   '/images/intro.png',
   '/images/otp.svg',
   '/images/register.svvg',
-  '/index.html',
-  '/manifest.json',
-  '/',
   '/offline.html',
 ];
 
@@ -40,10 +37,10 @@ self.addEventListener('fetch', (event) => {
     caches
       .match(event.request)
       .then((response) => {
-        if (response) {
-          console.log('Found ', event.request.url, ' in cache');
-          return response;
-        }
+        // if (response) {
+        //   console.log('Found ', event.request.url, ' in cache');
+        //   return response;
+        // }
         // If fails, we send the request to the network.
         console.log('Network request for ', event.request.url);
         return fetch(event.request).then((res) =>
@@ -68,16 +65,17 @@ self.addEventListener('fetch', (event) => {
     caches
       .match(event.request)
       .then((response) => {
-        if (response) {
-          console.log('Found ', event.request.url, ' in cache');
-          return response;
-        }
+        // if (response) {
+        //   console.log('Found ', event.request.url, ' in cache');
+        //   return response;
+        // }
         console.log('Network request for ', event.request.url);
         return fetch(event.request);
 
         // TODO 4 - Add fetched files to the cache
       })
       .catch((error) => {
+        console.log(error);
         // TODO 6 - Respond with custom offline page
       })
   );

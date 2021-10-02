@@ -26,7 +26,6 @@ const style = {
 export default function AdoptionModal({
   adoption,
   setAdoption,
-  successLogin,
   selectedRole,
   familyId,
   userRole,
@@ -48,6 +47,19 @@ export default function AdoptionModal({
     setAdoption(false);
     setOpen(false);
   };
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { success: successLogin } = userLogin;
+
+  const joinResult = useSelector((state) => state.joinResult);
+  const { success: successJoin } = joinResult;
+
+  // redirect after joining
+  useEffect(() => {
+    if (successJoin) {
+      history.push('/main/home');
+    }
+  }, [successJoin]);
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -171,7 +183,6 @@ export default function AdoptionModal({
 AdoptionModal.propTypes = {
   adoption: PropTypes.bool,
   setAdoption: PropTypes.func,
-  successLogin: PropTypes.bool,
   selectedRole: PropTypes.number.isRequired,
   familyId: PropTypes.number.isRequired,
   userRole: PropTypes.number,
