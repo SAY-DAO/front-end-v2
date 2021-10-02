@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, CircularProgress, Box } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  CircularProgress,
+  Box,
+  Divider,
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router-dom';
@@ -62,11 +68,6 @@ const MyChildPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { childId } = useParams();
-
-  const options = [
-    t('childPage.more.growFamily'),
-    t('childPage.more.leaveFamily'),
-  ];
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
@@ -159,19 +160,29 @@ const MyChildPage = () => {
                 onClose={handleClose}
                 PaperProps={{
                   style: {
-                    maxHeight: ITEM_HEIGHT * 4.5,
+                    maxHeight: ITEM_HEIGHT * 5.5,
                   },
                 }}
               >
-                {options.map((option) => (
-                  <MenuItem
-                    key={option}
-                    selected={option === 'Pyxis'}
-                    onClick={handleClose}
-                  >
-                    <Typography variant="subtitle2">{option}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  onClick={handleClose}
+                  sx={{ minHeight: '15px', margin: 1 }}
+                >
+                  <Typography variant="body2" sx={{ color: '#fe8896' }}>
+                    {t('childPage.more.growFamily')}
+                  </Typography>
+                </MenuItem>
+                <Grid item xs={12}>
+                  <Divider sx={{ width: '80%', margin: 'auto' }} />
+                </Grid>
+                <MenuItem
+                  onClick={handleClose}
+                  sx={{ minHeight: '20px', margin: 1 }}
+                >
+                  <Typography variant="body2" sx={{ color: '#fe8896' }}>
+                    {t('childPage.more.leaveFamily')}
+                  </Typography>
+                </MenuItem>
               </Menu>
             </div>
             <Grid item xs={12}>
