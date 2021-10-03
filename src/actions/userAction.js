@@ -257,7 +257,6 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: HOME_RESET });
   dispatch({ type: USER_LOGOUT });
   localStorage.clear();
-  // cleanMyOrders();
 };
 
 export const forgotPassword = (theKey, value) => async (dispatch) => {

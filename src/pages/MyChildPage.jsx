@@ -24,6 +24,8 @@ import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
 import { leaveFamily } from '../actions/familyAction';
+import LeaveFamilyModal from '../components/searchResult/modals/LeaveFamilyModal ';
+import roles from '../apis/roles';
 
 const useStyles = makeStyles({
   root: {
@@ -72,6 +74,7 @@ const MyChildPage = () => {
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null); // Menu
   const open = Boolean(anchorEl); // Menu
 
@@ -152,8 +155,7 @@ const MyChildPage = () => {
   };
 
   const handleLeave = () => {
-    console.log(theChild);
-    dispatch(leaveFamily(theChild.familyId));
+    setMenuOpen(true);
   };
 
   const classes = useStyles();
@@ -257,6 +259,15 @@ const MyChildPage = () => {
           <Message backError={errorMyChild} variant="filled" severity="error" />
         )}
       </Grid>
+      {theChild && (
+        <LeaveFamilyModal
+          setMenuOpen={setMenuOpen}
+          menuOpen={menuOpen}
+          theChild={theChild}
+          // role={userRole}
+          // rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+        />
+      )}
     </>
   );
 };
