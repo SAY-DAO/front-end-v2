@@ -1,4 +1,4 @@
-import { publicApi3 } from '../apis/sayBase';
+import { publicApi, publicApi3 } from '../apis/sayBase';
 import {
   //   INVITE_TO_MY_FAMILY_REQUEST,
   //   INVITE_TO_MY_FAMILY_SUCCESS,
@@ -6,6 +6,9 @@ import {
   JOIN_VIRTUAL_FAMILY_REQUEST,
   JOIN_VIRTUAL_FAMILY_SUCCESS,
   JOIN_VIRTUAL_FAMILY_FAIL,
+  LEAVE_VIRTUAL_FAMILY_REQUEST,
+  LEAVE_VIRTUAL_FAMILY_SUCCESS,
+  LEAVE_VIRTUAL_FAMILY_FAIL,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamily =
@@ -20,7 +23,6 @@ export const joinVirtualFamily =
       const config = {
         headers: {
           'Content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
           Authorization: userInfo && userInfo.accessToken,
         },
       };
@@ -43,6 +45,38 @@ export const joinVirtualFamily =
       });
     }
   };
+
+export const leaveFamily = (familyId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: LEAVE_VIRTUAL_FAMILY_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+
+    const { data } = await publicApi.patch(
+      `family/${familyId}/leave`,
+      {},
+      config
+    );
+    dispatch({
+      type: LEAVE_VIRTUAL_FAMILY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: LEAVE_VIRTUAL_FAMILY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 // export const inviteToMyFamily =
 //   (familyId, selectedRole) => async (dispatch) => {

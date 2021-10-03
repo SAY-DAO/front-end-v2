@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import { Grid, Typography, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import LangButton from '../LangButton';
-
 import Back from '../Back';
 import Message from '../Message';
+import { logout } from '../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -20,12 +21,23 @@ const useStyles = makeStyles(() => ({
 
 export default function Settings() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
 
   const userResetPass = useSelector((state) => state.userResetPass);
   const { success: successReset } = userResetPass;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login?redirect=main/home');
+    }
+  }, [userInfo, successLogin, history]);
 
   // cart badge number
   useEffect(() => {
@@ -128,7 +140,7 @@ export default function Settings() {
             }}
           />
         </Grid>
-        <Grid
+        {/* <Grid
           item
           container
           direction="row"
@@ -193,22 +205,22 @@ export default function Settings() {
               textAlign: 'center',
             }}
           />
-        </Grid>
-        <Grid
+        </Grid> */}
+        {/* <Grid
           item
           container
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-        >
-          <Grid item xs={1}>
+        > */}
+        {/* <Grid item xs={1}>
             <img
               src="/images/icons/info.svg"
               alt="language icon"
               className={classes.icon}
             />
-          </Grid>
-          <Grid item xs>
+          </Grid> */}
+        {/* <Grid item xs>
             <Typography
               component="span"
               variant="subtitle1"
@@ -216,8 +228,8 @@ export default function Settings() {
             >
               {t('setting.about.title')}
             </Typography>
-          </Grid>
-          <Grid item xs={12}>
+          </Grid> */}
+        {/* <Grid item xs={12}>
             <Divider
               sx={{
                 width: '80%',
@@ -226,7 +238,7 @@ export default function Settings() {
               }}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid
           item
           container
@@ -242,13 +254,15 @@ export default function Settings() {
             />
           </Grid>
           <Grid item xs>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              sx={{ padding: 1, color: '#FF8393' }}
-            >
-              {t('setting.logout.title')}
-            </Typography>
+            <Link to="#" onClick={() => dispatch(logout())}>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                sx={{ padding: 1, color: '#FF8393' }}
+              >
+                {t('setting.logout.title')}
+              </Typography>
+            </Link>
           </Grid>
         </Grid>
       </Grid>

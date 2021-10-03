@@ -20,7 +20,10 @@ import {
 import { homeReducer } from './main/homeReducer';
 import { paymentReducer } from './paymentReducder';
 import { cartAddReducer, cartBadgeReducer } from './cartReducer';
-import { joinVirtualFamilyReducer } from './familyReducer';
+import {
+  joinVirtualFamilyReducer,
+  LeaveVirtualFamilyReducer,
+} from './familyReducer';
 
 export default combineReducers({
   verifyStep: userStepReducer,
@@ -35,6 +38,7 @@ export default combineReducers({
   childRandomSearch: childRandomSearchReducer,
   // JoinNewFamily: invitationReducer,
   joinResult: joinVirtualFamilyReducer,
+  leftFamily: LeaveVirtualFamilyReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,

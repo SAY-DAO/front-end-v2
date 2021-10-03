@@ -14,7 +14,7 @@ import {
 } from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
 import AppBarBottom from '../AppBarBottom';
-import { HOME_RESET } from '../../../constants/main/homeConstants';
+import { LEAVE_VIRTUAL_FAMILY_RESET } from '../../../constants/familyConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -79,10 +79,11 @@ const Home = () => {
   }, [userInfo, successLogin, history]);
 
   useEffect(() => {
+    dispatch(fetchMyHome());
     dispatch({ type: CHILD_BY_ID_RESET });
     dispatch({ type: CHILD_NEEDS_RESET });
     dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    dispatch(fetchMyHome());
+    dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
   }, []);
 
   const handleMyChildPage = (child) => {
@@ -157,11 +158,11 @@ const Home = () => {
                 ))}
             </Grid>
           </Grid>
-          <AppBarBottom path="home" />
         </>
       ) : (
         <CircularProgress />
       )}
+      <AppBarBottom path="home" />
     </Grid>
   );
 };

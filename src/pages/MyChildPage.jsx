@@ -23,6 +23,7 @@ import { fetchMyChildById } from '../actions/childAction';
 import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
+import { leaveFamily } from '../actions/familyAction';
 
 const useStyles = makeStyles({
   root: {
@@ -77,6 +78,12 @@ const MyChildPage = () => {
   const myHome = useSelector((state) => state.myHome);
   const { children, success: successHome } = myHome;
 
+  const leftFamily = useSelector((state) => state.leftFamily);
+  const { success: successLeft } = leftFamily;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
   const myChild = useSelector((state) => state.myChild);
   const {
     theChild,
@@ -84,6 +91,20 @@ const MyChildPage = () => {
     error: errorMyChild,
     success: successMyChild,
   } = myChild;
+
+  // check login
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login?redirect=main/home');
+    }
+  }, [userInfo, successLogin, history]);
+
+  // left the family
+  useEffect(() => {
+    if (successLeft) {
+      history.push('/main/home');
+    }
+  }, [successLeft]);
 
   // we get the home date ahead to get our children's ids
   useEffect(() => {
@@ -128,6 +149,11 @@ const MyChildPage = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLeave = () => {
+    console.log(theChild);
+    dispatch(leaveFamily(theChild.familyId));
   };
 
   const classes = useStyles();
@@ -176,7 +202,7 @@ const MyChildPage = () => {
                   <Divider sx={{ width: '80%', margin: 'auto' }} />
                 </Grid>
                 <MenuItem
-                  onClick={handleClose}
+                  onClick={handleLeave}
                   sx={{ minHeight: '20px', margin: 1 }}
                 >
                   <Typography variant="body2" sx={{ color: '#fe8896' }}>

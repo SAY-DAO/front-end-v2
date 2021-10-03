@@ -26,6 +26,7 @@ import {
   USER_RESET_PASSWORD_REQUEST,
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
+  USER_LOGOUT,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -248,9 +249,10 @@ export const login = (userName, password) => async (dispatch) => {
   }
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => async (dispatch) => {
+  console.log('localStorage');
+  dispatch({ type: USER_LOGOUT });
   localStorage.clear();
-  // dispatch({ type: USER_LOGOUT });
   // dispatch({ type: USER_DETAILS_RESET });
   // cleanMyOrders();
 };

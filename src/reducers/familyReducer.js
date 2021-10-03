@@ -5,6 +5,10 @@ import {
   JOIN_VIRTUAL_FAMILY_REQUEST,
   JOIN_VIRTUAL_FAMILY_SUCCESS,
   JOIN_VIRTUAL_FAMILY_FAIL,
+  LEAVE_VIRTUAL_FAMILY_FAIL,
+  LEAVE_VIRTUAL_FAMILY_SUCCESS,
+  LEAVE_VIRTUAL_FAMILY_REQUEST,
+  LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamilyReducer = (state = {}, action) => {
@@ -15,6 +19,21 @@ export const joinVirtualFamilyReducer = (state = {}, action) => {
       return { loading: false, success: true, newFamily: action.payload };
     case JOIN_VIRTUAL_FAMILY_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const LeaveVirtualFamilyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LEAVE_VIRTUAL_FAMILY_REQUEST:
+      return { loading: true, success: false };
+    case LEAVE_VIRTUAL_FAMILY_SUCCESS:
+      return { loading: false, success: true, leftFamily: action.payload };
+    case LEAVE_VIRTUAL_FAMILY_FAIL:
+      return { loading: false, error: action.payload };
+    case LEAVE_VIRTUAL_FAMILY_RESET:
+      return {};
     default:
       return state;
   }
