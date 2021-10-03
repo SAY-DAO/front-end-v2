@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
+import { CART_BADGE_RESET } from '../../constants/main/cartConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +60,8 @@ export default function AppBarBottom({ path }) {
       : null;
     if (cartItems) {
       dispatch(changeCartBadgeNumber(cartItems.length));
+    } else {
+      dispatch({ type: CART_BADGE_RESET });
     }
   }, [value, history, dispatch]);
 

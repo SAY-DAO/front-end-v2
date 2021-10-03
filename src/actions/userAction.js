@@ -1,5 +1,7 @@
 import LogRocket from 'logrocket';
 import { publicApi } from '../apis/sayBase';
+import { CART_ADD_RESET } from '../constants/main/cartConstants';
+import { HOME_RESET } from '../constants/main/homeConstants';
 import {
   CHECK_CONTACT_REQUEST,
   CHECK_CONTACT_SUCCESS,
@@ -251,9 +253,10 @@ export const login = (userName, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   console.log('localStorage');
+  dispatch({ type: CART_ADD_RESET });
+  dispatch({ type: HOME_RESET });
   dispatch({ type: USER_LOGOUT });
   localStorage.clear();
-  // dispatch({ type: USER_DETAILS_RESET });
   // cleanMyOrders();
 };
 

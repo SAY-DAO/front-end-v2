@@ -2,11 +2,12 @@
 import {
   CART_ADD_REQUEST,
   CART_ADD_SUCCESS,
-  CART_REMOVE_ITEMS,
+  CART_ADD_RESET,
   CART_ADD_FAIL,
   CART_BADGE_REQUEST,
   CART_BADGE_FAIL,
   CART_BADGE_SUCCESS,
+  CART_BADGE_RESET,
 } from '../constants/main/cartConstants';
 
 export const cartAddReducer = (state = { cartItems: [] }, action) => {
@@ -40,7 +41,7 @@ export const cartAddReducer = (state = { cartItems: [] }, action) => {
         error: action.payload,
       };
 
-    case CART_REMOVE_ITEMS:
+    case CART_ADD_RESET:
       return { cartItems: [] };
     default:
       return state;
@@ -52,12 +53,15 @@ export const cartBadgeReducer = (state = {}, action) => {
     case CART_BADGE_REQUEST:
       return { loading: true, ...state };
     case CART_BADGE_SUCCESS:
-      return { loading: false, badgeNumber: action.payload };
-    case CART_BADGE_FAIL:
       return {
         loading: false,
-        error: action.payload,
+        success: true,
+        badgeNumber: action.payload,
       };
+    case CART_BADGE_FAIL:
+      return { loading: false, error: action.payload };
+    case CART_BADGE_RESET:
+      return {};
     default:
       return state;
   }
