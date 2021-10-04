@@ -88,12 +88,12 @@ export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
       }
       setNeedsArray(allNeeds);
 
-      // weather display -273 before loading, we pushed this all the way here
+      // weather display -273 before loading, pushed this all the way here
       setTimeout(function () {
         setWeatherDisplay(true);
       }, 500);
     }
-    // Cleans up wehn leaves the page
+    // Cleans up when leaves the page
     return () => {
       setNeedsArray([[], [], [], [], [], []]);
     };
