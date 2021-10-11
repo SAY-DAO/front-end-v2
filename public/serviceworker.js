@@ -13,7 +13,7 @@ const urlsToCache = [
   '/images/back_orange.svg',
   '/images/intro.png',
   '/images/otp.svg',
-  '/images/register.svvg',
+  '/images/register.svg',
   '/offline.html',
 ];
 
@@ -83,7 +83,7 @@ self.addEventListener('fetch', (event) => {
 
 // Delete outdated caches
 self.addEventListener('activate', (event) => {
-  // console.log('Activating new service worker...');
+  console.log('Activating new service worker...');
 
   const cacheAllowlist = [staticCacheName];
 

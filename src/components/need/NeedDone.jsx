@@ -121,11 +121,19 @@ export default function NeedDone({ childId }) {
                 </Typography>
 
                 <Box>
-                  <Grid container className={classes.needDesc}>
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    className={classes.needDesc}
+                  >
                     <Grid
+                      item
                       sx={{
                         marginLeft: 3,
                         marginRight: 3,
+                        marginBottom: 8,
                       }}
                     >
                       <NeedPageTop oneNeed={oneNeed} />

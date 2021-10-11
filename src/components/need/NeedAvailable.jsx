@@ -93,7 +93,7 @@ export default function NeedAvailable({ childId }) {
   const [payLimit, setPayLimit] = useState('');
   const [inputError, setInputError] = useState(false);
   const [remaining, setRemaining] = useState(0);
-  const [inCart, setInCart] = useState(true);
+  const [inCart, setInCart] = useState(false);
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -196,6 +196,7 @@ export default function NeedAvailable({ childId }) {
 
   // cart
   useEffect(() => {
+    console.log(inCart);
     if (cartItems[0] && oneNeed) {
       const existItem = cartItems.find((x) => x.needId === oneNeed.id);
       if (existItem) {
@@ -367,11 +368,14 @@ export default function NeedAvailable({ childId }) {
                               <OutlinedInput
                                 sx={{ direction: 'rtl' }}
                                 type="number"
-                                id="filled-adornment-someAmount"
+                                id="filled-someAmount"
                                 value={amount}
                                 onChange={handlePaySomeInput}
                                 startAdornment={
-                                  <InputAdornment position="start">
+                                  <InputAdornment
+                                    color="primary"
+                                    position="start"
+                                  >
                                     {t('currency.toman')}
                                   </InputAdornment>
                                 }

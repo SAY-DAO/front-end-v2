@@ -11,6 +11,7 @@ import NeedDone from '../components/need/NeedDone';
 
 export default function NeedPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { childId, needId } = useParams();
 
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
@@ -20,6 +21,15 @@ export default function NeedPage() {
     error: errorOneNeed,
     success: successOneNeed,
   } = ChildOneNeed;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push(`/login?redirect=main/home`);
+    }
+  }, [userInfo, successLogin, history]);
 
   // fetch need
   useEffect(() => {
