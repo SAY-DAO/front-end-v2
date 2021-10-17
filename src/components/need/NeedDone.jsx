@@ -10,6 +10,8 @@ import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import NeedStepper from './NeedStepper';
+import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
+import NeedParticipants from './NeedParticipants';
 
 const useStyles = makeStyles({
   root: {
@@ -79,6 +81,10 @@ export default function NeedDone({ childId }) {
     success: successOneNeed,
   } = ChildOneNeed;
 
+  useEffect(() => {
+    dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
+  }, [dispatch]);
+
   // loading button
   useEffect(() => {
     if (loadingOneNeed) {
@@ -139,7 +145,7 @@ export default function NeedDone({ childId }) {
                       <NeedPageTop oneNeed={oneNeed} />
                     </Grid>
                     <Grid item>
-                      <NeedStepper />
+                      <NeedStepper needId={oneNeed.id} />
                     </Grid>
                     <Grid
                       item
@@ -156,6 +162,7 @@ export default function NeedDone({ childId }) {
                         <Divider sx={{ width: '95%', margin: 1 }} />
                       </Grid>
                     </Grid>
+                    <NeedParticipants participants={oneNeed.participants} />
                   </Grid>
                 </Box>
               </>

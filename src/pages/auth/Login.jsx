@@ -59,7 +59,7 @@ const Login = () => {
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
-    if (!successLogin) {
+    if (!userInfo) {
       dispatch({ type: USER_LOGOUT });
     }
   }, [userName, password, successLogin, dispatch]);

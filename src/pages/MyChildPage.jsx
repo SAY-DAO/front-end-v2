@@ -232,14 +232,14 @@ const MyChildPage = () => {
                   <Typography className={classes.childAge} variant="subtitle2">
                     {getAge(theChild.birthDate) + t('assets.age')}
                   </Typography>
-                  <Box id="weather">
+                  {/* <Box id="weather">
                     <Weather
                       unit="C"
                       city="Karaj"
                       appid="ed56fab00ca239bf1003eee32c78057b"
                       style={{ display: !weatherDisplay && 'none' }}
                     />
-                  </Box>
+                  </Box> */}
                 </>
               )}
             </Grid>

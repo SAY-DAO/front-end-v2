@@ -114,10 +114,10 @@ const SearchChild = () => {
             {t('search.randomSearch')}
           </LoadingButton>
         </Grid>
-        <Divider sx={{ marginTop: 4, marginBottom: 4, width: '100%' }}>
+        {/* <Divider sx={{ marginTop: 4, marginBottom: 4, width: '100%' }}>
           <Typography variant="subtitle1">{t('divider.register')}</Typography>
-        </Divider>
-        <Grid item xs={12} sx={{ marginTop: 2 }}>
+        </Divider> */}
+        {/* <Grid item xs={12} sx={{ marginTop: 2 }}>
           <LoadingButton
             variant="contained"
             color="primary"
@@ -126,7 +126,7 @@ const SearchChild = () => {
           >
             {t('search.brainSearch')}
           </LoadingButton>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           {errorRandomSearch && (
             <Message

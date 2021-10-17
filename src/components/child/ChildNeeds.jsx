@@ -12,7 +12,7 @@ import NeedCard from '../need/NeedCard';
 const useStyles = makeStyles(() => ({
   chip: {
     color: '#666',
-    minWidth: '80px',
+    maxWidth: '180px',
     height: '30px',
     border: 0,
     backgroundColor: 'white',
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   chipActive: {
-    minWidth: '80px',
+    maxWidth: '180px',
     height: '30px',
     border: 0,
     backgroundColor: '#FFDFC1',

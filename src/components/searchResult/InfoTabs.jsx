@@ -8,7 +8,6 @@ import { Link, Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/styles';
@@ -84,7 +83,7 @@ export default function InfoTabs() {
   const { theChild } = childRandomSearch;
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const { userInfo } = userLogin;
 
   // child is gone
   useEffect(() => {

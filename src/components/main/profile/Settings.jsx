@@ -6,10 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import LangButton from '../LangButton';
-import Back from '../Back';
-import Message from '../Message';
-import { logout } from '../../actions/userAction';
+import LangButton from '../../LangButton';
+import Back from '../../Back';
+import Message from '../../Message';
+import { logout } from '../../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   icon: {

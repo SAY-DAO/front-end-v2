@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
-import AppBarBottom from './AppBarBottom';
-import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
+import { Link } from 'react-router-dom';
+import AppBarBottom from '../AppBarBottom';
+import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -103,6 +104,18 @@ const Profile = () => {
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${userInfo.user.firstName} ${userInfo.user.lastName}`}</Typography>
+                <Grid item xs>
+                  <Link to="/main/profile/edit">
+                    <Typography
+                      component="span"
+                      sx={{ padding: 1 }}
+                      color="primary"
+                      variant="body2"
+                    >
+                      {t('profile.editProfile.title')}
+                    </Typography>
+                  </Link>
+                </Grid>
               </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton

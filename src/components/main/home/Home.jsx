@@ -14,7 +14,10 @@ import {
 } from '../../../constants/childConstants';
 import ChildCard from '../../child/ChildCard';
 import AppBarBottom from '../AppBarBottom';
-import { LEAVE_VIRTUAL_FAMILY_RESET } from '../../../constants/familyConstants';
+import {
+  JOIN_VIRTUAL_FAMILY_RESET,
+  LEAVE_VIRTUAL_FAMILY_RESET,
+} from '../../../constants/familyConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -84,6 +87,7 @@ const Home = () => {
     dispatch({ type: CHILD_NEEDS_RESET });
     dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
+    dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });
   }, []);
 
   const handleMyChildPage = (child) => {

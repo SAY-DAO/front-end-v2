@@ -15,6 +15,9 @@ import {
   CHILD_ONE_NEED_REQUEST,
   CHILD_ONE_NEED_SUCCESS,
   CHILD_ONE_NEED_FAIL,
+  CHILD_ONE_NEED_RECEIPT_REQUEST,
+  CHILD_ONE_NEED_RECEIPT_SUCCESS,
+  CHILD_ONE_NEED_RECEIPT_FAIL,
 } from '../constants/childConstants';
 
 export const fetchRandomChild = () => async (dispatch) => {
@@ -154,6 +157,35 @@ export const fetchChildOneNeed = (needId) => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: CHILD_ONE_NEED_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchOneNeedReceipts = (needId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CHILD_ONE_NEED_RECEIPT_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+    const { data } = await publicApi.get(`/needs/${needId}/receipts`, config);
+
+    dispatch({
+      type: CHILD_ONE_NEED_RECEIPT_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHILD_ONE_NEED_RECEIPT_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

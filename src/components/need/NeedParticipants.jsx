@@ -5,37 +5,18 @@ import { Typography, Grid, Avatar, Chip, Stack } from '@mui/material';
 import { useHistory } from 'react-router';
 import roles from '../../apis/roles';
 
-export default function ChildFamily({ theChild }) {
-  const history = useHistory();
+export default function ChildFamily({ participants }) {
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!theChild.childFamilyMembers) {
-      history.push('/main/search');
-    }
-  }, [theChild, history]);
-
   return (
-    <div>
+    <Grid sx={{ marginBottom: 5 }}>
       <Stack direction="column" spacing={1} alignItems="center">
-        {theChild.childFamilyMembers &&
-          theChild.childFamilyMembers.map(
+        {participants &&
+          participants.map(
             (member, index) =>
               !member.isDeleted && (
                 <Chip
                   key={index}
-                  avatar={
-                    <Avatar
-                      alt={member.username}
-                      src={member.avatarUrl}
-                      sx={{
-                        width: '35px !important',
-                        height: '35px !important',
-                        marginRight: '5px !important',
-                        border: '1px solid #968c8c',
-                      }}
-                    />
-                  }
                   sx={{
                     textAlign: 'left',
                     minHeight: 45,
@@ -49,7 +30,7 @@ export default function ChildFamily({ theChild }) {
                       sx={{ minWidth: 220 }}
                     >
                       <Typography variant="subtitle2">
-                        {`${t(roles.roles[member.role])}`}
+                        {`${t(roles.roles[member.user_role])}`}
                       </Typography>
                       <Typography variant="subtitle2" style={{ right: 0 }}>
                         {`${member.username}`}
@@ -61,10 +42,10 @@ export default function ChildFamily({ theChild }) {
               )
           )}
       </Stack>
-    </div>
+    </Grid>
   );
 }
 
 ChildFamily.propTypes = {
-  theChild: PropTypes.object.isRequired,
+  participants: PropTypes.array.isRequired,
 };

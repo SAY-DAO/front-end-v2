@@ -19,6 +19,10 @@ import {
   CHILD_ONE_NEED_SUCCESS,
   CHILD_ONE_NEED_FAIL,
   CHILD_ONE_NEED_RESET,
+  CHILD_ONE_NEED_RECEIPT_REQUEST,
+  CHILD_ONE_NEED_RECEIPT_SUCCESS,
+  CHILD_ONE_NEED_RECEIPT_FAIL,
+  CHILD_ONE_NEED_RECEIPT_RESET,
 } from '../constants/childConstants';
 
 export const childRandomSearchReducer = (
@@ -99,6 +103,21 @@ export const childOneNeedReducer = (state = {}, action) => {
     case CHILD_ONE_NEED_FAIL:
       return { loading: false, error: action.payload };
     case CHILD_ONE_NEED_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const childOneNeedReceiptReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHILD_ONE_NEED_RECEIPT_REQUEST:
+      return { loading: true, success: false };
+    case CHILD_ONE_NEED_RECEIPT_SUCCESS:
+      return { loading: false, success: true, receipt: action.payload };
+    case CHILD_ONE_NEED_RECEIPT_FAIL:
+      return { loading: false, error: action.payload };
+    case CHILD_ONE_NEED_RECEIPT_RESET:
       return {};
     default:
       return state;

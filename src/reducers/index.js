@@ -15,6 +15,7 @@ import {
   myChildReducer,
   childNeedsReducer,
   childOneNeedReducer,
+  childOneNeedReceiptReducer,
 } from './childReducer';
 
 import { homeReducer } from './main/homeReducer';
@@ -43,6 +44,7 @@ export default combineReducers({
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,
   ChildOneNeed: childOneNeedReducer,
+  ChildOneNeedReceipt: childOneNeedReceiptReducer,
   theCart: cartAddReducer,
   cartBadge: cartBadgeReducer,
   payment: paymentReducer,
