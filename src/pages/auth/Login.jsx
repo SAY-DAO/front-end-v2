@@ -78,7 +78,7 @@ const Login = () => {
     } else {
       setIsLoading(false);
     }
-  }, [loadingLogin]);
+  }, [loadingLogin, successLogin]);
 
   // disable button
   useEffect(() => {

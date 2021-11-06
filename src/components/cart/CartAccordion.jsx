@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { Typography, Grid, FormControl, Divider } from '@mui/material';
+import { Typography, Grid, FormControl, Divider, Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
@@ -120,64 +120,69 @@ export default function CartAccordion({ cartItems }) {
           justifyContent="flex-end"
           alignItems="flex-start"
         >
-          <Grid
-            item
-            container
-            direction="row"
-            alignItems="center"
-            sx={{ padding: 0, textAlign: 'center', marginTop: 5 }}
-          >
-            <Grid item xs={3}>
-              <Typography variant="subtitle2">
-                {t('needPage.payTitle')}
-              </Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Divider sx={{ width: '95%' }} />
-            </Grid>
-          </Grid>
-
-          <Grid item sx={{ width: '100%' }}>
-            <FormControl required variant="standard" sx={{ width: '100%' }}>
-              <form
-                style={{
-                  width: '100%',
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                }}
+          <Grid item sx={{ width: '100%', padding: 2 }}>
+            <Paper>
+              <FormControl
+                required
+                variant="standard"
+                sx={{ width: '100%', padding: 2 }}
               >
-                <Donation />
-                <Wallet />
-              </form>
-              <Grid
-                item
-                sx={{
-                  textAlign: 'center',
-                  position: 'fixed',
-                  bottom: 60,
-                  background: 'white',
-                  width: '100%',
-                  padding: 2,
-                }}
-              >
-                <LoadingButton
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePayment}
+                <form
+                  style={{
+                    width: '100%',
+                  }}
                 >
-                  <Typography
-                    component="div"
-                    variant="subtitle1"
+                  <Grid
+                    item
                     sx={{
-                      color: 'white',
-                      display: 'contents',
+                      bottom: 80,
+                      background: 'white',
+                      width: '100%',
                     }}
                   >
-                    {addedAmount.toLocaleString() + t('currency.toman')}
-                  </Typography>
-                </LoadingButton>
-              </Grid>
-            </FormControl>
+                    <Grid
+                      item
+                      container
+                      direction="row"
+                      alignItems="center"
+                      sx={{
+                        padding: 0,
+                        textAlign: 'center',
+                        marginTop: 2,
+                        marginBottom: 2,
+                      }}
+                    >
+                      <Grid item xs={3}>
+                        <Typography variant="subtitle2">
+                          {t('needPage.payTitle')}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={9}>
+                        <Divider sx={{ width: '95%' }} />
+                      </Grid>
+                    </Grid>
+                    <Donation />
+                    <Wallet />
+                    <LoadingButton
+                      variant="contained"
+                      color="primary"
+                      onClick={handlePayment}
+                    >
+                      <Typography
+                        component="div"
+                        variant="subtitle1"
+                        sx={{
+                          color: 'white',
+                          display: 'contents',
+                        }}
+                      >
+                        {addedAmount.toLocaleString() + t('currency.toman')}
+                      </Typography>
+                    </LoadingButton>
+                  </Grid>
+                </form>
+              </FormControl>
+            </Paper>
           </Grid>
         </Grid>
       )}
