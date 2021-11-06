@@ -19,12 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function GoneModal({
-  isGone,
-  childSayName,
-  roles,
-  rolesRelative,
-}) {
+export default function GoneModal({ isGone, childSayName }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -73,8 +68,6 @@ export default function GoneModal({
                 >
                   {t('childPage.permanentGoneMsg', {
                     childSayName,
-                    roles,
-                    rolesRelative,
                   })}
                 </Typography>
               </Grid>
@@ -98,6 +91,4 @@ export default function GoneModal({
 GoneModal.propTypes = {
   isGone: PropTypes.bool.isRequired,
   childSayName: PropTypes.string.isRequired,
-  roles: PropTypes.string.isRequired,
-  rolesRelative: PropTypes.string.isRequired,
 };

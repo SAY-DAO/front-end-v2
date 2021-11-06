@@ -462,7 +462,7 @@
     "useCredit": {
       "title": "Use your remaining balance"
     },
-    "unavilableModal": "This product is temporarily unavailable.",
+    "unavailableModal": "This product is temporarily unavailable.",
     "participants": {
       "title": "Participants",
       "othersModal": "This part of the payment has been paid by the ones who are no longer part of this family.",

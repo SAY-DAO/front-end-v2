@@ -19,18 +19,21 @@ const style = {
   p: 4,
 };
 
-export default function UnavailableModal({ isAvailable }) {
+export default function UnavailableModal({ unpayable, setUnpayable }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setUnpayable(false);
+    setOpen(false);
+  };
 
   useEffect(() => {
-    if (isAvailable) {
+    if (unpayable) {
       handleOpen();
     }
-  }, [isAvailable]);
+  }, [unpayable]);
 
   return (
     <div>
@@ -87,5 +90,6 @@ export default function UnavailableModal({ isAvailable }) {
 }
 
 UnavailableModal.propTypes = {
-  isAvailable: PropTypes.bool.isRequired,
+  unpayable: PropTypes.bool.isRequired,
+  setUnpayable: PropTypes.func,
 };

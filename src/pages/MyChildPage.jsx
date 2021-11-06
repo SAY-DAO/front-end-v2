@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
-    minHeight: '290px',
+    minHeight: window.innerWidth < 350 ? '300px' : '350px',
     backgroundRepeat: 'no-repeat',
     backgroundImage: 'url("/images/child/background.png")',
     margin: 0,
@@ -97,6 +97,7 @@ const MyChildPage = () => {
 
   // check login
   useEffect(() => {
+    console.log(window.innerWidth);
     if (!userInfo) {
       history.push('/login?redirect=main/home');
     }
@@ -133,6 +134,15 @@ const MyChildPage = () => {
       dispatch(fetchMyChildById(childId));
     }
   }, [successMyChild, childId, dispatch, myChildrenIdList, history]);
+
+  // weather display
+  useEffect(() => {
+    if (successMyChild) {
+      setTimeout(function () {
+        setWeatherDisplay(true);
+      }, 500);
+    }
+  }, [weatherDisplay, successMyChild]);
 
   // Age
   const getAge = (DOB) => {
@@ -193,6 +203,7 @@ const MyChildPage = () => {
                 }}
               >
                 <MenuItem
+                  disabled
                   onClick={handleClose}
                   sx={{ minHeight: '15px', margin: 1 }}
                 >
@@ -216,7 +227,7 @@ const MyChildPage = () => {
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
                 <>
-                  <div style={{ minHeight: '250px' }} />
+                  <div style={{ minHeight: '20px' }} />
 
                   <Avatar
                     className={classes.childAvatar}
@@ -232,25 +243,20 @@ const MyChildPage = () => {
                   <Typography className={classes.childAge} variant="subtitle2">
                     {getAge(theChild.birthDate) + t('assets.age')}
                   </Typography>
-                  {/* <Box id="weather">
+                  <Box id="weather">
                     <Weather
                       unit="C"
                       city="Karaj"
                       appid="ed56fab00ca239bf1003eee32c78057b"
                       style={{ display: !weatherDisplay && 'none' }}
                     />
-                  </Box> */}
+                  </Box>
                 </>
               )}
             </Grid>
           </Grid>
           <Grid sx={{ maxWidth: '100% !important' }}>
-            {theChild && (
-              <MyChildTabs
-                theChild={theChild}
-                setWeatherDisplay={setWeatherDisplay}
-              />
-            )}
+            {theChild && <MyChildTabs theChild={theChild} />}
           </Grid>
         </Grid>
       )}

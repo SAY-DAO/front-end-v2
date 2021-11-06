@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
+import UnavailableModal from '../modals/UnavailableModal';
 
 const useStyles = makeStyles(() => ({
   chip: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
+export default function ChildNeedCard({ theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -54,6 +55,8 @@ export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
   const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
   const [category, setCategory] = useState();
   const [activeCat, setActiveCat] = useState();
+  const [unpayable, setUnpayable] = useState(false);
+
   const childNeeds = useSelector((state) => state.childNeeds);
   const { theNeeds, success, loading } = childNeeds;
 
@@ -87,11 +90,6 @@ export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
         }
       }
       setNeedsArray(allNeeds);
-
-      // weather display -273 before loading, pushed this all the way here
-      setTimeout(function () {
-        setWeatherDisplay(true);
-      }, 500);
     }
     // Cleans up when leaves the page
     return () => {
@@ -125,7 +123,13 @@ export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
   }, [needsArray, category]);
 
   const handleNeedCardClick = (needId, childId) => {
-    history.push(`/child/${childId}/needs/${needId}`);
+    // check for unavailable need
+    if (theChild.unpayable) {
+      setUnpayable(true);
+    } else {
+      setUnpayable(false);
+      history.push(`/child/${childId}/needs/${needId}`);
+    }
   };
 
   const handleClick = (index) => {
@@ -245,11 +249,12 @@ export default function ChildNeedCard({ setWeatherDisplay, theChild }) {
           )}
         </>
       )}
+      {/* Unavailable need warn popup */}
+      <UnavailableModal unpayable={unpayable} setUnpayable={setUnpayable} />
     </>
   );
 }
 
 ChildNeedCard.propTypes = {
   theChild: PropTypes.object.isRequired,
-  setWeatherDisplay: PropTypes.func.isRequired,
 };

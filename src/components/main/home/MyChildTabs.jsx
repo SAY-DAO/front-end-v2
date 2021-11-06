@@ -51,18 +51,19 @@ function a11yProps(index) {
   };
 }
 
-export default function MyChildTabs({ setWeatherDisplay, theChild }) {
+export default function MyChildTabs({ theChild }) {
   const { t } = useTranslation();
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
-  const [isFather, setIsFather] = useState(false);
-  const [isMother, setIsMother] = useState(false);
-  const [father, setFather] = useState('');
-  const [mother, setMother] = useState('');
-  const [family, setFamily] = useState([]);
-  const [previousRole, setPreviousRole] = useState();
+
+  // setFamily and userRole
+  useEffect(() => {
+    if (theChild.userRole) {
+      setUserRole(theChild.userRole);
+    }
+  }, [userRole, theChild]);
 
   // child is gone
   useEffect(() => {
@@ -116,10 +117,7 @@ export default function MyChildTabs({ setWeatherDisplay, theChild }) {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <ChildNeeds
-            theChild={theChild}
-            setWeatherDisplay={setWeatherDisplay}
-          />
+          <ChildNeeds theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ChildFamily theChild={theChild} />
@@ -129,17 +127,11 @@ export default function MyChildTabs({ setWeatherDisplay, theChild }) {
         </TabPanel>
       </Box>
       {/* Gone warn popup */}
-      <GoneModal
-        isGone={isGone}
-        childSayName={theChild.sayName}
-        roles={`${t(roles.roles[userRole])}`}
-        rolesRelative={`${t(roles.rolesRelative[userRole])}`}
-      />
+      <GoneModal isGone={isGone} childSayName={theChild.sayName} />
     </>
   );
 }
 
 MyChildTabs.propTypes = {
   theChild: PropTypes.object,
-  setWeatherDisplay: PropTypes.func,
 };
