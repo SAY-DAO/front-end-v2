@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { Button, IconButton, StepLabel } from '@mui/material/';
+import LoadingButton from '@material-ui/lab/LoadingButton';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import StepConnector, {
@@ -184,13 +185,13 @@ export default function HorizontalNonLinearStepper({ needId }) {
             </Step>
           ))}
       </Stepper>
-      <Button
+      <LoadingButton
         variant="contained"
         fullWidth
         sx={{ marginTop: 3, marginBottom: 2 }}
       >
         {activeStep}
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }

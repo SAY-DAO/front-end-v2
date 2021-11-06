@@ -58,6 +58,24 @@ const VerifyCodeForm = () => {
 
   const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
 
+  // loading button
+  useEffect(() => {
+    if (loadingVerifyCode) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingVerifyCode]);
+
+  // button disable
+  useEffect(() => {
+    if (!errorVerifyCode && successVerifyCode) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [errorVerifyCode, successVerifyCode]);
+
   // Message input for 422 status error
   useEffect(() => {
     if (code) {
@@ -97,24 +115,6 @@ const VerifyCodeForm = () => {
       dispatch(changeVerifyStep('FinalForm'));
     }
   }, [successVerifyCode]);
-
-  // loading button
-  useEffect(() => {
-    if (loadingVerifyCode) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingVerifyCode]);
-
-  // button disable
-  useEffect(() => {
-    if (!errorVerifyCode && successVerifyCode) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [errorVerifyCode, successVerifyCode]);
 
   // verify code
   useEffect(() => {

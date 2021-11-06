@@ -51,6 +51,24 @@ const Login = () => {
     success: successLogin,
   } = userLogin;
 
+  // loading button
+  useEffect(() => {
+    if (loadingLogin) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingLogin, successLogin]);
+
+  // disable button
+  useEffect(() => {
+    if (!userName || !password) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [userName, password, errorLogin, successLogin]);
+
   useEffect(() => {
     if (successLogin || userInfo) {
       history.push(`/${redirect}`);
@@ -70,24 +88,6 @@ const Login = () => {
       setMessageInput('userName');
     }
   }, [userName]);
-
-  // loading button
-  useEffect(() => {
-    if (loadingLogin) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingLogin, successLogin]);
-
-  // disable button
-  useEffect(() => {
-    if (!userName || !password) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
-  }, [userName, password, errorLogin, successLogin]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

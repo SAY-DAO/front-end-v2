@@ -116,20 +116,6 @@ export default function NeedAvailable({ childId }) {
     success: successOneNeed,
   } = ChildOneNeed;
 
-  // In case the child is not in the state
-  useEffect(() => {
-    if (!theChild) {
-      history.push('/main/home');
-    }
-  }, [theChild, history]);
-
-  // get the initial remaining cost
-  useEffect(() => {
-    if (oneNeed) {
-      setRemaining(oneNeed.cost - oneNeed.paid);
-    }
-  }, [oneNeed]);
-
   // loading button
   useEffect(() => {
     if (loadingOneNeed || loadingCartItems) {
@@ -147,6 +133,20 @@ export default function NeedAvailable({ childId }) {
       setIsDisabled(true);
     }
   }, [successOneNeed, amount, remaining]);
+
+  // In case the child is not in the state
+  useEffect(() => {
+    if (!theChild) {
+      history.push('/main/home');
+    }
+  }, [theChild, history]);
+
+  // get the initial remaining cost
+  useEffect(() => {
+    if (oneNeed) {
+      setRemaining(oneNeed.cost - oneNeed.paid);
+    }
+  }, [oneNeed]);
 
   // check if Unpayable
   useEffect(() => {

@@ -43,6 +43,37 @@ const ResetPassword = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
+  // loading button
+  useEffect(() => {
+    if (loadingReset) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingReset]);
+
+  // disable button
+  useEffect(() => {
+    if (
+      passwordErr ||
+      repeatPasswordErr ||
+      errorReset ||
+      !password ||
+      !repeatPassword
+    ) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [
+    password,
+    repeatPassword,
+    passwordErr,
+    repeatPasswordErr,
+    errorReset,
+    successReset,
+  ]);
+
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
@@ -86,37 +117,6 @@ const ResetPassword = () => {
     }
     setRepeatPasswordErr(false);
   }, [password, repeatPassword]);
-
-  // loading button
-  useEffect(() => {
-    if (loadingReset) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingReset]);
-
-  // disable button
-  useEffect(() => {
-    if (
-      passwordErr ||
-      repeatPasswordErr ||
-      errorReset ||
-      !password ||
-      !repeatPassword
-    ) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
-  }, [
-    password,
-    repeatPassword,
-    passwordErr,
-    repeatPasswordErr,
-    errorReset,
-    successReset,
-  ]);
 
   useEffect(() => {
     if (successReset) {

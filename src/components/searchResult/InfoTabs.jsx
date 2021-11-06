@@ -13,9 +13,9 @@ import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../apis/roles';
 import { fetchRandomChild } from '../../actions/childAction';
-import GoneModal from './modals/GoneModal';
-import AdoptModel from './modals/AdoptionModal';
-import PrevRoleModal from './modals/PrevRoleModal';
+import GoneModal from '../modals/GoneModal';
+import AdoptModel from '../modals/AdoptionModal';
+import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
 
 const useStyles = makeStyles((theme) => ({

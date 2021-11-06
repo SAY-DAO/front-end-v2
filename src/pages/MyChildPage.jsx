@@ -24,7 +24,7 @@ import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
 import { leaveFamily } from '../actions/familyAction';
-import LeaveFamilyModal from '../components/searchResult/modals/LeaveFamilyModal ';
+import LeaveFamilyModal from '../components/modals/LeaveFamilyModal ';
 import roles from '../apis/roles';
 
 const useStyles = makeStyles({

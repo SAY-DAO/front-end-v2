@@ -10,7 +10,7 @@ import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
-import LeaveModel from '../../components/searchResult/modals/LeaveModal';
+import LeaveModel from '../../components/modals/LeaveModal';
 
 const useStyles = makeStyles({
   root: {

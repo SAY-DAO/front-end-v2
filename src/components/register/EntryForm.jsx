@@ -61,6 +61,24 @@ const EntryForm = () => {
     success: successCheck,
   } = checkContact;
 
+  // loading button
+  useEffect(() => {
+    if (loadingVerify) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingVerify]);
+
+  // disable button
+  useEffect(() => {
+    if (successCheck && !validateErr && !errorVerify && !errorCheck) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [successCheck, validateErr]);
+
   // Message input for 422 status error
   useEffect(() => {
     if (email) {
@@ -123,24 +141,6 @@ const EntryForm = () => {
     }
     return () => dispatch({ type: CHECK_CONTACT_RESET });
   }, [successVerify]);
-
-  // loading button
-  useEffect(() => {
-    if (loadingVerify) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingVerify]);
-
-  // disable button
-  useEffect(() => {
-    if (successCheck && !validateErr && !errorVerify && !errorCheck) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [successCheck, validateErr]);
 
   // email changes
   const handleChangeEmail = (event) => {

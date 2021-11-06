@@ -5,12 +5,11 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import exitQuote from '../../../apis/quote.json';
+import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
   CHILD_SEARCH_RESULT_RESET,
-} from '../../../constants/childConstants';
-import { leaveFamily } from '../../../actions/familyAction';
+} from '../../constants/childConstants';
 
 const style = {
   position: 'absolute',
@@ -25,7 +24,7 @@ const style = {
   p: 4,
 };
 
-export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
+export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -40,20 +39,34 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [leave, setLeave] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleLeave = () => {
-    dispatch(leaveFamily(theChild.familyId));
     handleClose();
+    setLeave(true);
   };
 
   useEffect(() => {
-    if (menuOpen) {
-      handleOpen();
-      setMenuOpen(false);
+    if (leave && !open) {
+      dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+      dispatch({ type: CHILD_SEARCH_RESULT_RESET });
+      localStorage.removeItem('randomChildToken');
+      if (redirect) {
+        history.push(redirect);
+      } else {
+        history.push('/main/search');
+      }
     }
-  }, [menuOpen, setMenuOpen]);
+  }, [leave, open, dispatch, history, redirect]);
+
+  useEffect(() => {
+    if (backIsTrue) {
+      handleOpen();
+      setBackIsTrue(false);
+    }
+  }, [backIsTrue, setBackIsTrue]);
 
   return (
     <div>
@@ -82,9 +95,11 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                   variant="body2"
                   component="h2"
                 >
-                  {t('childPage.leaveModalDesc', {
-                    childSayName: theChild.sayName,
-                  })}
+                  {t(
+                    exitQuote.exitQuote[
+                      Math.floor(Math.random() * exitQuote.exitQuote.length)
+                    ]
+                  )}
                 </Typography>
               </Grid>
               <Grid
@@ -129,8 +144,7 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   );
 }
 
-LeaveFamilyModal.propTypes = {
-  menuOpen: PropTypes.bool.isRequired,
-  setMenuOpen: PropTypes.func,
-  theChild: PropTypes.object,
+LeaveModel.propTypes = {
+  backIsTrue: PropTypes.bool.isRequired,
+  setBackIsTrue: PropTypes.func,
 };

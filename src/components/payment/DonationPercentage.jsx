@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import DonationModal from '../searchResult/modals/DonationModal';
+import DonationModal from '../modals/DonationModal';
 
 export default function Donation({ method, theNeed }) {
   const { t } = useTranslation();
