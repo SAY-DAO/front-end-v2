@@ -19,8 +19,8 @@ const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   backgroundColor:
     theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
-  width: 50,
-  height: 50,
+  width: 40,
+  height: 40,
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
