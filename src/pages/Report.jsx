@@ -127,7 +127,7 @@ export default function Report() {
               {{
                 date: formatDate(oneNeed.doneAt, t('assets.language')),
               }}
-              .{childSayName}
+              .{{ childSayName }}
             </Trans>
           );
           break;
