@@ -15,10 +15,8 @@ import { enDate, faDate } from '../date.js';
 
 const useStyles = makeStyles({
   root: {
-    margin: 15,
-    backgroundRepeat: 'no-repeat',
-    backgroundImage:
-      'linear-gradient(to bottom,rgba(255, 255, 255, 0) 80%, #f7f7f7 100%),url("/images/child/background.png")',
+    margin: 'auto',
+    minHeight: '300px',
   },
 
   needName: {
@@ -57,9 +55,9 @@ export default function Report({ childId }) {
     success: successOneNeed,
   } = ChildOneNeed;
 
-  useEffect(() => {
-    dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
+  // }, [dispatch]);
 
   // loading button
   useEffect(() => {
@@ -100,9 +98,7 @@ export default function Report({ childId }) {
     }
   };
 
-  const renderReport = () => {
-    const prettyCost = oneNeed.cost.toLocaleString();
-
+  useEffect(() => {
     setSocialWorkerCode(
       <Trans i18nKey="report.swId">
         The social worker ID: {theChild.socialWorkerGeneratedCode}
@@ -114,7 +110,7 @@ export default function Report({ childId }) {
         setImage(t('report.p2s2.img'));
         setTitle(
           <Trans i18nKey="report.p2s2.title">
-            One of {theChild.theChild.childSayName}’s needs is completely done
+            One of {theChild.childSayName}’s needs is completely done
           </Trans>
         );
         setParagraph(
@@ -124,7 +120,7 @@ export default function Report({ childId }) {
             {{
               date: formatDate(oneNeed.doneAt, t('assets.language')),
             }}
-            .{theChild.theChild.childSayName}
+            .{theChild.childSayName}
           </Trans>
         );
         break;
@@ -137,9 +133,9 @@ export default function Report({ childId }) {
             setTitle(t('report.s3.title'));
             setParagraph(
               <Trans i18nKey="report.s3.paragraph">
-                The amount of {{ needCost: prettyCost }} Tomans for purchasing{' '}
-                {theChild.childSayName}’s {{ needName }}, has been transferred
-                into the NGO’s bank account, on
+                The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
+                Tomans for purchasing {theChild.childSayName}’s {{ needName }},
+                has been transferred into the NGO’s bank account, on
                 {{
                   date: formatDate(
                     oneNeed.ngo_delivery_date,
@@ -186,9 +182,9 @@ export default function Report({ childId }) {
             );
             setParagraph(
               <Trans i18nKey="report.s4.paragraph">
-                The amount of {{ needCost: prettyCost }} Tomans for{' '}
-                {theChild.childSayName}’s {{ needName }}, has been paid by the
-                NGO on
+                The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
+                Tomans for {theChild.childSayName}’s {{ needName }}, has been
+                paid by the NGO on
                 {{
                   date: formatDate(
                     oneNeed.child_delivery_date,
@@ -246,7 +242,7 @@ export default function Report({ childId }) {
       default:
         break;
     }
-  };
+  }, [oneNeed]);
 
   // const renderButton = () => {
   //   if (this.state.status === 4 && this.state.type === 1) {
@@ -272,18 +268,42 @@ export default function Report({ childId }) {
         direction="row"
         justifyContent="center"
         alignItems="center"
+        sx={{ height: '100vh' }}
       >
         {oneNeed && theChild && (
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ padding: 5 }}>
             <Back isOrange to={`/child/${childId}/needs/${oneNeed.id}`} />
 
             <Paper elevation={2} className={classes.root}>
-              <Typography className={classes.needName} variant="subtitle1">
-                {oneNeed.name}
-              </Typography>
-              <Typography className={classes.sayName} variant="subtitle2">
-                {theChild.sayName}
-              </Typography>
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Grid item xs={12}>
+                  <img src={image} alt="status" style={{ maxWidth: '60px' }} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1">{title}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle1">{paragraph}</Typography>
+                  {swId && <Typography>{socialWorkerCode}</Typography>}
+                  {showDkc && <Typography>{dkcNumber}</Typography>}
+                </Grid>
+              </Grid>
+
+              <div className="report-logo-wrapper">
+                <a href="http://say.company" target="_blank" rel="noreferrer">
+                  <img
+                    src="https://sayapp.company/public/resources/img/logo-white.png"
+                    alt="logo"
+                    style={{ maxWidth: '60px' }}
+                  />
+                </a>
+              </div>
+              {/* {renderButton()} */}
             </Paper>
           </Grid>
         )}
