@@ -97,7 +97,7 @@ export default function NeedAvailable({ childId }) {
   const [inCart, setInCart] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [donation, setDonation] = useState(0);
-  const [userCredit, setUserCredit] = useState(0);
+  const [useCredit, setUseCredit] = useState(0);
   const [finalAmount, setFinalAmount] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -213,19 +213,12 @@ export default function NeedAvailable({ childId }) {
     setDonation(percentage * amount);
   }, [percentage, amount]);
 
-  // set userCredit
-  useEffect(() => {
-    if (userInfo) {
-      setUserCredit(userInfo.user.credit);
-    }
-  }, [userInfo]);
-
   // set final amount
   useEffect(() => {
     if (amount) {
-      setFinalAmount(amount + amount * (percentage / 100) - userCredit);
+      setFinalAmount(amount + amount * (percentage / 100) - useCredit);
     }
-  }, [amount, percentage, userCredit]);
+  }, [amount, percentage, useCredit]);
 
   // cart
   useEffect(() => {
@@ -278,7 +271,7 @@ export default function NeedAvailable({ childId }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    dispatch(makePayment(method, oneNeed.id, amount, donation, userCredit));
+    dispatch(makePayment(method, oneNeed.id, amount, donation, useCredit));
   };
 
   const classes = useStyles();
@@ -444,7 +437,10 @@ export default function NeedAvailable({ childId }) {
                                 setPercentage={setPercentage}
                                 amount={amount}
                               />
-                              <Wallet />
+                              <Wallet
+                                useCredit={useCredit}
+                                setUseCredit={setUseCredit}
+                              />
                               <Grid sx={{ textAlign: 'center' }}>
                                 <LoadingButton
                                   variant="contained"
@@ -497,8 +493,11 @@ export default function NeedAvailable({ childId }) {
                                   <Donation
                                     setPercentage={setPercentage}
                                     amount={amount}
-                                  />{' '}
-                                  <Wallet />
+                                  />
+                                  <Wallet
+                                    useCredit={useCredit}
+                                    setUseCredit={setUseCredit}
+                                  />
                                 </>
                               )}
                               <Grid sx={{ textAlign: 'center' }}>

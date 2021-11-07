@@ -6,7 +6,9 @@ import {
 } from '../constants/paymentConstants';
 
 export const makePayment =
-  (method, needId, amount, donate, useCredit) => async (dispatch, getState) => {
+  (method, needId, amount, donation, useCredit) =>
+  async (dispatch, getState) => {
+    console.log(method, needId, amount, donation, useCredit);
     try {
       dispatch({ type: SHAPARAK_PAYMENT_REQUEST });
       const {
@@ -24,7 +26,7 @@ export const makePayment =
       formData.append('userId', userInfo && userInfo.user.id);
       formData.append('needId', needId);
       formData.append('amount', amount);
-      formData.append('donate', donate);
+      formData.append('donate', donation);
       formData.append('useCredit', useCredit);
 
       const { data } = await publicApi.post(`/payment`, formData, config);

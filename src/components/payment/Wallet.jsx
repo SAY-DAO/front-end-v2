@@ -2,24 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Switch from '@mui/material/Switch';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default function Donation() {
+export default function Wallet({ useCredit, setUseCredit }) {
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState(false);
-  const [userCredit, setUserCredit] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
     if (userInfo) {
-      setUserCredit(userInfo.user.credit);
-    } else if (!userInfo) {
-      setUserCredit(userInfo.user.credit);
+      setUseCredit(userInfo.user.credit);
     }
-  }, [userInfo]);
+    if (!checked) {
+      setUseCredit(0);
+    }
+  }, [userInfo, checked]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -44,14 +45,15 @@ export default function Donation() {
           </Grid>
           <Grid>
             <Typography component="span" variant="body1" sx={{ padding: 1 }}>
-              {t('profile.credit')} : {userCredit} {t('currency.toman')}
+              {t('profile.credit')} : {userInfo.user.credit}
+              {t('currency.toman')}
             </Typography>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={3}>
         <Switch
-          disabled={true && userCredit === 0}
+          disabled={true && useCredit === 0}
           checked={checked}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'controlled' }}
@@ -60,3 +62,8 @@ export default function Donation() {
     </Grid>
   );
 }
+
+Wallet.propTypes = {
+  setUseCredit: PropTypes.func,
+  useCredit: PropTypes.number,
+};

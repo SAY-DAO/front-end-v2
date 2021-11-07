@@ -162,7 +162,10 @@ export default function CartAccordion({ cartItems }) {
                       </Grid>
                     </Grid>
                     {/* <Donation setPercentage={setPercentage} /> */}
-                    <Wallet />
+                    {/* <Wallet
+                      useCredit={useCredit}
+                      setUseCredit={setUseCredit}
+                    /> */}
                     <LoadingButton
                       variant="contained"
                       color="primary"
