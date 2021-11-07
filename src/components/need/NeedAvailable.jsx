@@ -28,6 +28,7 @@ import NeedPageProduct from './NeedPageProduct';
 import Donation from '../payment/DonationPercentage';
 import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
+import { makePayment } from '../../actions/paymentAction';
 
 const useStyles = makeStyles({
   root: {
@@ -86,15 +87,22 @@ export default function NeedAvailable({ childId }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [method, setMethod] = useState('addToCart');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
   const [unpayable, setUnpayable] = useState(false);
   const [paySomeDisable, setPaySomeDisable] = useState(false);
   const [bankMinDisable, setBankMinDisable] = useState(false);
   const [payLimit, setPayLimit] = useState('');
   const [inputError, setInputError] = useState(false);
-  const [remaining, setRemaining] = useState(0);
+  const [remaining, setRemaining] = useState();
   const [inCart, setInCart] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [donation, setDonation] = useState(0);
+  const [userCredit, setUserCredit] = useState(0);
+  const [finalAmount, setFinalAmount] = useState();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
 
@@ -115,6 +123,12 @@ export default function NeedAvailable({ childId }) {
     error: errorOneNeed,
     success: successOneNeed,
   } = ChildOneNeed;
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      history.push('/login?redirect=main/cart');
+    }
+  }, [userInfo, successLogin, history]);
 
   // loading button
   useEffect(() => {
@@ -194,6 +208,25 @@ export default function NeedAvailable({ childId }) {
     }
   }, [method, remaining]);
 
+  // set donation
+  useEffect(() => {
+    setDonation(percentage * amount);
+  }, [percentage, amount]);
+
+  // set userCredit
+  useEffect(() => {
+    if (userInfo) {
+      setUserCredit(userInfo.user.credit);
+    }
+  }, [userInfo]);
+
+  // set final amount
+  useEffect(() => {
+    if (amount) {
+      setFinalAmount(amount + amount * (percentage / 100) - userCredit);
+    }
+  }, [amount, percentage, userCredit]);
+
   // cart
   useEffect(() => {
     console.log(inCart);
@@ -245,6 +278,7 @@ export default function NeedAvailable({ childId }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
+    dispatch(makePayment(method, oneNeed.id, amount, donation, userCredit));
   };
 
   const classes = useStyles();
@@ -485,7 +519,8 @@ export default function NeedAvailable({ childId }) {
                                     }}
                                   >
                                     {method === 'payAll' &&
-                                      amount.toLocaleString() +
+                                      finalAmount &&
+                                      finalAmount.toLocaleString() +
                                         t('currency.toman')}
                                   </Typography>
                                   <Typography

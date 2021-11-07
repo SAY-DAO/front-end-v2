@@ -25,6 +25,17 @@ export default function Donation({ setPercentage, amount }) {
   const [checked, setChecked] = React.useState(false);
   const [modal, setModal] = useState(false);
 
+  useEffect(() => {
+    if (!checked) {
+      setPercentage(0);
+      setView(0);
+      setWidth2(2);
+      setWidth3(2);
+      setWidth4(2);
+      setWidth5(2);
+    }
+  }, [checked, setPercentage]);
+
   const handleWidth = (value) => {
     setView(value);
 
