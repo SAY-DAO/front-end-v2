@@ -12,6 +12,7 @@ import StepConnector, {
 } from '@mui/material/StepConnector';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { fetchOneNeedReceipts } from '../../actions/childAction';
 
 const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
@@ -62,8 +63,6 @@ const ColorLibConnector = styled(StepConnector)(({ theme }) => ({
 
 function ColorLibStepIcon(props) {
   const { active, completed, className } = props;
-  console.log(completed);
-
   const icons = {
     1: (
       <IconButton>
@@ -119,53 +118,61 @@ ColorLibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-export default function HorizontalNonLinearStepper({ needId }) {
+export default function HorizontalNonLinearStepper({ oneNeed }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  let steps;
 
   const [activeStep, setActiveStep] = React.useState(t('needStatus.0'));
   const [completed, setCompleted] = React.useState({});
   const [step, setStep] = useState(0);
-
-  const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
-  const { receipt, loading, error, success } = ChildOneNeedReceipt;
-
-  steps = [
+  const [steps, setSteps] = useState([
     t('needStatus.0'),
     t('needStatus.p1'),
     t('needStatus.p2'),
     t('needStatus.p3'),
-  ];
+  ]);
+
+  const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
+  const { receipt, loading, error, success } = ChildOneNeedReceipt;
+
   useEffect(() => {
-    if (!success) {
-      dispatch(fetchOneNeedReceipts(needId));
+    if (!success && oneNeed) {
+      dispatch(fetchOneNeedReceipts(oneNeed.id));
     }
-    if (receipt && receipt.type === 1) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      steps = [
+    if (oneNeed && oneNeed.type === 1) {
+      setSteps([
         t('needStatus.0'),
         t('needStatus.p1'),
         t('needStatus.p2'),
         t('needStatus.p3'),
-      ];
+      ]);
     } else {
-      steps = [t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')];
+      setSteps([t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')]);
     }
-  }, [receipt]);
+  }, [oneNeed, success, step]);
+
+  useEffect(() => {
+    if (oneNeed && oneNeed.status === 2) {
+      setStep(0);
+    } else if (oneNeed && oneNeed.status === 3) {
+      setStep(3);
+    } else if (oneNeed && oneNeed.status === 5) {
+      setStep(3);
+    }
+  }, [oneNeed]);
 
   const handleStep = (chosenStep) => () => {
-    setStep(chosenStep);
-    setActiveStep(steps[chosenStep]);
+    if (chosenStep > step) {
+      setActiveStep(steps[step]);
+    } else {
+      setActiveStep(steps[chosenStep]);
+    }
   };
 
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
+  const handleReceiptPage = () => {
+    history.push('/child/needs/needPage/report');
   };
-
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper
@@ -189,6 +196,7 @@ export default function HorizontalNonLinearStepper({ needId }) {
         variant="contained"
         fullWidth
         sx={{ marginTop: 3, marginBottom: 2 }}
+        onClick={handleReceiptPage}
       >
         {activeStep}
       </LoadingButton>
@@ -197,5 +205,5 @@ export default function HorizontalNonLinearStepper({ needId }) {
 }
 
 HorizontalNonLinearStepper.propTypes = {
-  needId: PropTypes.number,
+  oneNeed: PropTypes.object,
 };

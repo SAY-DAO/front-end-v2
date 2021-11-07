@@ -145,7 +145,7 @@ export default function NeedDone({ childId }) {
                       <NeedPageTop oneNeed={oneNeed} />
                     </Grid>
                     <Grid item>
-                      <NeedStepper needId={oneNeed.id} />
+                      <NeedStepper oneNeed={oneNeed} />
                     </Grid>
                     <Grid
                       item

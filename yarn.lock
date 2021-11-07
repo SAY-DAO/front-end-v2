@@ -7851,6 +7851,11 @@ istanbul-reports@^3.0.2:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
+jalali-date@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/jalali-date/-/jalali-date-1.1.4.tgz#ccefd1f909541a9f36d774b4dfe7322d58610ef1"
+  integrity sha512-uahw/VGFvy5LntCrbeTkCrxtH9J2pxkjvb4TQtsM7PjkMBR1otpaYJkX7PCF5GfVkMP1hTI3CdQw0TAtEs3g1A==
+
 jest-changed-files@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-26.6.2.tgz#f6198479e1cc66f22f9ae1e22acaa0b429c042d0"
@@ -11518,13 +11523,6 @@ react-sound@^1.2.0:
   dependencies:
     prop-types "^15.5.7"
     soundmanager2 "^2.97.20170602"
-
-react-swipe-to-delete-component@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/react-swipe-to-delete-component/-/react-swipe-to-delete-component-0.5.5.tgz#218a031e6d9c57bdeaa2359c9e65d8b1200e4dfe"
-  integrity sha512-UGPcUWYH80QKaSSPpCDyhChVl2eMEXbO4jaCyUn3c1oQa3cxoIZ5pXhnISd012bM36gN62LDndDlSmf7ISXbkA==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
 
 react-transition-group@^4.4.0, react-transition-group@^4.4.1:
   version "4.4.2"

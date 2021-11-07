@@ -24,6 +24,7 @@ import Profile from './components/main/profile/Profile';
 import Cart from './components/main/Cart';
 import Home from './components/main/home/Home';
 import ProfileEdit from './components/main/profile/ProfileEdit';
+import Report from './pages/Report';
 
 // Configure JSS for RTL
 const jss = create({
@@ -77,6 +78,11 @@ const App = () => (
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />
+                <Route
+                  exact
+                  path="/child/needs/needPage/report"
+                  component={Report}
+                />
                 <Route
                   exact
                   path="/child/:childId/needs/:needId"
