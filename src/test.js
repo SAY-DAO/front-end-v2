@@ -5,7 +5,7 @@
 // Should not view is_gone children
 // Should allow to choose an available role
 // Should not allow to choose a taken role - Mother / Father
-
+// Should not allow partial payment for less than ...
 // Should check if need is done
 // Should check for Urgent flag on the need
 // Should check for once purchased?

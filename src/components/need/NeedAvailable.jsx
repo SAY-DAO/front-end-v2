@@ -94,7 +94,7 @@ export default function NeedAvailable({ childId }) {
   const [inputError, setInputError] = useState(false);
   const [remaining, setRemaining] = useState(0);
   const [inCart, setInCart] = useState(false);
-
+  const [percentage, setPercentage] = useState(0);
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
 
@@ -237,6 +237,11 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
     history.push(`/child/${theChild.id}`);
   };
+
+  // const calculateDonation = () => {
+  //   // eslint-disable-next-line no-unused-expressions
+  //   ((percentage * remainingAmount) / 100 )- (((percentage * remainingAmount) / 100) % 100);
+  // };
 
   const handlePayment = (e) => {
     e.preventDefault();
@@ -401,7 +406,10 @@ export default function NeedAvailable({ childId }) {
                                   }}
                                 />
                               </Grid>
-                              <Donation />
+                              <Donation
+                                setPercentage={setPercentage}
+                                amount={amount}
+                              />
                               <Wallet />
                               <Grid sx={{ textAlign: 'center' }}>
                                 <LoadingButton
@@ -452,7 +460,10 @@ export default function NeedAvailable({ childId }) {
                                       }}
                                     />
                                   </Grid>
-                                  <Donation />
+                                  <Donation
+                                    setPercentage={setPercentage}
+                                    amount={amount}
+                                  />{' '}
                                   <Wallet />
                                 </>
                               )}

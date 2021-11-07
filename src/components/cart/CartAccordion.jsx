@@ -161,7 +161,7 @@ export default function CartAccordion({ cartItems }) {
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
                     </Grid>
-                    <Donation />
+                    {/* <Donation setPercentage={setPercentage} /> */}
                     <Wallet />
                     <LoadingButton
                       variant="contained"
