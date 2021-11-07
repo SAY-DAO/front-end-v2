@@ -125,6 +125,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
 
   const [activeStep, setActiveStep] = React.useState(t('needStatus.0'));
   const [completed, setCompleted] = React.useState({});
+  const [chosen, setChosen] = useState(0);
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState([
     t('needStatus.0'),
@@ -152,6 +153,19 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     }
   }, [oneNeed, success, step]);
 
+  // ---- PAYMENT-----
+  // partial payment status = 1
+  // complete payment status = 2
+
+  // ---- PRODUCT -----
+  // complete purchase for product status = 3
+  // complete delivery for product to NGO status = 4
+  // complete delivery to child status = 5
+
+  // ----- SERVICE -----
+  // complete money transfer to NGO for service status = 3
+  // complete delivery to child for service status = 4
+
   useEffect(() => {
     if (oneNeed && oneNeed.status === 2) {
       setStep(0);
@@ -163,6 +177,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   }, [oneNeed]);
 
   const handleStep = (chosenStep) => () => {
+    setChosen(chosenStep);
     if (chosenStep > step) {
       setActiveStep(steps[step]);
     } else {
@@ -171,7 +186,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   };
 
   const handleReceiptPage = () => {
-    history.push('/child/needs/needPage/report');
+    history.push(`/child/needs/needPage/report/${chosen + 2}`);
   };
   return (
     <Box sx={{ width: '100%' }}>

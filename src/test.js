@@ -14,8 +14,8 @@
 // Should check complete payment status = 2
 // product
 // Should check complete purchase for product status = 3
-// Should check complete purchase for product status = 4
-// Should check complete delivery to child for product status = 5
+// Should check complete delivery for product to NGO status = 4
+// Should check complete delivery to child status = 5
 // service
 // Should check complete money transfer to NGO for service status = 3
 // Should check complete delivery to child for service status = 4

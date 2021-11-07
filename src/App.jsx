@@ -80,7 +80,7 @@ const App = () => (
                 <Route exact path="/search-result" component={SearchResult} />
                 <Route
                   exact
-                  path="/child/needs/needPage/report"
+                  path="/child/needs/needPage/report/:status"
                   component={Report}
                 />
                 <Route
