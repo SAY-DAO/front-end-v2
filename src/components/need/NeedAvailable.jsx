@@ -21,6 +21,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
@@ -30,6 +31,7 @@ import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
+import { fetchChildOneNeed } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -114,8 +116,12 @@ export default function NeedAvailable({ childId }) {
     success: successCartItems,
   } = theCart;
 
-  const payment = useSelector((state) => state.payment);
-  const { result, loading: loadingPayment, success: successPayment } = payment;
+  const shaparakGate = useSelector((state) => state.shaparakGate);
+  const {
+    result,
+    loading: loadingShaparakGate,
+    success: successShaparakGate,
+  } = shaparakGate;
 
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
   const {
@@ -128,27 +134,43 @@ export default function NeedAvailable({ childId }) {
   useEffect(() => {
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/cart');
+    } else if (oneNeed.isDone) {
+      history.push(`/child/${theChild.id}`);
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, oneNeed, theChild]);
 
+  // Shaparak gate
   useEffect(() => {
-    if (result && result.link) {
-      history.push(result.link);
+    if (result) {
+      const windowReference = window.open('', '_blank');
+      if (windowReference) {
+        if (result.status === 299) {
+          windowReference.document.write(result.response);
+        } else {
+          windowReference.document.write('loading...');
+          windowReference.location = result.link;
+        }
+      }
+      const doneNeedInterval = setTimeout(
+        () => dispatch(fetchChildOneNeed(oneNeed.id)),
+        2000
+      );
+      // Set a timeout for the above interval (10 Minutes)
+      setTimeout(() => clearTimeout(doneNeedInterval), 60 * 10 * 1000);
     }
   }, [result]);
 
   // loading button
   useEffect(() => {
-    if (loadingOneNeed || loadingCartItems) {
+    if (loadingOneNeed || loadingCartItems || loadingShaparakGate) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingOneNeed, loadingCartItems]);
+  }, [loadingOneNeed, loadingCartItems, loadingShaparakGate]);
 
   // disable button
   useEffect(() => {
-    console.log(unpayable);
     if (successOneNeed && !unpayable) {
       setIsDisabled(false);
     } else {
@@ -464,7 +486,10 @@ export default function NeedAvailable({ childId }) {
                                       variant="subtitle1"
                                       sx={{
                                         paddingRight: 2,
-                                        color: 'white',
+                                        color:
+                                          isDisabled || bankMinDisable
+                                            ? 'lightGrey'
+                                            : 'white',
                                       }}
                                     >
                                       {finalAmount.toLocaleString() +
@@ -523,7 +548,10 @@ export default function NeedAvailable({ childId }) {
                                     variant="subtitle1"
                                     sx={{
                                       paddingRight: method === 'payAll' && 2,
-                                      color: 'white',
+                                      color:
+                                        isDisabled || bankMinDisable
+                                          ? 'lightGrey'
+                                          : 'white',
                                     }}
                                   >
                                     {method === 'payAll' &&
@@ -535,7 +563,10 @@ export default function NeedAvailable({ childId }) {
                                     component="div"
                                     variant="subtitle1"
                                     sx={{
-                                      color: 'white',
+                                      color:
+                                        isDisabled || bankMinDisable
+                                          ? 'lightGrey'
+                                          : 'white',
                                       display: 'contents',
                                     }}
                                   >

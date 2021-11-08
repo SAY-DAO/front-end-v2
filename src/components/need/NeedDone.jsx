@@ -12,6 +12,7 @@ import NeedPageTop from './NeedPageTop';
 import NeedStepper from './NeedStepper';
 import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
 import NeedParticipants from './NeedParticipants';
+import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -83,6 +84,7 @@ export default function NeedDone({ childId }) {
 
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
+    dispatch({ type: SHAPARAK_PAYMENT_RESET });
   }, [dispatch]);
 
   // loading button

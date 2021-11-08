@@ -47,5 +47,5 @@ export default combineReducers({
   ChildOneNeedReceipt: childOneNeedReceiptReducer,
   theCart: cartAddReducer,
   cartBadge: cartBadgeReducer,
-  payment: paymentReducer,
+  shaparakGate: paymentReducer,
 });
