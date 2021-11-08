@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
-import UnavailableModal from '../modals/UnavailableModal';
 
 const useStyles = makeStyles(() => ({
   chip: {
@@ -55,7 +54,6 @@ export default function ChildNeedCard({ theChild }) {
   const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
   const [category, setCategory] = useState();
   const [activeCat, setActiveCat] = useState();
-  const [unpayable, setUnpayable] = useState(false);
 
   const childNeeds = useSelector((state) => state.childNeeds);
   const { theNeeds, success, loading } = childNeeds;
@@ -123,13 +121,7 @@ export default function ChildNeedCard({ theChild }) {
   }, [needsArray, category]);
 
   const handleNeedCardClick = (needId, childId) => {
-    // check for unavailable need
-    if (theChild.unpayable) {
-      setUnpayable(true);
-    } else {
-      setUnpayable(false);
-      history.push(`/child/${childId}/needs/${needId}`);
-    }
+    history.push(`/child/${childId}/needs/${needId}`);
   };
 
   const handleClick = (index) => {
@@ -249,8 +241,6 @@ export default function ChildNeedCard({ theChild }) {
           )}
         </>
       )}
-      {/* Unavailable need warn popup */}
-      <UnavailableModal unpayable={unpayable} setUnpayable={setUnpayable} />
     </>
   );
 }

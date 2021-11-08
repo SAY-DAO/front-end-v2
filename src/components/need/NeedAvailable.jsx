@@ -29,6 +29,7 @@ import Donation from '../payment/DonationPercentage';
 import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
+import UnavailableModal from '../modals/UnavailableModal';
 
 const useStyles = makeStyles({
   root: {
@@ -93,8 +94,7 @@ export default function NeedAvailable({ childId }) {
   const [bankMinDisable, setBankMinDisable] = useState(false);
   const [payLimit, setPayLimit] = useState('');
   const [inputError, setInputError] = useState(false);
-  const [inputAmount, setInputAmount] = useState(0);
-  const [remaining, setRemaining] = useState();
+  const [inputAmount, setInputAmount] = useState(1000);
   const [inCart, setInCart] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [donation, setDonation] = useState(0);
@@ -131,6 +131,12 @@ export default function NeedAvailable({ childId }) {
     }
   }, [userInfo, successLogin, history]);
 
+  useEffect(() => {
+    if (result && result.link) {
+      history.push(result.link);
+    }
+  }, [result]);
+
   // loading button
   useEffect(() => {
     if (loadingOneNeed || loadingCartItems) {
@@ -142,13 +148,13 @@ export default function NeedAvailable({ childId }) {
 
   // disable button
   useEffect(() => {
-    console.log(amount, remaining);
-    if (successOneNeed && finalAmount <= remaining && !unpayable) {
+    console.log(unpayable);
+    if (successOneNeed && !unpayable) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successOneNeed, amount, remaining, unpayable]);
+  }, [successOneNeed, amount, unpayable]);
 
   // In case the child is not in the state
   useEffect(() => {
@@ -175,17 +181,6 @@ export default function NeedAvailable({ childId }) {
     }
   }, [oneNeed]);
 
-  // set remaining
-  useEffect(() => {
-    if (method === 'payAll') {
-      setRemaining(oneNeed.cost - oneNeed.paid);
-    } else if (method === 'paySome') {
-      setRemaining(oneNeed.cost - oneNeed.paid - Number(inputAmount));
-    } else if (method === 'addToCart') {
-      setRemaining(oneNeed.cost - oneNeed.paid);
-    }
-  }, [method, oneNeed, inputAmount]);
-
   // bank minimum
   useEffect(() => {
     if (amount < 1000) {
@@ -195,15 +190,15 @@ export default function NeedAvailable({ childId }) {
       setInputError(false);
       setBankMinDisable(false);
     }
-  }, [amount]);
+  }, [inputAmount]);
 
   // payLimit
   useEffect(() => {
-    if (oneNeed && remaining < 2000) {
-      setPayLimit(remaining.toString());
+    if (oneNeed && oneNeed.cost - oneNeed.paid < 2000) {
+      setPayLimit((oneNeed.cost - oneNeed.paid).toString());
     }
     setPayLimit('1000');
-  }, [oneNeed, remaining]);
+  }, [oneNeed]);
 
   // set donation
   useEffect(() => {
@@ -213,10 +208,10 @@ export default function NeedAvailable({ childId }) {
   // set final amount
   useEffect(() => {
     if (amount) {
-      // console.log(amount, donation);
+      console.log(amount, donation, useCredit);
       setFinalAmount(amount + donation - useCredit);
     }
-  }, [amount, inputAmount, donation, useCredit]);
+  }, [amount, inputAmount, donation, useCredit, method]);
 
   // cart
   useEffect(() => {
@@ -230,22 +225,41 @@ export default function NeedAvailable({ childId }) {
     }
   }, [cartItems, oneNeed]);
 
+  // set remaining
+  useEffect(() => {
+    if (method === 'payAll') {
+      setAmount(oneNeed.cost - oneNeed.paid);
+    } else if (method === 'paySome') {
+      if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
+        setAmount(oneNeed.cost - oneNeed.paid);
+      } else {
+        setAmount(Number(inputAmount));
+      }
+    } else if (method === 'addToCart') {
+      setAmount(oneNeed.cost - oneNeed.paid);
+    }
+  }, [method, oneNeed, inputAmount]);
+
   // radio button / setAmount
   const handleMethodChange = (event) => {
     if (event.target.value === 'payAll') {
-      setAmount(remaining);
       setMethod('payAll');
     } else if (event.target.value === 'paySome') {
-      setAmount(remaining);
       setMethod('paySome');
     } else if (event.target.value === 'addToCart') {
       setMethod('addToCart');
     }
+    console.log(amount);
   };
 
   // paySome input
   const handlePaySomeInput = (e) => {
     setInputAmount(Number(e.target.value));
+    if (Number(e.target.value) > oneNeed.cost - oneNeed.paid) {
+      setInputAmount(oneNeed.cost - oneNeed.paid);
+    } else {
+      setAmount(Number(e.target.value));
+    }
   };
 
   // addToCard
@@ -262,6 +276,7 @@ export default function NeedAvailable({ childId }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
+    console.log(amount, parseInt(payLimit), unpayable);
     if (amount > parseInt(payLimit) && !unpayable) {
       dispatch(makePayment(method, oneNeed.id, amount, donation, useCredit));
     }
@@ -436,6 +451,7 @@ export default function NeedAvailable({ childId }) {
                               />
                               <Grid sx={{ textAlign: 'center' }}>
                                 <LoadingButton
+                                  type="submit"
                                   variant="contained"
                                   color="primary"
                                   disabled={isDisabled || bankMinDisable}
@@ -451,7 +467,7 @@ export default function NeedAvailable({ childId }) {
                                         color: 'white',
                                       }}
                                     >
-                                      {amount.toLocaleString() +
+                                      {finalAmount.toLocaleString() +
                                         t('currency.toman')}
                                     </Typography>
                                   )}
@@ -559,6 +575,8 @@ export default function NeedAvailable({ childId }) {
             </Grid>
           </Grid>
         )}
+        {/* Unavailable need warn popup */}
+        <UnavailableModal unpayable={unpayable} setUnpayable={setUnpayable} />
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorOneNeed && (

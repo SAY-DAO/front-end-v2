@@ -19,13 +19,12 @@ const style = {
   p: 4,
 };
 
-export default function UnavailableModal({ unpayable, setUnpayable }) {
+export default function UnavailableModal({ unpayable }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setUnpayable(false);
     setOpen(false);
   };
 
@@ -91,5 +90,4 @@ export default function UnavailableModal({ unpayable, setUnpayable }) {
 
 UnavailableModal.propTypes = {
   unpayable: PropTypes.bool.isRequired,
-  setUnpayable: PropTypes.func,
 };
