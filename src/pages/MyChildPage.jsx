@@ -180,6 +180,7 @@ const MyChildPage = () => {
             <div>
               <IconButton
                 aria-label="more"
+                sx={{ color: 'white' }}
                 id="long-button"
                 aria-controls="long-menu"
                 aria-expanded={open ? 'true' : undefined}
