@@ -75,13 +75,6 @@ const Login = () => {
     }
   }, [history, redirect, successLogin]);
 
-  // cleanup the state error after leaving the page - this runs every reload
-  useEffect(() => {
-    if (!userInfo) {
-      dispatch({ type: USER_LOGOUT });
-    }
-  }, [userName, password, successLogin, dispatch]);
-
   // Message input for some status error (422)
   useEffect(() => {
     if (userName) {
@@ -96,10 +89,14 @@ const Login = () => {
 
   const handleChangeUserName = (event) => {
     setUserName(event.target.value);
+    // clean error
+    dispatch({ type: USER_LOGOUT });
   };
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
+    // clean error
+    dispatch({ type: USER_LOGOUT });
   };
 
   const classes = useStyles();

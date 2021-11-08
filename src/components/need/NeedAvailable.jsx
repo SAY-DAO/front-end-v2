@@ -88,11 +88,12 @@ export default function NeedAvailable({ childId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [method, setMethod] = useState('addToCart');
   const [amount, setAmount] = useState();
-  const [unpayable, setUnpayable] = useState(false);
+  const [unpayable, setUnpayable] = useState(true);
   const [paySomeDisable, setPaySomeDisable] = useState(false);
   const [bankMinDisable, setBankMinDisable] = useState(false);
   const [payLimit, setPayLimit] = useState('');
   const [inputError, setInputError] = useState(false);
+  const [inputAmount, setInputAmount] = useState(0);
   const [remaining, setRemaining] = useState();
   const [inCart, setInCart] = useState(false);
   const [percentage, setPercentage] = useState(0);
@@ -141,12 +142,13 @@ export default function NeedAvailable({ childId }) {
 
   // disable button
   useEffect(() => {
-    if (successOneNeed && amount <= remaining) {
+    console.log(amount, remaining);
+    if (successOneNeed && finalAmount <= remaining && !unpayable) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successOneNeed, amount, remaining]);
+  }, [successOneNeed, amount, remaining, unpayable]);
 
   // In case the child is not in the state
   useEffect(() => {
@@ -155,17 +157,10 @@ export default function NeedAvailable({ childId }) {
     }
   }, [theChild, history]);
 
-  // get the initial remaining cost
+  // if Unpayable true can't pay
   useEffect(() => {
     if (oneNeed) {
-      setRemaining(oneNeed.cost - oneNeed.paid);
-    }
-  }, [oneNeed]);
-
-  // check if Unpayable
-  useEffect(() => {
-    if (oneNeed && oneNeed.unpayable) {
-      setUnpayable(true);
+      setUnpayable(oneNeed.unpayable);
     }
   }, [oneNeed]);
 
@@ -179,6 +174,17 @@ export default function NeedAvailable({ childId }) {
       }
     }
   }, [oneNeed]);
+
+  // set remaining
+  useEffect(() => {
+    if (method === 'payAll') {
+      setRemaining(oneNeed.cost - oneNeed.paid);
+    } else if (method === 'paySome') {
+      setRemaining(oneNeed.cost - oneNeed.paid - Number(inputAmount));
+    } else if (method === 'addToCart') {
+      setRemaining(oneNeed.cost - oneNeed.paid);
+    }
+  }, [method, oneNeed, inputAmount]);
 
   // bank minimum
   useEffect(() => {
@@ -199,30 +205,21 @@ export default function NeedAvailable({ childId }) {
     setPayLimit('1000');
   }, [oneNeed, remaining]);
 
-  // set amount
-  useEffect(() => {
-    if (method === 'paySome') {
-      setAmount(remaining);
-    } else {
-      setAmount(remaining);
-    }
-  }, [method, remaining]);
-
   // set donation
   useEffect(() => {
-    setDonation(percentage * amount);
+    setDonation((percentage * amount) / 100);
   }, [percentage, amount]);
 
   // set final amount
   useEffect(() => {
     if (amount) {
-      setFinalAmount(amount + amount * (percentage / 100) - useCredit);
+      // console.log(amount, donation);
+      setFinalAmount(amount + donation - useCredit);
     }
-  }, [amount, percentage, useCredit]);
+  }, [amount, inputAmount, donation, useCredit]);
 
   // cart
   useEffect(() => {
-    console.log(inCart);
     if (cartItems[0] && oneNeed) {
       const existItem = cartItems.find((x) => x.needId === oneNeed.id);
       if (existItem) {
@@ -236,11 +233,11 @@ export default function NeedAvailable({ childId }) {
   // radio button / setAmount
   const handleMethodChange = (event) => {
     if (event.target.value === 'payAll') {
+      setAmount(remaining);
       setMethod('payAll');
-      setAmount(remaining);
     } else if (event.target.value === 'paySome') {
-      setMethod('paySome');
       setAmount(remaining);
+      setMethod('paySome');
     } else if (event.target.value === 'addToCart') {
       setMethod('addToCart');
     }
@@ -248,8 +245,7 @@ export default function NeedAvailable({ childId }) {
 
   // paySome input
   const handlePaySomeInput = (e) => {
-    const inputAmount = e.target.value;
-    setAmount(Number(inputAmount));
+    setInputAmount(Number(e.target.value));
   };
 
   // addToCard
@@ -264,14 +260,11 @@ export default function NeedAvailable({ childId }) {
     history.push(`/child/${theChild.id}`);
   };
 
-  // const calculateDonation = () => {
-  //   // eslint-disable-next-line no-unused-expressions
-  //   ((percentage * remainingAmount) / 100 )- (((percentage * remainingAmount) / 100) % 100);
-  // };
-
   const handlePayment = (e) => {
     e.preventDefault();
-    dispatch(makePayment(method, oneNeed.id, amount, donation, useCredit));
+    if (amount > parseInt(payLimit) && !unpayable) {
+      dispatch(makePayment(method, oneNeed.id, amount, donation, useCredit));
+    }
   };
 
   const classes = useStyles();
@@ -401,7 +394,7 @@ export default function NeedAvailable({ childId }) {
                                 sx={{ direction: 'rtl' }}
                                 type="number"
                                 id="filled-someAmount"
-                                value={amount}
+                                value={inputAmount}
                                 onChange={handlePaySomeInput}
                                 startAdornment={
                                   <InputAdornment
