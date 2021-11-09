@@ -165,6 +165,7 @@ export default function AdoptionModal({
                     sx={{
                       fontSize: '0.8rem',
                       fontWeight: 'bolder',
+                      color: '#7e7e7e !important',
                     }}
                     onClick={handleClose}
                   >

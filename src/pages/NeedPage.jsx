@@ -1,8 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, CircularProgress } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Grid, CircularProgress } from '@mui/material';
 import { useHistory } from 'react-router';
-import { makeStyles } from '@material-ui/styles';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChildOneNeed } from '../actions/childAction';
@@ -15,12 +14,7 @@ export default function NeedPage() {
   const { childId, needId } = useParams();
 
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
-  const {
-    oneNeed,
-    loading: loadingOneNeed,
-    error: errorOneNeed,
-    success: successOneNeed,
-  } = ChildOneNeed;
+  const { oneNeed, success: successOneNeed } = ChildOneNeed;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -40,7 +34,7 @@ export default function NeedPage() {
 
   return (
     <>
-      {!successOneNeed ? (
+      {!oneNeed ? (
         <CircularProgress />
       ) : (
         <Grid container direction="column">

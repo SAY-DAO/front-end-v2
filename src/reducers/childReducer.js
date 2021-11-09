@@ -97,7 +97,7 @@ export const childNeedsReducer = (state = {}, action) => {
 export const childOneNeedReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_ONE_NEED_REQUEST:
-      return { loading: true, success: false };
+      return { ...state, loading: true, success: false };
     case CHILD_ONE_NEED_SUCCESS:
       return { loading: false, success: true, oneNeed: action.payload };
     case CHILD_ONE_NEED_FAIL:

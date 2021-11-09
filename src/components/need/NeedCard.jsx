@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -119,7 +119,9 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
               </Grid>
               <Grid item>
                 <Typography variant="body1" className={classes.needCost}>
-                  {need.cost.toLocaleString() + t('currency.toman')}
+                  {!need.unpayable
+                    ? need.cost.toLocaleString() + t('currency.toman')
+                    : '-'}
                 </Typography>
               </Grid>
             </Grid>

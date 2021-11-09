@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
-import { Grid, Typography, Divider } from '@mui/material';
+import { Grid, Typography, Divider, IconButton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import i18next from 'i18next';
 import LangButton from '../../LangButton';
 import Back from '../../Back';
 import Message from '../../Message';
@@ -13,9 +14,10 @@ import { logout } from '../../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   icon: {
-    maxWidth: '28px',
-    maxHeight: '28px',
-    margin: 5,
+    maxWidth: '25px',
+    maxHeight: '25px',
+    marginLeft: 8,
+    marginRight: 8,
   },
 }));
 
@@ -46,6 +48,25 @@ export default function Settings() {
     }
   }, [cartItems]);
 
+  const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
+
+  const clickHandler = () => {
+    let lang;
+    const currentLang = getLanguage();
+
+    switch (currentLang) {
+      case 'en':
+        lang = 'fa';
+        break;
+      case 'fa':
+        lang = 'en';
+        break;
+      default:
+        lang = 'fa';
+    }
+
+    i18next.changeLanguage(lang);
+  };
   const classes = useStyles();
 
   return (
@@ -76,23 +97,24 @@ export default function Settings() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item xs={1}>
-            <img
-              src="/images/icons/language.svg"
-              alt="language icon"
-              className={classes.icon}
-            />
-          </Grid>
-          <Grid item xs={9}>
-            <Typography
-              component="span"
-              variant="subtitle2"
-              sx={{ padding: 1 }}
-            >
-              {t('setting.language.title')}
-            </Typography>
-          </Grid>
           <Grid item xs={2}>
+            <IconButton onClick={clickHandler}>
+              <img
+                src="/images/icons/language.svg"
+                alt="language icon"
+                className={classes.icon}
+              />
+            </IconButton>
+          </Grid>
+
+          <Grid item xs={8}>
+            <IconButton onClick={clickHandler}>
+              <Typography component="span" variant="subtitle2">
+                {t('setting.language.title')}
+              </Typography>
+            </IconButton>
+          </Grid>
+          <Grid item xs>
             <LangButton />
           </Grid>
         </Grid>
@@ -112,20 +134,18 @@ export default function Settings() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item xs={1}>
-            <img
-              src="/images/icons/changePassword.svg"
-              alt="change password icon"
-              className={classes.icon}
-            />
+          <Grid item xs={2}>
+            <IconButton onClick={() => history.push('/setpassword')}>
+              <img
+                src="/images/icons/changePassword.svg"
+                alt="change password icon"
+                className={classes.icon}
+              />
+            </IconButton>
           </Grid>
           <Grid item xs>
             <Link to="/setpassword">
-              <Typography
-                component="span"
-                variant="subtitle1"
-                sx={{ padding: 1 }}
-              >
+              <Typography component="span" variant="subtitle2">
                 {t('setting.changePass.title')}
               </Typography>
             </Link>
@@ -158,7 +178,6 @@ export default function Settings() {
             <Typography
               component="span"
               variant="subtitle1"
-              sx={{ padding: 1 }}
             >
               {t('setting.crc.title')}
             </Typography>
@@ -191,7 +210,6 @@ export default function Settings() {
             <Typography
               component="span"
               variant="subtitle1"
-              sx={{ padding: 1 }}
             >
               {t('setting.contact.title')}
             </Typography>
@@ -224,7 +242,6 @@ export default function Settings() {
             <Typography
               component="span"
               variant="subtitle1"
-              sx={{ padding: 1 }}
             >
               {t('setting.about.title')}
             </Typography>
@@ -246,19 +263,21 @@ export default function Settings() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item xs={1}>
-            <img
-              src="/images/icons/exit.svg"
-              alt="language icon"
-              className={classes.icon}
-            />
+          <Grid item xs={2}>
+            <IconButton onClick={() => dispatch(logout())}>
+              <img
+                src="/images/icons/exit.svg"
+                alt="language icon"
+                className={classes.icon}
+              />
+            </IconButton>
           </Grid>
           <Grid item xs>
             <Link to="#" onClick={() => dispatch(logout())}>
               <Typography
                 component="span"
                 variant="subtitle1"
-                sx={{ padding: 1, color: '#FF8393' }}
+                sx={{ color: '#FF8393' }}
               >
                 {t('setting.logout.title')}
               </Typography>

@@ -21,7 +21,6 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
@@ -31,7 +30,7 @@ import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
-import { fetchChildOneNeed } from '../../actions/childAction';
+import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -139,9 +138,9 @@ export default function NeedAvailable({ childId }) {
     }
   }, [userInfo, successLogin, history, oneNeed, theChild]);
 
-  // Shaparak gate
+  // Shaparak gate  - redirect to bank
   useEffect(() => {
-    if (result) {
+    if (successShaparakGate) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         if (result.status === 299) {
@@ -151,23 +150,35 @@ export default function NeedAvailable({ childId }) {
           windowReference.location = result.link;
         }
       }
-      const doneNeedInterval = setTimeout(
+      const doneNeedInterval = setInterval(
         () => dispatch(fetchChildOneNeed(oneNeed.id)),
-        2000
+        5000
       );
       // Set a timeout for the above interval (10 Minutes)
-      setTimeout(() => clearTimeout(doneNeedInterval), 60 * 10 * 1000);
+      return () => {
+        setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
+      };
     }
   }, [result]);
 
   // loading button
   useEffect(() => {
-    if (loadingOneNeed || loadingCartItems || loadingShaparakGate) {
+    if (
+      loadingOneNeed ||
+      loadingCartItems ||
+      loadingShaparakGate ||
+      successShaparakGate
+    ) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingOneNeed, loadingCartItems, loadingShaparakGate]);
+  }, [
+    loadingOneNeed,
+    loadingCartItems,
+    loadingShaparakGate,
+    successShaparakGate,
+  ]);
 
   // disable button
   useEffect(() => {
@@ -181,9 +192,9 @@ export default function NeedAvailable({ childId }) {
   // In case the child is not in the state
   useEffect(() => {
     if (!theChild) {
-      history.push('/main/home');
+      dispatch(fetchMyChildById(childId));
     }
-  }, [theChild, history]);
+  }, [theChild, childId]);
 
   // if Unpayable true can't pay
   useEffect(() => {
@@ -308,7 +319,7 @@ export default function NeedAvailable({ childId }) {
   return (
     <>
       <Grid container direction="column">
-        {theChild && oneNeed && (
+        {theChild && !oneNeed.isDone && (
           <Grid item xs={12} className={classes.root}>
             <Back isOrange={false} to={`/child/${childId}`} />
             <Grid item xs={12}>
@@ -480,34 +491,38 @@ export default function NeedAvailable({ childId }) {
                                   loading={isLoading}
                                   sx={{ marginTop: 2, marginBottom: 4 }}
                                 >
-                                  {!isDisabled && !bankMinDisable && (
-                                    <Typography
-                                      component="span"
-                                      variant="subtitle1"
-                                      sx={{
-                                        paddingRight: 2,
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
-                                      }}
-                                    >
-                                      {finalAmount.toLocaleString() +
-                                        t('currency.toman')}
-                                    </Typography>
+                                  {!isLoading && (
+                                    <>
+                                      {!isDisabled && !bankMinDisable && (
+                                        <Typography
+                                          component="span"
+                                          variant="subtitle1"
+                                          sx={{
+                                            paddingRight: 2,
+                                            color:
+                                              isDisabled || bankMinDisable
+                                                ? 'lightGrey'
+                                                : 'white',
+                                          }}
+                                        >
+                                          {finalAmount.toLocaleString() +
+                                            t('currency.toman')}
+                                        </Typography>
+                                      )}
+                                      <Typography
+                                        component="span"
+                                        variant="subtitle1"
+                                        sx={{
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                        }}
+                                      >
+                                        {t('button.pay')}
+                                      </Typography>
+                                    </>
                                   )}
-                                  <Typography
-                                    component="span"
-                                    variant="subtitle1"
-                                    sx={{
-                                      color:
-                                        isDisabled || bankMinDisable
-                                          ? 'lightGrey'
-                                          : 'white',
-                                    }}
-                                  >
-                                    {t('button.pay')}
-                                  </Typography>
                                 </LoadingButton>
                               </Grid>
                             </>
@@ -543,56 +558,61 @@ export default function NeedAvailable({ childId }) {
                                   loading={isLoading}
                                   sx={{ marginTop: 1, marginBottom: 4 }}
                                 >
-                                  <Typography
-                                    component="span"
-                                    variant="subtitle1"
-                                    sx={{
-                                      paddingRight: method === 'payAll' && 2,
-                                      color:
-                                        isDisabled || bankMinDisable
-                                          ? 'lightGrey'
-                                          : 'white',
-                                    }}
-                                  >
-                                    {method === 'payAll' &&
-                                      finalAmount &&
-                                      finalAmount.toLocaleString() +
-                                        t('currency.toman')}
-                                  </Typography>
-                                  <Typography
-                                    component="div"
-                                    variant="subtitle1"
-                                    sx={{
-                                      color:
-                                        isDisabled || bankMinDisable
-                                          ? 'lightGrey'
-                                          : 'white',
-                                      display: 'contents',
-                                    }}
-                                  >
-                                    {method === 'payAll' ? (
-                                      t('button.pay')
-                                    ) : (
-                                      <>
-                                        <span style={{ padding: 5 }}>
-                                          {!inCart
-                                            ? t('button.addToCart')
-                                            : t('button.continueShopping')}
-                                        </span>
-                                        <span>
-                                          {!inCart && (
-                                            <img
-                                              src="/images/cartWhite.svg"
-                                              alt="Cart Icon"
-                                              style={{
-                                                maxWidth: '22px',
-                                              }}
-                                            />
-                                          )}
-                                        </span>
-                                      </>
-                                    )}
-                                  </Typography>
+                                  {!isLoading && (
+                                    <>
+                                      <Typography
+                                        component="span"
+                                        variant="subtitle1"
+                                        sx={{
+                                          paddingRight:
+                                            method === 'payAll' && 2,
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                        }}
+                                      >
+                                        {method === 'payAll' &&
+                                          finalAmount &&
+                                          finalAmount.toLocaleString() +
+                                            t('currency.toman')}
+                                      </Typography>
+                                      <Typography
+                                        component="div"
+                                        variant="subtitle1"
+                                        sx={{
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                          display: 'contents',
+                                        }}
+                                      >
+                                        {method === 'payAll' ? (
+                                          t('button.pay')
+                                        ) : (
+                                          <>
+                                            <span style={{ padding: 5 }}>
+                                              {!inCart
+                                                ? t('button.addToCart')
+                                                : t('button.continueShopping')}
+                                            </span>
+                                            <span>
+                                              {!inCart && (
+                                                <img
+                                                  src="/images/cartWhite.svg"
+                                                  alt="Cart Icon"
+                                                  style={{
+                                                    maxWidth: '22px',
+                                                  }}
+                                                />
+                                              )}
+                                            </span>
+                                          </>
+                                        )}
+                                      </Typography>
+                                    </>
+                                  )}
                                 </LoadingButton>
                               </Grid>
                             </>

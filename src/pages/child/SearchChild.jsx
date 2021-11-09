@@ -90,11 +90,14 @@ const SearchChild = () => {
         alignItems="center"
         item
         sx={{ direction: 'ltr' }}
+        spacing={1}
       >
-        <Grid item xs={2}>
+        <Grid item xs={12}>
           <Typography align="center" variant="subtitle1">
             {t('search.title')}
           </Typography>
+        </Grid>
+        <Grid item xs={12}>
           <Typography
             align="center"
             variant="body1"
@@ -103,6 +106,7 @@ const SearchChild = () => {
             {t('search.content')}
           </Typography>
         </Grid>
+
         <Grid item xs={12} sx={{ marginTop: 4 }}>
           <LoadingButton
             variant="contained"

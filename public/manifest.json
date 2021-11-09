@@ -1,6 +1,6 @@
 {
   "short_name": "SAY App",
-  "name": "Create React App Sample",
+  "name": "Gate to SAY DAO",
   "icons": [
     {
       "src": "/images/favicon.ico",
@@ -13,7 +13,7 @@
       "sizes": "192x192"
     },
     {
-      "src": "/images/logo512.png",
+      "src": "/images/logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

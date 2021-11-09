@@ -57,6 +57,7 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
               alignItems="center"
               item
               spacing={1}
+              md={4}
               xs={6}
             >
               <Grid item xs={6}>
@@ -65,20 +66,25 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
                   className={classes.childAvatar}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Typography variant="body1">{myChild.sayName}</Typography>
               </Grid>
             </Grid>
             <Grid
               container
               direction="row"
-              justifyContent="flex-end"
+              justifyContent={window.innerWidth <= 320 ? 'flex-end' : 'center'}
               alignItems="center"
               item
               spacing={1}
-              xs={6}
+              xs
             >
-              <Grid item sx={{ display: 'flex' }}>
+              <Grid
+                item
+                sx={{
+                  display: 'flex',
+                }}
+              >
                 <Typography component="span">
                   {myChild.done_needs_count}
                 </Typography>
