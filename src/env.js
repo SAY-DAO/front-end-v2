@@ -8,8 +8,8 @@ const history = createBrowserHistory();
 
 const env = process.env.REACT_APP_NODE_ENV || 'local';
 
-let envApiUrl = `https://${process.env.REACT_APP_API_URL}/api/v2`;
-let envApiUrl3 = `https://${process.env.REACT_APP_API_URL}/api/v3`;
+const envApiUrl = `https://${process.env.REACT_APP_API_URL}/api/v2`;
+const envApiUrl3 = `https://${process.env.REACT_APP_API_URL}/api/v3`;
 
 
 if (env !== 'local') {
