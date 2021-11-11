@@ -1,0 +1,36 @@
+version: '3.6'
+services:
+  webapp:
+    image: ${CONTAINER_IMAGE}
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        order: start-first
+      placement:
+        constraints:
+          - node.labels.${ENVIRONMENT} == true
+      mode: replicated
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.${STACK_NAME}-webapp-http.entrypoints=http
+        - traefik.http.routers.${STACK_NAME}-webapp-http.rule=HostRegexp(`{www:(www.)?}${DOMAIN?Variable not set}`)
+        - traefik.http.routers.${STACK_NAME}-webapp-http.service=${STACK_NAME}-webapp
+        - traefik.http.routers.${STACK_NAME}-webapp-http.middlewares=https-redirect
+        - traefik.http.routers.${STACK_NAME}-webapp.entrypoints=https
+        - traefik.http.routers.${STACK_NAME}-webapp.rule=HostRegexp(`{www:(www.)?}${DOMAIN?Variable not set}`)
+        - traefik.http.routers.${STACK_NAME}-webapp.service=${STACK_NAME}-webapp
+        - traefik.http.routers.${STACK_NAME}-webapp.tls=true
+        - traefik.http.routers.${STACK_NAME}-webapp.tls.certresolver=le
+        - traefik.http.services.${STACK_NAME}-webapp.loadbalancer.server.port=80
+        - traefik.http.middlewares.www-redirect.redirectregex.regex=https://(www.)?(.*)
+        - traefik.http.middlewares.www-redirect.redirectregex.replacement=https://$$2
+        - traefik.http.routers.${STACK_NAME}-webapp.middlewares=www-redirect
+
+networks:
+  traefik-public:
+    external: true
