@@ -9,6 +9,9 @@ env:
   DEV_DOMAIN: d.sayapp.company
   STAGE_DOMAIN: s.sayapp.company
   PROD_DOMAIN: sayapp.company
+  DEV_API_URL: d.sayapp.company
+  STAGING_API_URL: s.sayapp.company
+  PRODUCTION_API_URL: sayapp.company
   TARGET_LAYER: runtime
   DEV_STACK_NAME: say-dev-webapp
   STAGE_STACK_NAME: say-staing-webapp
