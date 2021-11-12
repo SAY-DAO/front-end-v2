@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
@@ -20,7 +20,10 @@ import {
   changeVerifyStep,
 } from '../../actions/userAction';
 import Message from '../Message';
-import { CODE_VERIFY_RESET } from '../../constants/main/userConstants';
+import {
+  CHECK_CONTACT_RESET,
+  CODE_VERIFY_RESET,
+} from '../../constants/main/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -56,7 +59,8 @@ const VerifyCodeForm = () => {
     loading: loadingVerifyCode,
   } = theVerifyCode;
 
-  const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
+  const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
+  const { verifyInfo, loading: loadingVerify } = userVerifyInfo;
 
   // loading button
   useEffect(() => {
@@ -84,12 +88,12 @@ const VerifyCodeForm = () => {
   }, [code]);
 
   useEffect(() => {
-    if (localVerifyInfo.type === 'phone') {
-      setVerificationMethod(localVerifyInfo.phone_number);
-    } else if (localVerifyInfo.type === 'email') {
-      setVerificationMethod(localVerifyInfo.email);
+    if (verifyInfo && verifyInfo.type === 'phone') {
+      setVerificationMethod(verifyInfo.phone_number);
+    } else if (verifyInfo && verifyInfo.type === 'email') {
+      setVerificationMethod(verifyInfo.email);
     }
-  }, [localVerifyInfo]);
+  }, [verifyInfo]);
 
   // resend progress
   useEffect(() => {
@@ -120,15 +124,16 @@ const VerifyCodeForm = () => {
   useEffect(() => {
     if (code.length === 6) {
       dispatch({ type: CODE_VERIFY_RESET });
-      dispatch(userVerifyCode(localVerifyInfo.id, code));
+      dispatch(userVerifyCode(verifyInfo.id, code));
     }
     return () => {
       dispatch({ type: CODE_VERIFY_RESET });
+      dispatch({ type: CHECK_CONTACT_RESET });
     };
   }, [code]);
 
   const handleResend = () => {
-    const theType = localVerifyInfo.phone_number ? 'phone_number' : 'email';
+    const theType = verifyInfo.phone_number ? 'phone_number' : 'email';
     dispatch(verifyUser(theType, verificationMethod));
     setProgress(0);
     setEnableResend(true);
@@ -140,112 +145,118 @@ const VerifyCodeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(userVerifyCode(localVerifyInfo.id, code));
+    dispatch(userVerifyCode(verifyInfo.id, code));
   };
 
   const classes = useStyles();
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-      sx={{ marginTop: 4 }}
-    >
-      <Back step="EntryForm" isOrange />
-      <Grid item xs={12}>
-        <img src="/images/otp.svg" className={classes.root} alt="otp page" />
-      </Grid>
-      <Grid item xs={12} sx={{ marginBottom: 2 }}>
-        {localVerifyInfo && (
-          <Typography variant="subtitle1">
-            <Trans
-              i18nKey={`verify.content.by${capitalize(localVerifyInfo.type)}`}
-            >
-              <span dir="ltr">{{ verificationMethod }}</span>
-            </Trans>
-          </Typography>
-        )}
-      </Grid>
-      <Grid item xs={12}>
-        <FormControl onSubmit={handleSubmit} variant="outlined">
-          <form>
-            <NumberFormat
-              value={code}
-              onValueChange={handleChange}
-              id="codeInput"
-              placeholder={t('placeholder.code')}
-              customInput={TextField}
-              format="### ###"
-              mask="_"
-            />
-          </form>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sx={{ marginTop: 14 }}>
-        <LoadingButton
-          variant="contained"
-          color="primary"
-          disabled={isDisabled}
-          loading={isLoading}
-          sx={{
-            bottom: 5,
-          }}
+    <>
+      {loadingVerifyCode || loadingVerify ? (
+        <CircularProgress />
+      ) : (
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          maxWidth
+          sx={{ marginTop: 3 }}
         >
-          {t('button.submit')}
-        </LoadingButton>
-      </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        {enableResend && !errorVerifyCode ? (
-          <Grid sx={{ width: '100%', marginTop: 2 }}>
-            <Grid item xs={12}>
-              <LinearProgress variant="determinate" value={progress} />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'center',
-                  color: '#f5a344',
-                }}
-              >
-                {t('verify.pleaseWait')}
-              </Typography>
-            </Grid>
+          <Back step="EntryForm" isOrange />
+          <Grid item xs={12}>
+            <img
+              src="/images/otp.svg"
+              className={classes.root}
+              alt="otp page"
+            />
           </Grid>
-        ) : (
-          <Grid item xs={12} sx={{ marginTop: 2 }}>
-            {localVerifyInfo && (
-              <Typography variant="subtitle1">
-                {t('verify.notReceiveCode')}{' '}
-                <Link to="#" onClick={handleResend}>
-                  {t('verify.resendCode')}
-                </Link>
-              </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 1 }}>
+            <Typography variant="subtitle1">
+              <Trans
+                i18nKey={`verify.content.by${capitalize(verifyInfo.type)}`}
+              >
+                <span dir="ltr">{{ verificationMethod }}</span>
+              </Trans>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl onSubmit={handleSubmit} variant="outlined">
+              <form>
+                <NumberFormat
+                  value={code}
+                  onValueChange={handleChange}
+                  id="codeInput"
+                  placeholder={t('placeholder.code')}
+                  customInput={TextField}
+                  format="### ###"
+                  mask="_"
+                />
+              </form>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sx={{ marginTop: 14 }}>
+            <LoadingButton
+              variant="contained"
+              color="primary"
+              disabled={isDisabled}
+              loading={isLoading}
+              sx={{
+                bottom: 5,
+              }}
+            >
+              {t('button.submit')}
+            </LoadingButton>
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            {enableResend && !errorVerifyCode ? (
+              <Grid sx={{ width: '100%', marginTop: 2 }}>
+                <Grid item xs={12}>
+                  <LinearProgress variant="determinate" value={progress} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      display: 'flex',
+                      width: '100%',
+                      justifyContent: 'center',
+                      color: '#f5a344',
+                    }}
+                  >
+                    {t('verify.pleaseWait')}
+                  </Typography>
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid item xs={12} sx={{ marginTop: 2 }}>
+                <Typography variant="subtitle1">
+                  {t('verify.notReceiveCode')}{' '}
+                  <Link to="#" onClick={handleResend}>
+                    {t('verify.resendCode')}
+                  </Link>
+                </Typography>
+              </Grid>
             )}
           </Grid>
-        )}
-      </Grid>
-      <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {errorVerifyCode && (
-          <Message
-            input={messageInput}
-            backError={errorVerifyCode}
-            variant="filled"
-            severity="error"
-          />
-        )}
-      </Grid>
-    </Grid>
+          <Grid item xs={12} sx={{ textAlign: 'center' }}>
+            {errorVerifyCode && (
+              <Message
+                input={messageInput}
+                backError={errorVerifyCode}
+                variant="filled"
+                severity="error"
+              />
+            )}
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 

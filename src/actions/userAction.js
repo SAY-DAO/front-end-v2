@@ -29,13 +29,6 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
   USER_LOGOUT,
-  // USER_DETAILS_SUCCESS,
-  // USER_DETAILS_FAIL,
-  // USER_DETAILS_REQUEST,
-  // USER_DETAILS_RESET,
-  // USER_UPDATE_PROFILE_REQUEST,
-  // USER_UPDATE_PROFILE_SUCCESS,
-  // USER_UPDATE_PROFILE_FAIL,
 } from '../constants/main/userConstants';
 import { standalone } from '../standalone';
 
@@ -127,7 +120,7 @@ export const verifyUser = (theKey, value, dialCode) => async (dispatch) => {
       type: USER_VERIFY_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('localVerifyInfo', JSON.stringify(data));
+    localStorage.setItem('verifyInfo', JSON.stringify(data));
     localStorage.setItem('localDialCode', JSON.stringify(dialCode));
   } catch (e) {
     // check for generic and custom message to return using ternary statement
@@ -176,7 +169,7 @@ export const register =
       const formData = new FormData();
       formData.set('username', userName);
       formData.set('password', password);
-      formData.set('userVerifyCode', otp);
+      formData.set('verifyCode', otp);
 
       if (theKey === 'email') {
         formData.set('email', value);
@@ -206,7 +199,7 @@ export const register =
         type: USER_LOGIN_SUCCESS,
         payload: data,
       });
-      localStorage.removeItem('localVerifyInfo');
+      localStorage.removeItem('verifyInfo');
     } catch (e) {
       // check for generic and custom message to return using ternary statement
       dispatch({

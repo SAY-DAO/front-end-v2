@@ -8,8 +8,8 @@ import {
   USER_REGISTER_REQUEST,
 } from './constants/main/userConstants';
 
-const localVerifyInfo = localStorage.getItem('localVerifyInfo')
-  ? JSON.parse(localStorage.getItem('localVerifyInfo'))
+const verifyInfo = localStorage.getItem('verifyInfo')
+  ? JSON.parse(localStorage.getItem('verifyInfo'))
   : null;
 
 const userInfo = localStorage.getItem('userInfo')
@@ -22,7 +22,7 @@ const cartItemFromStorage = localStorage.getItem('cartItems')
 
 const initialState = {
   userVerifyInfo: {
-    localVerifyInfo,
+    verifyInfo,
   },
   userLogin: {
     userInfo,

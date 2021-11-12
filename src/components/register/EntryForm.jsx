@@ -19,7 +19,10 @@ import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../Back';
-import { CHECK_CONTACT_RESET } from '../../constants/main/userConstants';
+import {
+  CHECK_CONTACT_RESET,
+  USER_VERIFY_RESET,
+} from '../../constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -63,12 +66,12 @@ const EntryForm = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingVerify) {
+    if (loadingVerify || loadingCheck) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingVerify]);
+  }, [loadingVerify, loadingCheck, email, phoneNumber]);
 
   // disable button
   useEffect(() => {
@@ -78,6 +81,12 @@ const EntryForm = () => {
       setIsDisabled(true);
     }
   }, [successCheck, validateErr]);
+
+  //  clear error message when type
+  useEffect(() => {
+    dispatch({ type: CHECK_CONTACT_RESET });
+    dispatch({ type: USER_VERIFY_RESET });
+  }, [email, phoneNumber]);
 
   // Message input for 422 status error
   useEffect(() => {

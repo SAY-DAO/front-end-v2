@@ -82,13 +82,21 @@ const Home = () => {
   }, [userInfo, successLogin, history]);
 
   useEffect(() => {
-    dispatch(fetchMyHome());
     dispatch({ type: CHILD_BY_ID_RESET });
     dispatch({ type: CHILD_NEEDS_RESET });
     dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
     dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });
   }, []);
+
+  // if no children
+  useEffect(() => {
+    if (successHome && children && !children[0]) {
+      history.push('/main/search');
+    } else if (!successHome) {
+      dispatch(fetchMyHome());
+    }
+  }, [children, successHome]);
 
   const handleMyChildPage = (child) => {
     history.push(`/child/${child.id}`);

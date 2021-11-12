@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 import { CART_BADGE_RESET } from '../../constants/main/cartConstants';
+import { fetchMyHome } from '../../actions/main/homeAction';
 
 const useStyles = makeStyles({
   root: {
@@ -36,13 +37,28 @@ export default function AppBarBottom({ path }) {
   const history = useHistory();
 
   const [value, setValue] = useState();
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const cartBadge = useSelector((state) => state.cartBadge);
   const { badgeNumber } = cartBadge;
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const myHome = useSelector((state) => state.myHome);
+  const { children, success: successHome } = myHome;
+
+  // we get the home date ahead to get our children's ids
+  useEffect(() => {
+    if (!successHome) {
+      dispatch(fetchMyHome());
+    }
+    if (userInfo && children && !children[0]) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [successHome, userInfo, isDisabled, children, dispatch]);
 
   useEffect(() => {
     if (value === 'profile') {
@@ -65,6 +81,10 @@ export default function AppBarBottom({ path }) {
     }
   }, [value, history, dispatch]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const classes = useStyles();
   return (
     <Box>
@@ -85,67 +105,72 @@ export default function AppBarBottom({ path }) {
           onChange={handleChange}
           sx={{ height: '45px' }}
         >
-          <BottomNavigationAction
-            value="home"
-            className={classes.root}
-            label={t('userLayout.home')}
-            sx={{
-              maxWidth: path === 'home' ? '180px' : '25px',
-              minWidth: '70px',
-              borderRadius: '25px',
-              backgroundColor: path === 'home' ? '#ffdfc1' : 'transparent',
-            }}
-            icon={
-              <img
-                src={
-                  path === 'home'
-                    ? '/images/appBar/homeActive.svg'
-                    : '/images/appBar/home.svg'
-                }
-                alt="Home Icon"
-                style={{
-                  maxWidth: '22px',
-                  position: 'absolute',
-                  right: path === 'home' ? 8 : 35,
-                  bottom: 10,
-                }}
-              />
-            }
-          />
-          <BottomNavigationAction
-            value="cart"
-            className={classes.root}
-            label={t('userLayout.cart')}
-            sx={{
-              maxWidth: path === 'cart' ? '180px' : '25px',
-              minWidth: '65px',
-              borderRadius: '25px',
-              backgroundColor: path === 'cart' ? '#ffdfc1' : 'transparent',
-            }}
-            icon={
-              <StyledBadge
-                badgeContent={badgeNumber}
-                color="primary"
-                style={{
-                  position: 'absolute',
-                  right: path === 'cart' ? 8 : 35,
-                  bottom: 10,
-                }}
-              >
+          {!isDisabled && (
+            <BottomNavigationAction
+              value="home"
+              className={classes.root}
+              label={t('userLayout.home')}
+              sx={{
+                maxWidth: path === 'home' ? '180px' : '25px',
+                minWidth: '70px',
+                borderRadius: '25px',
+                backgroundColor: path === 'home' ? '#ffdfc1' : 'transparent',
+              }}
+              icon={
                 <img
                   src={
-                    path === 'cart'
-                      ? '/images/appBar/cartActive.svg'
-                      : '/images/appBar/cart.svg'
+                    path === 'home'
+                      ? '/images/appBar/homeActive.svg'
+                      : '/images/appBar/home.svg'
                   }
-                  alt="Cart Icon"
+                  alt="Home Icon"
                   style={{
                     maxWidth: '22px',
+                    position: 'absolute',
+                    right: path === 'home' ? 8 : 35,
+                    bottom: 10,
                   }}
                 />
-              </StyledBadge>
-            }
-          />
+              }
+            />
+          )}
+          {!isDisabled && (
+            <BottomNavigationAction
+              value="cart"
+              className={classes.root}
+              label={t('userLayout.cart')}
+              sx={{
+                maxWidth: path === 'cart' ? '180px' : '25px',
+                minWidth: '65px',
+                borderRadius: '25px',
+                backgroundColor: path === 'cart' ? '#ffdfc1' : 'transparent',
+              }}
+              icon={
+                <StyledBadge
+                  badgeContent={badgeNumber}
+                  color="primary"
+                  style={{
+                    position: 'absolute',
+                    right: path === 'cart' ? 8 : 35,
+                    bottom: 10,
+                  }}
+                >
+                  <img
+                    src={
+                      path === 'cart'
+                        ? '/images/appBar/cartActive.svg'
+                        : '/images/appBar/cart.svg'
+                    }
+                    alt="Cart Icon"
+                    style={{
+                      maxWidth: '22px',
+                    }}
+                  />
+                </StyledBadge>
+              }
+            />
+          )}
+
           <BottomNavigationAction
             value="search"
             className={classes.root}

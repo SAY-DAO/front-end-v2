@@ -31,6 +31,7 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
   USER_RESET_PASSWORD_RESET,
+  USER_REGISTER_RESET,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -82,12 +83,13 @@ export const checkUserNameReducer = (state = { checkResult: {} }, action) => {
 export const userVerifyReducer = (state = { verifyInfo: {} }, action) => {
   switch (action.type) {
     case USER_VERIFY_REQUEST:
-      return { loading: true, success: false, ...state };
+      return { loading: true, success: false };
     case USER_VERIFY_SUCCESS:
       return {
+        ...state,
         loading: false,
         success: true,
-        ...state,
+
         verifyInfo: action.payload,
       };
     case USER_VERIFY_FAIL:
@@ -122,6 +124,8 @@ export const userRegisterReducer = (state = { success: false }, action) => {
       return { loading: false, success: true, userInfo: action.payload };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
+    case USER_REGISTER_RESET:
+      return {};
     default:
       return state;
   }
@@ -133,7 +137,6 @@ export const userLoginReducer = (state = { userInfo: {} }, action) => {
       return { loading: true, success: false };
     case USER_LOGIN_SUCCESS:
       return {
-        ...state,
         loading: false,
         success: true,
         userInfo: action.payload,

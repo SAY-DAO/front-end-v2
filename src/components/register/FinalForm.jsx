@@ -16,12 +16,16 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { useHistory } from 'react-router';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-import { CHECK_USERNAME_RESET } from '../../constants/main/userConstants';
+import {
+  CHECK_USERNAME_RESET,
+  USER_REGISTER_RESET,
+} from '../../constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +40,7 @@ const useStyles = makeStyles({
 
 const FinalForm = () => {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
@@ -66,9 +71,58 @@ const FinalForm = () => {
     success: successRegister,
   } = userRegister;
 
-  const localVerifyInfo = JSON.parse(localStorage.getItem('localVerifyInfo'));
+  const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
+  const { verifyInfo } = userVerifyInfo;
+
   const localOTP = JSON.parse(localStorage.getItem('localOTP'));
   const localDialCode = JSON.parse(localStorage.getItem('dialCode'));
+
+  // loading button
+  useEffect(() => {
+    if (loadingCheck || loadingRegister || successRegister) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingCheck, loadingRegister, successRegister]);
+
+  // disable button
+  useEffect(() => {
+    if (
+      successRegister ||
+      !successCheck ||
+      userNameErr ||
+      passwordErr ||
+      repeatPasswordErr ||
+      errorCheck ||
+      errorRegister ||
+      !userName ||
+      !password ||
+      !repeatPassword
+    ) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [
+    userName,
+    password,
+    repeatPassword,
+    userNameErr,
+    passwordErr,
+    repeatPasswordErr,
+    errorCheck,
+    successCheck,
+    errorRegister,
+    successRegister,
+  ]);
+
+  // change step
+  useEffect(() => {
+    if (successRegister) {
+      history.push('/main/search');
+    }
+  }, [successRegister]);
 
   // Message input for status error
   useEffect(() => {
@@ -76,6 +130,14 @@ const FinalForm = () => {
       setMessageInput('register');
     }
   }, [userName]);
+
+  // clear error when types
+  useEffect(() => {
+    if (errorRegister || errorCheck) {
+      dispatch({ type: USER_REGISTER_RESET });
+      dispatch({ type: USER_REGISTER_RESET });
+    }
+  }, [userName, password, repeatPassword]);
 
   // check userName every 1000 ms when typing
   useEffect(() => {
@@ -133,58 +195,18 @@ const FinalForm = () => {
     setRepeatPasswordErr(false);
   }, [password, repeatPassword]);
 
-  // loading button
-  useEffect(() => {
-    if (loadingCheck || loadingRegister || successRegister) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingCheck, loadingRegister, successRegister]);
-
-  // disable button
-  useEffect(() => {
-    if (
-      successRegister ||
-      !successCheck ||
-      userNameErr ||
-      passwordErr ||
-      repeatPasswordErr ||
-      errorCheck ||
-      errorRegister ||
-      !userName ||
-      !password ||
-      !repeatPassword
-    ) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
-  }, [
-    userName,
-    password,
-    repeatPassword,
-    userNameErr,
-    passwordErr,
-    repeatPasswordErr,
-    errorCheck,
-    successCheck,
-    errorRegister,
-    successRegister,
-  ]);
-
   useEffect(() => {
     setOtp(localOTP);
-    if (localVerifyInfo) {
-      if (localVerifyInfo.type === 'phone') {
+    if (verifyInfo) {
+      if (verifyInfo.type === 'phone') {
         setTheKey('phone');
-        setValue(localVerifyInfo.phone_number);
-      } else if (localVerifyInfo.type === 'email') {
+        setValue(verifyInfo.phone_number);
+      } else if (verifyInfo.type === 'email') {
         setTheKey('email');
-        setValue(localVerifyInfo.email);
+        setValue(verifyInfo.email);
       }
     }
-  }, [localVerifyInfo, localOTP]);
+  }, [verifyInfo, localOTP]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

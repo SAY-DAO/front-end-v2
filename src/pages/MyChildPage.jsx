@@ -105,17 +105,17 @@ const MyChildPage = () => {
 
   // left the family
   useEffect(() => {
-    if (successLeft) {
+    if (successLeft && children && children[0]) {
       history.push('/main/home');
     }
-  }, [successLeft]);
+  }, [successLeft, dispatch]);
 
   // we get the home date ahead to get our children's ids
   useEffect(() => {
     if (!successHome) {
       dispatch(fetchMyHome());
     }
-  }, [successHome, dispatch]);
+  }, [successHome]);
 
   useEffect(() => {
     if (children) {
