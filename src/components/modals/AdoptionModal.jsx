@@ -7,8 +7,9 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
 import { joinVirtualFamily } from '../../actions/familyAction';
-// import { inviteToMyFamily } from '../../../actions/familyAction';
+import { fetchMyHome } from '../../actions/main/homeAction';
 
 const style = {
   position: 'absolute',
@@ -52,14 +53,20 @@ export default function AdoptionModal({
   const { success: successLogin } = userLogin;
 
   const joinResult = useSelector((state) => state.joinResult);
-  const { success: successJoin } = joinResult;
+  const { loading: loadingJoin, success: successJoin } = joinResult;
+
+  const myHome = useSelector((state) => state.myHome);
+  const { success: successHome } = myHome;
 
   // redirect after joining
   useEffect(() => {
     if (successJoin) {
+      dispatch(fetchMyHome());
+    }
+    if (successJoin && successHome) {
       history.push('/main/home');
     }
-  }, [successJoin, history]);
+  }, [successJoin, successHome]);
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -156,7 +163,11 @@ export default function AdoptionModal({
                     }}
                     onClick={handleJoin}
                   >
-                    {t('button.accept.yes')}
+                    {!loadingJoin ? (
+                      t('button.accept.yes')
+                    ) : (
+                      <CircularProgress size={30} />
+                    )}
                   </Link>
                 </Grid>
                 <Grid item>

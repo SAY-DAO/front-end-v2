@@ -203,11 +203,8 @@
   },
   "search-result": {
     "exitQuote": {
-      "1": "What you read was real",
-      "2": "Every child is unique",
-      "3": "What you heard was real",
-      "4": "Every child is unique",
-      "5": "You are about to lose this child"
+      "1": "You are about to leave this child",
+      "2": "You are about to leave this child"
     },
     "title": "Family Members",
     "tab1": "Family Members",

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     minHeight: '290px',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'round',
     backgroundImage:
       'linear-gradient(to bottom,rgba(255, 255, 255, 0) 80%, #f7f7f7 100%),url("/images/child/background.png")',
     margin: 0,

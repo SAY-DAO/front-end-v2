@@ -23,7 +23,6 @@ import { fetchMyChildById } from '../actions/childAction';
 import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
-import { leaveFamily } from '../actions/familyAction';
 import LeaveFamilyModal from '../components/modals/LeaveFamilyModal ';
 import roles from '../apis/roles';
 
@@ -33,7 +32,7 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     minHeight: window.innerWidth < 350 ? '300px' : '350px',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'round',
     backgroundImage: 'url("/images/child/background.png")',
     margin: 0,
     padding: 0,

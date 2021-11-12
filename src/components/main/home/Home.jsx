@@ -18,6 +18,7 @@ import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../../constants/familyConstants';
+import { HOME_RESET } from '../../../constants/main/homeConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -70,10 +71,25 @@ const Home = () => {
   const history = useHistory();
 
   const myHome = useSelector((state) => state.myHome);
-  const { user, children, success: successHome } = myHome;
+  const { user, children, loading: loadingHome, success: successHome } = myHome;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
+
+  const leftFamily = useSelector((state) => state.leftFamily);
+  const { success: successLeft } = leftFamily;
+
+  const joinResult = useSelector((state) => state.joinResult);
+  const { success: successJoin } = joinResult;
+
+  const childRandomSearch = useSelector((state) => state.childRandomSearch);
+  const { success: successRandomSearch } = childRandomSearch;
+
+  const myChild = useSelector((state) => state.myChild);
+  const { success: successMyChild } = myChild;
+
+  const childNeeds = useSelector((state) => state.childNeeds);
+  const { success: successNeeds } = childNeeds;
 
   useEffect(() => {
     if (!userInfo) {
@@ -82,21 +98,35 @@ const Home = () => {
   }, [userInfo, successLogin, history]);
 
   useEffect(() => {
-    dispatch({ type: CHILD_BY_ID_RESET });
-    dispatch({ type: CHILD_NEEDS_RESET });
-    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
-    dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });
-  }, []);
+    if (successMyChild) {
+      dispatch({ type: CHILD_BY_ID_RESET });
+    }
+    if (successNeeds) {
+      dispatch({ type: CHILD_NEEDS_RESET });
+    }
+    if (successJoin) {
+      dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });
+    }
+    if (successLeft) {
+      dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
+    }
+    if (successRandomSearch) {
+      dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+    }
+
+    if (!successHome || successLeft || successJoin) {
+      dispatch(fetchMyHome());
+    }
+  }, [successHome, successLeft]);
 
   // if no children
   useEffect(() => {
-    if (successHome && children && !children[0]) {
+    if (children && !children[0]) {
       history.push('/main/search');
-    } else if (!successHome) {
-      dispatch(fetchMyHome());
+    } else if (children && children[0]) {
+      history.push('/main/home');
     }
-  }, [children, successHome]);
+  }, [children, successHome, loadingHome]);
 
   const handleMyChildPage = (child) => {
     history.push(`/child/${child.id}`);
@@ -161,11 +191,11 @@ const Home = () => {
               sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
             >
               {children &&
-                children.map((myChild) => (
+                children.map((child) => (
                   <ChildCard
-                    key={myChild.id}
+                    key={child.id}
                     handleMyChildPage={handleMyChildPage}
-                    myChild={myChild}
+                    myChild={child}
                   />
                 ))}
             </Grid>

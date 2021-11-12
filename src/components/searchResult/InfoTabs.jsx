@@ -72,7 +72,6 @@ export default function InfoTabs() {
   const [father, setFather] = useState('');
   const [mother, setMother] = useState('');
   const [family, setFamily] = useState([]);
-  // const [familyId, setFamilyId] = useState(''); invite
   const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [adoption, setAdoption] = useState(false);
@@ -98,7 +97,7 @@ export default function InfoTabs() {
   // setFamily and userRole
   useEffect(() => {
     if (!theChild) {
-      dispatch(fetchRandomChild());
+      history.push('/main/search');
     }
     if (theChild) {
       if (theChild.userRole) {
@@ -171,7 +170,7 @@ export default function InfoTabs() {
 
   return (
     <>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', marginBottom: 4 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab
@@ -192,10 +191,10 @@ export default function InfoTabs() {
             />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={1}>
           <ChildFamily theChild={theChild} />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={0}>
           <Stack direction="column" spacing={1}>
             {/* Mother 1 */}
             {!isMother ? (

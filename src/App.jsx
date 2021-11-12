@@ -16,7 +16,6 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import SearchChild from './pages/child/SearchChild';
 import SearchResult from './pages/child/SearchResult';
-import Main from './pages/Main';
 import NeedPage from './pages/NeedPage';
 import MyChildPage from './pages/MyChildPage';
 import Settings from './components/main/profile/Settings';
@@ -45,11 +44,12 @@ const App = () => (
           <CssBaseline />
           <Container
             sx={{
-              margin: 0,
+              margin: 'auto',
               paddingLeft: '0px !important',
               paddingRight: '0px !important',
               paddingBottom: 10,
             }}
+            maxWidth="lg"
           >
             <React.StrictMode>
               <Switch>

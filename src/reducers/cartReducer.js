@@ -51,7 +51,7 @@ export const cartAddReducer = (state = { cartItems: [] }, action) => {
 export const cartBadgeReducer = (state = {}, action) => {
   switch (action.type) {
     case CART_BADGE_REQUEST:
-      return { loading: true, ...state };
+      return { ...state, loading: true };
     case CART_BADGE_SUCCESS:
       return {
         loading: false,

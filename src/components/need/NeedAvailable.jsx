@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     minHeight: '290px',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'round',
     backgroundImage:
       'linear-gradient(to bottom,rgba(255, 255, 255, 0) 80%, #f7f7f7 100%),url("/images/child/background.png")',
     margin: 0,
@@ -323,306 +323,304 @@ export default function NeedAvailable({ childId }) {
           <Grid item xs={12} className={classes.root}>
             <Back isOrange={false} to={`/child/${childId}`} />
             <Grid item xs={12}>
-              <>
-                <div style={{ minHeight: '350px' }} />
+              <div style={{ minHeight: '350px' }} />
+              <Avatar
+                className={classes.needAvatar}
+                alt={`${oneNeed.sayName}`}
+                src={oneNeed.imageUrl}
+              />
+              <Typography className={classes.needName} variant="subtitle1">
+                {oneNeed.name}
+              </Typography>
+              <Typography className={classes.sayName} variant="subtitle2">
+                {theChild.sayName}
+              </Typography>
 
-                <Avatar
-                  className={classes.needAvatar}
-                  alt={`${oneNeed.sayName}`}
-                  src={oneNeed.imageUrl}
-                />
-                <Typography className={classes.needName} variant="subtitle1">
-                  {oneNeed.name}
-                </Typography>
-                <Typography className={classes.sayName} variant="subtitle2">
-                  {theChild.sayName}
-                </Typography>
-
-                <Box>
-                  <Grid container className={classes.needDesc}>
-                    <Grid
-                      sx={{
-                        marginLeft: 3,
-                        marginRight: 3,
-                      }}
-                    >
-                      <NeedPageTop oneNeed={oneNeed} />
-                    </Grid>
-                    <Grid
-                      item
-                      container
-                      direction="row"
-                      sx={{ marginTop: 5, padding: 2 }}
-                    >
-                      <Grid item xs={3}>
-                        <Typography variant="subtitle2">
-                          {t('needPage.needInfo')}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={9}>
-                        <Divider sx={{ width: '95%', margin: 1 }} />
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <NeedPageProduct oneNeed={oneNeed} />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      container
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center"
-                      sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
-                    >
-                      <Grid item xs={3}>
-                        <Typography variant="subtitle2">
-                          {t('needPage.payTitle')}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={9}>
-                        <Divider sx={{ width: '95%' }} />
-                      </Grid>
-                    </Grid>
-                    <Grid item sx={{ margin: 1 }}>
-                      <Typography variant="body2" sx={{ margin: 1 }}>
-                        {t('needPage.payContent')}
+              <Box sx={{ width: '100%' }}>
+                <Grid container className={classes.needDesc}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      marginLeft: 3,
+                      marginRight: 3,
+                    }}
+                  >
+                    <NeedPageTop oneNeed={oneNeed} />
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    sx={{ marginTop: 5, padding: 2 }}
+                  >
+                    <Grid item xs={3}>
+                      <Typography variant="subtitle2">
+                        {t('needPage.needInfo')}
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                      <FormControl
-                        error={inputError}
-                        required
-                        component="fieldset"
-                        variant="standard"
-                        sx={{ width: '100%' }}
-                        onSubmit={
-                          !inCart && method === 'addToCart'
-                            ? (e) => handleAddToCart(e)
-                            : inCart
-                            ? (e) => handleContinueShop(e)
-                            : handlePayment
-                        }
-                      >
-                        <form
-                          style={{
-                            width: '100%',
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                          }}
-                        >
-                          <FormGroup>
-                            <RadioGroup
-                              name="controlled-radio-buttons-group"
-                              value={method}
-                              onChange={handleMethodChange}
-                            >
-                              <FormControlLabel
-                                value="addToCart"
-                                control={<Radio />}
-                                label={t('needPage.addToCart')}
-                              />
-                              <FormControlLabel
-                                disabled={inCart}
-                                value="payAll"
-                                control={<Radio />}
-                                label={t('needPage.payAll')}
-                              />
-                              <FormControlLabel
-                                disabled={paySomeDisable || inCart}
-                                value="paySome"
-                                control={<Radio />}
-                                label={t('needPage.paySome')}
-                              />
-                            </RadioGroup>
-                          </FormGroup>
-                          {method === 'paySome' ? (
-                            <>
-                              <OutlinedInput
-                                sx={{ direction: 'rtl' }}
-                                type="number"
-                                id="filled-someAmount"
-                                value={inputAmount}
-                                onChange={handlePaySomeInput}
-                                startAdornment={
-                                  <InputAdornment
-                                    color="primary"
-                                    position="start"
-                                  >
-                                    {t('currency.toman')}
-                                  </InputAdornment>
-                                }
-                              />
-                              {inputError && (
-                                <FormHelperText
-                                  id="outlined-paySome-helper-text"
-                                  sx={{ color: 'red' }}
-                                >
-                                  {t('needPage.payWarningModal', {
-                                    payLimit,
-                                  })}
-                                </FormHelperText>
-                              )}
-
-                              <Grid item xs={12}>
-                                <Divider
-                                  sx={{
-                                    width: '80%',
-                                    margin: 'auto',
-                                    marginTop: 3,
-                                    textAlign: 'center',
-                                  }}
-                                />
-                              </Grid>
-                              <Donation
-                                setPercentage={setPercentage}
-                                amount={amount}
-                              />
-                              <Wallet
-                                useCredit={useCredit}
-                                setUseCredit={setUseCredit}
-                              />
-                              <Grid sx={{ textAlign: 'center' }}>
-                                <LoadingButton
-                                  type="submit"
-                                  variant="contained"
-                                  color="primary"
-                                  disabled={isDisabled || bankMinDisable}
-                                  loading={isLoading}
-                                  sx={{ marginTop: 2, marginBottom: 4 }}
-                                >
-                                  {!isLoading && (
-                                    <>
-                                      {!isDisabled && !bankMinDisable && (
-                                        <Typography
-                                          component="span"
-                                          variant="subtitle1"
-                                          sx={{
-                                            paddingRight: 2,
-                                            color:
-                                              isDisabled || bankMinDisable
-                                                ? 'lightGrey'
-                                                : 'white',
-                                          }}
-                                        >
-                                          {finalAmount.toLocaleString() +
-                                            t('currency.toman')}
-                                        </Typography>
-                                      )}
-                                      <Typography
-                                        component="span"
-                                        variant="subtitle1"
-                                        sx={{
-                                          color:
-                                            isDisabled || bankMinDisable
-                                              ? 'lightGrey'
-                                              : 'white',
-                                        }}
-                                      >
-                                        {t('button.pay')}
-                                      </Typography>
-                                    </>
-                                  )}
-                                </LoadingButton>
-                              </Grid>
-                            </>
-                          ) : (
-                            <>
-                              {method === 'payAll' && (
-                                <>
-                                  <Grid item xs={12}>
-                                    <Divider
-                                      sx={{
-                                        width: '80%',
-                                        margin: 'auto',
-                                        textAlign: 'center',
-                                      }}
-                                    />
-                                  </Grid>
-                                  <Donation
-                                    setPercentage={setPercentage}
-                                    amount={amount}
-                                  />
-                                  <Wallet
-                                    useCredit={useCredit}
-                                    setUseCredit={setUseCredit}
-                                  />
-                                </>
-                              )}
-                              <Grid sx={{ textAlign: 'center' }}>
-                                <LoadingButton
-                                  type="submit"
-                                  variant="contained"
-                                  color="primary"
-                                  disabled={isDisabled}
-                                  loading={isLoading}
-                                  sx={{ marginTop: 1, marginBottom: 4 }}
-                                >
-                                  {!isLoading && (
-                                    <>
-                                      <Typography
-                                        component="span"
-                                        variant="subtitle1"
-                                        sx={{
-                                          paddingRight:
-                                            method === 'payAll' && 2,
-                                          color:
-                                            isDisabled || bankMinDisable
-                                              ? 'lightGrey'
-                                              : 'white',
-                                        }}
-                                      >
-                                        {method === 'payAll' &&
-                                          finalAmount &&
-                                          finalAmount.toLocaleString() +
-                                            t('currency.toman')}
-                                      </Typography>
-                                      <Typography
-                                        component="div"
-                                        variant="subtitle1"
-                                        sx={{
-                                          color:
-                                            isDisabled || bankMinDisable
-                                              ? 'lightGrey'
-                                              : 'white',
-                                          display: 'contents',
-                                        }}
-                                      >
-                                        {method === 'payAll' ? (
-                                          t('button.pay')
-                                        ) : (
-                                          <>
-                                            <span style={{ padding: 5 }}>
-                                              {!inCart
-                                                ? t('button.addToCart')
-                                                : t('button.continueShopping')}
-                                            </span>
-                                            <span>
-                                              {!inCart && (
-                                                <img
-                                                  src="/images/cartWhite.svg"
-                                                  alt="Cart Icon"
-                                                  style={{
-                                                    maxWidth: '22px',
-                                                  }}
-                                                />
-                                              )}
-                                            </span>
-                                          </>
-                                        )}
-                                      </Typography>
-                                    </>
-                                  )}
-                                </LoadingButton>
-                              </Grid>
-                            </>
-                          )}
-                        </form>
-                      </FormControl>
+                    <Grid item xs={9}>
+                      <Divider sx={{ width: '95%', margin: 1 }} />
                     </Grid>
                   </Grid>
-                </Box>
-              </>
+                  <Grid item xs={12}>
+                    <NeedPageProduct oneNeed={oneNeed} />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
+                  >
+                    <Grid item xs={3}>
+                      <Typography variant="subtitle2">
+                        {t('needPage.payTitle')}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <Divider sx={{ width: '95%' }} />
+                    </Grid>
+                  </Grid>
+                  <Grid item sx={{ margin: 1 }}>
+                    <Typography variant="body2" sx={{ margin: 1 }}>
+                      {t('needPage.payContent')}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl
+                      error={inputError}
+                      required
+                      component="fieldset"
+                      variant="standard"
+                      sx={{ width: '100%' }}
+                      onSubmit={
+                        !inCart && method === 'addToCart'
+                          ? (e) => handleAddToCart(e)
+                          : inCart
+                          ? (e) => handleContinueShop(e)
+                          : handlePayment
+                      }
+                    >
+                      <form
+                        style={{
+                          width: '100%',
+                          paddingLeft: 20,
+                          paddingRight: 20,
+                        }}
+                      >
+                        <FormGroup>
+                          <RadioGroup
+                            name="controlled-radio-buttons-group"
+                            value={method}
+                            onChange={handleMethodChange}
+                          >
+                            <FormControlLabel
+                              value="addToCart"
+                              control={<Radio />}
+                              label={t('needPage.addToCart')}
+                            />
+                            <FormControlLabel
+                              disabled={inCart}
+                              value="payAll"
+                              control={<Radio />}
+                              label={t('needPage.payAll')}
+                            />
+                            <FormControlLabel
+                              disabled={paySomeDisable || inCart}
+                              value="paySome"
+                              control={<Radio />}
+                              label={t('needPage.paySome')}
+                            />
+                          </RadioGroup>
+                        </FormGroup>
+                        {method === 'paySome' ? (
+                          <>
+                            <OutlinedInput
+                              sx={{ direction: 'rtl' }}
+                              type="number"
+                              id="filled-someAmount"
+                              value={inputAmount}
+                              onChange={handlePaySomeInput}
+                              startAdornment={
+                                <InputAdornment
+                                  color="primary"
+                                  position="start"
+                                >
+                                  {t('currency.toman')}
+                                </InputAdornment>
+                              }
+                            />
+                            {inputError && (
+                              <FormHelperText
+                                id="outlined-paySome-helper-text"
+                                sx={{ color: 'red' }}
+                              >
+                                {t('needPage.payWarningModal', {
+                                  payLimit,
+                                })}
+                              </FormHelperText>
+                            )}
+
+                            <Grid item xs={12}>
+                              <Divider
+                                sx={{
+                                  width: '80%',
+                                  margin: 'auto',
+                                  marginTop: 3,
+                                  textAlign: 'center',
+                                }}
+                              />
+                            </Grid>
+                            <Donation
+                              setPercentage={setPercentage}
+                              amount={amount}
+                            />
+                            <Wallet
+                              useCredit={useCredit}
+                              setUseCredit={setUseCredit}
+                            />
+                            <Grid sx={{ textAlign: 'center' }}>
+                              <LoadingButton
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isDisabled || bankMinDisable}
+                                loading={isLoading}
+                                sx={{ marginTop: 2, marginBottom: 4 }}
+                              >
+                                {!isLoading && (
+                                  <>
+                                    {!isDisabled && !bankMinDisable && (
+                                      <Typography
+                                        component="span"
+                                        variant="subtitle1"
+                                        sx={{
+                                          paddingRight: 2,
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                        }}
+                                      >
+                                        {finalAmount.toLocaleString() +
+                                          t('currency.toman')}
+                                      </Typography>
+                                    )}
+                                    <Typography
+                                      component="span"
+                                      variant="subtitle1"
+                                      sx={{
+                                        color:
+                                          isDisabled || bankMinDisable
+                                            ? 'lightGrey'
+                                            : 'white',
+                                      }}
+                                    >
+                                      {t('button.pay')}
+                                    </Typography>
+                                  </>
+                                )}
+                              </LoadingButton>
+                            </Grid>
+                          </>
+                        ) : (
+                          <>
+                            {method === 'payAll' && (
+                              <>
+                                <Grid item xs={12}>
+                                  <Divider
+                                    sx={{
+                                      width: '80%',
+                                      margin: 'auto',
+                                      textAlign: 'center',
+                                    }}
+                                  />
+                                </Grid>
+                                <Donation
+                                  setPercentage={setPercentage}
+                                  amount={amount}
+                                />
+                                <Wallet
+                                  useCredit={useCredit}
+                                  setUseCredit={setUseCredit}
+                                />
+                              </>
+                            )}
+                            <Grid sx={{ textAlign: 'center' }}>
+                              <LoadingButton
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isDisabled}
+                                loading={isLoading}
+                                sx={{ marginTop: 1, marginBottom: 4 }}
+                              >
+                                {!isLoading && (
+                                  <>
+                                    <Typography
+                                      component="span"
+                                      variant="subtitle1"
+                                      sx={{
+                                        paddingRight: method === 'payAll' && 2,
+                                        color:
+                                          isDisabled || bankMinDisable
+                                            ? 'lightGrey'
+                                            : 'white',
+                                      }}
+                                    >
+                                      {method === 'payAll' &&
+                                        finalAmount &&
+                                        finalAmount.toLocaleString() +
+                                          t('currency.toman')}
+                                    </Typography>
+                                    <Typography
+                                      component="div"
+                                      variant="subtitle1"
+                                      sx={{
+                                        color:
+                                          isDisabled || bankMinDisable
+                                            ? 'lightGrey'
+                                            : 'white',
+                                        display: 'contents',
+                                      }}
+                                    >
+                                      {method === 'payAll' ? (
+                                        t('button.pay')
+                                      ) : (
+                                        <>
+                                          <span style={{ padding: 5 }}>
+                                            {!inCart
+                                              ? t('button.addToCart')
+                                              : t('button.continueShopping')}
+                                          </span>
+                                          <span>
+                                            {!inCart && (
+                                              <img
+                                                src="/images/cartWhite.svg"
+                                                alt="Cart Icon"
+                                                style={{
+                                                  maxWidth: '22px',
+                                                }}
+                                              />
+                                            )}
+                                          </span>
+                                        </>
+                                      )}
+                                    </Typography>
+                                  </>
+                                )}
+                              </LoadingButton>
+                            </Grid>
+                          </>
+                        )}
+                      </form>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Box>
             </Grid>
           </Grid>
         )}

@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     right: 0,
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'round',
     backgroundImage:
       'linear-gradient(to bottom,rgba(255, 255, 255, 0) 60%, #f7f7f7 100%),url("/images/child/background.png")',
   },
@@ -80,16 +80,6 @@ const SearchResult = () => {
       history.push('/login?redirect=main/search');
     }
   }, [userInfo, successLogin, history]);
-
-  useEffect(() => {
-    if (!theChild) {
-      try {
-        dispatch(fetchRandomChild());
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [theChild, dispatch]);
 
   // child age
   const getAge = (DOB) => {

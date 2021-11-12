@@ -85,7 +85,7 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
                   display: 'flex',
                 }}
               >
-                <Typography component="span">
+                <Typography component="span" sx={{ marginTop: '2px' }}>
                   {myChild.done_needs_count}
                 </Typography>
                 <img
@@ -95,7 +95,7 @@ export default function ChildCard({ myChild, handleMyChildPage }) {
                 />
               </Grid>
               <Grid item sx={{ display: 'flex' }}>
-                <Typography component="span">
+                <Typography component="span" sx={{ marginTop: '2px' }}>
                   {myChild.spent_credit.toLocaleString() + t('currency.toman')}
                 </Typography>
                 <img
