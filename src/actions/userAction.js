@@ -29,6 +29,9 @@ import {
   USER_RESET_PASSWORD_SUCCESS,
   USER_RESET_PASSWORD_FAIL,
   USER_LOGOUT,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_SUCCESS,
 } from '../constants/main/userConstants';
 import { standalone } from '../standalone';
 
@@ -319,6 +322,45 @@ export const resetPassword = (password) => async (dispatch, getState) => {
   } catch (e) {
     dispatch({
       type: USER_RESET_PASSWORD_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const userEditProfile = (password) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+
+    const formData = new FormData();
+    formData.set('password', password);
+    formData.set('password', password);
+    formData.set('password', password);
+    formData.set('password', password);
+    formData.set('password', password);
+
+    const { data } = await publicApi.patch(
+      `/user/update/userId=me`,
+      formData,
+      config
+    );
+    dispatch({
+      type: USER_UPDATE_PROFILE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_UPDATE_PROFILE_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

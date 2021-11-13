@@ -1,48 +1,52 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import { Grid, Typography, IconButton, CircularProgress } from '@mui/material';
 import FormControl from '@material-ui/core/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
 import Message from '../../Message';
-import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
+import {
+  CHECK_CONTACT_RESET,
+  USER_RESET_PASSWORD_RESET,
+  USER_VERIFY_RESET,
+} from '../../../constants/main/userConstants';
+import { checkContactBeforeVerify } from '../../../actions/userAction';
+import validateEmail from '../../../inputsValidation/validateEmail';
+import validatePhone from '../../../inputsValidation/validatePhone';
 
 const ProfileEdit = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const [validateErr, setValidateErr] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageInput, setMessageInput] = useState('');
+  const [emailAuth, setEmailAuth] = useState(true);
+  const [phoneAuth, setPhoneAuth] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [dialCode, setDialCode] = useState('');
   const [email, setEmail] = useState('');
-
-  const userResetPass = useSelector((state) => state.userResetPass);
-  const {
-    loading: loadingReset,
-    error: errorReset,
-    success: successReset,
-  } = userResetPass;
+  const [userName, setUserName] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
+
+  const checkContact = useSelector((state) => state.checkContact);
+  const {
+    loading: loadingCheck,
+    error: errorCheck,
+    success: successCheck,
+  } = checkContact;
 
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
@@ -53,36 +57,117 @@ const ProfileEdit = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingReset) {
+    if (loadingCheck) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingReset]);
+  }, [loadingCheck]);
 
   // disable button
   useEffect(() => {
-    if (!successReset) {
+    if (!successCheck || successLogin) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [successReset]);
+  }, [successCheck, successLogin]);
 
+  //  clear error message when type
   useEffect(() => {
-    if (successReset) {
+    dispatch({ type: CHECK_CONTACT_RESET });
+    dispatch({ type: USER_VERIFY_RESET });
+  }, [email, phoneNumber]);
+
+  // Message input for 422 status error
+  useEffect(() => {
+    if (!emailAuth && email) {
+      setMessageInput('email');
+    }
+    if (!phoneAuth && phoneNumber) {
+      setMessageInput('phoneNumber');
+    }
+  }, [email, phoneNumber, phoneAuth, emailAuth]);
+
+  // email / phone user authenticated
+  useEffect(() => {
+    if (userInfo && userInfo.user.phoneNumber) {
+      setPhoneAuth(true);
+      setEmailAuth(false);
+    }
+    if (userInfo && userInfo.user.emailAddress) {
+      setEmailAuth(true);
+      setPhoneAuth(false);
+    }
+  }, [successLogin]);
+
+  // set the back-end data
+  useEffect(() => {
+    if (userInfo) {
+      setFirstName(userInfo.user.firstName);
+      setLastName(userInfo.user.lastName);
+      setPhoneNumber(userInfo.user.phoneNumber);
+      setEmail(userInfo.user.emailAddress);
+      setUserName(userInfo.user.userName);
+    }
+  }, [userInfo]);
+
+  // check phone every 1000 ms when typing
+  useEffect(() => {
+    if (!phoneAuth && phoneNumber) {
+      setValidateErr('');
+      const phoneResult = validatePhone(phoneNumber, countryCode);
+      if (phoneResult && phoneResult.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(phoneResult.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!phoneResult && phoneNumber) {
+        setValidateErr('');
+        const timeout = setTimeout(() => {
+          dispatch(
+            checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
+          );
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [phoneNumber, countryCode, phoneAuth]);
+
+  // check email every 1000 ms when typing
+  useEffect(() => {
+    if (!emailAuth && email) {
+      setValidateErr('');
+      const emailResult = validateEmail(email);
+      if (emailResult && emailResult.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(emailResult.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!emailResult && email) {
+        const timeout = setTimeout(() => {
+          dispatch(checkContactBeforeVerify('email', email));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [email, emailAuth]);
+
+  // Success
+  useEffect(() => {
+    if (successCheck) {
       history.push('main/profile/settings');
     }
-  }, [successReset]);
+  }, [successCheck]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
+  // first name changes
   const handleChangeFirstName = (e) => {
     setFirstName(e.target.value);
   };
 
+  // last name changes
   const handleChangeLastName = (e) => {
     setLastName(e.target.value);
   };
@@ -98,40 +183,18 @@ const ProfileEdit = () => {
     setCountryCode(data.countryCode);
     setDialCode(data.dialCode);
   };
+
+  // user name changes
+  const handleChangeUserName = (e) => {
+    setUserName(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <Link to="/main/profile">
-        <CloseIcon
-          sx={{
-            color: 'red',
-            top: 0,
-            right: 0,
-            width: '24px',
-            margin: '18px',
-            position: 'absolute',
-            zIndex: 10,
-          }}
-        />
-      </Link>
-      <Typography
-        variant="h6"
-        sx={{ padding: 2, fontWeight: 'lighter', textAlign: 'center' }}
-      >
-        {t('profile.editProfile.title')}
-      </Typography>
-      <Link to="#">
-        <DoneIcon
-          sx={{
-            color: 'green',
-            top: 0,
-            left: 0,
-            width: '24px',
-            margin: '18px',
-            position: 'absolute',
-            zIndex: 10,
-          }}
-        />
-      </Link>
       <Grid
         container
         direction="column"
@@ -139,49 +202,111 @@ const ProfileEdit = () => {
         alignItems="center"
         maxWidth
       >
-        <FormControl onSubmit={handleSubmit} variant="outlined">
-          <form>
+        <FormControl
+          onSubmit={handleSubmit}
+          variant="outlined"
+          sx={{ width: '100%' }}
+        >
+          <form style={{ width: '100%' }}>
             <Grid
               container
               direction="column"
               justifyContent="center"
               alignItems="center"
               item
-              sx={{ marginTop: 10 }}
+              spacing={2}
             >
-              <Grid item>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+              <Grid
+                item
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <IconButton>
+                  <CloseIcon
+                    sx={{
+                      color: 'red',
+                      top: 0,
+                      right: 0,
+                      width: '24px',
+                      margin: '18px',
+                      zIndex: 10,
+                    }}
+                  />
+                </IconButton>
+
+                <Typography
+                  variant="h6"
+                  sx={{
+                    padding: 2,
+                    fontWeight: 'lighter',
+                    textAlign: 'center',
+                  }}
+                >
+                  {t('profile.editProfile.title')}
+                </Typography>
+                <IconButton disabled={isDisabled} type="submit">
+                  {isLoading ? (
+                    <CircularProgress
+                      size={20}
+                      sx={{
+                        top: 0,
+                        left: 0,
+                        width: '24px',
+                        margin: '18px',
+                        zIndex: 10,
+                      }}
+                    />
+                  ) : (
+                    <DoneIcon
+                      sx={{
+                        color: isDisabled ? 'gray' : 'green',
+                        top: 0,
+                        left: 0,
+                        width: '24px',
+                        margin: '18px',
+                        zIndex: 10,
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Grid>
+              <Grid item sx={{ marginTop: 10 }}>
+                <FormControl sx={{ m: 1, width: '25ch' }}>
                   <OutlinedInput
                     id="outlined-adornment-firstName"
                     type="text"
                     value={firstName}
                     onChange={handleChangeFirstName}
-                    label="First Name"
                     startAdornment={
-                      <InputAdornment position="start">kg</InputAdornment>
+                      <InputAdornment position="start">
+                        {t('placeholder.name')}
+                      </InputAdornment>
                     }
                   />
-                  <InputLabel>{t('placeholder.name')}</InputLabel>
                 </FormControl>
               </Grid>
               <Grid item>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <FormControl sx={{ m: 1, width: '25ch' }}>
                   <OutlinedInput
                     id="outlined-adornment-lastName"
-                    type="password"
+                    type="text"
                     value={lastName}
                     onChange={handleChangeLastName}
-                    label="Last name"
                     startAdornment={
-                      <InputAdornment position="start">kg</InputAdornment>
+                      <InputAdornment position="start">
+                        {t('placeholder.lastName')}
+                      </InputAdornment>
                     }
                   />
-                  <InputLabel>{t('placeholder.lastName')}</InputLabel>
                 </FormControl>
               </Grid>
               <Grid item>
                 <PhoneInput
-                  style={{ direction: 'ltr' }}
+                  style={{
+                    direction: 'ltr',
+                    display: phoneAuth ? 'none' : null,
+                  }}
                   specialLabel={t('placeholder.phoneNumber')}
                   country="ir"
                   value={phoneNumber}
@@ -194,18 +319,50 @@ const ProfileEdit = () => {
                   countryCodeEditable={false}
                 />
               </Grid>
+              <Grid item>
+                <FormControl sx={{ m: 1, width: '25ch' }}>
+                  <OutlinedInput
+                    disabled={emailAuth}
+                    id="outlined-adornment-email"
+                    type="email"
+                    value={email}
+                    onChange={handleChangeEmail}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        {t('placeholder.email')}
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <FormControl sx={{ m: 1, width: '25ch' }}>
+                  <OutlinedInput
+                    id="outlined-adornment-userName"
+                    type="text"
+                    value={userName}
+                    onChange={handleChangeUserName}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        {t('placeholder.userName')}
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
           </form>
         </FormControl>
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
-          {errorReset && (
+          {(validateErr || errorCheck) && (
             <Message
-              sx={{ justifyContent: 'center' }}
-              icon={false}
-              backError={errorReset}
+              input={messageInput}
+              backError={errorCheck}
               variant="filled"
               severity="error"
-            />
+            >
+              {validateErr}
+            </Message>
           )}
         </Grid>
       </Grid>
