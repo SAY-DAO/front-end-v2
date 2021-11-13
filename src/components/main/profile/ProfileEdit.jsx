@@ -16,6 +16,7 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
+import PhoneInput from 'react-phone-input-2';
 import Message from '../../Message';
 import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
 
@@ -24,13 +25,14 @@ const ProfileEdit = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [validateErr, setValidateErr] = useState('');
-  const [passwordErr, setPasswordErr] = useState(false);
-  const [repeatPasswordErr, setRepeatPasswordErr] = useState(false);
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [dialCode, setDialCode] = useState('');
+  const [email, setEmail] = useState('');
 
   const userResetPass = useSelector((state) => state.userResetPass);
   const {
@@ -45,7 +47,7 @@ const ProfileEdit = () => {
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      history.push('/login?redirect=setpassword');
+      history.push('/login?redirect=main/profile/edit');
     }
   }, [userInfo, successLogin, history]);
 
@@ -60,25 +62,12 @@ const ProfileEdit = () => {
 
   // disable button
   useEffect(() => {
-    if (
-      passwordErr ||
-      repeatPasswordErr ||
-      errorReset ||
-      !password ||
-      !repeatPassword
-    ) {
+    if (!successReset) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [
-    password,
-    repeatPassword,
-    passwordErr,
-    repeatPasswordErr,
-    errorReset,
-    successReset,
-  ]);
+  }, [successReset]);
 
   useEffect(() => {
     if (successReset) {
@@ -88,37 +77,29 @@ const ProfileEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password) {
-      dispatch(ProfileEdit(password));
-    }
   };
 
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
+  const handleChangeFirstName = (e) => {
+    setFirstName(e.target.value);
   };
 
-  const handleChangeRepeatPassword = (event) => {
-    setRepeatPassword(event.target.value);
+  const handleChangeLastName = (e) => {
+    setLastName(e.target.value);
   };
 
-  //   const handleCancelEdit = () => {
-  //     if (!handleClickOverride) {
-  //       dispatch(changeVerifyStep(step));
-  //       dispatch({ type: USER_VERIFY_RESET });
-  //       history.push(to);
-  //     } else {
-  //       handleClickOverride();
-  //     }
-  //   };
+  // email changes
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
 
+  // phone changes
+  const handleChangePhoneNumber = (input, data, event, formattedValue) => {
+    setPhoneNumber(formattedValue);
+    setCountryCode(data.countryCode);
+    setDialCode(data.dialCode);
+  };
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
+    <>
       <Link to="/main/profile">
         <CloseIcon
           sx={{
@@ -132,7 +113,10 @@ const ProfileEdit = () => {
           }}
         />
       </Link>
-      <Typography variant="h6" sx={{ padding: 2, fontWeight: 'lighter' }}>
+      <Typography
+        variant="h6"
+        sx={{ padding: 2, fontWeight: 'lighter', textAlign: 'center' }}
+      >
         {t('profile.editProfile.title')}
       </Typography>
       <Link to="#">
@@ -148,82 +132,84 @@ const ProfileEdit = () => {
           }}
         />
       </Link>
-
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
-        item
-        sx={{ direction: 'ltr', marginTop: 10 }}
+        maxWidth
       >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
-            <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-                <OutlinedInput
-                  error={passwordErr}
-                  id="outlined-adornment-password"
-                  type="password"
-                  value={password}
-                  onChange={handleChangePassword}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {passwordErr ? (
-                        <CancelRoundedIcon sx={{ color: 'red' }} />
-                      ) : !passwordErr.result && password ? (
-                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                      ) : null}
-                    </InputAdornment>
-                  }
-                  label="password"
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              item
+              sx={{ marginTop: 10 }}
+            >
+              <Grid item>
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <OutlinedInput
+                    id="outlined-adornment-firstName"
+                    type="text"
+                    value={firstName}
+                    onChange={handleChangeFirstName}
+                    label="First Name"
+                    startAdornment={
+                      <InputAdornment position="start">kg</InputAdornment>
+                    }
+                  />
+                  <InputLabel>{t('placeholder.name')}</InputLabel>
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <OutlinedInput
+                    id="outlined-adornment-lastName"
+                    type="password"
+                    value={lastName}
+                    onChange={handleChangeLastName}
+                    label="Last name"
+                    startAdornment={
+                      <InputAdornment position="start">kg</InputAdornment>
+                    }
+                  />
+                  <InputLabel>{t('placeholder.lastName')}</InputLabel>
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <PhoneInput
+                  style={{ direction: 'ltr' }}
+                  specialLabel={t('placeholder.phoneNumber')}
+                  country="ir"
+                  value={phoneNumber}
+                  disableDropdown="false"
+                  onChange={handleChangePhoneNumber}
+                  inputProps={{
+                    name: 'phone',
+                  }}
+                  defaultMask="... ... .. ..."
+                  countryCodeEditable={false}
                 />
-                <InputLabel htmlFor="password">
-                  {t('placeholder.password')}
-                </InputLabel>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
-                <OutlinedInput
-                  error={repeatPasswordErr}
-                  id="outlined-adornment-repeatPassword"
-                  type="password"
-                  value={repeatPassword}
-                  onChange={handleChangeRepeatPassword}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {repeatPasswordErr ? (
-                        <CancelRoundedIcon sx={{ color: 'red' }} />
-                      ) : !repeatPasswordErr && repeatPassword ? (
-                        <CheckCircleRoundedIcon sx={{ color: 'green' }} />
-                      ) : null}
-                    </InputAdornment>
-                  }
-                  label="repeatPassword"
-                />
-                <InputLabel htmlFor="repeatPassword">
-                  {t('placeholder.repeatPassword')}
-                </InputLabel>
-              </FormControl>
+              </Grid>
             </Grid>
           </form>
         </FormControl>
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
-          {(errorReset || validateErr) && (
+          {errorReset && (
             <Message
               sx={{ justifyContent: 'center' }}
               icon={false}
               backError={errorReset}
               variant="filled"
               severity="error"
-            >
-              {validateErr}
-            </Message>
+            />
           )}
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

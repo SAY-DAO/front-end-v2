@@ -119,12 +119,11 @@ const Login = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
       >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+              <FormControl variant="outlined">
                 <OutlinedInput
                   id="outlined-adornment-userName"
                   type="text"
@@ -132,13 +131,11 @@ const Login = () => {
                   onChange={handleChangeUserName}
                   label="userName"
                 />
-                <InputLabel htmlFor="userName">
-                  {t('placeholder.userName')}
-                </InputLabel>
+                <InputLabel>{t('placeholder.userName')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+              <FormControl variant="outlined">
                 <OutlinedInput
                   id="outlined-adornment-password"
                   type="password"

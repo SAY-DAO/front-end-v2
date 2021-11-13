@@ -39,7 +39,7 @@ const cacheRtl = createCache({
 const App = () => (
   <CacheProvider value={cacheRtl}>
     <StylesProvider jss={jss}>
-      <div dir="rtl">
+      <div id="direction" dir="rtl">
         <BrowserRouter>
           <CssBaseline />
           <Container

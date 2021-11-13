@@ -30,10 +30,13 @@ export default function ChildFamily({ participants }) {
                       sx={{ minWidth: 220 }}
                     >
                       <Typography variant="subtitle2">
-                        {`${t(roles.roles[member.user_role])}`}
+                        {`${member.paid.toLocaleString()}`}
+                        {t('currency.toman')}
                       </Typography>
                       <Typography variant="subtitle2" style={{ right: 0 }}>
-                        {`${member.username}`}
+                        {member.id_family
+                          ? `${t(roles.roles[member.user_role])}`
+                          : `${t('family.roles.others')}`}
                       </Typography>
                     </Grid>
                   }

@@ -81,7 +81,7 @@
   },
   "placeholder": {
     "name": "First name",
-    "lastname": "Last name",
+    "lastName": "Last name",
     "userName": "Username",
     "password": "Password",
     "repeatPassword": "Re-enter password",

@@ -76,7 +76,7 @@
   },
   "placeholder": {
     "name": "نام",
-    "lastname": "نام خانوادگی",
+    "lastName": "نام خانوادگی",
     "userName": "نام کاربری",
     "password": "گذرواژه",
     "repeatPassword": "تکرار گذرواژه",

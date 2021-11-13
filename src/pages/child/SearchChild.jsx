@@ -89,7 +89,6 @@ const SearchChild = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
         spacing={1}
       >
         <Grid item xs={12}>

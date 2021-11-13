@@ -169,7 +169,7 @@ export default function ChildNeedCard({ theChild }) {
                   overflowX: 'scroll',
                   paddingLeft: 2,
                   paddingRight: 2,
-                  height: '40px',
+                  height: '50px',
                 }}
               >
                 <Stack direction="row" spacing={1}>

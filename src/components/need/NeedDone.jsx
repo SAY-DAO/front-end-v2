@@ -109,7 +109,7 @@ export default function NeedDone({ childId }) {
   return (
     <>
       <Grid container direction="column">
-        {oneNeed && theChild && (
+        {!isLoading && oneNeed && theChild && (
           <Grid item xs={12} className={classes.root}>
             <Back isOrange={false} to={`/child/${childId}`} />
             <Grid item xs={12}>

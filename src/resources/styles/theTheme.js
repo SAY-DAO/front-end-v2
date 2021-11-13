@@ -10,7 +10,7 @@ const theTheme = createTheme({
       xl: 1200,
     },
   },
-  direction: 'rtl',
+  // direction: 'rtl',
   fontFamily: 'iranyekan',
 
   palette: {

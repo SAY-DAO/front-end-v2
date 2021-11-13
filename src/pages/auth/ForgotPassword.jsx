@@ -138,7 +138,7 @@ const ForgotPassword = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr', marginTop: 10 }}
+        sx={{ marginTop: 10 }}
       >
         <Typography
           variant="h5"
@@ -149,6 +149,7 @@ const ForgotPassword = () => {
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <PhoneInput
+              style={{ direction: 'ltr' }}
               specialLabel={t('placeholder.phoneNumber')}
               country="ir"
               value={phoneNumber}

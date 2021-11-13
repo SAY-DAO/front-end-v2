@@ -247,12 +247,11 @@ const FinalForm = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'ltr' }}
       >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+              <FormControl variant="outlined">
                 <OutlinedInput
                   error={userNameErr}
                   id="outlined-adornment-userName"
@@ -276,7 +275,7 @@ const FinalForm = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+              <FormControl variant="outlined">
                 <OutlinedInput
                   error={passwordErr}
                   id="outlined-adornment-password"
@@ -314,7 +313,7 @@ const FinalForm = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 1 }}>
-              <FormControl variant="outlined" sx={{ direction: 'ltr' }}>
+              <FormControl variant="outlined">
                 <OutlinedInput
                   error={repeatPasswordErr}
                   id="outlined-adornment-repeatPassword"

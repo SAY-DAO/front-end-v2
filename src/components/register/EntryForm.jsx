@@ -226,11 +226,11 @@ const EntryForm = () => {
         justifyContent="center"
         alignItems="center"
         item
-        sx={{ direction: 'rtl' }}
       >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <PhoneInput
+              style={{ direction: 'ltr' }}
               specialLabel={t('placeholder.phoneNumber')}
               country="ir"
               value={phoneNumber}

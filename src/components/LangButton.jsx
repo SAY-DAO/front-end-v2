@@ -1,5 +1,5 @@
 import { Grid, Button, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import i18next from 'i18next';
 import { makeStyles } from '@material-ui/styles';
 
@@ -19,25 +19,44 @@ const useStyles = makeStyles({
 });
 
 const LangButton = () => {
-  let lang;
+  const [lang, setLang] = useState('');
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
-  const clickHandler = () => {
-    const currentLang = getLanguage();
+  const currentLang = getLanguage();
+  const elem = document.getElementById('direction');
+  const attr = elem.attributes;
 
-    switch (currentLang) {
+  useEffect(() => {
+    console.log(attr.dir.value);
+    if (!attr.dir.value && currentLang) {
+      if (lang === 'fa') {
+        attr.dir.value = 'rtl';
+      } else {
+        attr.dir.value = 'ltr';
+      }
+    }
+    i18next.changeLanguage(lang);
+  }, [lang]);
+
+  const clickHandler = async () => {
+    console.log(lang);
+    console.log(currentLang);
+    switch (await currentLang) {
       case 'en':
-        lang = 'fa';
+        setLang('fa');
+        attr.dir.value = 'rtl';
         break;
       case 'fa':
-        lang = 'en';
+        setLang('en');
+        attr.dir.value = 'ltr';
         break;
       default:
-        lang = 'fa';
+        setLang('fa');
+        attr.dir.value = 'rtl';
     }
-
-    i18next.changeLanguage(lang);
+    console.log(attr.dir);
   };
+
   const classes = useStyles();
   return (
     <Grid container>
