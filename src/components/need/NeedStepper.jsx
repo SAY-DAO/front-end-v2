@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
-import { Button, IconButton, StepLabel } from '@mui/material/';
+import { IconButton, StepLabel } from '@mui/material/';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -124,7 +124,6 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = React.useState(t('needStatus.0'));
-  const [completed, setCompleted] = React.useState({});
   const [chosen, setChosen] = useState(0);
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState([
@@ -135,7 +134,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   ]);
 
   const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
-  const { receipt, loading, error, success } = ChildOneNeedReceipt;
+  const { success } = ChildOneNeedReceipt;
 
   useEffect(() => {
     if (!success && oneNeed) {
@@ -151,7 +150,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     } else {
       setSteps([t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')]);
     }
-  }, [oneNeed, success, step]);
+  }, [oneNeed, success, step, t, dispatch]);
 
   // ---- PAYMENT-----
   // partial payment status = 1
@@ -198,7 +197,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
         {steps &&
           steps[0] &&
           steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
+            <Step key={label}>
               <StepLabel
                 color="inherit"
                 onClick={handleStep(index)}

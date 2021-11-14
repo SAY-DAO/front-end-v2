@@ -77,7 +77,7 @@ const ProfileEdit = () => {
   useEffect(() => {
     dispatch({ type: CHECK_CONTACT_RESET });
     dispatch({ type: USER_VERIFY_RESET });
-  }, [email, phoneNumber]);
+  }, [email, phoneNumber, dispatch]);
 
   // Message input for 422 status error
   useEffect(() => {
@@ -99,7 +99,7 @@ const ProfileEdit = () => {
       setEmailAuth(true);
       setPhoneAuth(false);
     }
-  }, [successLogin]);
+  }, [successLogin, userInfo]);
 
   // set the back-end data
   useEffect(() => {
@@ -133,7 +133,7 @@ const ProfileEdit = () => {
         return () => clearTimeout(timeout);
       }
     }
-  }, [phoneNumber, countryCode, phoneAuth]);
+  }, [phoneNumber, countryCode, phoneAuth, dispatch, t]);
 
   // check email every 1000 ms when typing
   useEffect(() => {
@@ -153,14 +153,14 @@ const ProfileEdit = () => {
         return () => clearTimeout(timeout);
       }
     }
-  }, [email, emailAuth]);
+  }, [email, emailAuth, dispatch, t]);
 
   // Success
   useEffect(() => {
     if (successCheck) {
       history.push('main/profile/settings');
     }
-  }, [successCheck]);
+  }, [successCheck, history]);
 
   // first name changes
   const handleChangeFirstName = (e) => {

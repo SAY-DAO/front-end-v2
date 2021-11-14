@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Link, Modal, Typography, Backdrop } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import exitQuote from '../../apis/quote.json';
 import { leaveFamily } from '../../actions/familyAction';
 
 const style = {
@@ -24,16 +22,6 @@ const style = {
 export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  const [redirect, setRedirect] = useState();
-
-  useEffect(() => {
-    setRedirect(
-      // eslint-disable-next-line no-restricted-globals
-      location.search.split('=')[2]
-    );
-  }, []);
 
   const [open, setOpen] = useState(false);
 

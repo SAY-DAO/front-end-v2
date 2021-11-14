@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { useHistory } from 'react-router';
-import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
@@ -62,7 +61,6 @@ const useStyles = makeStyles({
 const SearchResult = () => {
   const { t } = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);

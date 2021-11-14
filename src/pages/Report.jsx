@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Paper } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
-import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -28,11 +27,8 @@ const useStyles = makeStyles({
 export default function Report() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
   const { status } = useParams();
 
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState('');
   const [paragraph, setParagraph] = useState('');
   const [title, setTitle] = useState('');
@@ -51,32 +47,32 @@ export default function Report() {
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
   const {
     oneNeed,
-    loading: loadingOneNeed,
+    // loading: loadingOneNeed,
     error: errorOneNeed,
-    success: successOneNeed,
+    // success: successOneNeed,
   } = ChildOneNeed;
 
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
   }, [dispatch]);
 
-  // loading button
-  useEffect(() => {
-    if (loadingOneNeed) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingOneNeed]);
+  // // loading button
+  // useEffect(() => {
+  //   if (loadingOneNeed) {
+  //     setIsLoading(true);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [loadingOneNeed]);
 
-  // disable button
-  useEffect(() => {
-    if (successOneNeed) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [successOneNeed]);
+  // // disable button
+  // useEffect(() => {
+  //   if (successOneNeed) {
+  //     setIsDisabled(false);
+  //   } else {
+  //     setIsDisabled(true);
+  //   }
+  // }, [successOneNeed]);
 
   // name of need and child
   useEffect(() => {
@@ -262,6 +258,8 @@ export default function Report() {
     dkc,
     showDkc,
     socialWorkerGeneratedCode,
+    t,
+    needName,
   ]);
 
   // const renderButton = () => {

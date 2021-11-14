@@ -20,7 +20,7 @@ export default function Wallet({ useCredit, setUseCredit }) {
     if (!checked) {
       setUseCredit(0);
     }
-  }, [userInfo, checked]);
+  }, [userInfo, checked, useCredit]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);

@@ -36,7 +36,7 @@ const LangButton = () => {
       }
     }
     i18next.changeLanguage(lang);
-  }, [lang]);
+  }, [lang, attr, currentLang]);
 
   const clickHandler = async () => {
     console.log(lang);

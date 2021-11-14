@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  Typography,
-  CircularProgress,
-  Box,
-  Divider,
-} from '@mui/material';
+import { Grid, Typography, CircularProgress, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
-import Weather from 'simple-react-weather';
+// import Weather from 'simple-react-weather';
 import { useHistory } from 'react-router';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -24,7 +18,6 @@ import { fetchMyHome } from '../actions/main/homeAction';
 import Back from '../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
 import LeaveFamilyModal from '../components/modals/LeaveFamilyModal ';
-import roles from '../apis/roles';
 
 const useStyles = makeStyles({
   root: {
@@ -107,14 +100,14 @@ const MyChildPage = () => {
     if (successLeft && children && children[0]) {
       history.push('/main/home');
     }
-  }, [successLeft, dispatch]);
+  }, [successLeft, dispatch, children, history]);
 
   // we get the home date ahead to get our children's ids
   useEffect(() => {
     if (!successHome) {
       dispatch(fetchMyHome());
     }
-  }, [successHome]);
+  }, [successHome, dispatch]);
 
   useEffect(() => {
     if (children) {
@@ -122,7 +115,7 @@ const MyChildPage = () => {
         myChildrenIdList.push(children[i].id);
       }
     }
-  }, [children]);
+  });
 
   // when the child is not adopted by user and route to the child's page
   useEffect(() => {
@@ -173,7 +166,7 @@ const MyChildPage = () => {
       {loadingMyChild ? (
         <CircularProgress />
       ) : (
-        <Grid container direction="column">
+        <Grid container direction="column" sx={{}}>
           <Grid item xs={12} className={classes.root}>
             <Back isOrange={false} to="/main/home" />
             <div>

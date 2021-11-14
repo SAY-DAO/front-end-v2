@@ -66,7 +66,7 @@ export default function AdoptionModal({
     if (successJoin && successHome) {
       history.push('/main/home');
     }
-  }, [successJoin, successHome]);
+  }, [successJoin, successHome, dispatch, history]);
 
   // modal contents when selecting a role
   useEffect(() => {

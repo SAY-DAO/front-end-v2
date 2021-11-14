@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, Avatar, Chip, Stack } from '@mui/material';
-import { useHistory } from 'react-router';
+import { Typography, Grid, Chip, Stack } from '@mui/material';
 import roles from '../../apis/roles';
 
 export default function ChildFamily({ participants }) {

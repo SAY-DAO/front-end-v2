@@ -93,7 +93,7 @@ export default function ChildNeedCard({ theChild }) {
     return () => {
       setNeedsArray([[], [], [], [], [], []]);
     };
-  }, [success]);
+  }, [success, theNeeds]);
 
   // To set the first available category to the active one
   useEffect(() => {

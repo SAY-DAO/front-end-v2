@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ const SearchChild = () => {
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/search');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, dispatch]);
 
   // loading button
   useEffect(() => {
@@ -73,14 +73,20 @@ const SearchChild = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      maxWidth
+      sx={{
+        margin: 'auto',
+        paddingLeft: '10px !important',
+        paddingRight: '10px !important',
+        paddingBottom: 10,
+      }}
+      maxWidth="lg"
     >
       <Grid item xs={12}>
         <img
           width="100%"
           src="/images/child/searchChild.png"
           className={classes.root}
-          alt="register"
+          alt="searchChild"
         />
       </Grid>
       <Grid
