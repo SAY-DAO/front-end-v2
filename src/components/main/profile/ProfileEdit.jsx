@@ -1,5 +1,12 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, IconButton, CircularProgress } from '@mui/material';
+import {
+  Grid,
+  Avatar,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
 import FormControl from '@material-ui/core/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +16,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
+import ImageUploading from 'react-images-uploading';
+import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Message from '../../Message';
 import {
   CHECK_CONTACT_RESET,
@@ -30,6 +40,7 @@ const ProfileEdit = () => {
   const [messageInput, setMessageInput] = useState('');
   const [emailAuth, setEmailAuth] = useState(true);
   const [phoneAuth, setPhoneAuth] = useState(true);
+  const [imageUrl, setImageUrl] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -55,7 +66,7 @@ const ProfileEdit = () => {
     }
   }, [userInfo, successLogin, history]);
 
-  // loading button
+  // loading IconButton
   useEffect(() => {
     if (loadingCheck) {
       setIsLoading(true);
@@ -64,7 +75,7 @@ const ProfileEdit = () => {
     }
   }, [loadingCheck]);
 
-  // disable button
+  // disable IconButton
   useEffect(() => {
     if (!successCheck || successLogin) {
       setIsDisabled(true);
@@ -109,6 +120,7 @@ const ProfileEdit = () => {
       setPhoneNumber(userInfo.user.phoneNumber);
       setEmail(userInfo.user.emailAddress);
       setUserName(userInfo.user.userName);
+      setImageUrl(userInfo.user.avatarUrl);
     }
   }, [userInfo]);
 
@@ -193,180 +205,282 @@ const ProfileEdit = () => {
     e.preventDefault();
   };
 
+  const [images, setImages] = React.useState([]);
+  const maxNumber = 69;
+
+  const onChange = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
+
   return (
-    <>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        maxWidth
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      maxWidth
+    >
+      <FormControl
+        onSubmit={handleSubmit}
+        variant="outlined"
+        sx={{ width: '100%' }}
       >
-        <FormControl
-          onSubmit={handleSubmit}
-          variant="outlined"
-          sx={{ width: '100%' }}
-        >
-          <form style={{ width: '100%' }}>
+        <form style={{ width: '100%' }}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            item
+            spacing={2}
+          >
             <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
               item
-              spacing={2}
+              container
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Grid
-                item
-                container
-                justifyContent="space-between"
-                alignItems="center"
+              <IconButton onClick={() => history.push('/main/profile')}>
+                <CloseIcon
+                  sx={{
+                    color: 'red',
+                    top: 0,
+                    right: 0,
+                    width: '24px',
+                    margin: '18px',
+                    zIndex: 10,
+                  }}
+                />
+              </IconButton>
+
+              <Typography
+                variant="h6"
+                sx={{
+                  padding: 2,
+                  fontWeight: 'lighter',
+                  textAlign: 'center',
+                }}
               >
-                <IconButton>
-                  <CloseIcon
+                {t('profile.editProfile.title')}
+              </Typography>
+              <IconButton disabled={isDisabled} type="submit">
+                {isLoading ? (
+                  <CircularProgress
+                    size={20}
                     sx={{
-                      color: 'red',
                       top: 0,
-                      right: 0,
+                      left: 0,
                       width: '24px',
                       margin: '18px',
                       zIndex: 10,
                     }}
                   />
-                </IconButton>
-
-                <Typography
-                  variant="h6"
-                  sx={{
-                    padding: 2,
-                    fontWeight: 'lighter',
-                    textAlign: 'center',
-                  }}
-                >
-                  {t('profile.editProfile.title')}
-                </Typography>
-                <IconButton disabled={isDisabled} type="submit">
-                  {isLoading ? (
-                    <CircularProgress
-                      size={20}
-                      sx={{
-                        top: 0,
-                        left: 0,
-                        width: '24px',
-                        margin: '18px',
-                        zIndex: 10,
-                      }}
-                    />
-                  ) : (
-                    <DoneIcon
-                      sx={{
-                        color: isDisabled ? 'gray' : 'green',
-                        top: 0,
-                        left: 0,
-                        width: '24px',
-                        margin: '18px',
-                        zIndex: 10,
-                      }}
-                    />
-                  )}
-                </IconButton>
-              </Grid>
-              <Grid item sx={{ marginTop: 10 }}>
-                <FormControl sx={{ m: 1, width: '25ch' }}>
-                  <OutlinedInput
-                    id="outlined-adornment-firstName"
-                    type="text"
-                    value={firstName}
-                    onChange={handleChangeFirstName}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        {t('placeholder.name')}
-                      </InputAdornment>
-                    }
+                ) : (
+                  <DoneIcon
+                    sx={{
+                      color: isDisabled ? 'gray' : 'green',
+                      top: 0,
+                      left: 0,
+                      width: '24px',
+                      margin: '18px',
+                      zIndex: 10,
+                    }}
                   />
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, width: '25ch' }}>
-                  <OutlinedInput
-                    id="outlined-adornment-lastName"
-                    type="text"
-                    value={lastName}
-                    onChange={handleChangeLastName}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        {t('placeholder.lastName')}
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <PhoneInput
-                  style={{
-                    direction: 'ltr',
-                    display: phoneAuth ? 'none' : null,
-                  }}
-                  specialLabel={t('placeholder.phoneNumber')}
-                  country="ir"
-                  value={phoneNumber}
-                  disableDropdown="false"
-                  onChange={handleChangePhoneNumber}
-                  inputProps={{
-                    name: 'phone',
-                  }}
-                  defaultMask="... ... .. ..."
-                  countryCodeEditable={false}
-                />
-              </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, width: '25ch' }}>
-                  <OutlinedInput
-                    disabled={emailAuth}
-                    id="outlined-adornment-email"
-                    type="email"
-                    value={email}
-                    onChange={handleChangeEmail}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        {t('placeholder.email')}
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <FormControl sx={{ m: 1, width: '25ch' }}>
-                  <OutlinedInput
-                    id="outlined-adornment-userName"
-                    type="text"
-                    value={userName}
-                    onChange={handleChangeUserName}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        {t('placeholder.userName')}
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
+                )}
+              </IconButton>
             </Grid>
-          </form>
-        </FormControl>
-        <Grid item xs={12} sx={{ textAlign: 'center' }}>
-          {(validateErr || errorCheck) && (
-            <Message
-              input={messageInput}
-              backError={errorCheck}
-              variant="filled"
-              severity="error"
-            >
-              {validateErr}
-            </Message>
-          )}
-        </Grid>
+            <Grid item>
+              <ImageUploading
+                multiple
+                value={images}
+                onChange={onChange}
+                maxNumber={maxNumber}
+                dataURLKey="data_url"
+                style={{
+                  width: 140,
+                  height: 140,
+                  border: '1px solid gray',
+                  borderRadius: '100%',
+                }}
+              >
+                {({
+                  imageList,
+                  onImageUpload,
+                  onImageRemoveAll,
+                  onImageUpdate,
+                  onImageRemove,
+                  isDragging,
+                  dragProps,
+                }) => (
+                  // write your building UI
+                  <div className="upload__image-wrapper">
+                    {imageList[0] ? (
+                      <Grid
+                        sx={{
+                          position: 'relative',
+                        }}
+                      >
+                        {imageList.map((image, index) => (
+                          <div key={index} className="image-item">
+                            <Avatar
+                              alt="user photo"
+                              sx={{ width: 140, height: 140 }}
+                              src={image.data_url}
+                            />
+                          </div>
+                        ))}
+                        <IconButton
+                          sx={{
+                            width: '100%',
+                            color: isDragging ? 'red' : undefined,
+                            position: 'absolute',
+                            bottom: '-20px',
+                          }}
+                          onClick={onImageRemoveAll}
+                        >
+                          <HighlightOffIcon
+                            fontSize="large"
+                            sx={{
+                              borderRadius: '20%',
+                              backgroundColor: 'white',
+                              color: 'red',
+                            }}
+                          />
+                        </IconButton>
+                      </Grid>
+                    ) : (
+                      <Grid
+                        sx={{
+                          position: 'relative',
+                        }}
+                      >
+                        <Avatar
+                          alt="user photo"
+                          sx={{ width: 140, height: 140 }}
+                          src={imageUrl}
+                        />
+                        <IconButton
+                          sx={{
+                            width: '100%',
+                            color: isDragging ? 'red' : undefined,
+                            position: 'absolute',
+                            bottom: '-20px',
+                          }}
+                          onClick={onImageUpload}
+                          {...dragProps}
+                        >
+                          <CameraAltOutlinedIcon
+                            color="primary"
+                            fontSize="large"
+                            sx={{
+                              borderRadius: '20%',
+                              backgroundColor: 'white',
+                            }}
+                          />
+                        </IconButton>
+                      </Grid>
+                    )}
+                  </div>
+                )}
+              </ImageUploading>
+            </Grid>
+            <Grid item>
+              <FormControl sx={{ m: 1, width: '25ch' }}>
+                <OutlinedInput
+                  id="outlined-adornment-firstName"
+                  type="text"
+                  value={firstName}
+                  onChange={handleChangeFirstName}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      {t('placeholder.name')}
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl sx={{ m: 1, width: '25ch' }}>
+                <OutlinedInput
+                  id="outlined-adornment-lastName"
+                  type="text"
+                  value={lastName}
+                  onChange={handleChangeLastName}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      {t('placeholder.lastName')}
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <PhoneInput
+                style={{
+                  direction: 'ltr',
+                  display: phoneAuth ? 'none' : null,
+                }}
+                specialLabel={t('placeholder.phoneNumber')}
+                country="ir"
+                value={phoneNumber}
+                disableDropdown="false"
+                onChange={handleChangePhoneNumber}
+                inputProps={{
+                  name: 'phone',
+                }}
+                defaultMask="... ... .. ..."
+                countryCodeEditable={false}
+              />
+            </Grid>
+            <Grid item>
+              <FormControl sx={{ m: 1, width: '25ch' }}>
+                <OutlinedInput
+                  disabled={emailAuth}
+                  id="outlined-adornment-email"
+                  type="email"
+                  value={email}
+                  onChange={handleChangeEmail}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      {t('placeholder.email')}
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <FormControl sx={{ m: 1, width: '25ch' }}>
+                <OutlinedInput
+                  id="outlined-adornment-userName"
+                  type="text"
+                  value={userName}
+                  onChange={handleChangeUserName}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      {t('placeholder.userName')}
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </form>
+      </FormControl>
+      <Grid item xs={12} sx={{ textAlign: 'center' }}>
+        {(validateErr || errorCheck) && (
+          <Message
+            input={messageInput}
+            backError={errorCheck}
+            variant="filled"
+            severity="error"
+          >
+            {validateErr}
+          </Message>
+        )}
       </Grid>
-    </>
+    </Grid>
   );
 };
 
