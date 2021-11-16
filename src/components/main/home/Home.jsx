@@ -34,6 +34,7 @@ const useStyles = makeStyles(() => ({
   userAvatar: {
     width: 80,
     height: 80,
+    zIndex: 10,
   },
   childAvatar: {
     width: 55,
@@ -91,6 +92,8 @@ const Home = () => {
   const { success: successNeeds } = childNeeds;
 
   useEffect(() => {
+    dispatch(fetchMyHome());
+
     if (!userInfo) {
       history.push('/login?redirect=main/home');
     }

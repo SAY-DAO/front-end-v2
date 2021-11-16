@@ -13,6 +13,7 @@ import NeedStepper from './NeedStepper';
 import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
 import NeedParticipants from './NeedParticipants';
 import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
+import { fetchChildNeeds } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -104,6 +105,21 @@ export default function NeedDone({ childId }) {
       setIsDisabled(true);
     }
   }, [successOneNeed]);
+
+  // When payment is done we land here with an interval from NeedAvailable.jsx
+  useEffect(() => {
+    dispatch(fetchChildNeeds(theChild.id));
+
+    // clear all intervals
+    // Get a reference to the last interval + 1
+    const intervalId = window.setInterval(function () {},
+    Number.MAX_SAFE_INTEGER);
+
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < intervalId; i += 1) {
+      window.clearInterval(i);
+    }
+  });
 
   const classes = useStyles();
   return (

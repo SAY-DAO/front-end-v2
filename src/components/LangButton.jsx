@@ -27,7 +27,6 @@ const LangButton = () => {
   const attr = elem.attributes;
 
   useEffect(() => {
-    console.log(attr.dir.value);
     if (!attr.dir.value && currentLang) {
       if (lang === 'fa') {
         attr.dir.value = 'rtl';
@@ -39,8 +38,6 @@ const LangButton = () => {
   }, [lang, attr, currentLang]);
 
   const clickHandler = async () => {
-    console.log(lang);
-    console.log(currentLang);
     switch (await currentLang) {
       case 'en':
         setLang('fa');

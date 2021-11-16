@@ -26,17 +26,7 @@ const useStyles = makeStyles(() => ({
   userAvatar: {
     width: 80,
     height: 80,
-  },
-  childAvatar: {
-    width: 55,
-    height: 55,
-    backgroundColor: '#FDE1C1',
-    margin: 'auto',
-  },
-  theCard: {
-    marginBottom: 10,
-    padding: 10,
-    minHeight: '70px',
+    zIndex: 10,
   },
   icons: {
     width: 14,
@@ -104,7 +94,7 @@ const Profile = () => {
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${userInfo.user.firstName} ${userInfo.user.lastName}`}</Typography>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link to="/main/profile/edit">
                     <Typography
                       component="span"
@@ -115,7 +105,7 @@ const Profile = () => {
                       {t('profile.editProfile.title')}
                     </Typography>
                   </Link>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton

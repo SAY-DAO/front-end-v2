@@ -122,10 +122,10 @@ const MyChildPage = () => {
     dispatch({ type: CHILD_ONE_NEED_RESET });
     if (myChildrenIdList && !myChildrenIdList.includes(Number(childId))) {
       history.push('/main/home');
-    } else if (!successMyChild && myChildrenIdList.includes(Number(childId))) {
+    } else {
       dispatch(fetchMyChildById(childId));
     }
-  }, [successMyChild, childId, dispatch, myChildrenIdList, history]);
+  }, [childId, myChildrenIdList, history]);
 
   // weather display
   useEffect(() => {
@@ -167,9 +167,9 @@ const MyChildPage = () => {
         <CircularProgress />
       ) : (
         <Grid container direction="column" sx={{}}>
-          <Grid item xs={12} className={classes.root}>
-            <Back isOrange={false} to="/main/home" />
-            <div>
+          <Back isOrange={false} to="/main/home" />
+          <Grid item container xs={12} className={classes.root}>
+            <Grid item xs={12} sx={{ direction: 'ltr' }}>
               <IconButton
                 aria-label="more"
                 sx={{ color: 'white' }}
@@ -216,7 +216,7 @@ const MyChildPage = () => {
                   </Typography>
                 </MenuItem>
               </Menu>
-            </div>
+            </Grid>
             <Grid item xs={12}>
               {theChild && theChild.sayName && (
                 <>

@@ -31,6 +31,7 @@ import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
+import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -156,10 +157,22 @@ export default function NeedAvailable({ childId }) {
       );
       // Set a timeout for the above interval (10 Minutes)
       return () => {
+        dispatch({ type: SHAPARAK_PAYMENT_RESET });
         setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
       };
     }
-  }, [result]);
+    if (!successShaparakGate) {
+      // clear all intervals
+      // Get a reference to the last interval + 1
+      const intervalId = window.setInterval(function () {},
+      Number.MAX_SAFE_INTEGER);
+
+      // Clear any timeout/interval up to that id
+      for (let i = 1; i < intervalId; i += 1) {
+        window.clearInterval(i);
+      }
+    }
+  }, [result, successShaparakGate]);
 
   // loading button
   useEffect(() => {
@@ -206,7 +219,7 @@ export default function NeedAvailable({ childId }) {
   // do not allow paySome method when cost < 20000
   useEffect(() => {
     if (oneNeed) {
-      if (oneNeed && (oneNeed.type === 0 || oneNeed.cost >= 20000)) {
+      if (oneNeed && oneNeed.cost >= 20000) {
         setPaySomeDisable(false);
       } else {
         setPaySomeDisable(true);
@@ -241,7 +254,6 @@ export default function NeedAvailable({ childId }) {
   // set final amount
   useEffect(() => {
     if (amount) {
-      console.log(amount, donation, useCredit);
       setFinalAmount(amount + donation - useCredit);
     }
   }, [amount, inputAmount, donation, useCredit, method]);
@@ -309,8 +321,8 @@ export default function NeedAvailable({ childId }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    console.log(amount, parseInt(payLimit), unpayable);
     if (amount > parseInt(payLimit) && !unpayable) {
+      console.log(method, oneNeed.id, amount, donation, useCredit);
       dispatch(makePayment(method, oneNeed.id, amount, donation, useCredit));
     }
   };

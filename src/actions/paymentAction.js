@@ -23,11 +23,15 @@ export const makePayment =
 
       const formData = new FormData();
       formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
-      formData.append('userId', userInfo && userInfo.user.id);
-      formData.append('needId', needId);
+      formData.append('need_id', needId);
       formData.append('amount', amount);
       formData.append('donate', donation);
-      formData.append('useCredit', useCredit);
+      formData.append('use_credit', parseInt(useCredit));
+
+      // back-end use this for test
+      if (useCredit > 0) {
+        formData.append('useCredit', true);
+      }
 
       const { data } = await publicApi.post(`/payment`, formData, config);
       dispatch({

@@ -9,18 +9,27 @@ export default function Wallet({ useCredit, setUseCredit }) {
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
+    if (userInfo.user.credit > 0) {
+      setIsDisable(false);
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
     if (userInfo) {
-      setUseCredit(userInfo.user.credit);
+      if (!checked) {
+        setUseCredit(0);
+      }
+      if (checked) {
+        setUseCredit(userInfo.user.credit);
+      }
     }
-    if (!checked) {
-      setUseCredit(0);
-    }
-  }, [userInfo, checked, useCredit]);
+  }, [userInfo, checked, useCredit, setUseCredit]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -53,7 +62,7 @@ export default function Wallet({ useCredit, setUseCredit }) {
       </Grid>
       <Grid item xs={3}>
         <Switch
-          disabled={true && useCredit === 0}
+          disabled={isDisable}
           checked={checked}
           onChange={handleChange}
           inputProps={{ 'aria-label': 'controlled' }}

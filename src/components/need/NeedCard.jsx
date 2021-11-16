@@ -102,9 +102,12 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
             alignItems="flex-end"
             xs={3}
           >
-            <Grid item xs container direction="column" sx={{ display: 'flex' }}>
-              <Grid item>
-                <AvatarGroup max={3}>
+            <Grid item container direction="column" sx={{ display: 'flex' }}>
+              <Grid item xs>
+                <AvatarGroup
+                  max={3}
+                  sx={{ margin: 'auto', direction: 'ltr !important' }}
+                >
                   {need.participants.map((user, index) => (
                     <Avatar
                       key={index}

@@ -121,6 +121,7 @@ export default function ChildNeedCard({ theChild }) {
   }, [needsArray, category]);
 
   const handleNeedCardClick = (needId, childId) => {
+    dispatch(fetchChildNeeds(theChild.id));
     history.push(`/child/${childId}/needs/${needId}`);
   };
 
