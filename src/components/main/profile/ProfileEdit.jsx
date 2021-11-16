@@ -238,7 +238,7 @@ const ProfileEdit = () => {
       userEditProfile(
         phoneAuth,
         emailAuth,
-        avatarUrl,
+        // avatarUrl,
         firstName,
         lastName,
         phoneNumber,
@@ -335,99 +335,36 @@ const ProfileEdit = () => {
               </IconButton>
             </Grid>
             <Grid item>
-              <ImageUploading
-                multiple
-                value={images}
-                onChange={onChange}
-                maxNumber={maxNumber}
-                dataURLKey="data_url"
-                style={{
-                  width: 140,
-                  height: 140,
-                  border: '1px solid gray',
-                  borderRadius: '100%',
-                }}
-              >
-                {({
-                  imageList,
-                  onImageUpload,
-                  onImageRemoveAll,
-                  onImageUpdate,
-                  onImageRemove,
-                  isDragging,
-                  dragProps,
-                }) => (
-                  // write your building UI
-                  <div className="upload__image-wrapper">
-                    {imageList[0] ? (
-                      <Grid
-                        sx={{
-                          position: 'relative',
-                        }}
-                      >
-                        {imageList.map((image, index) => (
-                          <div key={index} className="image-item">
-                            <Avatar
-                              alt="user photo"
-                              sx={{ width: 140, height: 140 }}
-                              src={image.data_url}
-                            />
-                          </div>
-                        ))}
-                        <IconButton
-                          sx={{
-                            width: '100%',
-                            color: isDragging ? 'red' : undefined,
-                            position: 'absolute',
-                            bottom: '-20px',
-                          }}
-                          onClick={onImageRemoveAll}
-                        >
-                          <HighlightOffIcon
-                            fontSize="large"
-                            sx={{
-                              borderRadius: '20%',
-                              backgroundColor: 'white',
-                              color: 'red',
-                            }}
-                          />
-                        </IconButton>
-                      </Grid>
-                    ) : (
-                      <Grid
-                        sx={{
-                          position: 'relative',
-                        }}
-                      >
-                        <Avatar
-                          alt="user photo"
-                          sx={{ width: 140, height: 140 }}
-                          src={imageUrl}
-                        />
-                        <IconButton
-                          sx={{
-                            width: '100%',
-                            color: isDragging ? 'red' : undefined,
-                            position: 'absolute',
-                            bottom: '-20px',
-                          }}
-                          onClick={onImageUpload}
-                          {...dragProps}
-                        >
-                          <CameraAltOutlinedIcon
-                            color="primary"
-                            fontSize="large"
-                            sx={{
-                              borderRadius: '20%',
-                              backgroundColor: 'white',
-                            }}
-                          />
-                        </IconButton>
-                      </Grid>
-                    )}
-                  </div>
-                )}
-              </ImageUploading>
+              <div className="upload__image-wrapper">
+                <Grid
+                  sx={{
+                    position: 'relative',
+                  }}
+                >
+                  <Avatar
+                    alt="user photo"
+                    sx={{ width: 140, height: 140 }}
+                    src={imageUrl}
+                  />
+                  <IconButton
+                    sx={{
+                      width: '100%',
+                      position: 'absolute',
+                      bottom: '-20px',
+                    }}
+                    onClick={() => history.push('/main/profile/upload')}
+                  >
+                    <CameraAltOutlinedIcon
+                      color="primary"
+                      fontSize="large"
+                      sx={{
+                        borderRadius: '20%',
+                        backgroundColor: 'white',
+                      }}
+                    />
+                  </IconButton>
+                </Grid>
+              </div>
             </Grid>
             <Grid item>
               <FormControl sx={{ m: 1, width: '25ch' }}>

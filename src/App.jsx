@@ -23,6 +23,7 @@ import Profile from './components/main/profile/Profile';
 import Cart from './components/main/Cart';
 import Home from './components/main/home/Home';
 import ProfileEdit from './components/main/profile/ProfileEdit';
+import ProfileUpload from './components/main/profile/ProfileUpload';
 import Report from './pages/Report';
 
 // Configure JSS for RTL
@@ -74,6 +75,11 @@ const App = () => (
                   exact
                   path="/main/profile/edit"
                   component={ProfileEdit}
+                />
+                <Route
+                  exact
+                  path="/main/profile/upload"
+                  component={ProfileUpload}
                 />
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
