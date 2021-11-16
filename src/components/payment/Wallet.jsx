@@ -40,7 +40,7 @@ export default function Wallet({ useCredit, setUseCredit }) {
       direction="row"
       justifyContent="space-between"
       alignItems="flex-end"
-      sx={{ marginTop: 2 }}
+      sx={{ marginTop: 2, marginLeft: 3, marginRight: 3 }}
     >
       <Grid item xs container direction="column">
         <Grid item sx={{ marginBottom: 1 }}>

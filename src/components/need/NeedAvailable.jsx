@@ -101,7 +101,7 @@ export default function NeedAvailable({ childId }) {
   const [percentage, setPercentage] = useState(0);
   const [donation, setDonation] = useState(0);
   const [useCredit, setUseCredit] = useState(0);
-  const [finalAmount, setFinalAmount] = useState();
+  const [finalAmount, setFinalAmount] = useState(0);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -134,7 +134,7 @@ export default function NeedAvailable({ childId }) {
   useEffect(() => {
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/cart');
-    } else if (oneNeed.isDone) {
+    } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
       history.push(`/child/${theChild.id}`);
     }
   }, [userInfo, successLogin, history, oneNeed, theChild]);
@@ -236,7 +236,7 @@ export default function NeedAvailable({ childId }) {
       setInputError(false);
       setBankMinDisable(false);
     }
-  }, [inputAmount]);
+  }, [inputAmount, amount]);
 
   // payLimit
   useEffect(() => {
@@ -251,13 +251,6 @@ export default function NeedAvailable({ childId }) {
     setDonation((percentage * amount) / 100);
   }, [percentage, amount]);
 
-  // set final amount
-  useEffect(() => {
-    if (amount) {
-      setFinalAmount(amount + donation - useCredit);
-    }
-  }, [amount, inputAmount, donation, useCredit, method]);
-
   // cart
   useEffect(() => {
     if (cartItems[0] && oneNeed) {
@@ -270,28 +263,16 @@ export default function NeedAvailable({ childId }) {
     }
   }, [cartItems, oneNeed]);
 
-  // set remaining
-  useEffect(() => {
-    if (method === 'payAll') {
-      setAmount(oneNeed.cost - oneNeed.paid);
-    } else if (method === 'paySome') {
-      if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
-        setAmount(oneNeed.cost - oneNeed.paid);
-      } else {
-        setAmount(Number(inputAmount));
-      }
-    } else if (method === 'addToCart') {
-      setAmount(oneNeed.cost - oneNeed.paid);
-    }
-  }, [method, oneNeed, inputAmount]);
-
-  // radio button / setAmount
+  // radio button / set method
   const handleMethodChange = (event) => {
     if (event.target.value === 'payAll') {
+      setUseCredit(0);
       setMethod('payAll');
     } else if (event.target.value === 'paySome') {
+      setUseCredit(0);
       setMethod('paySome');
     } else if (event.target.value === 'addToCart') {
+      setUseCredit(0);
       setMethod('addToCart');
     }
     console.log(amount);
@@ -306,6 +287,36 @@ export default function NeedAvailable({ childId }) {
       setAmount(Number(e.target.value));
     }
   };
+
+  // set amount
+  useEffect(() => {
+    if (method === 'payAll') {
+      setInputAmount(1000); // to reset switching from pay some
+      setAmount(oneNeed.cost - oneNeed.paid);
+      setFinalAmount(oneNeed.cost - oneNeed.paid + donation - useCredit); // for the button
+    } else if (method === 'paySome') {
+      const remaining = oneNeed.cost - oneNeed.paid - Number(inputAmount);
+      if (remaining !== 0 && remaining < 1000) {
+        setAmount(oneNeed.cost - oneNeed.paid - 1000);
+        setFinalAmount(
+          oneNeed.cost - oneNeed.paid - 1000 + donation - useCredit
+        ); // for the button
+      } else if (remaining > 1000 && remaining >= Number(inputAmount)) {
+        setAmount(Number(inputAmount));
+        setFinalAmount(Number(inputAmount) + donation - useCredit); // for the button
+      } else if (remaining < Number(inputAmount)) {
+        setAmount(oneNeed.cost - oneNeed.paid);
+        setFinalAmount(Number(inputAmount) + donation - useCredit); // for the button
+      }
+      if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
+        setAmount(oneNeed.cost - oneNeed.paid);
+      } else {
+        setAmount(Number(inputAmount));
+      }
+    } else if (method === 'addToCart') {
+      setAmount(oneNeed.cost - oneNeed.paid);
+    }
+  }, [method, oneNeed, inputAmount, useCredit, donation]);
 
   // addToCard
   const handleAddToCart = (e) => {
@@ -451,7 +462,6 @@ export default function NeedAvailable({ childId }) {
                         {method === 'paySome' ? (
                           <>
                             <OutlinedInput
-                              sx={{ direction: 'rtl' }}
                               type="number"
                               id="filled-someAmount"
                               value={inputAmount}
@@ -511,6 +521,7 @@ export default function NeedAvailable({ childId }) {
                                         variant="subtitle1"
                                         sx={{
                                           paddingRight: 2,
+                                          paddingLeft: 2,
                                           color:
                                             isDisabled || bankMinDisable
                                               ? 'lightGrey'
@@ -577,6 +588,7 @@ export default function NeedAvailable({ childId }) {
                                       variant="subtitle1"
                                       sx={{
                                         paddingRight: method === 'payAll' && 2,
+                                        paddingLeft: 2,
                                         color:
                                           isDisabled || bankMinDisable
                                             ? 'lightGrey'

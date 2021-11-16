@@ -24,34 +24,34 @@ const LangButton = () => {
 
   const currentLang = getLanguage();
   const elem = document.getElementById('direction');
-  const attr = elem.attributes;
+  const attrs = elem.attributes;
 
   useEffect(() => {
-    if (!attr.dir.value && currentLang) {
+    console.log(attrs);
+    if (!attrs.dir.value && currentLang) {
       if (lang === 'fa') {
-        attr.dir.value = 'rtl';
+        elem.setAttribute('dir', 'rtl');
       } else {
-        attr.dir.value = 'ltr';
+        elem.setAttribute('dir', 'ltr');
       }
     }
     i18next.changeLanguage(lang);
-  }, [lang, attr, currentLang]);
+  }, [lang, attrs, currentLang, elem]);
 
   const clickHandler = async () => {
     switch (await currentLang) {
       case 'en':
         setLang('fa');
-        attr.dir.value = 'rtl';
+        attrs.dir.value = 'rtl';
         break;
       case 'fa':
         setLang('en');
-        attr.dir.value = 'ltr';
+        attrs.dir.value = 'ltr';
         break;
       default:
         setLang('fa');
-        attr.dir.value = 'rtl';
+        attrs.dir.value = 'rtl';
     }
-    console.log(attr.dir);
   };
 
   const classes = useStyles();

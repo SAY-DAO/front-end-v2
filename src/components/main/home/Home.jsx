@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import i18next from 'i18next';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { fetchMyHome } from '../../../actions/main/homeAction';
 import {
@@ -91,6 +92,26 @@ const Home = () => {
   const childNeeds = useSelector((state) => state.childNeeds);
   const { success: successNeeds } = childNeeds;
 
+  // check for language on browser reload dir="" needs to change according to lang
+  useEffect(() => {
+    const getLanguage = () =>
+      i18next.language || window.localStorage.i18nextLng;
+
+    if (document.getElementById('direction')) {
+      const currentLang = getLanguage();
+      const elem = document.getElementById('direction');
+
+      if (currentLang) {
+        if (currentLang === 'fa') {
+          elem.setAttribute('dir', 'rtl');
+        } else {
+          elem.setAttribute('dir', 'ltr');
+        }
+      }
+    }
+  }, []);
+
+  // login
   useEffect(() => {
     dispatch(fetchMyHome());
 

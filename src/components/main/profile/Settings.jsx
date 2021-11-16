@@ -48,25 +48,6 @@ export default function Settings() {
     }
   }, [cartItems]);
 
-  const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
-
-  const clickHandler = () => {
-    let lang;
-    const currentLang = getLanguage();
-
-    switch (currentLang) {
-      case 'en':
-        lang = 'fa';
-        break;
-      case 'fa':
-        lang = 'en';
-        break;
-      default:
-        lang = 'fa';
-    }
-
-    i18next.changeLanguage(lang);
-  };
   const classes = useStyles();
 
   return (
@@ -98,7 +79,7 @@ export default function Settings() {
           alignItems="center"
         >
           <Grid item xs={2}>
-            <IconButton onClick={clickHandler}>
+            <IconButton>
               <img
                 src="/images/icons/language.svg"
                 alt="language icon"
@@ -108,7 +89,7 @@ export default function Settings() {
           </Grid>
 
           <Grid item xs={8}>
-            <IconButton onClick={clickHandler}>
+            <IconButton>
               <Typography component="span" variant="subtitle2">
                 {t('setting.language.title')}
               </Typography>

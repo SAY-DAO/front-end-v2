@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import i18next from 'i18next';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,6 +10,25 @@ import { USER_VERIFY_RESET } from '../constants/main/userConstants';
 const Back = ({ step, to, isOrange, handleClickOverride }) => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  // check for language on browser reload dir="" needs to change according to lang
+  useEffect(() => {
+    const getLanguage = () =>
+      i18next.language || window.localStorage.i18nextLng;
+
+    if (document.getElementById('direction')) {
+      const currentLang = getLanguage();
+      const elem = document.getElementById('direction');
+
+      if (currentLang) {
+        if (currentLang === 'fa') {
+          elem.setAttribute('dir', 'rtl');
+        } else {
+          elem.setAttribute('dir', 'ltr');
+        }
+      }
+    }
+  }, []);
 
   const clickHandle = () => {
     if (!handleClickOverride) {
