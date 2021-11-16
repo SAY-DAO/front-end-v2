@@ -327,41 +327,65 @@ export const resetPassword = (password) => async (dispatch, getState) => {
   }
 };
 
-export const userEditProfile = (password) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+export const userEditProfile =
+  (
+    phoneAuth,
+    emailAuth,
+    avatarUrl,
+    firstName,
+    lastName,
+    phoneNumber,
+    email,
+    userName
+  ) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: userInfo && userInfo.accessToken,
-      },
-    };
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: userInfo && userInfo.accessToken,
+        },
+      };
 
-    const formData = new FormData();
-    formData.set('password', password);
-    formData.set('password', password);
-    formData.set('password', password);
-    formData.set('password', password);
-    formData.set('password', password);
+      const formData = new FormData();
+      if (userInfo.user.avatarUrl !== avatarUrl) {
+        formData.append('avatarUrl', avatarUrl);
+      }
+      if (userInfo.user.firstName !== firstName) {
+        formData.append('firstName', firstName);
+      }
+      if (userInfo.user.lastName !== lastName) {
+        formData.append('lastName', lastName);
+      }
+      if (phoneAuth && userInfo.user.phoneNumber !== phoneNumber) {
+        formData.append('phoneNumber', phoneNumber);
+      }
+      if (emailAuth && userInfo.user.emailAddress !== email) {
+        formData.append('email', email);
+      }
+      if (userInfo.user.userName !== userName) {
+        formData.append('userName', userName);
+      }
+      const { data } = await publicApi.patch(
+        `/user/update/userId=me`,
+        formData,
+        config
+      );
 
-    const { data } = await publicApi.patch(
-      `/user/update/userId=me`,
-      formData,
-      config
-    );
-    dispatch({
-      type: USER_UPDATE_PROFILE_SUCCESS,
-      payload: data,
-    });
-  } catch (e) {
-    dispatch({
-      type: USER_UPDATE_PROFILE_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
-    });
-  }
-};
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data,
+      });
+    } catch (e) {
+      dispatch({
+        type: USER_UPDATE_PROFILE_FAIL,
+        payload: e.response && e.response.status ? e.response : e.message,
+      });
+    }
+  };

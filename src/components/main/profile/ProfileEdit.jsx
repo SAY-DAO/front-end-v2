@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import {
@@ -16,18 +17,23 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
-import ImageUploading from 'react-images-uploading';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Message from '../../Message';
 import {
   CHECK_CONTACT_RESET,
+  CHECK_USERNAME_RESET,
   USER_RESET_PASSWORD_RESET,
   USER_VERIFY_RESET,
 } from '../../../constants/main/userConstants';
-import { checkContactBeforeVerify } from '../../../actions/userAction';
+import {
+  checkContactBeforeVerify,
+  checkUserNameBeforeVerify,
+  userEditProfile,
+} from '../../../actions/userAction';
 import validateEmail from '../../../inputsValidation/validateEmail';
 import validatePhone from '../../../inputsValidation/validatePhone';
+import validateUsername from '../../../inputsValidation/validateUsername';
 
 const ProfileEdit = () => {
   const { t } = useTranslation();
@@ -35,6 +41,7 @@ const ProfileEdit = () => {
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
+  const [userNameErr, setUserNameErr] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [messageInput, setMessageInput] = useState('');
@@ -167,6 +174,30 @@ const ProfileEdit = () => {
     }
   }, [email, emailAuth, dispatch, t]);
 
+  // check userName every 1000 ms when typing
+  useEffect(() => {
+    setValidateErr('');
+    setUserNameErr(true);
+    dispatch({ type: CHECK_USERNAME_RESET });
+    if (userName) {
+      const result = validateUsername(userName);
+      if (result && result.errorMessage) {
+        const timeout = setTimeout(() => {
+          setValidateErr(t(result.errorMessage));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+      if (!result.errorMessage && userName) {
+        const timeout = setTimeout(() => {
+          setUserNameErr(false);
+          dispatch(checkUserNameBeforeVerify(userName));
+        }, 1000);
+        return () => clearTimeout(timeout);
+      }
+    }
+    setUserNameErr(false);
+  }, [userName]);
+
   // Success
   useEffect(() => {
     if (successCheck) {
@@ -203,6 +234,18 @@ const ProfileEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(
+      userEditProfile(
+        phoneAuth,
+        emailAuth,
+        avatarUrl,
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        userName
+      )
+    );
   };
 
   const [images, setImages] = React.useState([]);
@@ -453,6 +496,7 @@ const ProfileEdit = () => {
             <Grid item>
               <FormControl sx={{ m: 1, width: '25ch' }}>
                 <OutlinedInput
+                  error={userNameErr}
                   id="outlined-adornment-userName"
                   type="text"
                   value={userName}
