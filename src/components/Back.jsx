@@ -28,7 +28,7 @@ const Back = ({ step, to, isOrange, handleClickOverride }) => {
         }
       }
     }
-  }, []);
+  }, [i18next.language || window.localStorage.i18nextLng]);
 
   const clickHandle = () => {
     if (!handleClickOverride) {
