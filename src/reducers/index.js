@@ -9,6 +9,7 @@ import {
   userRegisterReducer,
   userForgotPasswordReducer,
   userResetPasswordReducer,
+  userDetailsReducer,
 } from './userReducer';
 import {
   childRandomSearchReducer,
@@ -34,6 +35,7 @@ export default combineReducers({
   userVerifyCode: codeVerifyReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer,
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
   childRandomSearch: childRandomSearchReducer,

@@ -32,6 +32,7 @@ import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
 import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
+import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -102,9 +103,13 @@ export default function NeedAvailable({ childId }) {
   const [donation, setDonation] = useState(0);
   const [useCredit, setUseCredit] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
+  const [onlyWallet, setOnlyWallet] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { success: successUserDetails } = userDetails;
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -132,8 +137,11 @@ export default function NeedAvailable({ childId }) {
   } = ChildOneNeed;
 
   useEffect(() => {
-    if (!userInfo && !successLogin) {
-      history.push('/login?redirect=main/cart');
+    dispatch(fetchUserDetails());
+    if ((!userInfo && !successLogin) || !successUserDetails) {
+      history.push(
+        `/login?redirect=/child/${theChild.id}}/needs/${oneNeed.id}`
+      );
     } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
       history.push(`/child/${theChild.id}`);
     }
@@ -144,6 +152,7 @@ export default function NeedAvailable({ childId }) {
     if (successShaparakGate) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
+        // only wallet -status 299
         if (result.status === 299) {
           windowReference.document.write(result.response);
         } else {
@@ -211,6 +220,7 @@ export default function NeedAvailable({ childId }) {
 
   // if Unpayable true can't pay
   useEffect(() => {
+    setInputAmount(oneNeed.cost - oneNeed.paid); // when choosing pay some the initial input is set
     if (oneNeed) {
       setUnpayable(oneNeed.unpayable);
     }
@@ -227,16 +237,16 @@ export default function NeedAvailable({ childId }) {
     }
   }, [oneNeed]);
 
-  // bank minimum
+  // setError /bank minimum
   useEffect(() => {
-    if (amount < 1000) {
+    if (amount + useCredit < 1000) {
       setBankMinDisable(true);
       setInputError(true);
     } else {
       setInputError(false);
       setBankMinDisable(false);
     }
-  }, [inputAmount, amount]);
+  }, [inputAmount, amount, useCredit]);
 
   // payLimit
   useEffect(() => {
@@ -263,6 +273,77 @@ export default function NeedAvailable({ childId }) {
     }
   }, [cartItems, oneNeed]);
 
+  // set amount
+  useEffect(() => {
+    if (method === 'payAll') {
+      setInputAmount(oneNeed.cost - oneNeed.paid); // to reset switching from pay some
+      setAmount(oneNeed.cost - oneNeed.paid);
+      if (oneNeed.cost - oneNeed.paid >= useCredit) {
+        setFinalAmount(oneNeed.cost - oneNeed.paid + donation - useCredit); // for the button
+      } else if (oneNeed.cost - oneNeed.paid < useCredit) {
+        setFinalAmount(oneNeed.cost - oneNeed.paid + donation); // for the button
+      }
+    } else if (method === 'paySome') {
+      const remaining = oneNeed.cost - oneNeed.paid - Number(inputAmount);
+      console.log(`remaining${remaining}`);
+      // remaining = 999
+      if (remaining < 1000) {
+        console.log('1st');
+        console.log(amount, useCredit, donation);
+        setAmount(oneNeed.cost - oneNeed.paid - useCredit + donation);
+        setFinalAmount(oneNeed.cost - oneNeed.paid - useCredit + donation); // for the button
+      }
+      if (remaining >= 1000 && inputAmount - useCredit >= 1000) {
+        console.log('2nd');
+        console.log(amount, useCredit, donation);
+        setAmount(inputAmount);
+        setFinalAmount(inputAmount - useCredit); // for the button
+      }
+      // if (remaining >= 1000 && inputAmount - useCredit < 1000) {
+      //   console.log('3rd');
+      //   console.log(amount, useCredit, donation);
+      //   setAmount(0);
+      //   setFinalAmount(useCredit); // for the button
+      // }
+      // else if (
+      //     amount + useCredit >= 1000 &&
+      //     remaining >= Number(inputAmount)
+      //   ) {
+      //     console.log('2nd');
+      //     setAmount(Number(inputAmount));
+      //     setFinalAmount(Number(inputAmount) + donation + useCredit); // for the button
+      //   } else if (remaining === 0) {
+      //     console.log('3rd');
+      //     setAmount(oneNeed.cost - oneNeed.paid);
+      //     setFinalAmount(Number(inputAmount) + donation - useCredit); // for the button
+      //   }
+      //   if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
+      //     setAmount(oneNeed.cost - oneNeed.paid);
+      //   } else {
+      //     setAmount(Number(inputAmount));
+      //   }
+    } else if (method === 'addToCart') {
+      setAmount(oneNeed.cost - oneNeed.paid);
+    }
+  }, [method, oneNeed, inputAmount, useCredit, donation]);
+
+  // only wallet
+  useEffect(() => {
+    if (useCredit > 0 && inputAmount - useCredit < 1000) {
+      setOnlyWallet(true);
+      setAmount(useCredit);
+    } else {
+      setOnlyWallet(false);
+    }
+  }, [inputAmount, useCredit]);
+
+  // input
+  useEffect(() => {
+    if (inputAmount - useCredit >= oneNeed.cost - oneNeed.paid - 1000) {
+      setInputAmount(oneNeed.cost - oneNeed.paid);
+    }
+  }, [inputAmount, useCredit, oneNeed]);
+
   // radio button / set method
   const handleMethodChange = (event) => {
     if (event.target.value === 'payAll') {
@@ -275,48 +356,12 @@ export default function NeedAvailable({ childId }) {
       setUseCredit(0);
       setMethod('addToCart');
     }
-    console.log(amount);
   };
 
   // paySome input
   const handlePaySomeInput = (e) => {
     setInputAmount(Number(e.target.value));
-    if (Number(e.target.value) > oneNeed.cost - oneNeed.paid) {
-      setInputAmount(oneNeed.cost - oneNeed.paid);
-    } else {
-      setAmount(Number(e.target.value));
-    }
   };
-
-  // set amount
-  useEffect(() => {
-    if (method === 'payAll') {
-      setInputAmount(1000); // to reset switching from pay some
-      setAmount(oneNeed.cost - oneNeed.paid);
-      setFinalAmount(oneNeed.cost - oneNeed.paid + donation - useCredit); // for the button
-    } else if (method === 'paySome') {
-      const remaining = oneNeed.cost - oneNeed.paid - Number(inputAmount);
-      if (remaining !== 0 && remaining < 1000) {
-        setAmount(oneNeed.cost - oneNeed.paid - 1000);
-        setFinalAmount(
-          oneNeed.cost - oneNeed.paid - 1000 + donation - useCredit
-        ); // for the button
-      } else if (remaining > 1000 && remaining >= Number(inputAmount)) {
-        setAmount(Number(inputAmount));
-        setFinalAmount(Number(inputAmount) + donation - useCredit); // for the button
-      } else if (remaining < Number(inputAmount)) {
-        setAmount(oneNeed.cost - oneNeed.paid);
-        setFinalAmount(Number(inputAmount) + donation - useCredit); // for the button
-      }
-      if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
-        setAmount(oneNeed.cost - oneNeed.paid);
-      } else {
-        setAmount(Number(inputAmount));
-      }
-    } else if (method === 'addToCart') {
-      setAmount(oneNeed.cost - oneNeed.paid);
-    }
-  }, [method, oneNeed, inputAmount, useCredit, donation]);
 
   // addToCard
   const handleAddToCart = (e) => {
@@ -478,7 +523,7 @@ export default function NeedAvailable({ childId }) {
                             {inputError && (
                               <FormHelperText
                                 id="outlined-paySome-helper-text"
-                                sx={{ color: 'red' }}
+                                sx={{ color: 'red', textAlign: 'center' }}
                               >
                                 {t('needPage.payWarningModal', {
                                   payLimit,
@@ -528,8 +573,10 @@ export default function NeedAvailable({ childId }) {
                                               : 'white',
                                         }}
                                       >
-                                        {finalAmount.toLocaleString() +
-                                          t('currency.toman')}
+                                        {!onlyWallet
+                                          ? finalAmount.toLocaleString() +
+                                            t('currency.toman')
+                                          : t('button.payFromCredit')}
                                       </Typography>
                                     )}
                                     <Typography
@@ -542,7 +589,7 @@ export default function NeedAvailable({ childId }) {
                                             : 'white',
                                       }}
                                     >
-                                      {t('button.pay')}
+                                      {!onlyWallet ? t('button.pay') : null}
                                     </Typography>
                                   </>
                                 )}

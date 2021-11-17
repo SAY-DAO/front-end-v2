@@ -32,6 +32,9 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAIL,
 } from '../constants/main/userConstants';
 import { standalone } from '../standalone';
 
@@ -288,6 +291,38 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
     dispatch({
       type: USER_FORGOT_PASSWORD_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchUserDetails = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DETAILS_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+
+    const { data } = await publicApi.get(`user/userId=me`, config);
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_DETAILS_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
     });
   }
 };

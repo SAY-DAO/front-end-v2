@@ -77,6 +77,9 @@ const Home = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { theUser, success: successUserDetails } = userDetails;
+
   const leftFamily = useSelector((state) => state.leftFamily);
   const { success: successLeft } = leftFamily;
 
