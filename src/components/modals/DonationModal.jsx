@@ -4,6 +4,7 @@ import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const style = {
   position: 'absolute',
@@ -18,12 +19,19 @@ const style = {
   p: 4,
 };
 
-export default function DonationModal() {
+export default function DonationModal({ modal, setModal }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setModal(false);
+  };
+  useEffect(() => {
+    if (modal) {
+      handleOpen();
+    }
+  }, [modal]);
 
   return (
     <div>
@@ -59,7 +67,7 @@ export default function DonationModal() {
                   variant="body2"
                   component="h2"
                 >
-                  {t('needPage.donationModal')}
+                  {t('needPage.donateModal')}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -78,3 +86,8 @@ export default function DonationModal() {
     </div>
   );
 }
+
+DonationModal.propTypes = {
+  modal: PropTypes.bool.isRequired,
+  setModal: PropTypes.func,
+};

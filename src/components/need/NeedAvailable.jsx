@@ -251,97 +251,60 @@ export default function NeedAvailable({ childId }) {
   // set amount
   useEffect(() => {
     console.log(`Method ${method}`);
-    setInputAmount(oneNeed.cost - oneNeed.paid); // to reset switching from pay some
+    setOnlyWallet(false);
 
     if (method === 'payAll') {
+      const remaining = oneNeed.cost - oneNeed.paid;
+      setAmount(remaining);
       if (isCredit) {
-        if (userCredit < oneNeed.cost - oneNeed.paid + donation) {
+        if (userCredit < remaining + donation) {
           if (
-            oneNeed.cost - oneNeed.paid + donation - userCredit > 0 &&
-            oneNeed.cost - oneNeed.paid + donation - userCredit < 1000
+            remaining + donation - userCredit > 0 &&
+            remaining + donation - userCredit < 1000
           ) {
-            setAmount(1000);
             setFinalAmount(1000); // for the button
           }
-          if (oneNeed.cost - oneNeed.paid + donation - userCredit >= 1000) {
-            setAmount(oneNeed.cost - oneNeed.paid);
-            setFinalAmount(oneNeed.cost - oneNeed.paid + donation - userCredit); // for the button
+          if (remaining + donation - userCredit >= 1000) {
+            setFinalAmount(remaining + donation - userCredit); // for the button
           }
-        } else if (userCredit >= oneNeed.cost - oneNeed.paid + donation) {
+        } else if (userCredit >= remaining + donation) {
           setFinalAmount(0); // for the button
+          setOnlyWallet(true);
         }
       } else if (!isCredit) {
-        setAmount(oneNeed.cost - oneNeed.paid);
-        setFinalAmount(oneNeed.cost - oneNeed.paid + donation); // for the button
+        setFinalAmount(remaining + donation); // for the button
       }
-      // else if (method === 'paySome') {
-      //   const remaining = oneNeed.cost - oneNeed.paid - Number(inputAmount);
-      //   console.log(`remaining${remaining}`);
-
-      //   if (Number(inputAmount) < 1000 && userCredit === 0) {
-      //     console.log('Top');
-      //     console.log(amount, userCredit, donation);
-      //     setAmount(1000 + donation);
-      //     setFinalAmount(1000 + donation); // for the button
-      //   }
-      //   if (remaining < 1000) {
-      //     console.log('1st');
-      //     console.log(amount, userCredit, donation);
-      //     setAmount(1000);
-      //     setFinalAmount(oneNeed.cost - oneNeed.paid - userCredit + donation); // for the button
-      //   }
-      //   if (remaining >= 1000 && inputAmount - userCredit >= 1000) {
-      //     console.log('2nd');
-      //     console.log(amount, userCredit, donation);
-      //     setAmount(inputAmount);
-      //     setFinalAmount(inputAmount - userCredit); // for the button
-      //   }
-      // if (remaining >= 1000 && inputAmount - userCredit < 1000) {
-      //   console.log('3rd');
-      //   console.log(amount, userCredit, donation);
-      //   setAmount(0);
-      //   setFinalAmount(userCredit); // for the button
-      // }
-      // else if (
-      //     amount + userCredit >= 1000 &&
-      //     remaining >= Number(inputAmount)
-      //   ) {
-      //     console.log('2nd');
-      //     setAmount(Number(inputAmount));
-      //     setFinalAmount(Number(inputAmount) + donation + userCredit); // for the button
-      //   } else if (remaining === 0) {
-      //     console.log('3rd');
-      //     setAmount(oneNeed.cost - oneNeed.paid);
-      //     setFinalAmount(Number(inputAmount) + donation - userCredit); // for the button
-      //   }
-      //   if (Number(inputAmount) > oneNeed.cost - oneNeed.paid) {
-      //     setAmount(oneNeed.cost - oneNeed.paid);
-      //   } else {
-      //     setAmount(Number(inputAmount));
-      //   }
+    } else if (method === 'paySome') {
+      setAmount(Number(inputAmount));
+      if (isCredit) {
+        if (userCredit < Number(inputAmount) + donation) {
+          if (
+            Number(inputAmount) + donation - userCredit > 0 &&
+            Number(inputAmount) + donation - userCredit < 1000
+          ) {
+            setFinalAmount(1000); // for the button
+          }
+          if (Number(inputAmount) + donation - userCredit >= 1000) {
+            setFinalAmount(Number(inputAmount) + donation - userCredit); // for the button
+          }
+        } else if (userCredit >= Number(inputAmount) + donation) {
+          setFinalAmount(0); // for the button
+          setOnlyWallet(true);
+        }
+      } else if (!isCredit) {
+        setAmount(Number(inputAmount));
+        setFinalAmount(Number(inputAmount) + donation); // for the button
+      }
     } else if (method === 'addToCart') {
       setAmount(oneNeed.cost - oneNeed.paid);
     }
   }, [method, oneNeed, inputAmount, userCredit, donation, amount, isCredit]);
 
-  // only wallet
-  // useEffect(() => {
-  //   if (
-  //     isCredit &&
-  //     ((userCredit > 0 && inputAmount - userCredit < 1000) ||
-  //       userCredit >= amount + donation)
-  //   ) {
-  //     setOnlyWallet(true);
-  //   } else {
-  //     setOnlyWallet(false);
-  //   }
-  // }, [inputAmount, userCredit, oneNeed, isCredit, donation, amount]);
-
   // input
   useEffect(() => {
-    if (inputAmount - userCredit >= oneNeed.cost - oneNeed.paid - 1000) {
-      setInputAmount(oneNeed.cost - oneNeed.paid);
-    }
+    // if (inputAmount - userCredit >= oneNeed.cost - oneNeed.paid - 1000) {
+    //   setInputAmount(oneNeed.cost - oneNeed.paid);
+    // }
   }, [inputAmount, userCredit, oneNeed]);
 
   // Shaparak gate  - redirect to bank
@@ -413,7 +376,10 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
 
     if (amount >= parseInt(payLimit) && !unpayable) {
-      console.log(method, amount, donation, isCredit);
+      console.log(`method = ${method}`);
+      console.log(`amount = ${amount}`);
+      console.log(`donation = ${donation}`);
+      console.log(`useCredit = ${isCredit}`);
       // dispatch(makePayment(method, oneNeed.id, amount, donation, userCredit));
     }
   };

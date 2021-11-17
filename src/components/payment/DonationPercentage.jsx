@@ -260,7 +260,7 @@ export default function Donation({ setPercentage, amount }) {
           </Grid>
         </Grid>
       )}
-      {modal && <Donation setPercentage={setPercentage} amount={amount} />}
+      {modal && <DonationModal modal={modal} setModal={setModal} />}
     </Grid>
   );
 }

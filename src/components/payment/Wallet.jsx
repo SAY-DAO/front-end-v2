@@ -20,10 +20,10 @@ export default function Wallet({
   const { theUser, success: successUserDetails } = userDetails;
 
   useEffect(() => {
-    if (theUser.credit > 0) {
-      // setIsDisable(false);
+    if (theUser.credit >= 0) {
+      setIsDisable(false);
     }
-    // setIsDisable(true);
+    setIsDisable(true);
   }, [theUser]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Wallet({
         setIsCredit(false);
       }
       if (checked) {
-        setUserCredit(62500);
+        setUserCredit(theUser.credit);
         setIsCredit(true);
       }
     }
