@@ -121,11 +121,17 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                 </AvatarGroup>
               </Grid>
               <Grid item>
-                <Typography variant="body1" className={classes.needCost}>
-                  {!need.unpayable
-                    ? need.cost.toLocaleString() + t('currency.toman')
-                    : '-'}
-                </Typography>
+                {!need.isDone ? (
+                  <Typography variant="body1" className={classes.needCost}>
+                    {!need.unpayable
+                      ? need.cost.toLocaleString() + t('currency.toman')
+                      : '-'}
+                  </Typography>
+                ) : (
+                  <Typography variant="body1" className={classes.needCost}>
+                    {need.cost.toLocaleString() + t('currency.toman')}
+                  </Typography>
+                )}
               </Grid>
             </Grid>
           </Grid>
