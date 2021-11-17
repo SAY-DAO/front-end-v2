@@ -79,6 +79,7 @@ export default function Donation({ setPercentage, amount }) {
   return (
     <Grid sx={{ marginTop: 1, marginBottom: 4 }}>
       <FormControlLabel
+        sx={{ margin: 0 }}
         label={
           <>
             <Typography variant="subtitle2" component="span">
@@ -104,7 +105,6 @@ export default function Donation({ setPercentage, amount }) {
           justifyContent="center"
           alignItems="center"
           sx={{ textAlign: 'center' }}
-          spacing={0.5}
         >
           <Grid item xs={width2}>
             <Card

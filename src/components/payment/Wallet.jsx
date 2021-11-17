@@ -5,31 +5,39 @@ import Switch from '@mui/material/Switch';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-export default function Wallet({ useCredit, setUseCredit }) {
+export default function Wallet({
+  isCredit,
+  setIsCredit,
+  userCredit,
+  setUserCredit,
+}) {
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userDetails = useSelector((state) => state.userDetails);
+  const { theUser, success: successUserDetails } = userDetails;
 
   useEffect(() => {
-    if (userInfo.user.credit > 0) {
-      setIsDisable(false);
+    if (theUser.credit > 0) {
+      // setIsDisable(false);
     }
-  }, [userInfo]);
+    // setIsDisable(true);
+  }, [theUser]);
 
   useEffect(() => {
-    if (userInfo) {
+    if (theUser) {
       if (!checked) {
-        setUseCredit(0);
+        setUserCredit(0);
+        setIsCredit(false);
       }
       if (checked) {
-        setUseCredit(userInfo.user.credit);
+        setUserCredit(62500);
+        setIsCredit(true);
       }
     }
-  }, [userInfo, checked, useCredit, setUseCredit]);
+  }, [theUser, checked, userCredit, setUserCredit, setIsCredit]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -40,7 +48,7 @@ export default function Wallet({ useCredit, setUseCredit }) {
       direction="row"
       justifyContent="space-between"
       alignItems="flex-end"
-      sx={{ marginTop: 2, marginLeft: 3, marginRight: 3 }}
+      sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
     >
       <Grid item xs container direction="column">
         <Grid item sx={{ marginBottom: 1 }}>
@@ -54,7 +62,7 @@ export default function Wallet({ useCredit, setUseCredit }) {
           </Grid>
           <Grid>
             <Typography component="span" variant="body1" sx={{ padding: 1 }}>
-              {t('profile.credit')} : {userInfo.user.credit}
+              {t('profile.credit')} : {userCredit}
               {t('currency.toman')}
             </Typography>
           </Grid>
@@ -73,6 +81,8 @@ export default function Wallet({ useCredit, setUseCredit }) {
 }
 
 Wallet.propTypes = {
-  setUseCredit: PropTypes.func,
-  useCredit: PropTypes.number,
+  setUserCredit: PropTypes.func,
+  userCredit: PropTypes.number,
+  setIsCredit: PropTypes.func,
+  isCredit: PropTypes.bool,
 };
