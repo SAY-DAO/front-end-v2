@@ -23,7 +23,8 @@ export default function CartAccordion({ cartItems }) {
   const [myCart, setMyCart] = useState([]);
   const [addedAmount, setAddedAmount] = useState(0);
   const [percentage, setPercentage] = useState(0);
-  const [useCredit, setUseCredit] = useState(0);
+  const [userCredit, setUserCredit] = useState(0);
+  const [isCredit, setIsCredit] = useState(false);
 
   // sort by child
   useEffect(() => {
@@ -164,7 +165,12 @@ export default function CartAccordion({ cartItems }) {
                       </Grid>
                     </Grid>
                     <Donation setPercentage={setPercentage} amount={0} />
-                    <Wallet useCredit={useCredit} setUseCredit={setUseCredit} />
+                    <Wallet
+                      isCredit={isCredit}
+                      setIsCredit={setIsCredit}
+                      userCredit={userCredit}
+                      setUserCredit={setUserCredit}
+                    />
                     <LoadingButton
                       variant="contained"
                       color="primary"
