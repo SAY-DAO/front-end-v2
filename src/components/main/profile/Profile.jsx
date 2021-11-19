@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Box, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
 import AppBarBottom from '../AppBarBottom';
 import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
+import WalletModal from '../../modals/WalletModal';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -50,6 +51,8 @@ const Profile = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const [modal, setModal] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -174,11 +177,15 @@ const Profile = () => {
             <Grid>
               <Typography variant="body1">
                 {t('profile.creditModal.thumbnail')}
+                <IconButton color="primary" onClick={() => setModal(true)}>
+                  <InfoOutlinedIcon />
+                </IconButton>
               </Typography>
             </Grid>
           </Box>
 
           <AppBarBottom path="profile" />
+          {modal && <WalletModal modal={modal} setModal={setModal} />}
         </>
       ) : (
         <CircularProgress />

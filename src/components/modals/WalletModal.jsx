@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function DonationModal({ modal, setModal }) {
+export default function WalletModal({ modal, setModal }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -61,10 +61,17 @@ export default function DonationModal({ modal, setModal }) {
               >
                 <Typography
                   id="transition-modal-title"
+                  variant="subtitle1"
+                  sx={{ marginTop: 1, marginBottom: 1 }}
+                >
+                  {t('profile.creditModal.modalTitle')}
+                </Typography>
+                <Typography
+                  id="transition-modal-title"
                   variant="body2"
                   component="h2"
                 >
-                  {t('needPage.donateModal')}
+                  {t('profile.creditModal.modalDesc')}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -84,7 +91,7 @@ export default function DonationModal({ modal, setModal }) {
   );
 }
 
-DonationModal.propTypes = {
+WalletModal.propTypes = {
   modal: PropTypes.bool.isRequired,
   setModal: PropTypes.func,
 };
