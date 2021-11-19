@@ -25,7 +25,7 @@ import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import NeedPageProduct from './NeedPageProduct';
-import Donation from '../payment/DonationPercentage';
+import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
@@ -233,7 +233,9 @@ export default function NeedAvailable({ childId }) {
 
   // set donation
   useEffect(() => {
-    setDonation((percentage * amount) / 100);
+    const theDonation =
+      (percentage * amount) / 100 - (((percentage * amount) / 100) % 100);
+    setDonation(theDonation);
   }, [percentage, amount]);
 
   // cart
@@ -345,7 +347,6 @@ export default function NeedAvailable({ childId }) {
 
   // radio button / set method
   const handleMethodChange = (event) => {
-    setUserCredit(0);
     if (event.target.value === 'payAll') {
       setMethod('payAll');
     } else if (event.target.value === 'paySome') {

@@ -27,13 +27,12 @@ export default function Wallet({
   }, [theUser]);
 
   useEffect(() => {
+    setUserCredit(theUser.credit);
     if (theUser) {
       if (!checked) {
-        setUserCredit(0);
         setIsCredit(false);
       }
       if (checked) {
-        setUserCredit(theUser.credit);
         setIsCredit(true);
       }
     }

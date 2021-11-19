@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import NeedPageProduct from '../need/NeedPageProduct';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
-import Donation from '../payment/DonationPercentage';
+import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
 
 export default function CartAccordion({ cartItems }) {

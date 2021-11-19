@@ -27,7 +27,6 @@ const LangButton = () => {
   const attrs = elem.attributes;
 
   useEffect(() => {
-    console.log(attrs);
     if (!attrs.dir.value && currentLang) {
       if (lang === 'fa') {
         elem.setAttribute('dir', 'rtl');
