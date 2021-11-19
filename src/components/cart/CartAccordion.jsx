@@ -172,6 +172,7 @@ export default function CartAccordion({ cartItems }) {
                       item
                       container
                       direction="row"
+                      alignItems="center"
                       sx={{
                         padding: 0,
                         marginTop: 2,
@@ -186,37 +187,36 @@ export default function CartAccordion({ cartItems }) {
                       <Grid item xs={9}>
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
-                      <Grid item>
-                        <Donation
-                          setPercentage={setPercentage}
-                          amount={addedAmount}
-                        />
-                        <Wallet
-                          isCredit={isCredit}
-                          setIsCredit={setIsCredit}
-                          userCredit={userCredit}
-                          setUserCredit={setUserCredit}
-                        />
-                        <LoadingButton
-                          variant="contained"
-                          color="primary"
-                          onClick={handlePayment}
+                    </Grid>
+                    <Grid item>
+                      <Donation
+                        setPercentage={setPercentage}
+                        amount={addedAmount}
+                      />
+                      <Wallet
+                        isCredit={isCredit}
+                        setIsCredit={setIsCredit}
+                        userCredit={userCredit}
+                        setUserCredit={setUserCredit}
+                      />
+                      <LoadingButton
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePayment}
+                      >
+                        <Typography
+                          component="div"
+                          variant="subtitle1"
+                          sx={{
+                            color: 'white',
+                            display: 'contents',
+                          }}
                         >
-                          <Typography
-                            component="div"
-                            variant="subtitle1"
-                            sx={{
-                              color: 'white',
-                              display: 'contents',
-                            }}
-                          >
-                            {!onlyWallet
-                              ? finalAmount.toLocaleString() +
-                                t('currency.toman')
-                              : t('button.payFromCredit')}
-                          </Typography>
-                        </LoadingButton>
-                      </Grid>
+                          {!onlyWallet
+                            ? finalAmount.toLocaleString() + t('currency.toman')
+                            : t('button.payFromCredit')}
+                        </Typography>
+                      </LoadingButton>
                     </Grid>
                   </Grid>
                 </form>
