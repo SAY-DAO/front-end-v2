@@ -24,6 +24,8 @@ const useStyles = makeStyles(() => ({
       boxShadow: 'none',
       backgroundColor: '#bfeeff !important',
     },
+    marginLeft: 2,
+    marginRight: 2,
   },
   chipActive: {
     maxWidth: '180px',
@@ -42,6 +44,8 @@ const useStyles = makeStyles(() => ({
       boxShadow: 'none',
       backgroundColor: '#bfeeff !important',
     },
+    marginLeft: 2,
+    marginRight: 2,
   },
 }));
 
@@ -54,6 +58,7 @@ export default function ChildNeedCard({ theChild }) {
   const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
   const [category, setCategory] = useState();
   const [activeCat, setActiveCat] = useState();
+  const [loadingChip, setLoadingChip] = useState(false);
 
   const childNeeds = useSelector((state) => state.childNeeds);
   const { theNeeds, success, loading } = childNeeds;
@@ -65,6 +70,8 @@ export default function ChildNeedCard({ theChild }) {
   }, [dispatch, success, theChild]);
 
   useEffect(() => {
+    setLoadingChip(false);
+
     if (success) {
       const sortedNeeds = theNeeds.needs.sort((a, b) => {
         if (!a.isDone && !b.isDone) {
@@ -89,6 +96,7 @@ export default function ChildNeedCard({ theChild }) {
       }
       setNeedsArray(allNeeds);
     }
+
     // Cleans up when leaves the page
     return () => {
       setNeedsArray([[], [], [], [], [], []]);
@@ -135,26 +143,32 @@ export default function ChildNeedCard({ theChild }) {
   const classes = useStyles();
 
   const renderNeedsByCategory = () => (
-    <Stack
-      direction="column"
-      spacing={1}
-      sx={{
-        paddingLeft: 2,
-        paddingRight: 2,
-        textAlign: 'center',
-        width: '100%',
-      }}
-    >
-      {/* TODO: pagination is needed here */}
-      {needsArray[category].map((need) => (
-        <NeedCard
-          key={need.id}
-          handleNeedCardClick={handleNeedCardClick}
-          need={need}
-          childId={theChild.id}
-        />
-      ))}
-    </Stack>
+    <>
+      {loadingChip ? (
+        <CircularProgress />
+      ) : (
+        <Stack
+          direction="column"
+          spacing={1}
+          sx={{
+            paddingLeft: 2,
+            paddingRight: 2,
+            textAlign: 'center',
+            width: '100%',
+          }}
+        >
+          {/* TODO: pagination is needed here */}
+          {needsArray[category].map((need) => (
+            <NeedCard
+              key={need.id}
+              handleNeedCardClick={handleNeedCardClick}
+              need={need}
+              childId={theChild.id}
+            />
+          ))}
+        </Stack>
+      )}
+    </>
   );
 
   return (
@@ -173,7 +187,7 @@ export default function ChildNeedCard({ theChild }) {
                   height: '50px',
                 }}
               >
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row">
                   {needsArray[0][1] && (
                     <Chip
                       label={t('childData.needCategory.urgent')}

@@ -116,13 +116,19 @@ const Home = () => {
 
   // login
   useEffect(() => {
-    dispatch(fetchMyHome());
-
     if (!userInfo) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history]);
 
+  // fetch home first
+  useEffect(() => {
+    if (!loadingHome || !successHome) {
+      dispatch(fetchMyHome());
+    }
+  }, []);
+
+  // clean up
   useEffect(() => {
     if (successMyChild) {
       dispatch({ type: CHILD_BY_ID_RESET });
@@ -138,10 +144,6 @@ const Home = () => {
     }
     if (successRandomSearch) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    }
-
-    if (!successHome || successLeft || successJoin) {
-      dispatch(fetchMyHome());
     }
   }, [successHome, successLeft]);
 
@@ -168,7 +170,7 @@ const Home = () => {
       maxWidth
       sx={{ paddingLeft: 2, paddingRight: 2 }}
     >
-      {successHome && user && children ? (
+      {!loadingHome && successHome && user && children ? (
         <>
           <Grid
             container

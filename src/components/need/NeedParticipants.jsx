@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Typography, Grid, Chip, Stack } from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Typography, Grid, Chip, Stack, IconButton } from '@mui/material';
 import roles from '../../apis/roles';
+import ParticipantModal from '../modals/ParticipantModal';
 
 export default function ChildFamily({ participants }) {
   const { t } = useTranslation();
+
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+  const handleModal = (value) => {
+    if (value === 'SAY') {
+      setModalContent(t('needPage.participants.SAYModal'));
+      setModal(true);
+    } else if (value === 'OTHERS') {
+      setModalContent(t('needPage.participants.othersModal'));
+      setModal(true);
+    }
+  };
 
   return (
     <Grid sx={{ marginBottom: 5 }}>
@@ -33,9 +48,34 @@ export default function ChildFamily({ participants }) {
                         {t('currency.toman')}
                       </Typography>
                       <Typography variant="subtitle2" style={{ right: 0 }}>
-                        {member.id_family
-                          ? `${t(roles.roles[member.user_role])}`
-                          : `${t('family.roles.others')}`}
+                        {member.id_family ? (
+                          `${t(roles.roles[member.user_role])}`
+                        ) : (
+                          <>
+                            <IconButton
+                              color="primary"
+                              onClick={() => handleModal('OTHERS')}
+                            >
+                              <InfoOutlinedIcon />
+                            </IconButton>
+                            <Typography variant="subtitle2" component="span">
+                              {t('family.roles.others')}
+                            </Typography>
+                          </>
+                        )}
+                        {member.user_role === -2 && (
+                          <>
+                            <IconButton
+                              color="primary"
+                              onClick={() => handleModal('SAY')}
+                            >
+                              <InfoOutlinedIcon />
+                            </IconButton>
+                            <Typography variant="subtitle2" component="span">
+                              {t('family.roles.say')}
+                            </Typography>
+                          </>
+                        )}
                       </Typography>
                     </Grid>
                   }
@@ -44,6 +84,13 @@ export default function ChildFamily({ participants }) {
               )
           )}
       </Stack>
+      {modal && modalContent && (
+        <ParticipantModal
+          modal={modal}
+          setModal={setModal}
+          modalContent={modalContent}
+        />
+      )}
     </Grid>
   );
 }
