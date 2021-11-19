@@ -304,9 +304,9 @@ export default function NeedAvailable({ childId }) {
 
   // input
   useEffect(() => {
-    // if (inputAmount - userCredit >= oneNeed.cost - oneNeed.paid - 1000) {
-    //   setInputAmount(oneNeed.cost - oneNeed.paid);
-    // }
+    if (inputAmount - userCredit >= oneNeed.cost - oneNeed.paid - 1000) {
+      setInputAmount(oneNeed.cost - oneNeed.paid);
+    }
   }, [inputAmount, userCredit, oneNeed]);
 
   // Shaparak gate  - redirect to bank
