@@ -20,13 +20,19 @@ export const makePayment =
           Authorization: userInfo && userInfo.accessToken,
         },
       };
-
       const formData = new FormData();
-      formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
-      formData.append('need_id', needId);
-      formData.append('amount', amount);
-      formData.append('donate', donation);
-      formData.append('use_credit', parseInt(useCredit));
+      if (method === 'payAll' || method === 'paySome') {
+        formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
+        formData.append('need_id', needId);
+        formData.append('amount', amount);
+        formData.append('donate', donation);
+        formData.append('use_credit', useCredit);
+      } else if (method === 'cart') {
+        formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
+        formData.append('amount', amount);
+        formData.append('donate', donation);
+        formData.append('use_credit', useCredit);
+      }
 
       // back-end use this for test
       if (useCredit > 0) {

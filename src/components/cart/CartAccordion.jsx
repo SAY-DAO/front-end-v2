@@ -189,34 +189,39 @@ export default function CartAccordion({ cartItems }) {
                       </Grid>
                     </Grid>
                     <Grid item>
-                      <Donation
-                        setPercentage={setPercentage}
-                        amount={addedAmount}
-                      />
-                      <Wallet
-                        isCredit={isCredit}
-                        setIsCredit={setIsCredit}
-                        userCredit={userCredit}
-                        setUserCredit={setUserCredit}
-                      />
-                      <LoadingButton
-                        variant="contained"
-                        color="primary"
-                        onClick={handlePayment}
-                      >
-                        <Typography
-                          component="div"
-                          variant="subtitle1"
-                          sx={{
-                            color: 'white',
-                            display: 'contents',
-                          }}
+                      <Grid item xs={12}>
+                        <Donation
+                          setPercentage={setPercentage}
+                          amount={addedAmount}
+                        />
+                        <Wallet
+                          isCredit={isCredit}
+                          setIsCredit={setIsCredit}
+                          userCredit={userCredit}
+                          setUserCredit={setUserCredit}
+                        />
+                      </Grid>
+                      <Grid sx={{ textAlign: 'center' }}>
+                        <LoadingButton
+                          variant="contained"
+                          color="primary"
+                          onClick={handlePayment}
                         >
-                          {!onlyWallet
-                            ? finalAmount.toLocaleString() + t('currency.toman')
-                            : t('button.payFromCredit')}
-                        </Typography>
-                      </LoadingButton>
+                          <Typography
+                            component="div"
+                            variant="subtitle1"
+                            sx={{
+                              color: 'white',
+                              display: 'contents',
+                            }}
+                          >
+                            {!onlyWallet
+                              ? finalAmount.toLocaleString() +
+                                t('currency.toman')
+                              : t('button.payFromCredit')}
+                          </Typography>
+                        </LoadingButton>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </form>

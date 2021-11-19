@@ -20,11 +20,12 @@ const useStyles = makeStyles(() => ({
     fontWeight: 900,
     lineHeight: '56px',
     whiteSpace: 'nowrap',
-    left: 'calc(100vw - 400px)',
+    left: 'calc(100vw - 350px)',
     top: '30px',
     float: 'left',
   },
   userAvatar: {
+    boxShadow: '1px 1px #888888',
     width: 80,
     height: 80,
     zIndex: 10,
