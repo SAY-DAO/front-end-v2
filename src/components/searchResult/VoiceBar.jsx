@@ -39,7 +39,6 @@ const PrettoSlider = withStyles({
   rail: {
     height: 8,
     borderRadius: 4,
-    right: '8px',
   },
 })(Slider);
 
