@@ -5,12 +5,7 @@ import Switch from '@mui/material/Switch';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-export default function Wallet({
-  isCredit,
-  setIsCredit,
-  userCredit,
-  setUserCredit,
-}) {
+export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState(false);
@@ -83,5 +78,4 @@ Wallet.propTypes = {
   setUserCredit: PropTypes.func,
   userCredit: PropTypes.number,
   setIsCredit: PropTypes.func,
-  isCredit: PropTypes.bool,
 };
