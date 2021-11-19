@@ -127,7 +127,7 @@ export default function Donation({ setPercentage, amount }) {
                   }}
                 >
                   <Typography gutterBottom variant="body2" component="div">
-                    5%
+                    5%{' '}
                     {view === 5 && (
                       <Typography gutterBottom variant="body2" component="span">
                         (
@@ -164,7 +164,7 @@ export default function Donation({ setPercentage, amount }) {
                   }}
                 >
                   <Typography gutterBottom variant="body2" component="div">
-                    10%
+                    10%{' '}
                     {view === 10 && (
                       <Typography gutterBottom variant="body2" component="span">
                         (
@@ -201,7 +201,7 @@ export default function Donation({ setPercentage, amount }) {
                   }}
                 >
                   <Typography gutterBottom variant="body2" component="div">
-                    15%
+                    15%{' '}
                     {view === 15 && (
                       <Typography gutterBottom variant="body2" component="span">
                         (
@@ -238,7 +238,7 @@ export default function Donation({ setPercentage, amount }) {
                   }}
                 >
                   <Typography gutterBottom variant="body2" component="div">
-                    20%
+                    20%{' '}
                     {view === 20 && (
                       <Typography gutterBottom variant="body2" component="span">
                         (

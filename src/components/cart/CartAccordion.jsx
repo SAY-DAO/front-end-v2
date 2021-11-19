@@ -25,6 +25,18 @@ export default function CartAccordion({ cartItems }) {
   const [percentage, setPercentage] = useState(0);
   const [userCredit, setUserCredit] = useState(0);
   const [isCredit, setIsCredit] = useState(false);
+  const [amount, setAmount] = useState();
+  const [donation, setDonation] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [onlyWallet, setOnlyWallet] = useState(false);
+
+  // set donation
+  useEffect(() => {
+    const theDonation =
+      (percentage * addedAmount) / 100 -
+      (((percentage * addedAmount) / 100) % 100);
+    setDonation(theDonation);
+  }, [percentage, addedAmount]);
 
   // sort by child
   useEffect(() => {
@@ -49,20 +61,30 @@ export default function CartAccordion({ cartItems }) {
     setChildrenNeedObj(sorted);
   }, [myCart, cartItems]);
 
-  // add amount per child
-  // useEffect(() => {
-  //   if (childIdList) {
-  //     let sum = 0;
-  //     for (let k = 0; k < childIdList.length; k += 1) {
-  //       for (let i = 0; i < cartItems.length; i += 1) {
-  //         if (cartItems[i].childId === childIdList[k]) {
-  //           sum += Number(cartItems[i].amount);
-  //           setTotalChildAmount((totalChildAmount[childIdList[k]] = sum));
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [cartItems, childIdList.push, totalChildAmount, childIdList]);
+  // set amount
+  useEffect(() => {
+    setOnlyWallet(false);
+    const remaining = addedAmount;
+    setAmount(remaining);
+    if (isCredit) {
+      if (userCredit < remaining + donation) {
+        if (
+          remaining + donation - userCredit > 0 &&
+          remaining + donation - userCredit < 1000
+        ) {
+          setFinalAmount(1000); // for the button
+        }
+        if (remaining + donation - userCredit >= 1000) {
+          setFinalAmount(remaining + donation - userCredit); // for the button
+        }
+      } else if (userCredit >= remaining + donation) {
+        setFinalAmount(0); // for the button
+        setOnlyWallet(true);
+      }
+    } else if (!isCredit) {
+      setFinalAmount(remaining + donation); // for the button
+    }
+  }, [userCredit, donation, amount, isCredit, addedAmount]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -79,7 +101,10 @@ export default function CartAccordion({ cartItems }) {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    console.log('ji');
+    console.log(`method = Cart`);
+    console.log(`amount = ${amount}`);
+    console.log(`donation = ${donation}`);
+    console.log(`useCredit = ${isCredit}`);
   };
 
   return (
@@ -147,10 +172,8 @@ export default function CartAccordion({ cartItems }) {
                       item
                       container
                       direction="row"
-                      alignItems="center"
                       sx={{
                         padding: 0,
-                        textAlign: 'center',
                         marginTop: 2,
                         marginBottom: 2,
                       }}
@@ -163,30 +186,38 @@ export default function CartAccordion({ cartItems }) {
                       <Grid item xs={9}>
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
+                      <Grid item>
+                        <Donation
+                          setPercentage={setPercentage}
+                          amount={addedAmount}
+                        />
+                        <Wallet
+                          isCredit={isCredit}
+                          setIsCredit={setIsCredit}
+                          userCredit={userCredit}
+                          setUserCredit={setUserCredit}
+                        />
+                        <LoadingButton
+                          variant="contained"
+                          color="primary"
+                          onClick={handlePayment}
+                        >
+                          <Typography
+                            component="div"
+                            variant="subtitle1"
+                            sx={{
+                              color: 'white',
+                              display: 'contents',
+                            }}
+                          >
+                            {!onlyWallet
+                              ? finalAmount.toLocaleString() +
+                                t('currency.toman')
+                              : t('button.payFromCredit')}
+                          </Typography>
+                        </LoadingButton>
+                      </Grid>
                     </Grid>
-                    <Donation setPercentage={setPercentage} amount={0} />
-                    <Wallet
-                      isCredit={isCredit}
-                      setIsCredit={setIsCredit}
-                      userCredit={userCredit}
-                      setUserCredit={setUserCredit}
-                    />
-                    <LoadingButton
-                      variant="contained"
-                      color="primary"
-                      onClick={handlePayment}
-                    >
-                      <Typography
-                        component="div"
-                        variant="subtitle1"
-                        sx={{
-                          color: 'white',
-                          display: 'contents',
-                        }}
-                      >
-                        {addedAmount.toLocaleString() + t('currency.toman')}
-                      </Typography>
-                    </LoadingButton>
                   </Grid>
                 </form>
               </FormControl>

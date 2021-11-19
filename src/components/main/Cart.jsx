@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
 import AppBarBottom from './AppBarBottom';
 
