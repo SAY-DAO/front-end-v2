@@ -191,10 +191,10 @@ export default function InfoTabs() {
             />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={0}>
           <ChildFamily theChild={theChild} />
         </TabPanel>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={value} index={1}>
           <Stack direction="column" spacing={1}>
             {/* Mother 1 */}
             {!isMother ? (
