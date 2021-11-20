@@ -18,7 +18,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 280,
   bgcolor: 'rgba(255, 255, 255, .9)',
-  border: '1px solid transparent',
+  border: '5px solid transparent',
   borderRadius: '3%',
   boxShadow: 24,
   p: 4,
@@ -109,7 +109,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
                 alignItems="center"
                 item
                 xs={12}
-                spacing={6}
+                spacing={4}
               >
                 <Grid item>
                   <Link

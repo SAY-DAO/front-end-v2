@@ -78,7 +78,7 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                 alignItems="center"
                 item
                 xs={12}
-                spacing={6}
+                spacing={4}
               >
                 <Grid item>
                   <Link

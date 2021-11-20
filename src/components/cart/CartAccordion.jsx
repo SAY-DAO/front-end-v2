@@ -12,6 +12,7 @@ import NeedPageProduct from '../need/NeedPageProduct';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
+import { cartPayment } from '../../actions/paymentAction';
 
 export default function CartAccordion({ cartItems }) {
   const dispatch = useDispatch();
@@ -105,6 +106,7 @@ export default function CartAccordion({ cartItems }) {
     console.log(`amount = ${amount}`);
     console.log(`donation = ${donation}`);
     console.log(`useCredit = ${isCredit}`);
+    dispatch(cartPayment());
   };
 
   return (

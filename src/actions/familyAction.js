@@ -28,7 +28,7 @@ export const joinVirtualFamily =
       };
 
       const formData = new FormData();
-      formData.set('role', role);
+      formData.append('role', role);
       const { data } = await publicApi3.post(
         `families/${familyId}/join`,
         formData,
@@ -89,8 +89,8 @@ export const leaveFamily = (familyId) => async (dispatch, getState) => {
 //       };
 
 //       const formData = new FormData();
-//       formData.set('family_id', familyId);
-//       formData.set('role', selectedRole);
+//       formData.append('family_id', familyId);
+//       formData.append('role', selectedRole);
 
 //       const { data } = await publicApi.post(`/invitations`, formData, {
 //         config,

@@ -395,7 +395,7 @@ export default function NeedAvailable({ childId }) {
       console.log(`amount = ${amount}`);
       console.log(`donation = ${donation}`);
       console.log(`useCredit = ${isCredit}`);
-      // dispatch(makePayment(method, oneNeed.id, amount, donation, userCredit));
+      // dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
     }
   };
 

@@ -173,18 +173,18 @@ export const register =
   (userName, password, theKey, value, dialCode, otp) => async (dispatch) => {
     try {
       const formData = new FormData();
-      formData.set('username', userName);
-      formData.set('password', password);
-      formData.set('verifyCode', otp);
+      formData.append('username', userName);
+      formData.append('password', password);
+      formData.append('verifyCode', otp);
 
       if (theKey === 'email') {
-        formData.set('email', value);
+        formData.append('email', value);
       }
       if (theKey === 'phone') {
-        formData.set('phone_number', value);
-        formData.set('countryCode', dialCode);
+        formData.append('phone_number', value);
+        formData.append('countryCode', dialCode);
       }
-      formData.set('isInstalled', _standalone);
+      formData.append('isInstalled', _standalone);
 
       dispatch({ type: USER_REGISTER_REQUEST });
       const config = {
@@ -224,10 +224,10 @@ export const login = (userName, password) => async (dispatch) => {
       },
     };
     const formData = new FormData();
-    formData.set('username', userName);
-    formData.set('password', password);
+    formData.append('username', userName);
+    formData.append('password', password);
     // required for back-end
-    formData.set('isInstalled', _standalone);
+    formData.append('isInstalled', _standalone);
 
     const { data } = await publicApi.post('/auth/login', formData, config);
 
@@ -269,12 +269,12 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
     };
     const formData = new FormData();
     if (theKey === 'email') {
-      formData.set('email', value);
+      formData.append('email', value);
       resetType = 'email';
     }
     if (theKey === 'phone_number') {
       // To be consistent with back-end this line phone_number is phoneNumber
-      formData.set('phoneNumber', value);
+      formData.append('phoneNumber', value);
       resetType = 'phone';
     }
 
@@ -343,7 +343,7 @@ export const resetPassword = (password) => async (dispatch, getState) => {
     };
 
     const formData = new FormData();
-    formData.set('password', password);
+    formData.append('password', password);
 
     const { data } = await publicApi.patch(
       `/user/update/userId=me`,

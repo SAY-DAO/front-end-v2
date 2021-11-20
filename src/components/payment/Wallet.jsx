@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Switch from '@mui/material/Switch';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { fetchUserDetails } from '../../actions/userAction';
 
 export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [checked, setChecked] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -15,7 +17,7 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { theUser, success: successUserDetails } = userDetails;
 
   useEffect(() => {
-    if (theUser.credit >= 0) {
+    if (theUser && theUser.credit >= 0) {
       // setIsDisable(false);
     }
     // setIsDisable(true);
@@ -33,6 +35,8 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
       if (checked) {
         setIsCredit(true);
       }
+    } else {
+      dispatch(fetchUserDetails());
     }
   }, [theUser, checked, userCredit, setUserCredit, setIsCredit]);
 
