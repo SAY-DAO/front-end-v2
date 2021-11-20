@@ -19,6 +19,7 @@ import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../../constants/familyConstants';
+import { HOME_RESET } from '../../../constants/main/homeConstants';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -123,9 +124,7 @@ const Home = () => {
 
   // fetch home first
   useEffect(() => {
-    if (!loadingHome || !successHome) {
-      dispatch(fetchMyHome());
-    }
+    dispatch(fetchMyHome());
   }, []);
 
   // clean up

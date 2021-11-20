@@ -48,7 +48,7 @@ export default function AppBarBottom({ path }) {
   const myHome = useSelector((state) => state.myHome);
   const { children, success: successHome } = myHome;
 
-  // we get the home date ahead to get our children's ids
+  // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
     if (!successHome) {
       dispatch(fetchMyHome());

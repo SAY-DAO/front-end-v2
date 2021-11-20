@@ -16,15 +16,18 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
 
   useEffect(() => {
     if (theUser.credit >= 0) {
-      setIsDisable(false);
+      // setIsDisable(false);
     }
-    setIsDisable(true);
+    // setIsDisable(true);
   }, [theUser]);
 
   useEffect(() => {
-    setUserCredit(theUser.credit);
+    // setUserCredit(theUser.credit);
+    setUserCredit(5000);
+
     if (theUser) {
       if (!checked) {
+        setUserCredit(0);
         setIsCredit(false);
       }
       if (checked) {

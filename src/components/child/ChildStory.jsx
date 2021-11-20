@@ -16,15 +16,17 @@ export default function ChildStory({ theChild }) {
         item
         container
         direction="row"
-        sx={{ marginBottom: 2, marginTop: 4 }}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ marginTop: 5, padding: 2 }}
       >
-        <Grid item xs={10}>
-          <Divider sx={{ width: '95%' }} />
-        </Grid>
         <Grid item xs={2}>
           <Typography variant="subtitle1">
             {t('childPage.childTab.story')}
           </Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <Divider sx={{ width: '95%' }} />
         </Grid>
       </Grid>
       <Grid item sx={{ textAlign: 'center', padding: 1 }}>

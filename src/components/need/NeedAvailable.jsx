@@ -138,14 +138,15 @@ export default function NeedAvailable({ childId }) {
   } = ChildOneNeed;
 
   useEffect(() => {
-    dispatch(fetchUserDetails());
     if (theChild && oneNeed) {
-      if ((!userInfo && !successLogin) || !successUserDetails) {
+      if (!successLogin) {
         history.push(
           `/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
         );
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
         history.push(`/child/${theChild.id}`);
+      } else if (!successUserDetails) {
+        dispatch(fetchUserDetails());
       }
     }
   }, [
@@ -304,8 +305,21 @@ export default function NeedAvailable({ childId }) {
 
   // input
   useEffect(() => {
-    if (inputAmount - userCredit >= oneNeed.cost - oneNeed.paid - 1000) {
+    console.log(`CREDIT ${userCredit}`);
+    console.log(`input ${Number(inputAmount)}`);
+    console.log(`cost ${Number(oneNeed.cost)}`);
+    console.log(`paid ${Number(oneNeed.paid)}`);
+    console.log('cost - paid - input - wallet');
+    console.log(oneNeed.cost - oneNeed.paid - Number(inputAmount) - userCredit);
+    if (
+      oneNeed.cost - oneNeed.paid - Number(inputAmount) < 1000 &&
+      oneNeed.cost - oneNeed.paid - Number(inputAmount) > 0
+    ) {
+      setInputAmount(oneNeed.cost - oneNeed.paid - 1000);
+    }
+    if (oneNeed.cost - oneNeed.paid <= Number(inputAmount)) {
       setInputAmount(oneNeed.cost - oneNeed.paid);
+      console.log('here');
     }
   }, [inputAmount, userCredit, oneNeed]);
 
@@ -343,7 +357,7 @@ export default function NeedAvailable({ childId }) {
         window.clearInterval(i);
       }
     }
-  }, [result, successShaparakGate]);
+  }, [result, successShaparakGate, oneNeed]);
 
   // radio button / set method
   const handleMethodChange = (event) => {
