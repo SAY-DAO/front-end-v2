@@ -74,8 +74,13 @@ const FinalForm = () => {
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const { verifyInfo } = userVerifyInfo;
 
-  const localOTP = JSON.parse(localStorage.getItem('localOTP'));
-  const localDialCode = JSON.parse(localStorage.getItem('localDialCode'));
+  const localDialCode = localStorage.getItem('localDialCode')
+    ? JSON.parse(localStorage.getItem('localDialCode'))
+    : '';
+
+  const localOTP = localStorage.getItem('localOTP')
+    ? JSON.parse(localStorage.getItem('localOTP'))
+    : '';
 
   // loading button
   useEffect(() => {
