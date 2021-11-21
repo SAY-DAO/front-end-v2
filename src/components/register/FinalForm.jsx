@@ -74,9 +74,7 @@ const FinalForm = () => {
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const { verifyInfo } = userVerifyInfo;
 
-  const localDialCode = localStorage.getItem('localDialCode')
-    ? JSON.parse(localStorage.getItem('localDialCode'))
-    : '';
+  const localDialCode = 98;
 
   const localOTP = localStorage.getItem('localOTP')
     ? JSON.parse(localStorage.getItem('localOTP'))
