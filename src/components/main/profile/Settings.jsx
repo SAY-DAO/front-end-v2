@@ -89,7 +89,7 @@ export default function Settings() {
           </Grid>
 
           <Grid item xs={8}>
-            <IconButton>
+            <IconButton sx={{ padding: 0 }}>
               <Typography component="span" variant="subtitle2">
                 {t('setting.language.title')}
               </Typography>
@@ -116,10 +116,7 @@ export default function Settings() {
           alignItems="center"
         >
           <Grid item xs={2}>
-            <IconButton
-              onClick={() => history.push('/setpassword')}
-              sx={{ padding: 0 }}
-            >
+            <IconButton onClick={() => history.push('/setpassword')}>
               <img
                 src="/images/icons/changePassword.svg"
                 alt="change password icon"
