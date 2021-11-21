@@ -181,7 +181,7 @@ export const register =
         formData.append('email', value);
       }
       if (theKey === 'phone') {
-        formData.append('phone_number', value);
+        formData.append('phonNumber', value);
         // formData.append('countryCode', dialCode);
       }
       formData.append('isInstalled', _standalone);

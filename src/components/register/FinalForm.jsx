@@ -211,6 +211,7 @@ const FinalForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(otp);
     dispatch(register(userName, password, theKey, value, otp));
   };
 
