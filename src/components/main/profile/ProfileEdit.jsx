@@ -84,12 +84,12 @@ const ProfileEdit = () => {
 
   // disable IconButton
   useEffect(() => {
-    if (!successCheck || successLogin) {
+    if (!successCheck || (!userInfo && !successLogin)) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [successCheck, successLogin]);
+  }, [successCheck, successLogin, userInfo]);
 
   //  clear error message when type
   useEffect(() => {

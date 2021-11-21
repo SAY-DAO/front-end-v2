@@ -89,7 +89,7 @@ const MyChildPage = () => {
 
   // check login
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history]);

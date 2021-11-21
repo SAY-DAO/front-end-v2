@@ -14,6 +14,9 @@ import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 import { CART_BADGE_RESET } from '../../constants/main/cartConstants';
 import { fetchMyHome } from '../../actions/main/homeAction';
+import { HOME_RESET } from '../../constants/main/homeConstants';
+import { USER_LOGOUT } from '../../constants/main/userConstants';
+import { logout } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -46,10 +49,21 @@ export default function AppBarBottom({ path }) {
   const { userInfo } = userLogin;
 
   const myHome = useSelector((state) => state.myHome);
-  const { children, success: successHome } = myHome;
+  const {
+    user,
+    children,
+    loading: loadingHome,
+    success: successHome,
+    error: errorHome,
+  } = myHome;
 
   // we get the home date ahead to get our children's ids / for users with no children
+  // 401 when user token is expired
   useEffect(() => {
+    if (errorHome && errorHome.status === 401) {
+      dispatch(logout());
+      history.push('/login?redirect=main/home');
+    }
     if (!successHome) {
       dispatch(fetchMyHome());
     }
@@ -58,7 +72,7 @@ export default function AppBarBottom({ path }) {
     } else {
       setIsDisabled(false);
     }
-  }, [successHome, userInfo, isDisabled, children, dispatch]);
+  }, [successHome, userInfo, isDisabled, children, errorHome, dispatch]);
 
   useEffect(() => {
     if (value === 'profile') {

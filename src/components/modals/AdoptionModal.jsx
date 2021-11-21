@@ -50,7 +50,7 @@ export default function AdoptionModal({
   };
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { success: successLogin } = userLogin;
+  const { userInfo, success: successLogin } = userLogin;
 
   const joinResult = useSelector((state) => state.joinResult);
   const { loading: loadingJoin, success: successJoin } = joinResult;
@@ -84,7 +84,7 @@ export default function AdoptionModal({
         rolesRelative,
       })
     );
-    if (!successLogin) {
+    if (!userInfo && !successLogin) {
       setContent(authWarnText);
     } else {
       setContent(adoptText);
@@ -101,9 +101,9 @@ export default function AdoptionModal({
   }, [selectedRole, adoption]);
 
   const handleJoin = () => {
-    if (userRole === null && successLogin && selectedRole) {
+    if (userRole === null && userInfo && selectedRole) {
       dispatch(joinVirtualFamily(selectedRole, familyId));
-    } else if (!successLogin) {
+    } else if (!userInfo && !successLogin) {
       history.push('/login');
     }
   };

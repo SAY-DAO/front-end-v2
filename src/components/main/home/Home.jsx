@@ -19,7 +19,7 @@ import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../../constants/familyConstants';
-import { HOME_RESET } from '../../../constants/main/homeConstants';
+import { logout } from '../../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -73,13 +73,16 @@ const Home = () => {
   const history = useHistory();
 
   const myHome = useSelector((state) => state.myHome);
-  const { user, children, loading: loadingHome, success: successHome } = myHome;
+  const {
+    user,
+    children,
+    loading: loadingHome,
+    success: successHome,
+    error: errorHome,
+  } = myHome;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const { theUser, success: successUserDetails } = userDetails;
 
   const leftFamily = useSelector((state) => state.leftFamily);
   const { success: successLeft } = leftFamily;
@@ -115,9 +118,17 @@ const Home = () => {
     }
   }, []);
 
+  // 401 when user token is expired
+  useEffect(() => {
+    if (errorHome && errorHome.status === 401) {
+      dispatch(logout());
+      history.push('/login?redirect=main/home');
+    }
+  }, [errorHome]);
+
   // login
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history]);

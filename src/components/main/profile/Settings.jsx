@@ -36,7 +36,7 @@ export default function Settings() {
   const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history]);

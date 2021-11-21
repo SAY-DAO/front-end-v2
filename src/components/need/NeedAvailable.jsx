@@ -32,7 +32,7 @@ import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
 import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
-import { fetchUserDetails } from '../../actions/userAction';
+import { fetchUserDetails, logout } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -137,9 +137,14 @@ export default function NeedAvailable({ childId }) {
     success: successOneNeed,
   } = ChildOneNeed;
 
+  // 401 when user token is expired
   useEffect(() => {
+    if (errorOneNeed && errorOneNeed.status === 401) {
+      dispatch(logout());
+      history.push(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
+    }
     if (theChild && oneNeed) {
-      if (!successLogin) {
+      if (!userInfo && !successLogin) {
         history.push(
           `/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
         );
@@ -157,6 +162,7 @@ export default function NeedAvailable({ childId }) {
     theChild,
     successUserDetails,
     dispatch,
+    errorOneNeed,
   ]);
 
   // loading button

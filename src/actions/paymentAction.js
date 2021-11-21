@@ -63,8 +63,17 @@ export const cartPayment = () => async (dispatch, getState) => {
       ? JSON.parse(localStorage.getItem('cartItems'))
       : [];
 
+    let needIds = [];
+    if (cartItems[0]) {
+      for (let i = 0; i < cartItems.length; i += 1) {
+        needIds.push(cartItems[i].needId);
+      }
+    } else {
+      needIds = [];
+    }
+
     console.log({ cartItems });
-    const { data } = await publicApi.post(`/mycart/payment`, cartItems, config);
+    const { data } = await publicApi.put(`/mycart`, { needIds }, config);
     dispatch({
       type: CART_PAYMENT_SUCCESS,
       payload: data,
