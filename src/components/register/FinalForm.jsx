@@ -74,8 +74,6 @@ const FinalForm = () => {
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const { verifyInfo } = userVerifyInfo;
 
-  const localDialCode = 98;
-
   const localOTP = localStorage.getItem('localOTP')
     ? JSON.parse(localStorage.getItem('localOTP'))
     : '';
@@ -213,7 +211,7 @@ const FinalForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(register(userName, password, theKey, value, localDialCode, otp));
+    dispatch(register(userName, password, theKey, value, otp));
   };
 
   const handleChangeUserName = (event) => {

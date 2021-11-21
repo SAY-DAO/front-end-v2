@@ -170,7 +170,7 @@ export const userVerifyCode = (id, code) => async (dispatch) => {
 };
 
 export const register =
-  (userName, password, theKey, value, dialCode, otp) => async (dispatch) => {
+  (userName, password, theKey, value, otp) => async (dispatch) => {
     try {
       const formData = new FormData();
       formData.append('username', userName);
@@ -182,7 +182,7 @@ export const register =
       }
       if (theKey === 'phone') {
         formData.append('phone_number', value);
-        formData.append('countryCode', dialCode);
+        // formData.append('countryCode', dialCode);
       }
       formData.append('isInstalled', _standalone);
 
