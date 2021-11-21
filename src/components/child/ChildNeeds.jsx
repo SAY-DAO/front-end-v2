@@ -69,9 +69,21 @@ export default function ChildNeedCard({ theChild }) {
     }
   }, [dispatch, success, theChild]);
 
+  // const cartItems = localStorage.getItem('cartItems')
+  //   ? JSON.parse(localStorage.getItem('cartItems'))
+  //   : [];
+
+  // let needIds = [];
+  // if (cartItems[0]) {
+  //   for (let i = 0; i < cartItems.length; i += 1) {
+  //     needIds.push(cartItems[i].needId);
+  //   }
+  // } else {
+  //   needIds = [];
+  // }
+
   useEffect(() => {
     setLoadingChip(false);
-
     if (success) {
       const sortedNeeds = theNeeds.needs.sort((a, b) => {
         if (!a.isDone && !b.isDone) {

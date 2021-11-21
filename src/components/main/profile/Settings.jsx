@@ -116,7 +116,10 @@ export default function Settings() {
           alignItems="center"
         >
           <Grid item xs={2}>
-            <IconButton onClick={() => history.push('/setpassword')}>
+            <IconButton
+              onClick={() => history.push('/setpassword')}
+              sx={{ padding: 0 }}
+            >
               <img
                 src="/images/icons/changePassword.svg"
                 alt="change password icon"

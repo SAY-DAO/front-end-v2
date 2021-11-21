@@ -14,7 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { login } from '../../actions/userAction';
-import { USER_LOGOUT } from '../../constants/main/userConstants';
+import {
+  USER_LOGOUT,
+  USER_REGISTER_RESET,
+} from '../../constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -51,6 +54,13 @@ const Login = () => {
     success: successLogin,
   } = userLogin;
 
+  const userRegister = useSelector((state) => state.userRegister);
+  const {
+    loading: loadingRegister,
+    error: errorRegister,
+    success: successRegister,
+  } = userRegister;
+
   // loading button
   useEffect(() => {
     if (loadingLogin) {
@@ -74,6 +84,13 @@ const Login = () => {
       history.push(`/${redirect}`);
     }
   }, [history, redirect, successLogin]);
+
+  // Message input for some status error (422)
+  useEffect(() => {
+    if (successRegister) {
+      dispatch({ type: USER_REGISTER_RESET });
+    }
+  }, [userName]);
 
   // Message input for some status error (422)
   useEffect(() => {
