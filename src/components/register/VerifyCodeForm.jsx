@@ -136,7 +136,7 @@ const VerifyCodeForm = () => {
     dispatch({ type: CODE_VERIFY_RESET });
     dispatch({ type: CHECK_CONTACT_RESET });
     const theType = verifyInfo.phone_number ? 'phone_number' : 'email';
-    dispatch(verifyUser(theType, verificationMethod, 98));
+    dispatch(verifyUser(theType, verificationMethod));
     setProgress(0);
     setEnableResend(true);
   };
