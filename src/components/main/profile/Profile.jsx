@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Typography, Avatar } from '@mui/material';
+import { Grid, Box, Card, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -116,7 +116,7 @@ const Profile = () => {
                   color="primary"
                   onClick={() => history.push('/main/profile/settings')}
                 >
-                  <Box
+                  <Card
                     sx={{
                       bgcolor: 'white',
                       maxHeight: '30px',
@@ -129,7 +129,7 @@ const Profile = () => {
                         padding: '3px',
                       }}
                     />
-                  </Box>
+                  </Card>
                 </IconButton>
               </Grid>
 
