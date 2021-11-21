@@ -62,6 +62,8 @@ const VerifyCodeForm = () => {
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const { verifyInfo, loading: loadingVerify } = userVerifyInfo;
 
+  console.log(code);
+
   // loading button
   useEffect(() => {
     if (loadingVerifyCode) {
@@ -134,7 +136,7 @@ const VerifyCodeForm = () => {
 
   const handleResend = () => {
     const theType = verifyInfo.phone_number ? 'phone_number' : 'email';
-    dispatch(verifyUser(theType, verificationMethod));
+    dispatch(verifyUser(theType, verificationMethod, code));
     setProgress(0);
     setEnableResend(true);
   };
