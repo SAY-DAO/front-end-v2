@@ -55,7 +55,6 @@ export default function CartAccordion({ cartItems }) {
 
   // loading button
   useEffect(() => {
-    console.log(result);
     if (loadingCheck) {
       setIsLoading(true);
     } else {
