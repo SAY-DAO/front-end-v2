@@ -11,13 +11,14 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Message from '../components/Message';
-import MyChildTabs from '../components/main/home/MyChildTabs';
-import { fetchMyChildById } from '../actions/childAction';
-import { fetchMyHome } from '../actions/main/homeAction';
-import Back from '../components/Back';
-import { CHILD_ONE_NEED_RESET } from '../constants/childConstants';
-import LeaveFamilyModal from '../components/modals/LeaveFamilyModal ';
+import Message from '../../components/Message';
+import MyChildTabs from '../../components/child/MyChildTabs';
+import { fetchMyChildById } from '../../actions/childAction';
+import { fetchMyHome } from '../../actions/main/homeAction';
+import Back from '../../components/Back';
+import { CHILD_ONE_NEED_RESET } from '../../constants/childConstants';
+import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal ';
+import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -87,12 +88,16 @@ const MyChildPage = () => {
     success: successMyChild,
   } = myChild;
 
-  // check login
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   // left the family
   useEffect(() => {
@@ -254,7 +259,11 @@ const MyChildPage = () => {
       )}
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorMyChild && (
-          <Message backError={errorMyChild} variant="filled" severity="error" />
+          <Message
+            backError={errorMyChild}
+            variant="standard"
+            severity="error"
+          />
         )}
       </Grid>
       {theChild && (

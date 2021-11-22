@@ -6,19 +6,25 @@ import { Typography, Grid, FormControl, Divider, Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@material-ui/lab/LoadingButton';
 import NeedPageProduct from '../need/NeedPageProduct';
-import { changeCartBadgeNumber } from '../../actions/main/cartAction';
+import {
+  changeCartBadgeNumber,
+  checkCart,
+  removeUnavailableItems,
+} from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { cartPayment } from '../../actions/paymentAction';
+import { makeCartPayment } from '../../actions/paymentAction';
+import Message from '../Message';
 
 export default function CartAccordion({ cartItems }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  // const [totalChildAmount, setTotalChildAmount] = useState({});
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [expanded, setExpanded] = React.useState();
   const [childrenNeedObj, setChildrenNeedObj] = useState({}); // { id1: {items: [item1, item2,...], sayName: ahmad}, ... }
   const [myCart, setMyCart] = useState([]);
@@ -30,6 +36,41 @@ export default function CartAccordion({ cartItems }) {
   const [donation, setDonation] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
+
+  const cartCheck = useSelector((state) => state.cartCheck);
+  const {
+    checkResult,
+    success: successCartCheck,
+    loading: loadingCheck,
+    error: errorCheck,
+  } = cartCheck;
+
+  const shaparakGate = useSelector((state) => state.shaparakGate);
+  const {
+    result,
+    loading: loadingShaparakGate,
+    success: successShaparakGate,
+    error: errorShaparakGate,
+  } = shaparakGate;
+
+  // loading button
+  useEffect(() => {
+    console.log(result);
+    if (loadingCheck) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingCheck]);
+
+  // disable button
+  useEffect(() => {
+    if (successCartCheck) {
+      // setIsDisabled(false);
+    } else {
+      // setIsDisabled(true);
+    }
+  }, [successCartCheck]);
 
   // set donation
   useEffect(() => {
@@ -87,10 +128,21 @@ export default function CartAccordion({ cartItems }) {
     }
   }, [userCredit, donation, amount, isCredit, addedAmount]);
 
+  // pay or remove unavailable
+  useEffect(() => {
+    if (successCartCheck && checkResult.needs[0]) {
+      dispatch(makeCartPayment(amount, donation, isCredit));
+    } else if (successCartCheck && checkResult.invalidNeedIds[0]) {
+      dispatch(removeUnavailableItems(checkResult.invalidNeedIds));
+    }
+  }, [successCartCheck, checkResult, dispatch]);
+
+  // accordion
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  // delete item
   const handleDelete = (needId) => {
     localStorage.removeItem('cartItems');
     const deleteIndex = myCart.findIndex((item) => item.needId === needId);
@@ -100,13 +152,14 @@ export default function CartAccordion({ cartItems }) {
     dispatch(changeCartBadgeNumber(badgeNumber));
   };
 
-  const handlePayment = (e) => {
+  // check & payment
+  const handleCartCheck = (e) => {
     e.preventDefault();
     console.log(`method = Cart`);
     console.log(`amount = ${amount}`);
     console.log(`donation = ${donation}`);
     console.log(`useCredit = ${isCredit}`);
-    dispatch(cartPayment());
+    dispatch(checkCart());
   };
 
   return (
@@ -205,29 +258,51 @@ export default function CartAccordion({ cartItems }) {
                       </Grid>
                       <Grid sx={{ textAlign: 'center' }}>
                         <LoadingButton
+                          loading={isLoading}
+                          disabled={isDisabled}
                           variant="contained"
                           color="primary"
-                          onClick={handlePayment}
+                          onClick={handleCartCheck}
                         >
-                          <Typography
-                            component="div"
-                            variant="subtitle1"
-                            sx={{
-                              color: 'white',
-                              display: 'contents',
-                            }}
-                          >
-                            {!onlyWallet
-                              ? finalAmount.toLocaleString() +
-                                t('currency.toman')
-                              : t('button.payFromCredit')}
-                          </Typography>
+                          {!isLoading && (
+                            <Typography
+                              component="div"
+                              variant="subtitle1"
+                              sx={{
+                                color: 'white',
+                                display: 'contents',
+                              }}
+                            >
+                              {!onlyWallet
+                                ? finalAmount.toLocaleString() +
+                                  t('currency.toman')
+                                : t('button.payFromCredit')}
+                            </Typography>
+                          )}
                         </LoadingButton>
                       </Grid>
                     </Grid>
                   </Grid>
                 </form>
               </FormControl>
+              <Grid item xs={12} sx={{ textAlign: 'center' }}>
+                {(errorShaparakGate || errorCheck) && (
+                  <Message
+                    backError={errorShaparakGate || errorCheck}
+                    variant="standard"
+                    severity="error"
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12} sx={{ textAlign: 'center' }}>
+                {successShaparakGate && (
+                  <Message
+                    backSuccess={result}
+                    severity="success"
+                    variant="standard"
+                  />
+                )}
+              </Grid>
             </Paper>
           </Grid>
         </Grid>

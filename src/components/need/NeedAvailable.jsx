@@ -110,7 +110,7 @@ export default function NeedAvailable({ childId }) {
   const { userInfo, success: successLogin } = userLogin;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { success: successUserDetails } = userDetails;
+  const { success: successUserDetails, error: errorUserDetails } = userDetails;
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
@@ -137,14 +137,11 @@ export default function NeedAvailable({ childId }) {
     success: successOneNeed,
   } = ChildOneNeed;
 
-  // 401 when user token is expired
+  // login
   useEffect(() => {
-    if (errorOneNeed && errorOneNeed.status === 401) {
-      dispatch(logout());
-      history.push(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
-    }
     if (theChild && oneNeed) {
-      if (!userInfo && !successLogin) {
+      dispatch(fetchUserDetails());
+      if (errorUserDetails) {
         history.push(
           `/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
         );
@@ -155,8 +152,7 @@ export default function NeedAvailable({ childId }) {
       }
     }
   }, [
-    userInfo,
-    successLogin,
+    errorUserDetails,
     history,
     oneNeed,
     theChild,
@@ -733,7 +729,11 @@ export default function NeedAvailable({ childId }) {
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorOneNeed && (
-          <Message backError={errorOneNeed} variant="filled" severity="error" />
+          <Message
+            backError={errorOneNeed}
+            variant="standard"
+            severity="error"
+          />
         )}
       </Grid>
     </>

@@ -286,7 +286,7 @@ const EntryForm = () => {
           <Message
             input={messageInput}
             backError={errorCheck || errorVerify}
-            variant="filled"
+            variant="standard"
             severity="error"
           >
             {validateErr}

@@ -17,6 +17,7 @@ const contents = {
   or: 'search.or',
   submit: 'button.submit',
   codeExpired: 'error.codeExpired',
+  successBank: 'needPage.successBank',
 };
 
 export default contents;

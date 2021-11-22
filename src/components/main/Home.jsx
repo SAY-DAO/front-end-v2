@@ -7,19 +7,19 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { fetchMyHome } from '../../../actions/main/homeAction';
+import { fetchMyHome } from '../../actions/main/homeAction';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
   CHILD_RANDOM_SEARCH_RESET,
-} from '../../../constants/childConstants';
-import ChildCard from '../../child/ChildCard';
-import AppBarBottom from '../AppBarBottom';
+} from '../../constants/childConstants';
+import ChildCard from '../child/ChildCard';
+import AppBarBottom from './AppBarBottom';
 import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
-} from '../../../constants/familyConstants';
-import { logout } from '../../../actions/userAction';
+} from '../../constants/familyConstants';
+import { fetchUserDetails, logout } from '../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -99,6 +99,9 @@ const Home = () => {
   const childNeeds = useSelector((state) => state.childNeeds);
   const { success: successNeeds } = childNeeds;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
   // check for language on browser reload dir="" needs to change according to lang
   useEffect(() => {
     const getLanguage = () =>
@@ -118,20 +121,13 @@ const Home = () => {
     }
   }, []);
 
-  // 401 when user token is expired
-  useEffect(() => {
-    if (errorHome && errorHome.status === 401) {
-      dispatch(logout());
-      history.push('/login?redirect=main/home');
-    }
-  }, [errorHome]);
-
   // login
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, errorUserDetails]);
 
   // fetch home first
   useEffect(() => {

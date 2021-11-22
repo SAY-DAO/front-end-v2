@@ -440,6 +440,7 @@
     "emptyCategory": "در حال حاضر درخواستی وجود ندارد"
   },
   "needPage": {
+    "successBank": "پرداخت با موفقیت انجام شد.",
     "needInfo": "اطلاعات نیاز",
     "serviceDetail": "مددکار {{childSayName}} در مورد {{needName}} برای شما نوشته است که:",
     "payTitle": "پرداخت",

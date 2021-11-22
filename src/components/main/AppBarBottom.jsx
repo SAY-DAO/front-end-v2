@@ -14,9 +14,7 @@ import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 import { CART_BADGE_RESET } from '../../constants/main/cartConstants';
 import { fetchMyHome } from '../../actions/main/homeAction';
-import { HOME_RESET } from '../../constants/main/homeConstants';
-import { USER_LOGOUT } from '../../constants/main/userConstants';
-import { logout } from '../../actions/userAction';
+import { fetchUserDetails, logout } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +44,7 @@ export default function AppBarBottom({ path }) {
   const { badgeNumber } = cartBadge;
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, success: successLogin } = userLogin;
 
   const myHome = useSelector((state) => state.myHome);
   const {
@@ -58,12 +56,7 @@ export default function AppBarBottom({ path }) {
   } = myHome;
 
   // we get the home date ahead to get our children's ids / for users with no children
-  // 401 when user token is expired
   useEffect(() => {
-    if (errorHome && errorHome.status === 401) {
-      dispatch(logout());
-      history.push('/login?redirect=main/home');
-    }
     if (!successHome) {
       dispatch(fetchMyHome());
     }
@@ -84,7 +77,6 @@ export default function AppBarBottom({ path }) {
     } else if (value === 'home') {
       history.push('/main/home');
     }
-
     const cartItems = localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
       : null;

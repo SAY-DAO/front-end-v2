@@ -190,7 +190,11 @@ export default function NeedDone({ childId }) {
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorOneNeed && (
-          <Message backError={errorOneNeed} variant="filled" severity="error" />
+          <Message
+            backError={errorOneNeed}
+            variant="standard"
+            severity="error"
+          />
         )}
       </Grid>
     </>

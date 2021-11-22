@@ -444,6 +444,7 @@
     "emptyCategory": "There are no new requests"
   },
   "needPage": {
+    "successBank": "Payment was successful",
     "needInfo": "Need's Info",
     "serviceDetail": "{{childSayName}}’s SW has written something, about the {{needName}}:",
     "payTitle": "Payment",

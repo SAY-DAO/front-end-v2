@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
-import GoneModal from '../../modals/GoneModal';
-import ChildFamily from '../../child/ChildFamily';
-import ChildNeeds from '../../child/ChildNeeds';
-import ChildStory from '../../child/ChildStory';
+import GoneModal from '../modals/GoneModal';
+import ChildFamily from './ChildFamily';
+import ChildNeeds from './ChildNeeds';
+import ChildStory from './ChildStory';
 
 const useStyles = makeStyles((theme) => ({
   root: {

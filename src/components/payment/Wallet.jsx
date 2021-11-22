@@ -18,18 +18,15 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
 
   useEffect(() => {
     if (theUser && theUser.credit >= 0) {
-      // setIsDisable(false);
+      setIsDisable(false);
     }
-    // setIsDisable(true);
+    setIsDisable(true);
   }, [theUser]);
 
   useEffect(() => {
-    // setUserCredit(theUser.credit);
-    setUserCredit(5000);
-
-    if (theUser) {
+    if (successUserDetails) {
+      setUserCredit(theUser.credit);
       if (!checked) {
-        setUserCredit(0);
         setIsCredit(false);
       }
       if (checked) {
@@ -38,7 +35,15 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
     } else {
       dispatch(fetchUserDetails());
     }
-  }, [theUser, checked, userCredit, setUserCredit, setIsCredit]);
+  }, [
+    successUserDetails,
+    dispatch,
+    theUser,
+    checked,
+    userCredit,
+    setUserCredit,
+    setIsCredit,
+  ]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -63,7 +68,7 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
           </Grid>
           <Grid>
             <Typography component="span" variant="body1" sx={{ padding: 1 }}>
-              {t('profile.credit')} : {userCredit}
+              {t('profile.credit')} : {theUser && theUser.credit}
               {t('currency.toman')}
             </Typography>
           </Grid>

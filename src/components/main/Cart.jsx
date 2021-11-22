@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
 import AppBarBottom from './AppBarBottom';
+import { fetchUserDetails } from '../../actions/userAction';
 
 export default function Cart() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -17,11 +19,16 @@ export default function Cart() {
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/cart');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   // cart badge number
   useEffect(() => {

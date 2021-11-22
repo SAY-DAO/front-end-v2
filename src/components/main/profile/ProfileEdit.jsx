@@ -454,7 +454,7 @@ const ProfileEdit = () => {
           <Message
             input={messageInput}
             backError={errorCheck}
-            variant="filled"
+            variant="standard"
             severity="error"
           >
             {validateErr}

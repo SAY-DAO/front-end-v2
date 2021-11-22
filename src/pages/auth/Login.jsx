@@ -15,6 +15,7 @@ import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { login } from '../../actions/userAction';
 import {
+  USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
 } from '../../constants/main/userConstants';
@@ -55,11 +56,7 @@ const Login = () => {
   } = userLogin;
 
   const userRegister = useSelector((state) => state.userRegister);
-  const {
-    loading: loadingRegister,
-    error: errorRegister,
-    success: successRegister,
-  } = userRegister;
+  const { success: successRegister } = userRegister;
 
   // loading button
   useEffect(() => {
@@ -81,6 +78,7 @@ const Login = () => {
 
   useEffect(() => {
     if (successLogin || userInfo) {
+      dispatch({ type: USER_DETAILS_RESET });
       history.push(`/${redirect}`);
     }
   }, [history, redirect, successLogin]);
@@ -196,7 +194,7 @@ const Login = () => {
             <Message
               input={messageInput}
               backError={errorLogin}
-              variant="filled"
+              variant="standard"
               severity="error"
             />
           )}

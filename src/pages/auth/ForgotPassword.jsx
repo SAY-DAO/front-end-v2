@@ -194,12 +194,12 @@ const ForgotPassword = () => {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
         {(validateErr || errorReset) && (
-          <Message frontError={errorReset} variant="filled" severity="error">
+          <Message frontError={errorReset} variant="standard" severity="error">
             {validateErr}
           </Message>
         )}
         {(!validateErr || !errorReset) && successReset && (
-          <Message variant="filled" severity="success">
+          <Message variant="standard" severity="success">
             {t('forgot-password.successNotif')}
           </Message>
         )}

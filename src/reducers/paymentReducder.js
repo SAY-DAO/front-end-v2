@@ -19,13 +19,6 @@ export const paymentReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case SHAPARAK_PAYMENT_RESET:
       return {};
-    default:
-      return state;
-  }
-};
-
-export const paymentCartReducer = (state = {}, action) => {
-  switch (action.type) {
     case CART_PAYMENT_REQUEST:
       return { loading: true };
     case CART_PAYMENT_SUCCESS:

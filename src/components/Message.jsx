@@ -11,12 +11,16 @@ export default function Message({
   input,
   frontError,
   backError,
+  backSuccess,
   variant,
   children,
   severity,
 }) {
   const { t } = useTranslation();
   const onRequestCheck = () => {
+    if (backSuccess && backSuccess.status_code === 600) {
+      return t(contents.successBank);
+    }
     if (frontError.status) {
       return t(contents.sthIsWrong);
     }
@@ -91,7 +95,12 @@ export default function Message({
   Sentry.captureException(children, frontError, backError.message);
 
   return (
-    <Alert icon={icon} variant={variant} severity={severity}>
+    <Alert
+      icon={icon}
+      variant={variant}
+      severity={severity}
+      sx={{ margin: 'auto' }}
+    >
       {children || onRequestCheck()}
     </Alert>
   );
@@ -102,6 +111,7 @@ Message.propTypes = {
   input: PropTypes.string,
   frontError: PropTypes.any,
   backError: PropTypes.any,
+  backSuccess: PropTypes.any,
   variant: PropTypes.string.isRequired,
   children: PropTypes.string,
   severity: PropTypes.string.isRequired,

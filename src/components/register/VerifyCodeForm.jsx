@@ -251,7 +251,7 @@ const VerifyCodeForm = () => {
               <Message
                 input={messageInput}
                 backError={errorVerifyCode}
-                variant="filled"
+                variant="standard"
                 severity="error"
               />
             )}

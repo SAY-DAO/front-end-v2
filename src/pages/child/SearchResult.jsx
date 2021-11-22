@@ -172,7 +172,7 @@ const SearchResult = () => {
         {errorRandomSearch && (
           <Message
             backError={errorRandomSearch}
-            variant="filled"
+            variant="standard"
             severity="error"
           />
         )}

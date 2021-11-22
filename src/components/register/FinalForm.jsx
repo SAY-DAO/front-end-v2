@@ -358,7 +358,7 @@ const FinalForm = () => {
               sx={{ justifyContent: 'center' }}
               icon={false}
               backError={errorCheck || errorRegister}
-              variant="filled"
+              variant="standard"
               severity="error"
             >
               {validateErr}

@@ -3,7 +3,7 @@ import {
   HOME_SUCCESS,
   HOME_FAIL,
   HOME_RESET,
-} from '../../constants/main/homeConstants';
+} from '../constants/main/homeConstants';
 
 export const homeReducer = (state = {}, action) => {
   switch (action.type) {

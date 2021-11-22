@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Box, Card, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
@@ -11,6 +10,7 @@ import { useHistory } from 'react-router';
 import AppBarBottom from '../AppBarBottom';
 import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
 import WalletModal from '../../modals/WalletModal';
+import { fetchUserDetails } from '../../../actions/userAction';
 
 const useStyles = makeStyles(() => ({
   nameTitle: {
@@ -58,12 +58,17 @@ const Profile = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/profile');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   const classes = useStyles();
 

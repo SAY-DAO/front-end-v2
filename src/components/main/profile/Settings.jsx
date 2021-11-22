@@ -268,7 +268,7 @@ export default function Settings() {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center', margin: 4 }}>
         {successReset && (
-          <Message variant="filled" severity="success">
+          <Message variant="standard" severity="success">
             {t('change-password.successNotif')}
           </Message>
         )}

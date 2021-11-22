@@ -232,7 +232,7 @@ const ResetPassword = () => {
               sx={{ justifyContent: 'center' }}
               icon={false}
               backError={errorReset}
-              variant="filled"
+              variant="standard"
               severity="error"
             >
               {validateErr}

@@ -172,6 +172,9 @@ const theTheme = createTheme({
           marginTop: 6,
           fontSize: '0.75rem',
         },
+        message: {
+          padding: '10px',
+        },
         outlinedError: {
           color: '#f44336',
           borderColor: 'transparent',
