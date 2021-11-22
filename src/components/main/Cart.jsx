@@ -30,13 +30,6 @@ export default function Cart() {
     }
   }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
-  // cart badge number
-  useEffect(() => {
-    if (cartItems) {
-      //   setBadgeNumber(cartItems.length);
-    }
-  }, [cartItems]);
-
   return (
     <Grid sx={{ width: '100%' }}>
       <Box
