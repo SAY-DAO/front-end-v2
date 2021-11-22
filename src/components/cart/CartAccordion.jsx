@@ -131,7 +131,7 @@ export default function CartAccordion({ cartItems }) {
   // pay or remove unavailable
   useEffect(() => {
     if (successCartCheck && checkResult.needs[0]) {
-      dispatch(makeCartPayment(amount, donation, isCredit));
+      dispatch(makeCartPayment(donation, isCredit));
     } else if (successCartCheck && checkResult.invalidNeedIds[0]) {
       dispatch(removeUnavailableItems(checkResult.invalidNeedIds));
     }

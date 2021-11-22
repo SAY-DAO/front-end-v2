@@ -46,7 +46,7 @@ export const makePayment =
   };
 
 export const makeCartPayment =
-  (amount, donation, isCredit) => async (dispatch, getState) => {
+  (donation, isCredit) => async (dispatch, getState) => {
     try {
       dispatch({ type: CART_PAYMENT_REQUEST });
       const {
@@ -59,7 +59,6 @@ export const makeCartPayment =
         },
       };
       const formData = new FormData();
-      formData.append('amount', amount);
       formData.append('donate', donation);
       formData.append('useCredit', isCredit);
 
