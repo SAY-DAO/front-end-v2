@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
-import { login } from '../../actions/userAction';
+import { fetchUserDetails, login } from '../../actions/userAction';
 import {
   USER_DETAILS_RESET,
   USER_LOGOUT,
@@ -58,14 +58,18 @@ const Login = () => {
   const userRegister = useSelector((state) => state.userRegister);
   const { success: successRegister } = userRegister;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { loading: loadingUserDetails, success: successUserDetails } =
+    userDetails;
+
   // loading button
   useEffect(() => {
-    if (loadingLogin) {
+    if (loadingLogin || loadingUserDetails) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingLogin, successLogin]);
+  }, [loadingLogin, loadingUserDetails]);
 
   // disable button
   useEffect(() => {
@@ -77,11 +81,11 @@ const Login = () => {
   }, [userName, password, errorLogin, successLogin]);
 
   useEffect(() => {
-    if (successLogin || userInfo) {
-      dispatch({ type: USER_DETAILS_RESET });
+    dispatch(fetchUserDetails());
+    if ((successLogin || userInfo) && successUserDetails) {
       history.push(`/${redirect}`);
     }
-  }, [history, redirect, successLogin]);
+  }, [history, redirect, successLogin, successUserDetails]);
 
   // Message input for some status error (422)
   useEffect(() => {

@@ -123,16 +123,12 @@ const Home = () => {
 
   // login
   useEffect(() => {
+    dispatch(fetchMyHome());
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
       history.push('/login?redirect=main/home');
     }
   }, [userInfo, successLogin, history, errorUserDetails]);
-
-  // fetch home first
-  useEffect(() => {
-    dispatch(fetchMyHome());
-  }, []);
 
   // clean up
   useEffect(() => {
