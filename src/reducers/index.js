@@ -19,7 +19,7 @@ import {
   childOneNeedReceiptReducer,
 } from './childReducer';
 
-import { homeReducer } from './main/homeReducer';
+import { homeReducer } from './homeReducer';
 import { paymentReducer } from './paymentReducder';
 import {
   cartAddReducer,
