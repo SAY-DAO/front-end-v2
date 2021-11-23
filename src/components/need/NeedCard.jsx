@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const useStyles = makeStyles(() => ({
   imageUrl: {
@@ -54,6 +55,23 @@ const useStyles = makeStyles(() => ({
 
 export default function NeedCard({ need, handleNeedCardClick, childId }) {
   const { t } = useTranslation();
+
+  const [inCart, setInCart] = useState(false);
+
+  const cartItems = localStorage.getItem('cartItems')
+    ? JSON.parse(localStorage.getItem('cartItems'))
+    : [];
+
+  useEffect(() => {
+    if (cartItems[0]) {
+      for (let i = 0; i < cartItems.length; i += 1) {
+        if (cartItems[i].needId === need.id) {
+          console.log(inCart);
+          setInCart(true);
+        }
+      }
+    }
+  }, [need]);
 
   const classes = useStyles();
   return (
@@ -123,9 +141,14 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
               <Grid item>
                 {!need.isDone ? (
                   <Typography variant="body1" className={classes.needCost}>
-                    {!need.unpayable
+                    {!inCart && !need.unpayable
                       ? need.cost.toLocaleString() + t('currency.toman')
-                      : '-'}
+                      : !inCart && '-'}
+                    {inCart && (
+                      <CheckCircleIcon
+                        sx={{ color: '#4caf50', opacity: '0.9' }}
+                      />
+                    )}
                   </Typography>
                 ) : (
                   <Typography variant="body1" className={classes.needCost}>

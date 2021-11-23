@@ -12,6 +12,9 @@ import {
   CART_REMOVE_NA_REQUEST,
   CART_REMOVE_NA_SUCCESS,
   CART_REMOVE_NA_FAIL,
+  CART_NEED_STATUS_FAIL,
+  CART_NEED_STATUS_SUCCESS,
+  CART_NEED_STATUS_REQUEST,
 } from '../../constants/main/cartConstants';
 
 export const addToCart =

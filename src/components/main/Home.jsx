@@ -11,6 +11,7 @@ import { fetchMyHome } from '../../actions/main/homeAction';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
+  CHILD_ONE_NEED_RESET,
   CHILD_RANDOM_SEARCH_RESET,
 } from '../../constants/childConstants';
 import ChildCard from '../child/ChildCard';
@@ -99,6 +100,9 @@ const Home = () => {
   const childNeeds = useSelector((state) => state.childNeeds);
   const { success: successNeeds } = childNeeds;
 
+  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
+  const { success: successOneNeed } = ChildOneNeed;
+
   const userDetails = useSelector((state) => state.userDetails);
   const { error: errorUserDetails } = userDetails;
 
@@ -132,11 +136,22 @@ const Home = () => {
 
   // clean up
   useEffect(() => {
+    // clear all intervals
+    // Get a reference to the last interval + 1
+    const intervalId = window.setInterval(function () {},
+    Number.MAX_SAFE_INTEGER);
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < intervalId; i += 1) {
+      window.clearInterval(i);
+    }
     if (successMyChild) {
       dispatch({ type: CHILD_BY_ID_RESET });
     }
     if (successNeeds) {
       dispatch({ type: CHILD_NEEDS_RESET });
+    }
+    if (successOneNeed) {
+      dispatch({ type: CHILD_ONE_NEED_RESET });
     }
     if (successJoin) {
       dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });

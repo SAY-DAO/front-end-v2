@@ -106,9 +106,6 @@ export default function NeedAvailable({ childId }) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
-
   const userDetails = useSelector((state) => state.userDetails);
   const { success: successUserDetails, error: errorUserDetails } = userDetails;
 
@@ -325,9 +322,9 @@ export default function NeedAvailable({ childId }) {
     }
   }, [inputAmount, userCredit, oneNeed]);
 
-  // Shaparak gate  - redirect to bank
+  // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    if (successShaparakGate) {
+    if (successShaparakGate && result.gateway_payment_id) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
@@ -397,7 +394,7 @@ export default function NeedAvailable({ childId }) {
       console.log(`amount = ${amount}`);
       console.log(`donation = ${donation}`);
       console.log(`useCredit = ${isCredit}`);
-      // dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
+      dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
     }
   };
 
