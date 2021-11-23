@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 
 const useStyles = makeStyles(() => ({
   imageUrl: {
@@ -145,7 +145,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                       ? need.cost.toLocaleString() + t('currency.toman')
                       : !inCart && '-'}
                     {inCart && (
-                      <CheckCircleIcon
+                      <CheckCircleOutlineSharpIcon
                         sx={{ color: '#4caf50', opacity: '0.9' }}
                       />
                     )}
