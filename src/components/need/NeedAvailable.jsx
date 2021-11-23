@@ -617,7 +617,7 @@ export default function NeedAvailable({ childId }) {
                             </Grid>
                           </>
                         ) : (
-                          <>
+                          <Grid>
                             {method === 'payAll' && (
                               <>
                                 <Grid item xs={12}>
@@ -641,77 +641,103 @@ export default function NeedAvailable({ childId }) {
                                 />
                               </>
                             )}
-                            <Grid sx={{ textAlign: 'center' }}>
-                              <LoadingButton
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={isDisabled}
-                                loading={isLoading}
-                                sx={{ marginTop: 1, marginBottom: 4 }}
-                              >
-                                {!isLoading && (
-                                  <>
-                                    <Typography
-                                      component="span"
-                                      variant="subtitle1"
-                                      sx={{
-                                        paddingRight: method === 'payAll' && 2,
-                                        paddingLeft: 2,
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
-                                      }}
-                                    >
-                                      {method === 'payAll' &&
-                                      !onlyWallet &&
-                                      finalAmount
-                                        ? finalAmount.toLocaleString() +
-                                          t('currency.toman')
-                                        : method === 'payAll' && onlyWallet
-                                        ? t('button.payFromCredit')
-                                        : null}
-                                    </Typography>
-                                    <Typography
-                                      component="div"
-                                      variant="subtitle1"
-                                      sx={{
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
-                                        display: 'contents',
-                                      }}
-                                    >
-                                      {method === 'payAll' && !onlyWallet ? (
-                                        t('button.pay')
-                                      ) : onlyWallet ? null : (
-                                        <>
-                                          <span style={{ padding: 5 }}>
-                                            {!inCart
-                                              ? t('button.addToCart')
-                                              : t('button.continueShopping')}
-                                          </span>
-                                          <span>
-                                            {!inCart && (
-                                              <img
-                                                src="/images/cartWhite.svg"
-                                                alt="Cart Icon"
-                                                style={{
-                                                  maxWidth: '22px',
-                                                }}
-                                              />
-                                            )}
-                                          </span>
-                                        </>
-                                      )}
-                                    </Typography>
-                                  </>
-                                )}
-                              </LoadingButton>
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="center"
+                              alignItems="center"
+                              sx={{ textAlign: 'center' }}
+                            >
+                              <Grid item sx={6}>
+                                <LoadingButton
+                                  type="submit"
+                                  variant="contained"
+                                  color="primary"
+                                  disabled={isDisabled}
+                                  loading={isLoading}
+                                  sx={{ marginTop: 1, marginBottom: 4 }}
+                                >
+                                  {!isLoading && (
+                                    <>
+                                      <Typography
+                                        component="span"
+                                        variant="subtitle1"
+                                        sx={{
+                                          paddingRight:
+                                            method === 'payAll' && 2,
+                                          paddingLeft: 2,
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                        }}
+                                      >
+                                        {method === 'payAll' &&
+                                        !onlyWallet &&
+                                        finalAmount
+                                          ? finalAmount.toLocaleString() +
+                                            t('currency.toman')
+                                          : method === 'payAll' && onlyWallet
+                                          ? t('button.payFromCredit')
+                                          : null}
+                                      </Typography>
+                                      <Typography
+                                        component="div"
+                                        variant="subtitle1"
+                                        sx={{
+                                          color:
+                                            isDisabled || bankMinDisable
+                                              ? 'lightGrey'
+                                              : 'white',
+                                          display: 'contents',
+                                        }}
+                                      >
+                                        {method === 'payAll' && !onlyWallet ? (
+                                          t('button.pay')
+                                        ) : onlyWallet ? null : (
+                                          <>
+                                            <span style={{ padding: 5 }}>
+                                              {!inCart
+                                                ? t('button.addToCart')
+                                                : t('button.continueShopping')}
+                                            </span>
+                                            <span>
+                                              {!inCart && (
+                                                <img
+                                                  src="/images/cartWhite.svg"
+                                                  alt="Cart Icon"
+                                                  style={{
+                                                    maxWidth: '22px',
+                                                  }}
+                                                />
+                                              )}
+                                            </span>
+                                          </>
+                                        )}
+                                      </Typography>
+                                    </>
+                                  )}
+                                </LoadingButton>
+                              </Grid>
+                              {/* <Grid item>
+                                <LoadingButton
+                                  type="submit"
+                                  variant="contained"
+                                  color="primary"
+                                  disabled={isDisabled}
+                                  loading={isLoading}
+                                  sx={{ marginBottom: 4 }}
+                                >
+                                  <Typography
+                                    component="span"
+                                    variant="subtitle1"
+                                  >
+                                    {t('button.pay')}
+                                  </Typography>
+                                </LoadingButton>
+                              </Grid> */}
                             </Grid>
-                          </>
+                          </Grid>
                         )}
                       </form>
                     </FormControl>
