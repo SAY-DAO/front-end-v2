@@ -336,21 +336,21 @@ export default function CartAccordion({ cartItems }) {
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
                     </Grid>
-                    <Grid item>
-                      <Grid item xs={12}>
-                        <Donation
-                          setPercentage={setPercentage}
-                          amount={addedAmount}
-                        />
-                        <Wallet
-                          isCredit={isCredit}
-                          setIsCredit={setIsCredit}
-                          userCredit={userCredit}
-                          setUserCredit={setUserCredit}
-                        />
-                      </Grid>
-                      <Grid sx={{ textAlign: 'center' }}>
-                        {!successCartPayComplete && (
+                    {!successCartPayComplete && (
+                      <Grid item>
+                        <Grid item xs={12}>
+                          <Donation
+                            setPercentage={setPercentage}
+                            amount={addedAmount}
+                          />
+                          <Wallet
+                            isCredit={isCredit}
+                            setIsCredit={setIsCredit}
+                            userCredit={userCredit}
+                            setUserCredit={setUserCredit}
+                          />
+                        </Grid>
+                        <Grid sx={{ textAlign: 'center' }}>
                           <LoadingButton
                             loading={isLoading}
                             disabled={isDisabled}
@@ -374,9 +374,9 @@ export default function CartAccordion({ cartItems }) {
                               </Typography>
                             )}
                           </LoadingButton>
-                        )}
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    )}
                   </Grid>
                 </form>
               </FormControl>
