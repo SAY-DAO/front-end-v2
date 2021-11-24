@@ -64,6 +64,7 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
               display: 'flex',
               flexDirection: 'column',
               width: '100%',
+              padding: 1,
             }}
           >
             <CardContent

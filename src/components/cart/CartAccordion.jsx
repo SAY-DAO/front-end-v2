@@ -22,7 +22,11 @@ import {
   CHECK_CART_PAYMENT_RESET,
   SHAPARAK_PAYMENT_RESET,
 } from '../../constants/paymentConstants';
-import { CART_CHECK_RESET } from '../../constants/main/cartConstants';
+import {
+  CART_ADD_RESET,
+  CART_BADGE_RESET,
+  CART_CHECK_RESET,
+} from '../../constants/main/cartConstants';
 
 export default function CartAccordion({ cartItems }) {
   const dispatch = useDispatch();
@@ -68,12 +72,24 @@ export default function CartAccordion({ cartItems }) {
 
   // loading button
   useEffect(() => {
-    if (loadingCheck || loadingShaparakGate || loadingCartPayComplete) {
+    if (
+      loadingCheck ||
+      loadingShaparakGate ||
+      loadingCartPayComplete ||
+      (successCartCheck && successShaparakGate)
+    ) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingCheck, loadingShaparakGate, loadingCartPayComplete]);
+  }, [
+    loadingCheck,
+    loadingShaparakGate,
+    loadingCartPayComplete,
+    successCartPayComplete,
+    successCartCheck,
+    successShaparakGate,
+  ]);
 
   // disable button
   useEffect(() => {
@@ -107,6 +123,9 @@ export default function CartAccordion({ cartItems }) {
         dispatch({ type: SHAPARAK_PAYMENT_RESET });
         dispatch({ type: CART_CHECK_RESET });
         dispatch({ type: CHECK_CART_PAYMENT_RESET });
+        dispatch({ type: CART_ADD_RESET });
+        dispatch({ type: CART_BADGE_RESET });
+        window.localStorage.removeItem('cartItems');
         setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
       };
     }
@@ -122,6 +141,21 @@ export default function CartAccordion({ cartItems }) {
       }
     }
   }, [result, successShaparakGate, dispatch, successCartCheck, cartItems]);
+
+  // clear time
+  useEffect(() => {
+    if (successCartPayComplete && !CartPayComplete[0]) {
+      // clear all intervals
+      // Get a reference to the last interval + 1
+      const intervalId = window.setInterval(function () {},
+      Number.MAX_SAFE_INTEGER);
+
+      // Clear any timeout/interval up to that id
+      for (let i = 1; i < intervalId; i += 1) {
+        window.clearInterval(i);
+      }
+    }
+  }, [successCartPayComplete, CartPayComplete, dispatch]);
 
   // set donation
   useEffect(() => {
@@ -183,7 +217,11 @@ export default function CartAccordion({ cartItems }) {
   useEffect(() => {
     if (successCartCheck && checkResult.needs[0]) {
       dispatch(makeCartPayment(donation, isCredit));
-    } else if (successCartCheck && checkResult.invalidNeedIds[0]) {
+    } else if (
+      successCartCheck &&
+      checkResult.invalidNeedIds &&
+      checkResult.invalidNeedIds[0]
+    ) {
       dispatch(removeUnavailableItems(checkResult.invalidNeedIds));
     }
   }, [successCartCheck, checkResult, dispatch, isCredit, donation]);
@@ -208,6 +246,7 @@ export default function CartAccordion({ cartItems }) {
     e.preventDefault();
     dispatch({ type: SHAPARAK_PAYMENT_RESET });
     dispatch({ type: CART_CHECK_RESET });
+    dispatch({ type: CHECK_CART_PAYMENT_RESET });
 
     console.log(`method = Cart`);
     console.log(`amount = ${amount}`);
@@ -342,9 +381,11 @@ export default function CartAccordion({ cartItems }) {
                 </form>
               </FormControl>
               <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {(errorShaparakGate || errorCheck) && (
+                {(errorShaparakGate || errorCheck || errorCartPayComplete) && (
                   <Message
-                    backError={errorShaparakGate || errorCheck}
+                    backError={
+                      errorShaparakGate || errorCheck || errorCartPayComplete
+                    }
                     variant="standard"
                     severity="error"
                   />
