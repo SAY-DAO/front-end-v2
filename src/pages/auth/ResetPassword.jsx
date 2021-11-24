@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
-import { resetPassword } from '../../actions/userAction';
+import { fetchUserDetails, resetPassword } from '../../actions/userAction';
 import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
@@ -42,6 +42,17 @@ const ResetPassword = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
+      history.push('/login?redirect=setpassword');
+    }
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   // loading button
   useEffect(() => {

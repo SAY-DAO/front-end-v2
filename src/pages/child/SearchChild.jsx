@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';
+import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -37,11 +38,16 @@ const SearchChild = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/search');
     }
-  }, [userInfo, successLogin, history, dispatch]);
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   // loading button
   useEffect(() => {

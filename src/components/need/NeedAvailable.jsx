@@ -252,7 +252,6 @@ export default function NeedAvailable({ childId }) {
 
   // set amount
   useEffect(() => {
-    console.log(`Method ${method}`);
     setOnlyWallet(false);
 
     if (method === 'payAll') {
@@ -304,12 +303,6 @@ export default function NeedAvailable({ childId }) {
 
   // input
   useEffect(() => {
-    console.log(`CREDIT ${userCredit}`);
-    console.log(`input ${Number(inputAmount)}`);
-    console.log(`cost ${Number(oneNeed.cost)}`);
-    console.log(`paid ${Number(oneNeed.paid)}`);
-    console.log('cost - paid - input - wallet');
-    console.log(oneNeed.cost - oneNeed.paid - Number(inputAmount) - userCredit);
     if (
       oneNeed.cost - oneNeed.paid - Number(inputAmount) < 1000 &&
       oneNeed.cost - oneNeed.paid - Number(inputAmount) > 0
@@ -318,12 +311,13 @@ export default function NeedAvailable({ childId }) {
     }
     if (oneNeed.cost - oneNeed.paid <= Number(inputAmount)) {
       setInputAmount(oneNeed.cost - oneNeed.paid);
-      console.log('here');
     }
   }, [inputAmount, userCredit, oneNeed]);
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
+    console.log('method');
+    console.log(method);
     if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
@@ -342,6 +336,7 @@ export default function NeedAvailable({ childId }) {
       // Set a timeout for the above interval (10 Minutes)
       return () => {
         dispatch({ type: SHAPARAK_PAYMENT_RESET });
+
         setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
       };
     }

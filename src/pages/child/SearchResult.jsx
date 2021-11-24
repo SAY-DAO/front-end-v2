@@ -11,6 +11,7 @@ import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
+import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -75,14 +76,19 @@ const SearchResult = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error: errorUserDetails } = userDetails;
+
+  // login
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    dispatch(fetchUserDetails());
+    if (errorUserDetails) {
       history.push('/login?redirect=main/search');
     }
     return () => {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     };
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
 
   // child age
   const getAge = (DOB) => {
