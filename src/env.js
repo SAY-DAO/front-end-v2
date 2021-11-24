@@ -29,7 +29,7 @@ if (env !== 'local') {
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
     normalizeDepth: 10, // Or however deep you want your state context to be.
-    environment: process.env.NODE_ENV,
+    environment: process.env.REACT_APP_NODE_ENV,
     integrations: [new Integrations.BrowserTracing()],
     // Can also use reactRouterV3Instrumentation or reactRouterV4Instrumentation
     routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
