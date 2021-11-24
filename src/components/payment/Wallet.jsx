@@ -21,7 +21,7 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
       console.log(theUser.credit);
       setIsDisable(false);
     } else {
-      setIsDisable(true);.
+      setIsDisable(true);
     }
   }, [theUser]);
 
