@@ -16,8 +16,14 @@ import {
 } from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { makeCartPayment } from '../../actions/paymentAction';
+import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
 import Message from '../Message';
+import { fetchChildNeeds } from '../../actions/childAction';
+import {
+  CHECK_CART_PAYMENT_RESET,
+  SHAPARAK_PAYMENT_RESET,
+} from '../../constants/paymentConstants';
+import { CART_CHECK_RESET } from '../../constants/main/cartConstants';
 
 export default function CartAccordion({ cartItems }) {
   const dispatch = useDispatch();
@@ -53,23 +59,70 @@ export default function CartAccordion({ cartItems }) {
     error: errorShaparakGate,
   } = shaparakGate;
 
+  const cartPayComplete = useSelector((state) => state.cartPayComplete);
+  const {
+    result: CartPayComplete,
+    loading: loadingCartPayComplete,
+    success: successCartPayComplete,
+    error: errorCartPayComplete,
+  } = cartPayComplete;
+
   // loading button
   useEffect(() => {
-    if (loadingCheck) {
+    if (loadingCheck || loadingShaparakGate || loadingCartPayComplete) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingCheck]);
+  }, [loadingCheck, loadingShaparakGate, loadingCartPayComplete]);
 
   // disable button
   useEffect(() => {
-    if (successCartCheck) {
-      // setIsDisabled(false);
+    if (!successCartPayComplete) {
+      setIsDisabled(false);
     } else {
-      // setIsDisabled(true);
+      setIsDisabled(true);
     }
-  }, [successCartCheck]);
+  }, [successCartPayComplete]);
+
+  // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
+  useEffect(() => {
+    if (successShaparakGate && successCartCheck && cartItems && cartItems[0]) {
+      const windowReference = window.open('', '_blank');
+      if (windowReference) {
+        // only wallet -status 299
+        if (result.status === 299) {
+          windowReference.document.write(result.response);
+        } else {
+          windowReference.document.write('loading...');
+          windowReference.location = result.link;
+        }
+      }
+
+      const doneNeedInterval = setInterval(
+        () => dispatch(checkCartPayment()),
+        5000
+      );
+      // Set a timeout for the above interval (10 Minutes)
+      return () => {
+        dispatch({ type: SHAPARAK_PAYMENT_RESET });
+        dispatch({ type: CART_CHECK_RESET });
+        dispatch({ type: CHECK_CART_PAYMENT_RESET });
+        setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
+      };
+    }
+    if (!successShaparakGate) {
+      // clear all intervals
+      // Get a reference to the last interval + 1
+      const intervalId = window.setInterval(function () {},
+      Number.MAX_SAFE_INTEGER);
+
+      // Clear any timeout/interval up to that id
+      for (let i = 1; i < intervalId; i += 1) {
+        window.clearInterval(i);
+      }
+    }
+  }, [result, successShaparakGate, dispatch, successCartCheck]);
 
   // set donation
   useEffect(() => {
@@ -154,6 +207,9 @@ export default function CartAccordion({ cartItems }) {
   // check & payment
   const handleCartCheck = (e) => {
     e.preventDefault();
+    dispatch({ type: SHAPARAK_PAYMENT_RESET });
+    dispatch({ type: CART_CHECK_RESET });
+
     console.log(`method = Cart`);
     console.log(`amount = ${amount}`);
     console.log(`donation = ${donation}`);

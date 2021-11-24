@@ -20,7 +20,7 @@ import {
 } from './childReducer';
 
 import { homeReducer } from './homeReducer';
-import { paymentReducer } from './paymentReducder';
+import { checkCartPaymentReducer, paymentReducer } from './paymentReducder';
 import {
   cartAddReducer,
   cartCheckReducer,
@@ -55,4 +55,5 @@ export default combineReducers({
   cartBadge: cartBadgeReducer,
   shaparakGate: paymentReducer,
   cartCheck: cartCheckReducer,
+  cartPayComplete: checkCartPaymentReducer,
 });

@@ -39,8 +39,6 @@ const SearchChild = () => {
   const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
-    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/search');
     }
@@ -63,6 +61,7 @@ const SearchChild = () => {
   }, [successRandomSearch, history]);
 
   const onClick = () => {
+    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     dispatch(fetchRandomChild());
   };
 

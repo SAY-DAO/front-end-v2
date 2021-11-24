@@ -6,6 +6,9 @@ import {
   CART_PAYMENT_REQUEST,
   CART_PAYMENT_FAIL,
   CART_PAYMENT_SUCCESS,
+  CHECK_CART_PAYMENT_FAIL,
+  CHECK_CART_PAYMENT_SUCCESS,
+  CHECK_CART_PAYMENT_REQUEST,
 } from '../constants/paymentConstants';
 
 export const makePayment =
@@ -47,6 +50,7 @@ export const makePayment =
 
 export const makeCartPayment =
   (donation, isCredit) => async (dispatch, getState) => {
+    console.log(donation, isCredit);
     try {
       dispatch({ type: CART_PAYMENT_REQUEST });
       const {
@@ -79,3 +83,30 @@ export const makeCartPayment =
       });
     }
   };
+
+export const checkCartPayment = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CHECK_CART_PAYMENT_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+
+    const { data } = await publicApi.post(`/mycart`, config);
+    dispatch({
+      type: CHECK_CART_PAYMENT_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHECK_CART_PAYMENT_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};

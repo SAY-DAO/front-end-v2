@@ -32,7 +32,7 @@ import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
 import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
-import { fetchUserDetails, logout } from '../../actions/userAction';
+import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
   root: {
@@ -324,7 +324,7 @@ export default function NeedAvailable({ childId }) {
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    if (successShaparakGate && result.gateway_payment_id) {
+    if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
@@ -356,7 +356,7 @@ export default function NeedAvailable({ childId }) {
         window.clearInterval(i);
       }
     }
-  }, [result, successShaparakGate, oneNeed]);
+  }, [result, successShaparakGate, oneNeed, method, dispatch]);
 
   // radio button / set method
   const handleMethodChange = (event) => {
