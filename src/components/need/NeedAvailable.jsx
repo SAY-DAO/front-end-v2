@@ -124,6 +124,7 @@ export default function NeedAvailable({ childId }) {
     result,
     loading: loadingShaparakGate,
     success: successShaparakGate,
+    error: errorShaparakGate,
   } = shaparakGate;
 
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
@@ -714,23 +715,21 @@ export default function NeedAvailable({ childId }) {
                                   )}
                                 </LoadingButton>
                               </Grid>
-                              {/* <Grid item>
-                                <LoadingButton
-                                  type="submit"
-                                  variant="contained"
-                                  color="primary"
-                                  disabled={isDisabled}
-                                  loading={isLoading}
-                                  sx={{ marginBottom: 4 }}
-                                >
-                                  <Typography
-                                    component="span"
-                                    variant="subtitle1"
-                                  >
-                                    {t('button.pay')}
-                                  </Typography>
-                                </LoadingButton>
-                              </Grid> */}
+                              <Grid
+                                item
+                                xs={10}
+                                sx={{ textAlign: 'center', marginBottom: 2 }}
+                              >
+                                {(errorOneNeed || errorShaparakGate) && (
+                                  <Message
+                                    backError={
+                                      errorOneNeed || errorShaparakGate
+                                    }
+                                    variant="standard"
+                                    severity="error"
+                                  />
+                                )}
+                              </Grid>
                             </Grid>
                           </Grid>
                         )}
@@ -742,17 +741,9 @@ export default function NeedAvailable({ childId }) {
             </Grid>
           </Grid>
         )}
+
         {/* Unavailable need warn popup */}
         <UnavailableModal unpayable={unpayable} setUnpayable={setUnpayable} />
-      </Grid>
-      <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorOneNeed && (
-          <Message
-            backError={errorOneNeed}
-            variant="standard"
-            severity="error"
-          />
-        )}
       </Grid>
     </>
   );
