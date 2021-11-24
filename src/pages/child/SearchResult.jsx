@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { useHistory } from 'react-router';
@@ -10,6 +10,7 @@ import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -60,6 +61,7 @@ const useStyles = makeStyles({
 
 const SearchResult = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const [readMore, setReadMore] = useState(false);
@@ -77,6 +79,9 @@ const SearchResult = () => {
     if (!userInfo && !successLogin) {
       history.push('/login?redirect=main/search');
     }
+    return () => {
+      dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
+    };
   }, [userInfo, successLogin, history]);
 
   // child age

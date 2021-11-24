@@ -44,16 +44,10 @@ export default function AppBarBottom({ path }) {
   const { badgeNumber } = cartBadge;
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const { userInfo } = userLogin;
 
   const myHome = useSelector((state) => state.myHome);
-  const {
-    user,
-    children,
-    loading: loadingHome,
-    success: successHome,
-    error: errorHome,
-  } = myHome;
+  const { children, success: successHome, error: errorHome } = myHome;
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {

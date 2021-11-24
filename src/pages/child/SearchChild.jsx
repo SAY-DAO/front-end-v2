@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -61,7 +60,6 @@ const SearchChild = () => {
   }, [successRandomSearch, history]);
 
   const onClick = () => {
-    dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
     dispatch(fetchRandomChild());
   };
 
