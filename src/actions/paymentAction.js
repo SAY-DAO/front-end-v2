@@ -97,7 +97,7 @@ export const checkCartPayment = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi.post(`/mycart`, config);
+    const { data } = await publicApi.get(`/mycart`, config);
     dispatch({
       type: CHECK_CART_PAYMENT_SUCCESS,
       payload: data,

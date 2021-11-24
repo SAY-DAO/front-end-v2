@@ -18,7 +18,6 @@ import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
 import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
 import Message from '../Message';
-import { fetchChildNeeds } from '../../actions/childAction';
 import {
   CHECK_CART_PAYMENT_RESET,
   SHAPARAK_PAYMENT_RESET,
@@ -122,7 +121,7 @@ export default function CartAccordion({ cartItems }) {
         window.clearInterval(i);
       }
     }
-  }, [result, successShaparakGate, dispatch, successCartCheck]);
+  }, [result, successShaparakGate, dispatch, successCartCheck, cartItems]);
 
   // set donation
   useEffect(() => {
@@ -187,7 +186,7 @@ export default function CartAccordion({ cartItems }) {
     } else if (successCartCheck && checkResult.invalidNeedIds[0]) {
       dispatch(removeUnavailableItems(checkResult.invalidNeedIds));
     }
-  }, [successCartCheck, checkResult, dispatch]);
+  }, [successCartCheck, checkResult, dispatch, isCredit, donation]);
 
   // accordion
   const handleChange = (panel) => (event, isExpanded) => {
@@ -312,29 +311,31 @@ export default function CartAccordion({ cartItems }) {
                         />
                       </Grid>
                       <Grid sx={{ textAlign: 'center' }}>
-                        <LoadingButton
-                          loading={isLoading}
-                          disabled={isDisabled}
-                          variant="contained"
-                          color="primary"
-                          onClick={handleCartCheck}
-                        >
-                          {!isLoading && (
-                            <Typography
-                              component="div"
-                              variant="subtitle1"
-                              sx={{
-                                color: 'white',
-                                display: 'contents',
-                              }}
-                            >
-                              {!onlyWallet
-                                ? finalAmount.toLocaleString() +
-                                  t('currency.toman')
-                                : t('button.payFromCredit')}
-                            </Typography>
-                          )}
-                        </LoadingButton>
+                        {!successCartPayComplete && (
+                          <LoadingButton
+                            loading={isLoading}
+                            disabled={isDisabled}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleCartCheck}
+                          >
+                            {!isLoading && (
+                              <Typography
+                                component="div"
+                                variant="subtitle1"
+                                sx={{
+                                  color: 'white',
+                                  display: 'contents',
+                                }}
+                              >
+                                {!onlyWallet
+                                  ? finalAmount.toLocaleString() +
+                                    t('currency.toman')
+                                  : t('button.payFromCredit')}
+                              </Typography>
+                            )}
+                          </LoadingButton>
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -350,9 +351,9 @@ export default function CartAccordion({ cartItems }) {
                 )}
               </Grid>
               <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {successShaparakGate && (
+                {successCartPayComplete && (
                   <Message
-                    backSuccess={result}
+                    backSuccess={successCartPayComplete}
                     severity="success"
                     variant="standard"
                   />

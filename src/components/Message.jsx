@@ -18,7 +18,7 @@ export default function Message({
 }) {
   const { t } = useTranslation();
   const onRequestCheck = () => {
-    if (backSuccess && backSuccess.status_code === 600) {
+    if (backSuccess) {
       return t(contents.successBank);
     }
     if (frontError.status) {
