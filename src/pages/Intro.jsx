@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { Typography, Grid, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import LangButton from '../components/LangButton';
+import { fetchUserDetails } from '../actions/userAction';
 
 const Intro = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { success: successUserDetails } = userDetails;
+
+  // redirect if logged in
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+    if (userInfo || successLogin || successUserDetails) {
+      history.push('/main/home');
+    }
+  }, [userInfo, successLogin, successUserDetails, history, dispatch]);
 
   return (
     <Container>
