@@ -31,6 +31,7 @@
     "jss": "^10.7.1",
     "jss-rtl": "^0.3.0",
     "logrocket": "^1.2.2",
+    "logrocket-react": "^4.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-avatar-editor": "^12.0.0",

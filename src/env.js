@@ -3,6 +3,7 @@ import { createBrowserHistory } from 'history';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import LogRocket from 'logrocket';
+import setupLogRocketReact from 'logrocket-react';
 
 const history = createBrowserHistory();
 
@@ -62,11 +63,14 @@ if (env !== 'local') {
         },
       },
     });
+    
     LogRocket.getSessionURL((sessionURL) => {
       Sentry.configureScope((scope) => {
         scope.setExtra('sessionURL', sessionURL);
       });
     });
+
+    setupLogRocketReact(LogRocket);
   }
 }
 const apiUrl = envApiUrl;
