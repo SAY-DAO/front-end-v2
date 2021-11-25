@@ -63,7 +63,7 @@ if (env !== 'local') {
         },
       },
     });
-    
+
     LogRocket.getSessionURL((sessionURL) => {
       Sentry.configureScope((scope) => {
         scope.setExtra('sessionURL', sessionURL);
