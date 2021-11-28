@@ -649,7 +649,7 @@ export default function NeedAvailable({ childId }) {
                             alignItems="center"
                             sx={{ textAlign: 'center' }}
                           >
-                            <Grid item sx={6}>
+                            <Grid item xs={6}>
                               <LoadingButton
                                 type="submit"
                                 variant="contained"
