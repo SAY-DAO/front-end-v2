@@ -33,7 +33,7 @@ export default function NeedPageTop({ oneNeed }) {
   const classes = useStyles();
   return (
     <Grid item container justifyContent="center" sx={{ marginTop: 2 }}>
-      <Grid item sx={{ margin: 'auto', textAlign: 'center' }}>
+      <Grid item xs={12} sx={{ margin: 'auto', textAlign: 'center' }}>
         <Typography variant="body1">{oneNeed.description}</Typography>
       </Grid>
       <Grid xs={10} item container sx={{ marginTop: 4 }}>
