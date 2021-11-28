@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
   progressBar: {
-    width: '100%',
     margin: 2,
   },
   percentage: {
@@ -17,7 +16,6 @@ const useStyles = makeStyles({
   },
   theCard1: {
     margin: 1,
-    width: '75%',
     textAlign: 'center',
     padding: 5,
 
@@ -25,7 +23,6 @@ const useStyles = makeStyles({
   },
   theCard2: {
     textAlign: 'center',
-    width: '23%',
     padding: 5,
     borderRadius: 5,
   },
@@ -35,61 +32,58 @@ export default function NeedPageTop({ oneNeed }) {
 
   const classes = useStyles();
   return (
-    <>
-      <Grid item container sx={{ marginTop: 2 }}>
-        <Grid item sx={{ margin: 'auto', textAlign: 'center' }}>
-          <Typography variant="body1">{oneNeed.description}</Typography>
-        </Grid>
-        <Grid xs={12} item container sx={{ marginTop: 4 }}>
+    <Grid item container justifyContent="center" sx={{ marginTop: 2 }}>
+      <Grid item sx={{ margin: 'auto', textAlign: 'center' }}>
+        <Typography variant="body1">{oneNeed.description}</Typography>
+      </Grid>
+      <Grid xs={10} item container sx={{ marginTop: 4 }}>
+        <Grid item xs={10} sx={{ margin: 'auto' }}>
           <Card className={classes.theCard1}>
-            <Grid item xs={10} sx={{ margin: 'auto' }}>
-              <Grid
-                container
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Typography
-                    component="span"
-                    sx={{
-                      fontSize: '10px',
-                      fontWeight: 'normal',
-                    }}
-                  >
-                    {oneNeed.cost.toLocaleString() + t('currency.toman')}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography
-                    component="span"
-                    sx={{
-                      fontSize: '10px',
-                      fontWeight: 'normal',
-                    }}
-                  >
-                    {oneNeed.paid.toLocaleString() + t('currency.toman')}
-                  </Typography>
-                </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                  }}
+                >
+                  {oneNeed.cost.toLocaleString() + t('currency.toman')}
+                </Typography>
               </Grid>
-
-              <LinearProgress
-                variant="determinate"
-                value={Number(oneNeed.progress)}
-                className={classes.progressBar}
-              />
+              <Grid item>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                  }}
+                >
+                  {oneNeed.paid.toLocaleString() + t('currency.toman')}
+                </Typography>
+              </Grid>
             </Grid>
+            <LinearProgress
+              variant="determinate"
+              value={Number(oneNeed.progress)}
+              className={classes.progressBar}
+            />
           </Card>
+        </Grid>
+        <Grid item xs={2}>
           <Card className={classes.theCard2} elevation={1}>
-            <Grid item xs={2}>
-              <Typography className={classes.percentage}>
-                %{oneNeed.progress}
-              </Typography>
-            </Grid>
+            <Typography className={classes.percentage}>
+              %{oneNeed.progress}
+            </Typography>
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 }
 
