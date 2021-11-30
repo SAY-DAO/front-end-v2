@@ -94,15 +94,13 @@ export default function CartAccordion({ cartItems }) {
         cartCheckPayResult.needs[0])
     ) {
       setIsDisabled(false);
-    } else {
+    } else if (isSuccess) {
       setIsDisabled(true);
     }
-  }, [cartCheckPayResult, successCartPayCheck, successCartUpdate]);
+  }, [cartCheckPayResult, successCartPayCheck, successCartUpdate, isSuccess]);
 
   useEffect(() => {
-    if (!successCartPayCheck) {
-      dispatch(checkCartPayment());
-    }
+    dispatch(checkCartPayment());
   }, []);
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
@@ -148,9 +146,16 @@ export default function CartAccordion({ cartItems }) {
       dispatch({ type: CART_UPDATE_RESET });
       dispatch({ type: CART_ADD_RESET });
       dispatch({ type: CART_BADGE_RESET });
-
-      // window.localStorage.removeItem('cartItems');
-    } else if (successCartPayCheck && !successShaparakGate) {
+      return () => {
+        window.localStorage.removeItem('cartItems');
+      };
+    }
+    if (
+      cartCheckPayResult &&
+      cartCheckPayResult.needs &&
+      !cartCheckPayResult.needs[0] &&
+      !successShaparakGate
+    ) {
       // clear all intervals
       // Get a reference to the last interval + 1
       const intervalId = window.setInterval(function () {},

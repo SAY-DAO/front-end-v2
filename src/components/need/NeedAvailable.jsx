@@ -89,6 +89,7 @@ export default function NeedAvailable({ childId }) {
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShaparakOpen, setIsShaparakOpen] = useState(false);
   const [method, setMethod] = useState('addToCart');
   const [amount, setAmount] = useState();
   const [unpayable, setUnpayable] = useState(false);
@@ -317,8 +318,7 @@ export default function NeedAvailable({ childId }) {
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
     if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
-      console.log('method');
-      console.log(method);
+      setIsShaparakOpen(true);
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
@@ -347,7 +347,7 @@ export default function NeedAvailable({ childId }) {
         window.clearInterval(i);
       }
     }
-  }, [result, successShaparakGate, oneNeed, method]);
+  }, [result, successShaparakGate, method]);
 
   // radio button / set method
   const handleMethodChange = (event) => {
@@ -385,6 +385,8 @@ export default function NeedAvailable({ childId }) {
       console.log(`amount = ${amount}`);
       console.log(`donation = ${donation}`);
       console.log(`useCredit = ${isCredit}`);
+      setIsShaparakOpen(false);
+
       dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
     }
   };

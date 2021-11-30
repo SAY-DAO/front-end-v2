@@ -85,7 +85,6 @@ export default function AppBarBottom({ path }) {
       history.push('/main/profile');
     } else if (value === 'cart') {
       dispatch({ type: SHAPARAK_RESET });
-      dispatch({ type: CHECK_CART_PAYMENT_RESET });
       dispatch({ type: CART_UPDATE_RESET });
       history.push('/main/cart');
     } else if (value === 'search') {
