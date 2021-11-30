@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -13,14 +13,23 @@ export default function Cart() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const [localCartItems, setLocalCartItems] = useState([]);
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
-  const theCart = useSelector((state) => state.theCart);
-  const { cartItems } = theCart;
-
   const userDetails = useSelector((state) => state.userDetails);
   const { error: errorUserDetails } = userDetails;
+
+  const theCart = useSelector((state) => state.theCart);
+  const { cartItems, success: successCartItems } = theCart;
+
+  useEffect(() => {
+    const cartItemFromStorage = localStorage.getItem('cartItems')
+      ? JSON.parse(localStorage.getItem('cartItems'))
+      : [];
+    setLocalCartItems(cartItemFromStorage);
+  }, [successCartItems, dispatch]);
 
   // login
   useEffect(() => {
@@ -43,7 +52,7 @@ export default function Cart() {
       >
         <Typography variant="subtitle1">{t('cart.title')}</Typography>
       </Box>
-      {!cartItems[0] && (
+      {!cartItems[0] && !localCartItems[0] && (
         <Box
           sx={{
             width: '70%',
@@ -58,7 +67,7 @@ export default function Cart() {
           </Typography>
         </Box>
       )}
-      <CartAccordion cartItems={cartItems} />
+      <CartAccordion cartItems={localCartItems} />
       <AppBarBottom path="cart" />
     </Grid>
   );

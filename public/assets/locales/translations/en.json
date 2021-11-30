@@ -61,6 +61,7 @@
     "codeRequired": "You must use a confirmation code to continue",
     "wrongCode": "Incorrect code",
     "codeExpired": "The code you have entered is no longer available",
+    "invalidNeed": "Some needs are not available",
     "manyRequest": "Try again after one minute",
     "sthIsWrong": "Please try again later",
     "addressLength": "Please enter a shorter address!",

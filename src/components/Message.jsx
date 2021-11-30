@@ -25,6 +25,9 @@ export default function Message({
       return t(contents.sthIsWrong);
     }
     if (backError.status) {
+      if (backError.status === 600) {
+        return t(contents.invalidNeed);
+      }
       if (backError.status === 710) {
         return t(contents.wrongUsername);
       }

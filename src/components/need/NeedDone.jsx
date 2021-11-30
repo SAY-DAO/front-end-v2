@@ -108,7 +108,9 @@ export default function NeedDone({ childId }) {
 
   // When payment is done we land here with an interval from NeedAvailable.jsx
   useEffect(() => {
-    dispatch(fetchChildNeeds(theChild.id));
+    if (theChild) {
+      dispatch(fetchChildNeeds(theChild.id));
+    }
 
     // clear all intervals
     // Get a reference to the last interval + 1
@@ -119,7 +121,7 @@ export default function NeedDone({ childId }) {
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
     }
-  });
+  }, [theChild]);
 
   const classes = useStyles();
   return (

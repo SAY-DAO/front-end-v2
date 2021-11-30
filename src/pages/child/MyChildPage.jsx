@@ -130,7 +130,11 @@ const MyChildPage = () => {
   // when the child is not adopted by user and route to the child's page
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RESET });
-    if (myChildrenIdList && !myChildrenIdList.includes(Number(childId))) {
+    if (
+      successMyChild &&
+      myChildrenIdList &&
+      !myChildrenIdList.includes(Number(childId))
+    ) {
       history.push('/main/home');
     } else {
       dispatch(fetchMyChildById(childId));

@@ -18,6 +18,7 @@ const contents = {
   submit: 'button.submit',
   codeExpired: 'error.codeExpired',
   successBank: 'needPage.successBank',
+  invalidNeed: 'error.invalidNeed',
 };
 
 export default contents;

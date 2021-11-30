@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ChildNeedCard({ theChild }) {
+export default function ChildNeeds({ theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -264,6 +264,6 @@ export default function ChildNeedCard({ theChild }) {
   );
 }
 
-ChildNeedCard.propTypes = {
+ChildNeeds.propTypes = {
   theChild: PropTypes.object.isRequired,
 };

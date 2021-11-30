@@ -84,6 +84,7 @@ const App = () => (
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />
+                <Route exact path="/child/:childId" component={MyChildPage} />
                 <Route
                   exact
                   path="/child/needs/needPage/report/:status"
@@ -94,7 +95,6 @@ const App = () => (
                   path="/child/:childId/needs/:needId"
                   component={NeedPage}
                 />
-                <Route exact path="/child/:childId" component={MyChildPage} />
 
                 {/* <Route exact path="/family/child/:childId" component={ChildRoom} /> */}
               </Switch>

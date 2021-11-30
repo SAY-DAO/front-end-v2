@@ -33,6 +33,7 @@ export default function CartAccordion({ cartItems }) {
 
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [expanded, setExpanded] = React.useState();
   const [childrenNeedObj, setChildrenNeedObj] = useState({}); // { id1: {items: [item1, item2,...], sayName: ahmad}, ... }
   const [myCart, setMyCart] = useState([]);
@@ -85,12 +86,18 @@ export default function CartAccordion({ cartItems }) {
 
   // disable button
   useEffect(() => {
-    if (!successCartPayCheck || cartCheckPayResult.needs[0]) {
+    if (
+      !successCartUpdate ||
+      !successCartPayCheck ||
+      (cartCheckPayResult &&
+        cartCheckPayResult.needs &&
+        cartCheckPayResult.needs[0])
+    ) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successCartPayCheck, cartCheckPayResult]);
+  }, [cartCheckPayResult, successCartPayCheck, successCartUpdate]);
 
   useEffect(() => {
     if (!successCartPayCheck) {
@@ -128,16 +135,21 @@ export default function CartAccordion({ cartItems }) {
 
   // clear time
   useEffect(() => {
-    if (successCartPayCheck && !cartCheckPayResult.needs[0]) {
-      console.log('cartCheckPayResult');
-      console.log(cartCheckPayResult);
-      console.log(cartCheckPayResult.needs[0]);
+    if (
+      successShaparakGate &&
+      successCartUpdate &&
+      successCartPayCheck &&
+      !cartCheckPayResult.needs[0]
+    ) {
+      setIsSuccess(true);
+
       dispatch({ type: SHAPARAK_RESET });
       dispatch({ type: CHECK_CART_PAYMENT_RESET });
       dispatch({ type: CART_UPDATE_RESET });
       dispatch({ type: CART_ADD_RESET });
       dispatch({ type: CART_BADGE_RESET });
-      window.localStorage.removeItem('cartItems');
+
+      // window.localStorage.removeItem('cartItems');
     } else if (successCartPayCheck && !successShaparakGate) {
       // clear all intervals
       // Get a reference to the last interval + 1
@@ -148,7 +160,13 @@ export default function CartAccordion({ cartItems }) {
         window.clearInterval(i);
       }
     }
-  }, [successCartPayCheck, cartCheckPayResult]);
+  }, [
+    successCartPayCheck,
+    cartCheckPayResult,
+    successShaparakGate,
+    successCartUpdate,
+    dispatch,
+  ]);
 
   // set donation
   useEffect(() => {
@@ -208,7 +226,7 @@ export default function CartAccordion({ cartItems }) {
 
   // pay or remove unavailable
   useEffect(() => {
-    if (successCartUpdate && !successCartPayCheck && !successShaparakGate) {
+    if (successCartUpdate && !successShaparakGate) {
       dispatch(makeCartPayment(donation, isCredit));
     } else if (
       successCartUpdate &&
@@ -246,14 +264,10 @@ export default function CartAccordion({ cartItems }) {
   // check & payment
   const handleCartCheck = (e) => {
     e.preventDefault();
-    dispatch({ type: SHAPARAK_RESET });
-    dispatch({ type: CART_UPDATE_RESET });
-    dispatch({ type: CHECK_CART_PAYMENT_RESET });
-
-    console.log(`method = Cart`);
-    console.log(`amount = ${amount}`);
-    console.log(`donation = ${donation}`);
-    console.log(`useCredit = ${isCredit}`);
+    // console.log(`method = Cart`);
+    // console.log(`amount = ${amount}`);
+    // console.log(`donation = ${donation}`);
+    // console.log(`useCredit = ${isCredit}`);
 
     dispatch(updateMyCart());
   };
@@ -339,7 +353,9 @@ export default function CartAccordion({ cartItems }) {
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
                     </Grid>
-                    {(!successCartPayCheck ||
+                    {(!successCartUpdate ||
+                      !successCartPayCheck ||
+                      !successShaparakGate ||
                       (cartCheckPayResult &&
                         cartCheckPayResult.needs &&
                         cartCheckPayResult.needs[0])) && (
@@ -398,7 +414,8 @@ export default function CartAccordion({ cartItems }) {
                 )}
               </Grid>
               <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {successCartPayCheck &&
+                {isSuccess &&
+                  cartCheckPayResult &&
                   cartCheckPayResult.needs &&
                   !cartCheckPayResult.needs[0] && (
                     <Message
