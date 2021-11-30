@@ -11,8 +11,7 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import NeedPageProduct from '../need/NeedPageProduct';
 import {
   changeCartBadgeNumber,
-  checkCart,
-  removeUnavailableItems,
+  updateMyCart,
 } from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
@@ -20,12 +19,12 @@ import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
 import Message from '../Message';
 import {
   CHECK_CART_PAYMENT_RESET,
-  SHAPARAK_PAYMENT_RESET,
+  SHAPARAK_RESET,
 } from '../../constants/paymentConstants';
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
-  CART_CHECK_RESET,
+  CART_UPDATE_RESET,
 } from '../../constants/main/cartConstants';
 
 export default function CartAccordion({ cartItems }) {
@@ -46,116 +45,110 @@ export default function CartAccordion({ cartItems }) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
 
-  const cartCheck = useSelector((state) => state.cartCheck);
+  const cartUpdate = useSelector((state) => state.cartUpdate);
   const {
-    checkResult,
-    success: successCartCheck,
-    loading: loadingCheck,
-    error: errorCheck,
-  } = cartCheck;
+    updateResult,
+    success: successCartUpdate,
+    loading: loadingUpdate,
+    error: errorUpdate,
+  } = cartUpdate;
 
   const shaparakGate = useSelector((state) => state.shaparakGate);
   const {
-    result,
+    result: shaparakResult,
     loading: loadingShaparakGate,
     success: successShaparakGate,
     error: errorShaparakGate,
   } = shaparakGate;
 
-  const cartPayComplete = useSelector((state) => state.cartPayComplete);
+  const cartPayCheck = useSelector((state) => state.cartPayCheck);
   const {
-    result: CartPayComplete,
-    loading: loadingCartPayComplete,
-    success: successCartPayComplete,
-    error: errorCartPayComplete,
-  } = cartPayComplete;
+    result: cartCheckPayResult,
+    loading: loadingCartPayCheck,
+    success: successCartPayCheck,
+    error: errorCartPayCheck,
+  } = cartPayCheck;
 
   // loading button
   useEffect(() => {
-    if (
-      loadingCheck ||
-      loadingShaparakGate ||
-      loadingCartPayComplete ||
-      (successCartCheck && successShaparakGate)
-    ) {
+    if (loadingUpdate || loadingShaparakGate || loadingCartPayCheck) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
   }, [
-    loadingCheck,
+    loadingUpdate,
     loadingShaparakGate,
-    loadingCartPayComplete,
-    successCartPayComplete,
-    successCartCheck,
-    successShaparakGate,
+    loadingCartPayCheck,
+    successCartPayCheck,
   ]);
 
   // disable button
   useEffect(() => {
-    if (!successCartPayComplete) {
+    if (!successCartPayCheck || cartCheckPayResult.needs[0]) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [successCartPayComplete]);
+  }, [successCartPayCheck, cartCheckPayResult]);
+
+  useEffect(() => {
+    if (!successCartPayCheck) {
+      dispatch(checkCartPayment());
+    }
+  }, []);
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    if (successShaparakGate && successCartCheck && cartItems && cartItems[0]) {
+    if (successShaparakGate && successCartUpdate && cartItems && cartItems[0]) {
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
-        if (result.status === 299) {
-          windowReference.document.write(result.response);
+        if (shaparakResult.status === 299) {
+          windowReference.document.write(shaparakResult.response);
         } else {
           windowReference.document.write('loading...');
-          windowReference.location = result.link;
+          windowReference.location = shaparakResult.link;
         }
       }
-
+      // Set a timeout for the above interval (10 Minutes)
       const doneNeedInterval = setInterval(
         () => dispatch(checkCartPayment()),
-        5000
+        8000
       );
-      // Set a timeout for the above interval (10 Minutes)
-      return () => {
-        dispatch({ type: SHAPARAK_PAYMENT_RESET });
-        dispatch({ type: CART_CHECK_RESET });
-        dispatch({ type: CHECK_CART_PAYMENT_RESET });
-        dispatch({ type: CART_ADD_RESET });
-        dispatch({ type: CART_BADGE_RESET });
-        window.localStorage.removeItem('cartItems');
-        setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
-      };
+      setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
     }
-    if (!successShaparakGate) {
-      // clear all intervals
-      // Get a reference to the last interval + 1
-      const intervalId = window.setInterval(function () {},
-      Number.MAX_SAFE_INTEGER);
-
-      // Clear any timeout/interval up to that id
-      for (let i = 1; i < intervalId; i += 1) {
-        window.clearInterval(i);
-      }
-    }
-  }, [result, successShaparakGate, dispatch, successCartCheck, cartItems]);
+  }, [
+    shaparakResult,
+    successShaparakGate,
+    dispatch,
+    successCartUpdate,
+    cartItems,
+  ]);
 
   // clear time
   useEffect(() => {
-    if (successCartPayComplete && !CartPayComplete[0]) {
+    if (successCartPayCheck && !cartCheckPayResult.needs[0]) {
+      console.log('cartCheckPayResult');
+      console.log(cartCheckPayResult);
+      console.log(cartCheckPayResult.needs[0]);
+      dispatch({ type: SHAPARAK_RESET });
+      dispatch({ type: CHECK_CART_PAYMENT_RESET });
+      dispatch({ type: CART_UPDATE_RESET });
+      dispatch({ type: CART_ADD_RESET });
+      dispatch({ type: CART_BADGE_RESET });
+      window.localStorage.removeItem('cartItems');
+    } else if (successCartPayCheck && !successShaparakGate) {
       // clear all intervals
       // Get a reference to the last interval + 1
       const intervalId = window.setInterval(function () {},
       Number.MAX_SAFE_INTEGER);
-
       // Clear any timeout/interval up to that id
       for (let i = 1; i < intervalId; i += 1) {
         window.clearInterval(i);
       }
     }
-  }, [successCartPayComplete, CartPayComplete, dispatch]);
+  }, [successCartPayCheck, cartCheckPayResult]);
 
   // set donation
   useEffect(() => {
@@ -215,16 +208,25 @@ export default function CartAccordion({ cartItems }) {
 
   // pay or remove unavailable
   useEffect(() => {
-    if (successCartCheck && checkResult.needs[0]) {
+    if (successCartUpdate && !successCartPayCheck && !successShaparakGate) {
       dispatch(makeCartPayment(donation, isCredit));
     } else if (
-      successCartCheck &&
-      checkResult.invalidNeedIds &&
-      checkResult.invalidNeedIds[0]
+      successCartUpdate &&
+      updateResult.invalidNeedIds &&
+      updateResult.invalidNeedIds[0]
     ) {
-      dispatch(removeUnavailableItems(checkResult.invalidNeedIds));
+      // dispatch(removeUnavailableItems(updateResult.invalidNeedIds));
     }
-  }, [successCartCheck, checkResult, dispatch, isCredit, donation]);
+  }, [
+    successCartUpdate,
+    updateResult,
+    dispatch,
+    isCredit,
+    donation,
+    cartCheckPayResult,
+    successCartPayCheck,
+    successShaparakGate,
+  ]);
 
   // accordion
   const handleChange = (panel) => (event, isExpanded) => {
@@ -244,15 +246,16 @@ export default function CartAccordion({ cartItems }) {
   // check & payment
   const handleCartCheck = (e) => {
     e.preventDefault();
-    dispatch({ type: SHAPARAK_PAYMENT_RESET });
-    dispatch({ type: CART_CHECK_RESET });
+    dispatch({ type: SHAPARAK_RESET });
+    dispatch({ type: CART_UPDATE_RESET });
     dispatch({ type: CHECK_CART_PAYMENT_RESET });
 
     console.log(`method = Cart`);
     console.log(`amount = ${amount}`);
     console.log(`donation = ${donation}`);
     console.log(`useCredit = ${isCredit}`);
-    dispatch(checkCart());
+
+    dispatch(updateMyCart());
   };
 
   return (
@@ -289,7 +292,7 @@ export default function CartAccordion({ cartItems }) {
           </AccordionDetails>
         </Accordion>
       ))}
-      {cartItems[0] && (
+      {cartItems && cartItems[0] && (
         <Grid
           container
           direction="column"
@@ -336,7 +339,10 @@ export default function CartAccordion({ cartItems }) {
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
                     </Grid>
-                    {!successCartPayComplete && (
+                    {(!successCartPayCheck ||
+                      (cartCheckPayResult &&
+                        cartCheckPayResult.needs &&
+                        cartCheckPayResult.needs[0])) && (
                       <Grid item>
                         <Grid item xs={12}>
                           <Donation
@@ -381,10 +387,10 @@ export default function CartAccordion({ cartItems }) {
                 </form>
               </FormControl>
               <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {(errorShaparakGate || errorCheck || errorCartPayComplete) && (
+                {(errorShaparakGate || errorUpdate || errorCartPayCheck) && (
                   <Message
                     backError={
-                      errorShaparakGate || errorCheck || errorCartPayComplete
+                      errorShaparakGate || errorUpdate || errorCartPayCheck
                     }
                     variant="standard"
                     severity="error"
@@ -392,13 +398,15 @@ export default function CartAccordion({ cartItems }) {
                 )}
               </Grid>
               <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {successCartPayComplete && (
-                  <Message
-                    backSuccess={successCartPayComplete}
-                    severity="success"
-                    variant="standard"
-                  />
-                )}
+                {successCartPayCheck &&
+                  cartCheckPayResult.needs &&
+                  !cartCheckPayResult.needs[0] && (
+                    <Message
+                      backSuccess={successCartPayCheck}
+                      severity="success"
+                      variant="standard"
+                    />
+                  )}
               </Grid>
             </Paper>
           </Grid>

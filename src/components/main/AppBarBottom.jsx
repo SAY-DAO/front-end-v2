@@ -12,9 +12,15 @@ import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
-import { CART_BADGE_RESET } from '../../constants/main/cartConstants';
+import {
+  CART_BADGE_RESET,
+  CART_UPDATE_RESET,
+} from '../../constants/main/cartConstants';
 import { fetchMyHome } from '../../actions/main/homeAction';
-import { fetchUserDetails, logout } from '../../actions/userAction';
+import {
+  CHECK_CART_PAYMENT_RESET,
+  SHAPARAK_RESET,
+} from '../../constants/paymentConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -47,11 +53,16 @@ export default function AppBarBottom({ path }) {
   const { userInfo } = userLogin;
 
   const myHome = useSelector((state) => state.myHome);
-  const { children, success: successHome, error: errorHome } = myHome;
+  const {
+    children,
+    success: successHome,
+    loading: loadingHome,
+    error: errorHome,
+  } = myHome;
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
-    if (!successHome) {
+    if (!successHome && !loadingHome) {
       dispatch(fetchMyHome());
     }
     if (userInfo && children && !children[0]) {
@@ -59,12 +70,23 @@ export default function AppBarBottom({ path }) {
     } else {
       setIsDisabled(false);
     }
-  }, [successHome, userInfo, isDisabled, children, errorHome, dispatch]);
+  }, [
+    successHome,
+    userInfo,
+    isDisabled,
+    children,
+    errorHome,
+    loadingHome,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (value === 'profile') {
       history.push('/main/profile');
     } else if (value === 'cart') {
+      dispatch({ type: SHAPARAK_RESET });
+      dispatch({ type: CHECK_CART_PAYMENT_RESET });
+      dispatch({ type: CART_UPDATE_RESET });
       history.push('/main/cart');
     } else if (value === 'search') {
       history.push('/main/search');

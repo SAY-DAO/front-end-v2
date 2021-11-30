@@ -23,7 +23,7 @@ import { homeReducer } from './homeReducer';
 import { checkCartPaymentReducer, paymentReducer } from './paymentReducder';
 import {
   cartAddReducer,
-  cartCheckReducer,
+  cartUpdateReducer,
   cartBadgeReducer,
 } from './cartReducer';
 import {
@@ -54,6 +54,6 @@ export default combineReducers({
   theCart: cartAddReducer,
   cartBadge: cartBadgeReducer,
   shaparakGate: paymentReducer,
-  cartCheck: cartCheckReducer,
-  cartPayComplete: checkCartPaymentReducer,
+  cartUpdate: cartUpdateReducer,
+  cartPayCheck: checkCartPaymentReducer,
 });

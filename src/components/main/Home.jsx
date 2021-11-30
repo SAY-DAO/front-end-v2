@@ -134,9 +134,8 @@ const Home = () => {
     }
   }, [userInfo, successLogin, history, errorUserDetails]);
 
-  // clean up
+  // clear all intervals
   useEffect(() => {
-    // clear all intervals
     // Get a reference to the last interval + 1
     const intervalId = window.setInterval(function () {},
     Number.MAX_SAFE_INTEGER);
@@ -144,6 +143,10 @@ const Home = () => {
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
     }
+  });
+
+  // clean up
+  useEffect(() => {
     if (successMyChild) {
       dispatch({ type: CHILD_BY_ID_RESET });
     }

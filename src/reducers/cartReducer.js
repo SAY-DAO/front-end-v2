@@ -8,10 +8,10 @@ import {
   CART_BADGE_FAIL,
   CART_BADGE_SUCCESS,
   CART_BADGE_RESET,
-  CART_CHECK_REQUEST,
-  CART_CHECK_SUCCESS,
-  CART_CHECK_FAIL,
-  CART_CHECK_RESET,
+  CART_UPDATE_REQUEST,
+  CART_UPDATE_SUCCESS,
+  CART_UPDATE_FAIL,
+  CART_UPDATE_RESET,
 } from '../constants/main/cartConstants';
 
 export const cartAddReducer = (state = { cartItems: [] }, action) => {
@@ -71,15 +71,15 @@ export const cartBadgeReducer = (state = {}, action) => {
   }
 };
 
-export const cartCheckReducer = (state = {}, action) => {
+export const cartUpdateReducer = (state = {}, action) => {
   switch (action.type) {
-    case CART_CHECK_REQUEST:
+    case CART_UPDATE_REQUEST:
       return { loading: true };
-    case CART_CHECK_SUCCESS:
-      return { loading: false, success: true, checkResult: action.payload };
-    case CART_CHECK_FAIL:
+    case CART_UPDATE_SUCCESS:
+      return { loading: false, success: true, updateResult: action.payload };
+    case CART_UPDATE_FAIL:
       return { loading: false, error: action.payload };
-    case CART_CHECK_RESET:
+    case CART_UPDATE_RESET:
       return {};
     default:
       return state;

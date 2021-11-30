@@ -17,8 +17,7 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { theUser, success: successUserDetails } = userDetails;
 
   useEffect(() => {
-    if (theUser && Number(theUser.credit) >= 0) {
-      console.log(theUser.credit);
+    if (theUser && Number(theUser.credit) > 0) {
       setIsDisable(false);
     } else {
       setIsDisable(true);

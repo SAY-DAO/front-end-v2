@@ -6,9 +6,9 @@ import {
   CART_BADGE_REQUEST,
   CART_BADGE_FAIL,
   CART_BADGE_SUCCESS,
-  CART_CHECK_REQUEST,
-  CART_CHECK_SUCCESS,
-  CART_CHECK_FAIL,
+  CART_UPDATE_REQUEST,
+  CART_UPDATE_SUCCESS,
+  CART_UPDATE_FAIL,
   CART_REMOVE_NA_REQUEST,
   CART_REMOVE_NA_SUCCESS,
   CART_REMOVE_NA_FAIL,
@@ -69,9 +69,9 @@ export const changeCartBadgeNumber = (value) => async (dispatch) => {
   }
 };
 
-export const checkCart = () => async (dispatch, getState) => {
+export const updateMyCart = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: CART_CHECK_REQUEST });
+    dispatch({ type: CART_UPDATE_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
@@ -98,13 +98,13 @@ export const checkCart = () => async (dispatch, getState) => {
     console.log({ cartItems });
     const { data } = await publicApi.put(`/mycart`, { needIds }, config);
     dispatch({
-      type: CART_CHECK_SUCCESS,
+      type: CART_UPDATE_SUCCESS,
       payload: data,
     });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
-      type: CART_CHECK_FAIL,
+      type: CART_UPDATE_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

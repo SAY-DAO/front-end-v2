@@ -36,7 +36,7 @@ export default function NeedPageTop({ oneNeed }) {
       <Grid item xs={12} sx={{ margin: 'auto', textAlign: 'center' }}>
         <Typography variant="body1">{oneNeed.description}</Typography>
       </Grid>
-      <Grid xs={10} item container sx={{ marginTop: 4 }}>
+      <Grid xs={12} md={10} item container sx={{ marginTop: 4 }}>
         <Grid item xs={10} sx={{ margin: 'auto' }}>
           <Card className={classes.theCard1}>
             <Grid

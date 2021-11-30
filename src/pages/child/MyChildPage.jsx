@@ -135,7 +135,7 @@ const MyChildPage = () => {
     } else {
       dispatch(fetchMyChildById(childId));
     }
-  }, [childId, myChildrenIdList, history]);
+  }, [childId, myChildrenIdList, history, dispatch]);
 
   // weather display
   useEffect(() => {
@@ -145,6 +145,17 @@ const MyChildPage = () => {
       }, 500);
     }
   }, [weatherDisplay, successMyChild]);
+
+  // clear all intervals
+  useEffect(() => {
+    // Get a reference to the last interval + 1
+    const intervalId = window.setInterval(function () {},
+    Number.MAX_SAFE_INTEGER);
+    // Clear any timeout/interval up to that id
+    for (let i = 1; i < intervalId; i += 1) {
+      window.clearInterval(i);
+    }
+  });
 
   // Age
   const getAge = (DOB) => {

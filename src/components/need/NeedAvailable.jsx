@@ -31,7 +31,6 @@ import { addToCart } from '../../actions/main/cartAction';
 import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
-import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
 import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
@@ -317,9 +316,9 @@ export default function NeedAvailable({ childId }) {
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    console.log('method');
-    console.log(method);
     if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
+      console.log('method');
+      console.log(method);
       const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
@@ -330,16 +329,12 @@ export default function NeedAvailable({ childId }) {
           windowReference.location = result.link;
         }
       }
+      // Set a timeout for the above interval (10 Minutes)
       const doneNeedInterval = setInterval(
         () => dispatch(fetchChildOneNeed(oneNeed.id)),
-        5000
+        8000
       );
-      // Set a timeout for the above interval (10 Minutes)
-      return () => {
-        dispatch({ type: SHAPARAK_PAYMENT_RESET });
-
-        setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
-      };
+      setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
     }
     if (!successShaparakGate) {
       // clear all intervals
@@ -352,7 +347,7 @@ export default function NeedAvailable({ childId }) {
         window.clearInterval(i);
       }
     }
-  }, [result, successShaparakGate, oneNeed, method, dispatch]);
+  }, [result, successShaparakGate, oneNeed, method]);
 
   // radio button / set method
   const handleMethodChange = (event) => {

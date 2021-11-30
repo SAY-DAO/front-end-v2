@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
-import { SHAPARAK_PAYMENT_RESET } from '../../constants/paymentConstants';
+import { SHAPARAK_RESET } from '../../constants/paymentConstants';
 
 const useStyles = makeStyles(() => ({
   chip: {
@@ -130,7 +130,7 @@ export default function ChildNeedCard({ theChild }) {
   }, [needsArray, category]);
 
   const handleNeedCardClick = (needId, childId) => {
-    dispatch({ type: SHAPARAK_PAYMENT_RESET });
+    dispatch({ type: SHAPARAK_RESET });
     dispatch(fetchChildNeeds(theChild.id));
     history.push(`/child/${childId}/needs/${needId}`);
   };

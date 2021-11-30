@@ -3,9 +3,9 @@ import {
   SHAPARAK_PAYMENT_REQUEST,
   SHAPARAK_PAYMENT_SUCCESS,
   SHAPARAK_PAYMENT_FAIL,
-  CART_PAYMENT_REQUEST,
-  CART_PAYMENT_FAIL,
-  CART_PAYMENT_SUCCESS,
+  SHAPARAK_CART_PAYMENT_REQUEST,
+  SHAPARAK_CART_PAYMENT_FAIL,
+  SHAPARAK_CART_PAYMENT_SUCCESS,
   CHECK_CART_PAYMENT_FAIL,
   CHECK_CART_PAYMENT_SUCCESS,
   CHECK_CART_PAYMENT_REQUEST,
@@ -52,7 +52,7 @@ export const makeCartPayment =
   (donation, isCredit) => async (dispatch, getState) => {
     console.log(donation, isCredit);
     try {
-      dispatch({ type: CART_PAYMENT_REQUEST });
+      dispatch({ type: SHAPARAK_CART_PAYMENT_REQUEST });
       const {
         userLogin: { userInfo },
       } = getState();
@@ -72,13 +72,13 @@ export const makeCartPayment =
         config
       );
       dispatch({
-        type: CART_PAYMENT_SUCCESS,
+        type: SHAPARAK_CART_PAYMENT_SUCCESS,
         payload: data,
       });
     } catch (e) {
       // check for generic and custom message to return using ternary statement
       dispatch({
-        type: CART_PAYMENT_FAIL,
+        type: SHAPARAK_CART_PAYMENT_FAIL,
         payload: e.response && e.response.status ? e.response : e.message,
       });
     }

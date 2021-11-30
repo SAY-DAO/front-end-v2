@@ -27,10 +27,25 @@ export default function NeedPage() {
 
   // fetch need
   useEffect(() => {
-    if (!successOneNeed && needId) {
+    if (!oneNeed && needId) {
       dispatch(fetchChildOneNeed(needId));
+      const doneNeedInterval = setInterval(
+        () => dispatch(fetchChildOneNeed(needId)),
+        3000
+      );
+      setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
     }
-  }, [successOneNeed, needId, dispatch]);
+    if (successOneNeed) {
+      // clear all intervals
+      // Get a reference to the last interval + 1
+      const intervalId = window.setInterval(function () {},
+      Number.MAX_SAFE_INTEGER);
+      // Clear any timeout/interval up to that id
+      for (let i = 1; i < intervalId; i += 1) {
+        window.clearInterval(i);
+      }
+    }
+  }, [oneNeed]);
 
   return (
     <>
