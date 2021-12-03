@@ -32,6 +32,7 @@ import { makePayment } from '../../actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
 import { fetchUserDetails } from '../../actions/userAction';
+import { SHAPARAK_RESET } from '../../constants/paymentConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -89,7 +90,7 @@ export default function NeedAvailable({ childId }) {
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isShaparakOpen, setIsShaparakOpen] = useState(false);
+  const [windowReference, setWindowReference] = useState(false);
   const [method, setMethod] = useState('addToCart');
   const [amount, setAmount] = useState();
   const [unpayable, setUnpayable] = useState(false);
@@ -317,9 +318,9 @@ export default function NeedAvailable({ childId }) {
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
+    console.log(successShaparakGate, method);
+
     if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
-      setIsShaparakOpen(true);
-      const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
         if (result.status === 299) {
@@ -335,17 +336,7 @@ export default function NeedAvailable({ childId }) {
         8000
       );
       setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
-    }
-    if (!successShaparakGate) {
-      // clear all intervals
-      // Get a reference to the last interval + 1
-      const intervalId = window.setInterval(function () {},
-      Number.MAX_SAFE_INTEGER);
-
-      // Clear any timeout/interval up to that id
-      for (let i = 1; i < intervalId; i += 1) {
-        window.clearInterval(i);
-      }
+      dispatch({ type: SHAPARAK_RESET });
     }
   }, [result, successShaparakGate, method]);
 
@@ -381,11 +372,13 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
 
     if (amount >= parseInt(payLimit) && !unpayable) {
+      const ref = window.open('', '_blank');
+      setWindowReference(ref);
+
       console.log(`method = ${method}`);
       console.log(`amount = ${amount}`);
       console.log(`donation = ${donation}`);
       console.log(`useCredit = ${isCredit}`);
-      setIsShaparakOpen(false);
 
       dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
     }

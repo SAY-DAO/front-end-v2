@@ -33,6 +33,7 @@ export default function CartAccordion({ cartItems }) {
 
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [windowReference, setWindowReference] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [expanded, setExpanded] = React.useState();
   const [childrenNeedObj, setChildrenNeedObj] = useState({}); // { id1: {items: [item1, item2,...], sayName: ahmad}, ... }
@@ -106,7 +107,6 @@ export default function CartAccordion({ cartItems }) {
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
     if (successShaparakGate && successCartUpdate && cartItems && cartItems[0]) {
-      const windowReference = window.open('', '_blank');
       if (windowReference) {
         // only wallet -status 299
         if (shaparakResult.status === 299) {
@@ -269,6 +269,9 @@ export default function CartAccordion({ cartItems }) {
   // check & payment
   const handleCartCheck = (e) => {
     e.preventDefault();
+    const ref = window.open('', '_blank');
+    setWindowReference(ref);
+
     // console.log(`method = Cart`);
     // console.log(`amount = ${amount}`);
     // console.log(`donation = ${donation}`);

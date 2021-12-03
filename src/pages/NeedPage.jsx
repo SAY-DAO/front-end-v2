@@ -35,7 +35,7 @@ export default function NeedPage() {
       );
       setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
     }
-    if (oneNeed && oneNeed.is_done) {
+    if (oneNeed) {
       // clear all intervals
       // Get a reference to the last interval + 1
       const intervalId = window.setInterval(function () {},
