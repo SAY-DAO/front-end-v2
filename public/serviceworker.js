@@ -8,7 +8,7 @@ const urlsToCache = [
   '/static/js/vendors~main.chunk.js',
   '/static/js/main.482930e5.chunk.js',
   '/static/js/2.a637ec1e.chunk.js',
-  '/images',
+  '/images/',
   '/images/logo.png',
   '/images/back_orange.svg',
   '/images/intro.png',

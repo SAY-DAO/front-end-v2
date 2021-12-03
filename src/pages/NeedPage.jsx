@@ -27,7 +27,7 @@ export default function NeedPage() {
 
   // fetch need
   useEffect(() => {
-    if (!oneNeed && needId) {
+    if (!successOneNeed && needId) {
       dispatch(fetchChildOneNeed(needId));
       const doneNeedInterval = setInterval(
         () => dispatch(fetchChildOneNeed(needId)),
@@ -45,7 +45,7 @@ export default function NeedPage() {
         window.clearInterval(i);
       }
     }
-  }, [oneNeed, needId]);
+  }, [successOneNeed, needId, dispatch]);
 
   return (
     <>

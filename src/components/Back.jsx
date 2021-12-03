@@ -48,7 +48,7 @@ const Back = ({ step, to, isOrange, handleClickOverride }) => {
           alt="back"
           style={{
             top: 0,
-            left: 0,
+            left: 'calc(10%  - 30px )',
             width: '24px',
             margin: '18px',
             position: 'absolute',
@@ -61,7 +61,7 @@ const Back = ({ step, to, isOrange, handleClickOverride }) => {
           alt="back"
           style={{
             top: 0,
-            left: 0,
+            left: 'calc(10%  - 30px )',
             width: '24px',
             margin: '18px',
             position: 'fixed',

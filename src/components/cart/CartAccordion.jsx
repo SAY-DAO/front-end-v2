@@ -129,6 +129,7 @@ export default function CartAccordion({ cartItems }) {
     dispatch,
     successCartUpdate,
     cartItems,
+    windowReference,
   ]);
 
   // clear time

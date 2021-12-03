@@ -13,7 +13,7 @@ import NeedStepper from './NeedStepper';
 import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
 import NeedParticipants from './NeedParticipants';
 import { SHAPARAK_RESET } from '../../constants/paymentConstants';
-import { fetchChildNeeds } from '../../actions/childAction';
+import { fetchChildNeeds, fetchMyChildById } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -108,8 +108,11 @@ export default function NeedDone({ childId }) {
 
   // When payment is done we land here with an interval from NeedAvailable.jsx
   useEffect(() => {
+    console.log(theChild);
     if (theChild) {
       dispatch(fetchChildNeeds(theChild.id));
+    } else if (!theChild) {
+      dispatch(fetchMyChildById(childId));
     }
 
     // clear all intervals
@@ -121,7 +124,7 @@ export default function NeedDone({ childId }) {
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
     }
-  }, [theChild]);
+  }, [theChild, dispatch]);
 
   const classes = useStyles();
   return (
@@ -129,7 +132,7 @@ export default function NeedDone({ childId }) {
       <Grid container direction="column">
         {!isLoading && oneNeed && theChild && (
           <Grid item xs={12} className={classes.root}>
-            <Back isOrange={false} to={`/child/${childId}`} />
+            <Back isOrange={false} to={`/child/${childId}/`} />
             <Grid item xs={12}>
               <>
                 <div style={{ minHeight: '350px' }} />

@@ -76,7 +76,7 @@ export default function Report() {
 
   // name of need and child
   useEffect(() => {
-    if (oneNeed) {
+    if (oneNeed && theChild) {
       if (oneNeed.type && oneNeed.link) {
         setNeedName(oneNeed.clean_title);
         setDkc(oneNeed.dkc);

@@ -255,7 +255,10 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: CART_ADD_RESET });
   dispatch({ type: HOME_RESET });
   dispatch({ type: USER_LOGOUT });
-  localStorage.clear();
+  localStorage.removeItem('verifyInfo');
+  localStorage.removeItem('userInfo');
+  localStorage.removeItem('localOTP');
+  localStorage.removeItem('localDialCode');
 };
 
 export const forgotPassword = (theKey, value) => async (dispatch) => {
