@@ -55,11 +55,8 @@ const Profile = () => {
 
   const [modal, setModal] = useState(false);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
-
   const userDetails = useSelector((state) => state.userDetails);
-  const { error: errorUserDetails } = userDetails;
+  const { theUser, error: errorUserDetails } = userDetails;
 
   // login
   useEffect(() => {
@@ -68,13 +65,13 @@ const Profile = () => {
     if (errorUserDetails) {
       history.push('/login?redirect=main/profile');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [history, errorUserDetails, dispatch]);
 
   const classes = useStyles();
 
   return (
     <Grid container direction="column" alignItems="center" maxWidth>
-      {userInfo ? (
+      {theUser ? (
         <>
           <Grid
             container
@@ -97,12 +94,12 @@ const Profile = () => {
             >
               <Grid item xs={3} md={2}>
                 <Avatar
-                  src={userInfo.user.avatarUrl}
+                  src={theUser.avatarUrl}
                   className={classes.userAvatar}
                 />
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
-                <Typography variant="subtitle1">{`${userInfo.user.firstName} ${userInfo.user.lastName}`}</Typography>
+                <Typography variant="subtitle1">{`${theUser.firstName} ${theUser.lastName}`}</Typography>
                 {/* <Grid item xs>
                   <Link to="/main/profile/edit">
                     <Typography
@@ -140,7 +137,7 @@ const Profile = () => {
 
               <Grid>
                 <Typography className={classes.nameTitle}>
-                  {`${userInfo.user.firstName} ${userInfo.user.lastName}`}
+                  {`${theUser.firstName} ${theUser.lastName}`}
                 </Typography>
               </Grid>
             </Grid>
@@ -160,7 +157,7 @@ const Profile = () => {
                   {t('profile.credit')}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
-                  {userInfo.user.credit.toLocaleString() + t('currency.toman')}
+                  {theUser.credit.toLocaleString() + t('currency.toman')}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -168,7 +165,7 @@ const Profile = () => {
                   {t('profile.doneNeeds')}
                 </Typography>
                 <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
-                  {userInfo.user.done_needs_count}
+                  {theUser.done_needs_count}
                 </Typography>
               </Grid>
             </Grid>
