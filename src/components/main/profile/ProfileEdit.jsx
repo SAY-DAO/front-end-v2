@@ -201,7 +201,7 @@ const ProfileEdit = () => {
   // Success
   useEffect(() => {
     if (successCheck) {
-      history.push('main/profile/settings');
+      history.push('/main/profile/settings');
     }
   }, [successCheck, history]);
 

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
-  CHILD_SEARCH_RESULT_RESET,
+  CHILD_BY_TOKEN_RESET,
 } from '../../constants/childConstants';
 
 const style = {
@@ -51,7 +51,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   useEffect(() => {
     if (leave && !open) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-      dispatch({ type: CHILD_SEARCH_RESULT_RESET });
+      dispatch({ type: CHILD_BY_TOKEN_RESET });
       localStorage.removeItem('randomChildToken');
       if (redirect) {
         history.push(redirect);

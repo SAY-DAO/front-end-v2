@@ -13,8 +13,6 @@ export default function Cart() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [localCartItems, setLocalCartItems] = useState([]);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
@@ -22,14 +20,7 @@ export default function Cart() {
   const { error: errorUserDetails } = userDetails;
 
   const theCart = useSelector((state) => state.theCart);
-  const { cartItems, success: successCartItems } = theCart;
-
-  useEffect(() => {
-    const cartItemFromStorage = localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
-      : [];
-    setLocalCartItems(cartItemFromStorage);
-  }, [successCartItems, dispatch]);
+  const { cartItems } = theCart;
 
   // login
   useEffect(() => {
@@ -38,6 +29,10 @@ export default function Cart() {
       history.push('/login?redirect=main/cart');
     }
   }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+
+  const cartItemFromStorage = localStorage.getItem('SAY-cartItems')
+    ? JSON.parse(localStorage.getItem('SAY-cartItems'))
+    : null;
 
   return (
     <Grid sx={{ width: '100%' }}>
@@ -52,7 +47,7 @@ export default function Cart() {
       >
         <Typography variant="subtitle1">{t('cart.title')}</Typography>
       </Box>
-      {!cartItems[0] && !localCartItems[0] && (
+      {!cartItemFromStorage ? (
         <Box
           sx={{
             width: '70%',
@@ -66,8 +61,10 @@ export default function Cart() {
             {t('error.emptyCart')}
           </Typography>
         </Box>
+      ) : (
+        <CartAccordion />
       )}
-      <CartAccordion cartItems={localCartItems} />
+
       <AppBarBottom path="cart" />
     </Grid>
   );

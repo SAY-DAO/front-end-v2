@@ -16,8 +16,12 @@ const userInfo = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
-const cartItemFromStorage = localStorage.getItem('cartItems')
-  ? JSON.parse(localStorage.getItem('cartItems'))
+const cartItemFromStorage = localStorage.getItem('SAY-cartItems')
+  ? JSON.parse(localStorage.getItem('SAY-cartItems'))
+  : [];
+
+const token = localStorage.getItem('randomChildToken')
+  ? JSON.parse(localStorage.getItem('randomChildToken'))
   : [];
 
 const initialState = {
@@ -29,6 +33,9 @@ const initialState = {
   },
   theCart: {
     cartItems: cartItemFromStorage,
+  },
+  childByToken: {
+    token,
   },
 };
 

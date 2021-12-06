@@ -17,6 +17,7 @@ import {
   childNeedsReducer,
   childOneNeedReducer,
   childOneNeedReceiptReducer,
+  childByTokenReducer,
 } from './childReducer';
 
 import { homeReducer } from './homeReducer';
@@ -43,7 +44,7 @@ export default combineReducers({
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
   childRandomSearch: childRandomSearchReducer,
-  // JoinNewFamily: invitationReducer,
+  childByToken: childByTokenReducer,
   joinResult: joinVirtualFamilyReducer,
   leftFamily: LeaveVirtualFamilyReducer,
   myHome: homeReducer,

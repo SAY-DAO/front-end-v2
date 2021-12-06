@@ -169,7 +169,7 @@ const Home = () => {
 
   // if no children
   useEffect(() => {
-    if (children && !children[0]) {
+    if (!successRandomSearch && children && !children[0]) {
       history.push('/main/search');
     } else if (children && children[0]) {
       history.push('/main/home');

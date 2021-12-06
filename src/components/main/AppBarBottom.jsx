@@ -14,13 +14,11 @@ import PropTypes from 'prop-types';
 import { changeCartBadgeNumber } from '../../actions/main/cartAction';
 import {
   CART_BADGE_RESET,
-  CART_UPDATE_RESET,
+  CART_UPDATE_BACK_RESET,
 } from '../../constants/main/cartConstants';
 import { fetchMyHome } from '../../actions/main/homeAction';
-import {
-  CHECK_CART_PAYMENT_RESET,
-  SHAPARAK_RESET,
-} from '../../constants/paymentConstants';
+import { SHAPARAK_RESET } from '../../constants/paymentConstants';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -60,6 +58,9 @@ export default function AppBarBottom({ path }) {
     error: errorHome,
   } = myHome;
 
+  const childRandomSearch = useSelector((state) => state.childRandomSearch);
+  const { success: successRandomSearch } = childRandomSearch;
+
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
     if (!successHome && !loadingHome) {
@@ -85,24 +86,25 @@ export default function AppBarBottom({ path }) {
       history.push('/main/profile');
     } else if (value === 'cart') {
       dispatch({ type: SHAPARAK_RESET });
-      dispatch({ type: CART_UPDATE_RESET });
+      dispatch({ type: CART_UPDATE_BACK_RESET });
       history.push('/main/cart');
     } else if (value === 'search') {
       history.push('/main/search');
     } else if (value === 'home') {
       history.push('/main/home');
     }
-    const cartItems = localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
+    const cartItems = localStorage.getItem('SAY-cartItems')
+      ? JSON.parse(localStorage.getItem('SAY-cartItems'))
       : null;
     if (cartItems) {
       dispatch(changeCartBadgeNumber(cartItems.length));
-    } else {
+    } else if (!cartItems) {
       dispatch({ type: CART_BADGE_RESET });
     }
-  }, [value, history, dispatch]);
+  }, [value]);
 
   const handleChange = (event, newValue) => {
+    console.log(event);
     setValue(newValue);
   };
 

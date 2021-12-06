@@ -9,11 +9,11 @@ export default function ChildFamily({ theChild }) {
   const history = useHistory();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (!theChild.childFamilyMembers) {
-      history.push('/main/search');
-    }
-  }, [theChild, history]);
+  // useEffect(() => {
+  //   if (!theChild.childFamilyMembers) {
+  //     history.push('/main/search');
+  //   }
+  // }, [theChild, history]);
 
   return (
     <div>

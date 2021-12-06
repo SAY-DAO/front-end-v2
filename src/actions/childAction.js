@@ -15,6 +15,9 @@ import {
   CHILD_ONE_NEED_RECEIPT_REQUEST,
   CHILD_ONE_NEED_RECEIPT_SUCCESS,
   CHILD_ONE_NEED_RECEIPT_FAIL,
+  CHILD_BY_TOKEN_REQUEST,
+  CHILD_BY_TOKEN_SUCCESS,
+  CHILD_BY_TOKEN_FAIL,
 } from '../constants/childConstants';
 
 export const fetchRandomChild = () => async (dispatch) => {
@@ -43,30 +46,29 @@ export const fetchRandomChild = () => async (dispatch) => {
   }
 };
 
-// export const fetchChildResult = (token) => async (dispatch) => {
-//   try {
-//     dispatch({ type: CHILD_SEARCH_RESULT_REQUEST });
-//     const config = {
-//       headers: {
-//         'Content-type': 'application/json',
-//       },
-//     };
+export const fetchChildByTokenToken = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: CHILD_BY_TOKEN_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
 
-//     const { data } = await publicApi.get(`/child/invitations/${token}`, config);
+    const { data } = await publicApi.get(`/child/invitations/${token}`, config);
 
-//     dispatch({
-//       type: CHILD_SEARCH_RESULT_SUCCESS,
-//       payload: data,
-//     });
-//     localStorage.setItem('randomChildToken', JSON.stringify(token));
-//   } catch (e) {
-//     // check for generic and custom message to return using ternary statement
-//     dispatch({
-//       type: CHILD_SEARCH_RESULT_FAIL,
-//       payload: e.response && e.response.status ? e.response : e.message,
-//     });
-//   }
-// };
+    dispatch({
+      type: CHILD_BY_TOKEN_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: CHILD_BY_TOKEN_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const fetchMyChildById = (childId) => async (dispatch, getState) => {
   try {

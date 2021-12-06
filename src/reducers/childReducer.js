@@ -19,12 +19,13 @@ import {
   CHILD_ONE_NEED_RECEIPT_SUCCESS,
   CHILD_ONE_NEED_RECEIPT_FAIL,
   CHILD_ONE_NEED_RECEIPT_RESET,
+  CHILD_BY_TOKEN_REQUEST,
+  CHILD_BY_TOKEN_SUCCESS,
+  CHILD_BY_TOKEN_FAIL,
+  CHILD_BY_TOKEN_RESET,
 } from '../constants/childConstants';
 
-export const childRandomSearchReducer = (
-  state = { token: '', theChild: {} },
-  action
-) => {
+export const childRandomSearchReducer = (state = {}, action) => {
   switch (action.type) {
     case CHILD_RANDOM_SEARCH_REQUEST:
       return { loading: true, success: false };
@@ -33,7 +34,7 @@ export const childRandomSearchReducer = (
         ...state,
         loading: false,
         success: true,
-        token: action.payload.token,
+        theToken: action.payload.token,
         theChild: action.payload.child,
       };
     case CHILD_RANDOM_SEARCH_FAIL:
@@ -45,20 +46,25 @@ export const childRandomSearchReducer = (
   }
 };
 
-// export const childRandomSearchReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case CHILD_SEARCH_RESULT_REQUEST:
-//       return { loading: true, success: false };
-//     case CHILD_SEARCH_RESULT_SUCCESS:
-//       return { loading: false, success: true, theChild: action.payload };
-//     case CHILD_SEARCH_RESULT_FAIL:
-//       return { loading: false, error: action.payload };
-//     case CHILD_SEARCH_RESULT_RESET:
-//       return {};
-//     default:
-//       return state;
-//   }
-// };
+export const childByTokenReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHILD_BY_TOKEN_REQUEST:
+      return { loading: true, success: false };
+    case CHILD_BY_TOKEN_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        token: action.payload.token,
+        child: action.payload.child,
+      };
+    case CHILD_BY_TOKEN_FAIL:
+      return { loading: false, error: action.payload };
+    case CHILD_BY_TOKEN_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
 
 export const myChildReducer = (state = {}, action) => {
   switch (action.type) {

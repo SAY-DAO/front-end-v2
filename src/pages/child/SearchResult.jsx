@@ -12,6 +12,7 @@ import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import { fetchUserDetails } from '../../actions/userAction';
+import { fetchChildByTokenToken } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -71,7 +72,11 @@ const SearchResult = () => {
   const [backIsTrue, setBackIsTrue] = useState(false);
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
-  const { theChild, error: errorRandomSearch } = childRandomSearch;
+  const {
+    theChild,
+    error: errorRandomSearch,
+    success: successRandomSearch,
+  } = childRandomSearch;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -83,12 +88,16 @@ const SearchResult = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=main/search');
+      history.push(`/login?redirect=search-result`);
     }
-    return () => {
+  }, [userInfo, successLogin, errorUserDetails]);
+
+  useEffect(() => {
+    if (!successRandomSearch) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-    };
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+      history.push('/main/search');
+    }
+  }, [successRandomSearch]);
 
   // child age
   const getAge = (DOB) => {
@@ -128,7 +137,7 @@ const SearchResult = () => {
         <Back isOrange={false} handleClickOverride={handleBack} />
 
         <Grid item xs={12}>
-          {!theChild ? (
+          {!successRandomSearch ? (
             <CircularProgress />
           ) : (
             <>

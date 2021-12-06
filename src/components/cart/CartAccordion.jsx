@@ -8,10 +8,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@material-ui/lab/LoadingButton';
+import { useHistory } from 'react-router';
 import NeedPageProduct from '../need/NeedPageProduct';
 import {
   changeCartBadgeNumber,
-  updateMyCart,
+  updateBackEndCart,
 } from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
@@ -24,11 +25,12 @@ import {
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
-  CART_UPDATE_RESET,
+  CART_UPDATE_BACK_RESET,
 } from '../../constants/main/cartConstants';
 
-export default function CartAccordion({ cartItems }) {
+export default function CartAccordion() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { t } = useTranslation();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -46,6 +48,9 @@ export default function CartAccordion({ cartItems }) {
   const [donation, setDonation] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
+
+  const theCart = useSelector((state) => state.theCart);
+  const { cartItems } = theCart;
 
   const cartUpdate = useSelector((state) => state.cartUpdate);
   const {
@@ -100,13 +105,9 @@ export default function CartAccordion({ cartItems }) {
     }
   }, [cartCheckPayResult, successCartPayCheck, successCartUpdate, isSuccess]);
 
-  useEffect(() => {
-    dispatch(checkCartPayment());
-  }, []);
-
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    if (successShaparakGate && successCartUpdate && cartItems && cartItems[0]) {
+    if (successShaparakGate && successCartUpdate && updateResult.needs[0]) {
       if (windowReference) {
         // only wallet -status 299
         if (shaparakResult.status === 299) {
@@ -128,51 +129,60 @@ export default function CartAccordion({ cartItems }) {
     successShaparakGate,
     dispatch,
     successCartUpdate,
-    cartItems,
     windowReference,
+    updateResult,
   ]);
+
+  // pay or remove unavailable
+  useEffect(() => {
+    if (successCartUpdate && updateResult.needs[0] && !successShaparakGate) {
+      dispatch(makeCartPayment(donation, isCredit));
+    }
+    // } else if (
+    //  errorShaparakGate || errorUpdate || errorCartPayCheck
+    // ) {
+    //   // dispatch(removeUnavailableItems(updateResult.data.invalidNeedIds));
+    // }
+  }, [successCartUpdate, updateResult]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsSuccess(false);
+    }
+  }, []);
 
   // clear time
   useEffect(() => {
     if (
-      successShaparakGate &&
       successCartUpdate &&
-      successCartPayCheck &&
-      !cartCheckPayResult.needs[0]
-    ) {
-      setIsSuccess(true);
-
-      dispatch({ type: SHAPARAK_RESET });
-      dispatch({ type: CHECK_CART_PAYMENT_RESET });
-      dispatch({ type: CART_UPDATE_RESET });
-      dispatch({ type: CART_ADD_RESET });
-      dispatch({ type: CART_BADGE_RESET });
-      return () => {
-        window.localStorage.removeItem('cartItems');
-      };
-    }
-    if (
       cartCheckPayResult &&
       cartCheckPayResult.needs &&
-      !cartCheckPayResult.needs[0] &&
-      !successShaparakGate
+      !cartCheckPayResult.needs[0]
     ) {
-      // clear all intervals
-      // Get a reference to the last interval + 1
-      const intervalId = window.setInterval(function () {},
-      Number.MAX_SAFE_INTEGER);
-      // Clear any timeout/interval up to that id
-      for (let i = 1; i < intervalId; i += 1) {
-        window.clearInterval(i);
+      if (successShaparakGate) {
+        dispatch(makeCartPayment(donation, isCredit));
+        setIsSuccess(true);
+        dispatch({ type: SHAPARAK_RESET });
+        dispatch({ type: CART_BADGE_RESET });
+        dispatch({ type: CHECK_CART_PAYMENT_RESET });
+        dispatch({ type: CART_ADD_RESET });
+
+        window.localStorage.removeItem('SAY-cartItems');
+        // clear all intervals
+        // Get a reference to the last interval + 1
+        const intervalId = window.setInterval(function () {},
+        Number.MAX_SAFE_INTEGER);
+        // Clear any timeout/interval up to that id
+        for (let i = 1; i < intervalId; i += 1) {
+          window.clearInterval(i);
+        }
+      }
+      if (!successShaparakGate) {
+        dispatch({ type: SHAPARAK_RESET });
+        dispatch({ type: CART_UPDATE_BACK_RESET });
       }
     }
-  }, [
-    successCartPayCheck,
-    cartCheckPayResult,
-    successShaparakGate,
-    successCartUpdate,
-    dispatch,
-  ]);
+  }, [cartCheckPayResult, successShaparakGate]);
 
   // set donation
   useEffect(() => {
@@ -230,28 +240,6 @@ export default function CartAccordion({ cartItems }) {
     }
   }, [userCredit, donation, amount, isCredit, addedAmount]);
 
-  // pay or remove unavailable
-  useEffect(() => {
-    if (successCartUpdate && !successShaparakGate) {
-      dispatch(makeCartPayment(donation, isCredit));
-    } else if (
-      successCartUpdate &&
-      updateResult.invalidNeedIds &&
-      updateResult.invalidNeedIds[0]
-    ) {
-      // dispatch(removeUnavailableItems(updateResult.invalidNeedIds));
-    }
-  }, [
-    successCartUpdate,
-    updateResult,
-    dispatch,
-    isCredit,
-    donation,
-    cartCheckPayResult,
-    successCartPayCheck,
-    successShaparakGate,
-  ]);
-
   // accordion
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -259,10 +247,10 @@ export default function CartAccordion({ cartItems }) {
 
   // delete item
   const handleDelete = (needId) => {
-    localStorage.removeItem('cartItems');
+    localStorage.removeItem('SAY-cartItems');
     const deleteIndex = myCart.findIndex((item) => item.needId === needId);
     setMyCart(myCart.splice(deleteIndex, 1));
-    localStorage.setItem('cartItems', JSON.stringify(myCart));
+    localStorage.setItem('SAY-cartItems', JSON.stringify(myCart));
     const badgeNumber = myCart.length;
     dispatch(changeCartBadgeNumber(badgeNumber));
   };
@@ -278,7 +266,7 @@ export default function CartAccordion({ cartItems }) {
     // console.log(`donation = ${donation}`);
     // console.log(`useCredit = ${isCredit}`);
 
-    dispatch(updateMyCart());
+    dispatch(updateBackEndCart());
   };
 
   return (
@@ -315,15 +303,15 @@ export default function CartAccordion({ cartItems }) {
           </AccordionDetails>
         </Accordion>
       ))}
-      {cartItems && cartItems[0] && (
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-end"
-          alignItems="flex-start"
-        >
-          <Grid item sx={{ width: '100%', padding: 2 }}>
-            <Paper>
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-end"
+        alignItems="flex-start"
+      >
+        <Grid item sx={{ width: '100%', padding: 2 }}>
+          <Paper>
+            {cartItems && cartItems[0] && (
               <FormControl
                 required
                 variant="standard"
@@ -362,12 +350,7 @@ export default function CartAccordion({ cartItems }) {
                         <Divider sx={{ width: '95%' }} />
                       </Grid>
                     </Grid>
-                    {(!successCartUpdate ||
-                      !successCartPayCheck ||
-                      !successShaparakGate ||
-                      (cartCheckPayResult &&
-                        cartCheckPayResult.needs &&
-                        cartCheckPayResult.needs[0])) && (
+                    {!isSuccess && (
                       <Grid item>
                         <Grid item xs={12}>
                           <Donation
@@ -411,37 +394,34 @@ export default function CartAccordion({ cartItems }) {
                   </Grid>
                 </form>
               </FormControl>
-              <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {(errorShaparakGate || errorUpdate || errorCartPayCheck) && (
+            )}
+
+            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+              {(errorShaparakGate || errorUpdate || errorCartPayCheck) && (
+                <Message
+                  backError={
+                    errorShaparakGate || errorUpdate || errorCartPayCheck
+                  }
+                  variant="standard"
+                  severity="error"
+                />
+              )}
+            </Grid>
+            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+              {isSuccess &&
+                cartCheckPayResult &&
+                cartCheckPayResult.needs &&
+                !cartCheckPayResult.needs[0] && (
                   <Message
-                    backError={
-                      errorShaparakGate || errorUpdate || errorCartPayCheck
-                    }
+                    backSuccess={successCartPayCheck}
+                    severity="success"
                     variant="standard"
-                    severity="error"
                   />
                 )}
-              </Grid>
-              <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                {isSuccess &&
-                  cartCheckPayResult &&
-                  cartCheckPayResult.needs &&
-                  !cartCheckPayResult.needs[0] && (
-                    <Message
-                      backSuccess={successCartPayCheck}
-                      severity="success"
-                      variant="standard"
-                    />
-                  )}
-              </Grid>
-            </Paper>
-          </Grid>
+            </Grid>
+          </Paper>
         </Grid>
-      )}
+      </Grid>
     </Grid>
   );
 }
-
-CartAccordion.propTypes = {
-  cartItems: PropTypes.array,
-};

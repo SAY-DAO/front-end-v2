@@ -20,125 +20,129 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
 
   return (
     <>
-      <Grid>
-        <Card
-          sx={{
-            display: 'flex',
-            marginLeft: 2,
-            marginRight: 2,
-            padding: 1,
-          }}
-          elevation={handleDelete && 3}
-        >
-          <CardMedia
-            component="img"
-            sx={
-              imageSkeleton
-                ? {
-                    display: 'none',
-                  }
-                : {
-                    maxHeight: handleDelete ? 50 : 100,
-                    maxWidth: handleDelete ? 50 : 100,
-                  }
-            }
-            image={oneNeed.img}
-            alt="Need image"
-            onLoad={() => setImageSkeleton(false)}
-          />
-          <Skeleton
-            sx={
-              imageSkeleton
-                ? {
-                    width: 100,
-                    height: 100,
-                    margin: 1,
-                  }
-                : {
-                    display: 'none',
-                  }
-            }
-          />
-          <Box
+      {oneNeed.cost && (
+        <Grid>
+          <Card
             sx={{
               display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
+              marginLeft: 2,
+              marginRight: 2,
               padding: 1,
             }}
+            elevation={handleDelete && 3}
           >
-            <CardContent
+            <CardMedia
+              component="img"
+              sx={
+                imageSkeleton
+                  ? {
+                      display: 'none',
+                    }
+                  : {
+                      maxHeight: handleDelete ? 50 : 100,
+                      maxWidth: handleDelete ? 50 : 100,
+                    }
+              }
+              image={oneNeed.img}
+              alt="Need image"
+              onLoad={() => setImageSkeleton(false)}
+            />
+            <Skeleton
+              sx={
+                imageSkeleton
+                  ? {
+                      width: 100,
+                      height: 100,
+                      margin: 1,
+                    }
+                  : {
+                      display: 'none',
+                    }
+              }
+            />
+            <Box
               sx={{
-                paddingBottom: '10px !important',
-                paddingTop: '10px !important',
-                paddingLeft: 0,
-                paddingRight: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                padding: 1,
               }}
             >
-              <Grid
-                container
-                direction={handleDelete ? 'row' : 'column'}
-                justifyContent={handleDelete && 'space-between'}
-                alignItems={handleDelete && 'center'}
-                spacing={handleDelete ? 0 : 4}
+              <CardContent
+                sx={{
+                  paddingBottom: '10px !important',
+                  paddingTop: '10px !important',
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                }}
               >
-                <Grid item xs={5}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{
-                      whiteSpace: handleDelete && 'nowrap',
-                      width: handleDelete && '80px',
-                      overflow: handleDelete && 'hidden',
-                      textOverflow: handleDelete && 'ellipsis',
-                      fontSize: handleDelete && '10px',
-                    }}
-                  >
-                    {oneNeed.title}
-                  </Typography>
-                </Grid>
-
                 <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'right',
-                    alignItems: 'start',
-                  }}
+                  container
+                  direction={handleDelete ? 'row' : 'column'}
+                  justifyContent={handleDelete && 'space-between'}
+                  alignItems={handleDelete && 'center'}
+                  spacing={handleDelete ? 0 : 4}
                 >
-                  <img
-                    src="/images/icons/Money.svg"
-                    alt="money icon"
-                    style={{
-                      maxWidth: 14,
-                      maxHeight: 14,
-                      marginLeft: 4,
-                      marginRight: 4,
-                    }}
-                  />
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ fontSize: handleDelete && '10px' }}
-                  >
-                    {oneNeed.cost.toLocaleString() + t('currency.toman')}
-                  </Typography>
-                </Grid>
-                {handleDelete && (
-                  <Grid item xs sx={{ flexGrow: handleDelete && 0 }}>
-                    <IconButton
-                      color="primary"
-                      sx={{ padding: 0 }}
-                      onClick={handleDelete && (() => handleDelete(oneNeed.id))}
+                  <Grid item xs={5}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        whiteSpace: handleDelete && 'nowrap',
+                        width: handleDelete && '80px',
+                        overflow: handleDelete && 'hidden',
+                        textOverflow: handleDelete && 'ellipsis',
+                        fontSize: handleDelete && '10px',
+                      }}
                     >
-                      <DeleteForeverOutlinedIcon color="warning" />{' '}
-                    </IconButton>
+                      {oneNeed.title}
+                    </Typography>
                   </Grid>
-                )}
-              </Grid>
-            </CardContent>
-          </Box>
-        </Card>
-      </Grid>
+
+                  <Grid
+                    item
+                    xs={4}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'right',
+                      alignItems: 'start',
+                    }}
+                  >
+                    <img
+                      src="/images/icons/Money.svg"
+                      alt="money icon"
+                      style={{
+                        maxWidth: 14,
+                        maxHeight: 14,
+                        marginLeft: 4,
+                        marginRight: 4,
+                      }}
+                    />
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontSize: handleDelete && '10px' }}
+                    >
+                      {oneNeed.cost.toLocaleString() + t('currency.toman')}
+                    </Typography>
+                  </Grid>
+                  {handleDelete && (
+                    <Grid item xs sx={{ flexGrow: handleDelete && 0 }}>
+                      <IconButton
+                        color="primary"
+                        sx={{ padding: 0 }}
+                        onClick={
+                          handleDelete && (() => handleDelete(oneNeed.id))
+                        }
+                      >
+                        <DeleteForeverOutlinedIcon color="warning" />{' '}
+                      </IconButton>
+                    </Grid>
+                  )}
+                </Grid>
+              </CardContent>
+            </Box>
+          </Card>
+        </Grid>
+      )}
     </>
   );
 }

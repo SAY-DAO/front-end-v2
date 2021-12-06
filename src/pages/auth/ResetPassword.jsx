@@ -131,7 +131,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (successReset) {
-      history.push('main/profile/settings');
+      history.push('/main/profile/settings');
     }
   }, [successReset]);
 

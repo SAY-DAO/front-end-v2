@@ -6,9 +6,9 @@ import {
   CART_BADGE_REQUEST,
   CART_BADGE_FAIL,
   CART_BADGE_SUCCESS,
-  CART_UPDATE_REQUEST,
-  CART_UPDATE_SUCCESS,
-  CART_UPDATE_FAIL,
+  CART_UPDATE_BACK_REQUEST,
+  CART_UPDATE_BACK_SUCCESS,
+  CART_UPDATE_BACK_FAIL,
   CART_REMOVE_NA_REQUEST,
   CART_REMOVE_NA_SUCCESS,
   CART_REMOVE_NA_FAIL,
@@ -36,7 +36,7 @@ export const addToCart =
       });
       // save the item in browser local storage. It needs to be parsed back to an object to be used
       localStorage.setItem(
-        'cartItems',
+        'SAY-cartItems',
         JSON.stringify(getState().theCart.cartItems)
       );
     } catch (e) {
@@ -69,9 +69,9 @@ export const changeCartBadgeNumber = (value) => async (dispatch) => {
   }
 };
 
-export const updateMyCart = () => async (dispatch, getState) => {
+export const updateBackEndCart = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: CART_UPDATE_REQUEST });
+    dispatch({ type: CART_UPDATE_BACK_REQUEST });
     const {
       userLogin: { userInfo },
     } = getState();
@@ -82,8 +82,8 @@ export const updateMyCart = () => async (dispatch, getState) => {
       },
     };
 
-    const cartItems = localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
+    const cartItems = localStorage.getItem('SAY-cartItems')
+      ? JSON.parse(localStorage.getItem('SAY-cartItems'))
       : [];
 
     let needIds = [];
@@ -98,13 +98,13 @@ export const updateMyCart = () => async (dispatch, getState) => {
     console.log({ cartItems });
     const { data } = await publicApi.put(`/mycart`, { needIds }, config);
     dispatch({
-      type: CART_UPDATE_SUCCESS,
+      type: CART_UPDATE_BACK_SUCCESS,
       payload: data,
     });
   } catch (e) {
     // check for generic and custom message to return using ternary statement
     dispatch({
-      type: CART_UPDATE_FAIL,
+      type: CART_UPDATE_BACK_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

@@ -17,6 +17,7 @@ import GoneModal from '../modals/GoneModal';
 import AdoptModel from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,9 +97,6 @@ export default function InfoTabs() {
 
   // setFamily and userRole
   useEffect(() => {
-    if (!theChild) {
-      history.push('/main/search');
-    }
     if (theChild) {
       if (theChild.userRole) {
         setUserRole(theChild.userRole);
@@ -146,7 +144,7 @@ export default function InfoTabs() {
   // it invokes the search page to fetch new random child automatically
   useEffect(() => {
     if (alreadyInFamily) {
-      history.push(`main/search`);
+      dispatch(fetchRandomChild());
     }
   }, [alreadyInFamily, theChild, history]);
 
@@ -462,7 +460,6 @@ export default function InfoTabs() {
           rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
         />
       )}
-
       {/* Adoption popup */}
       {selectedRole && (
         <AdoptModel

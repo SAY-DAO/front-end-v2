@@ -9,6 +9,7 @@ import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';
 import { fetchUserDetails } from '../../actions/userAction';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +31,7 @@ const SearchChild = () => {
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
+    theToken,
     loading: loadingRandomSearch,
     error: errorRandomSearch,
     success: successRandomSearch,
@@ -43,7 +45,6 @@ const SearchChild = () => {
 
   // login
   useEffect(() => {
-    dispatch(fetchUserDetails());
     if (errorUserDetails) {
       history.push('/login?redirect=main/search');
     }
@@ -61,11 +62,12 @@ const SearchChild = () => {
   // when user is not logged in and try to join a virtual family, we need the token to not search new child
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(`/search-result`);
+      history.push(`/search-result?=${theToken}`);
     }
-  }, [successRandomSearch, history]);
+  }, [successRandomSearch, theToken]);
 
   const onClick = () => {
+    // InfoTabs also fetch random child when result is your already adopted child
     dispatch(fetchRandomChild());
   };
 

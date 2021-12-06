@@ -58,8 +58,8 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
 
   const [inCart, setInCart] = useState(false);
 
-  const cartItems = localStorage.getItem('cartItems')
-    ? JSON.parse(localStorage.getItem('cartItems'))
+  const cartItems = localStorage.getItem('SAY-cartItems')
+    ? JSON.parse(localStorage.getItem('SAY-cartItems'))
     : [];
 
   useEffect(() => {
