@@ -642,11 +642,14 @@ export default function NeedAvailable({ childId }) {
                             <Grid item xs={12}>
                               <LoadingButton
                                 type="submit"
-                                variant="contained"
+                                variant={!inCart ? 'contained' : 'outlined'}
                                 color="primary"
                                 disabled={isDisabled}
                                 loading={isLoading}
-                                sx={{ marginTop: 1, marginBottom: 4 }}
+                                sx={{
+                                  marginTop: 1,
+                                  marginBottom: !inCart ? 4 : 2,
+                                }}
                               >
                                 {!isLoading && (
                                   <>
@@ -686,7 +689,14 @@ export default function NeedAvailable({ childId }) {
                                         t('button.pay')
                                       ) : onlyWallet ? null : (
                                         <>
-                                          <span style={{ padding: 5 }}>
+                                          <span
+                                            style={{
+                                              padding: 5,
+                                              color: !inCart
+                                                ? 'white'
+                                                : '#fbb563',
+                                            }}
+                                          >
                                             {!inCart
                                               ? t('button.addToCart')
                                               : t('button.continueShopping')}
@@ -708,6 +718,18 @@ export default function NeedAvailable({ childId }) {
                                   </>
                                 )}
                               </LoadingButton>
+                              {inCart && (
+                                <LoadingButton
+                                  variant="contained"
+                                  color="primary"
+                                  disabled={isDisabled}
+                                  loading={isLoading}
+                                  sx={{ marginBottom: 4 }}
+                                  onClick={() => history.push('/main/cart')}
+                                >
+                                  {t('button.goToCart')}
+                                </LoadingButton>
+                              )}
                             </Grid>
                             <Grid
                               item

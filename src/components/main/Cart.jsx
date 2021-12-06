@@ -25,14 +25,11 @@ export default function Cart() {
   // login
   useEffect(() => {
     dispatch(fetchUserDetails());
+
     if (errorUserDetails) {
       history.push('/login?redirect=main/cart');
     }
   }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
-
-  const cartItemFromStorage = localStorage.getItem('SAY-cartItems')
-    ? JSON.parse(localStorage.getItem('SAY-cartItems'))
-    : null;
 
   return (
     <Grid sx={{ width: '100%' }}>
@@ -47,7 +44,7 @@ export default function Cart() {
       >
         <Typography variant="subtitle1">{t('cart.title')}</Typography>
       </Box>
-      {!cartItemFromStorage ? (
+      {!cartItems || !cartItems[0] ? (
         <Box
           sx={{
             width: '70%',
