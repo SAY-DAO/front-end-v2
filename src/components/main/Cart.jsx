@@ -62,7 +62,9 @@ export default function Cart() {
           </Typography>
         </Box>
       ) : (
-        <CartAccordion />
+        <Grid sx={{ marginRight: 2, marginLeft: 2 }}>
+          <CartAccordion />
+        </Grid>
       )}
 
       <AppBarBottom path="cart" />

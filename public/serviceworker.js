@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.0-beta-0';
+const staticCacheName = 'SAY-v2.0.0-beta';
 const urlsToCache = [
   '/static/js/main.chunk.js',
   '/static/js/0.chunk.js',

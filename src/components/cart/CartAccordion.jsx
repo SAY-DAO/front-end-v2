@@ -309,7 +309,7 @@ export default function CartAccordion() {
         justifyContent="flex-end"
         alignItems="flex-start"
       >
-        <Grid item sx={{ width: '100%', padding: 2 }}>
+        <Grid item sx={{ width: '100%', padding: 0 }}>
           <Paper>
             {cartItems && cartItems[0] && (
               <FormControl
