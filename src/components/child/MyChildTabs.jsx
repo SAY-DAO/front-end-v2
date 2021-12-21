@@ -61,7 +61,7 @@ export default function MyChildTabs({ theChild }) {
   const [userRole, setUserRole] = useState();
 
   const childNeeds = useSelector((state) => state.childNeeds);
-  const { theNeeds, success, loading } = childNeeds;
+  const { success } = childNeeds;
 
   // setFamily and userRole
   useEffect(() => {
