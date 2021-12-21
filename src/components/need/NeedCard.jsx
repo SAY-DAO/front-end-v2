@@ -80,85 +80,90 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
         className={classes.actionArea}
         onClick={() => handleNeedCardClick(need.id, childId)}
       >
-        <Grid container item direction="row" justifyContent="space-between">
-          <Grid item xs={2}>
-            <Avatar src={need.imageUrl} className={classes.imageUrl} />
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            container
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <Grid item>
-              <Typography variant="subtitle2" className={classes.needName}>
-                {need.name}
-              </Typography>
+        {need && (
+          <Grid container item direction="row" justifyContent="space-between">
+            <Grid item xs={2}>
+              <Avatar src={need.imageUrl} className={classes.imageUrl} />
             </Grid>
-            <Grid item container direction="row">
-              <Grid item xs={10}>
-                <LinearProgress
-                  variant="determinate"
-                  value={need.progress}
-                  className={classes.progressBar}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="subtitle2" className={classes.percentage}>
-                  %{need.progress}
+            <Grid
+              item
+              xs={6}
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Grid item>
+                <Typography variant="subtitle2" className={classes.needName}>
+                  {need.name}
                 </Typography>
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-end"
-            xs={3}
-          >
-            <Grid item container direction="column" sx={{ display: 'flex' }}>
-              <Grid item xs>
-                <AvatarGroup
-                  max={3}
-                  sx={{ margin: 'auto', direction: 'ltr !important' }}
-                >
-                  {need.participants.map((user, index) => (
-                    <Avatar
-                      key={index}
-                      alt="user image"
-                      src={user.user_avatar}
-                      sx={{
-                        border: '1px solid #968c8c !important',
-                      }}
-                    />
-                  ))}
-                </AvatarGroup>
+              <Grid item container direction="row">
+                <Grid item xs={10}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={need && need.progress}
+                    className={classes.progressBar}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.percentage}
+                  >
+                    %{need.progress}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item>
-                {!need.isDone ? (
-                  <Typography variant="body1" className={classes.needCost}>
-                    {!inCart && !need.unpayable
-                      ? need.cost.toLocaleString() + t('currency.toman')
-                      : !inCart && '-'}
-                    {inCart && (
-                      <CheckCircleOutlineSharpIcon
-                        sx={{ color: '#4caf50', opacity: '0.9' }}
+            </Grid>
+            <Grid
+              container
+              item
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-end"
+              xs={3}
+            >
+              <Grid item container direction="column" sx={{ display: 'flex' }}>
+                <Grid item xs>
+                  <AvatarGroup
+                    max={3}
+                    sx={{ margin: 'auto', direction: 'ltr !important' }}
+                  >
+                    {need.participants.map((user, index) => (
+                      <Avatar
+                        key={index}
+                        alt="user image"
+                        src={user.user_avatar}
+                        sx={{
+                          border: '1px solid #968c8c !important',
+                        }}
                       />
-                    )}
-                  </Typography>
-                ) : (
-                  <Typography variant="body1" className={classes.needCost}>
-                    {need.cost.toLocaleString() + t('currency.toman')}
-                  </Typography>
-                )}
+                    ))}
+                  </AvatarGroup>
+                </Grid>
+                <Grid item>
+                  {!need.isDone ? (
+                    <Typography variant="body1" className={classes.needCost}>
+                      {!inCart && !need.unpayable
+                        ? need.cost.toLocaleString() + t('currency.toman')
+                        : !inCart && '-'}
+                      {inCart && (
+                        <CheckCircleOutlineSharpIcon
+                          sx={{ color: '#4caf50', opacity: '0.9' }}
+                        />
+                      )}
+                    </Typography>
+                  ) : (
+                    <Typography variant="body1" className={classes.needCost}>
+                      {need.cost.toLocaleString() + t('currency.toman')}
+                    </Typography>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
       </CardActionArea>
     </Card>
   );
