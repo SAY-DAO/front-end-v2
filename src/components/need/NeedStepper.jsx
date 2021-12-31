@@ -166,11 +166,11 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     if (oneNeed && oneNeed.status === 2) {
       setProgress(0); // complete payment
     } else if (oneNeed && oneNeed.status === 3) {
-      setProgress(1); // complete purchase from online retailer
+      setProgress(1); // complete purchase from online retailer / complete money transfer to NGO
     } else if (oneNeed && oneNeed.status === 4) {
-      setProgress(2); // complete purchase from online retailer
+      setProgress(2); // complete delivery to NGO / complete delivery to child (when service)
     } else if (oneNeed && oneNeed.status === 5) {
-      setProgress(3); //
+      setProgress(3); // complete delivery to child (when product)
     }
   }, [oneNeed]);
 
