@@ -134,7 +134,7 @@ export default function ChildNeeds({ theChild }) {
   // To set the first available category to the active one
   useEffect(() => {
     if (!category) {
-      if (needsArray[0][1]) {
+      if (needsArray[0][0]) {
         setCategory(0);
         setActiveCat(0);
       } else if (needsArray[1][0]) {
