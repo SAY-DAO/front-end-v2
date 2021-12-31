@@ -28,7 +28,7 @@ const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   ...(ownerState.active && {
     backgroundImage:
       'linear-gradient( 136deg, #f2a367 0%, #f2a367 50%, #f2a367 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+    boxShadow: '2px 6px 10px 2px rgba(0,0,0,.25)',
   }),
   ...(ownerState.completed && {
     backgroundImage:
@@ -174,8 +174,8 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     }
   }, [oneNeed]);
 
+  // button text
   const handleStep = (chosenIndex) => () => {
-    console.log(chosenIndex);
     setChosen(chosenIndex);
     if (chosenIndex > progress) {
       setActiveStep(steps[progress]);
