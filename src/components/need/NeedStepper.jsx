@@ -13,6 +13,7 @@ import StepConnector, {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { fetchOneNeedReceipts } from '../../actions/childAction';
 
 const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
@@ -63,6 +64,7 @@ const ColorLibConnector = styled(StepConnector)(({ theme }) => ({
 
 function ColorLibStepIcon(props) {
   const { active, completed, className } = props;
+
   const icons = {
     1: (
       <IconButton>
@@ -123,9 +125,10 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [activeStep, setActiveStep] = React.useState(t('needStatus.0'));
+  const [activeStep, setActiveStep] = useState(0);
+  const [maxStep, setMaxStep] = useState(0);
   const [chosen, setChosen] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState([t('needStatus.0')]);
   const [steps, setSteps] = useState([]);
 
   const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
@@ -164,23 +167,27 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   // gray to orange - pending to complete
   useEffect(() => {
     if (oneNeed && oneNeed.status === 2) {
-      setProgress(0); // complete payment
+      setActiveStep(0); // complete payment
+      setMaxStep(0);
     } else if (oneNeed && oneNeed.status === 3) {
-      setProgress(1); // complete purchase from online retailer / complete money transfer to NGO
+      setActiveStep(1); // complete purchase from online retailer / complete money transfer to NGO
+      setMaxStep(1);
     } else if (oneNeed && oneNeed.status === 4) {
-      setProgress(2); // complete delivery to NGO / complete delivery to child (when service)
+      setActiveStep(2); // complete delivery to NGO / complete delivery to child (when service)
+      setMaxStep(2);
     } else if (oneNeed && oneNeed.status === 5) {
-      setProgress(3); // complete delivery to child (when product)
+      setActiveStep(3); // complete delivery to child (when product)
+      setMaxStep(3);
     }
   }, [oneNeed]);
 
   // button text
   const handleStep = (chosenIndex) => () => {
-    setChosen(chosenIndex);
-    if (chosenIndex > progress) {
-      setActiveStep(steps[progress]);
-    } else {
-      setActiveStep(steps[chosenIndex]);
+    console.log(chosenIndex);
+    if (chosenIndex <= maxStep) {
+      setActiveStep(chosenIndex);
+      setProgress(steps[chosenIndex]);
+      setChosen(chosenIndex);
     }
   };
 
@@ -191,7 +198,8 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     <Box sx={{ width: '100%' }}>
       <Stepper
         alternativeLabel
-        activeStep={progress}
+        activeStep={activeStep}
+        completed={activeStep - 1}
         sx={{ direction: 'ltr' }}
         connector={<ColorLibConnector />}
       >
@@ -203,7 +211,9 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
                 color="inherit"
                 onClick={handleStep(index)}
                 StepIconComponent={ColorLibStepIcon}
-              />
+              >
+                {index <= maxStep && <CheckOutlinedIcon color="success" />}
+              </StepLabel>
             </Step>
           ))}
       </Stepper>
@@ -213,7 +223,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
         sx={{ marginTop: 3, marginBottom: 2 }}
         onClick={handleReceiptPage}
       >
-        {activeStep}
+        {progress}
       </LoadingButton>
     </Box>
   );

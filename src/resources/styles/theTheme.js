@@ -196,6 +196,7 @@ const theTheme = createTheme({
         },
       },
     },
+    // e.g from browser:  MuiAvatar-root MuiAvatar-circular MuiAvatarGroup-avatar muirtl-a95z4p-MuiAvatar-root
     MuiAvatarGroup: {
       styleOverrides: {
         root: {
@@ -225,6 +226,16 @@ const theTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: 'white',
+        },
+      },
+    },
+    // e.g from browser: MuiStepLabel-label Mui-completed MuiStepLabel-alternativeLabel muirtl-3csdud-MuiStepLabel-label
+    MuiStepLabel: {
+      styleOverrides: {
+        label: {
+          '&.MuiStepLabel-alternativeLabel': {
+            marginTop: 0,
+          },
         },
       },
     },
