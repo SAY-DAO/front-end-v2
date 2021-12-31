@@ -192,6 +192,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
       <Stepper
         alternativeLabel
         activeStep={progress}
+        sx={{ direction: 'ltr' }}
         connector={<ColorLibConnector />}
       >
         {steps &&
