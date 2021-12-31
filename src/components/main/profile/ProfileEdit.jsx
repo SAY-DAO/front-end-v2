@@ -124,7 +124,7 @@ const ProfileEdit = () => {
     if (userInfo) {
       setFirstName(userInfo.user.firstName);
       setLastName(userInfo.user.lastName);
-      setPhoneNumber(userInfo.user.phoneNumber);
+      setPhoneNumber(userInfo.user.phone_number);
       setEmail(userInfo.user.emailAddress);
       setUserName(userInfo.user.userName);
       setImageUrl(userInfo.user.avatarUrl);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Paper } from '@mui/material';
+import { Grid, Typography, Paper, CircularProgress } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,6 +29,7 @@ export default function Report() {
   const dispatch = useDispatch();
   const { status } = useParams();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState('');
   const [paragraph, setParagraph] = useState('');
   const [title, setTitle] = useState('');
@@ -47,32 +48,23 @@ export default function Report() {
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
   const {
     oneNeed,
-    // loading: loadingOneNeed,
+    loading: loadingOneNeed,
     error: errorOneNeed,
     // success: successOneNeed,
   } = ChildOneNeed;
 
+  // // loading button
+  useEffect(() => {
+    if (loadingOneNeed) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadingOneNeed]);
+
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
   }, [dispatch]);
-
-  // // loading button
-  // useEffect(() => {
-  //   if (loadingOneNeed) {
-  //     setIsLoading(true);
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // }, [loadingOneNeed]);
-
-  // // disable button
-  // useEffect(() => {
-  //   if (successOneNeed) {
-  //     setIsDisabled(false);
-  //   } else {
-  //     setIsDisabled(true);
-  //   }
-  // }, [successOneNeed]);
 
   // name of need and child
   useEffect(() => {
@@ -262,26 +254,10 @@ export default function Report() {
     needName,
   ]);
 
-  // const renderButton = () => {
-  //   if (this.state.status === 4 && this.state.type === 1) {
-  //     return this.state.receipts.map((receipt) => (
-  //       <div className="buttonWrapper" key={receipt.id}>
-  //         <a
-  //           href={receipt.attachment}
-  //           target="_blank"
-  //           className="defaultButton"
-  //           rel="noreferrer"
-  //         >
-  //           {t('report.download')}
-  //         </a>
-  //       </div>
-  //     ));
-  //   }
-  // };
   const classes = useStyles();
   return (
     <>
-      {theChild && oneNeed && status && (
+      {!isLoading && theChild && oneNeed && status ? (
         <>
           <Grid
             container
@@ -303,6 +279,7 @@ export default function Report() {
                 >
                   <Grid item xs={8}>
                     <img
+                      onLoad={() => setIsLoading(false)}
                       src={image}
                       alt="status"
                       style={{ maxWidth: '60px', marginTop: '50px' }}
@@ -323,8 +300,6 @@ export default function Report() {
                     )}
                   </Grid>
                 </Grid>
-
-                {/* {renderButton()} */}
               </Paper>
               <Grid
                 container
@@ -352,6 +327,8 @@ export default function Report() {
             )}
           </Grid>
         </>
+      ) : (
+        <CircularProgress />
       )}
     </>
   );

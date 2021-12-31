@@ -401,7 +401,7 @@ export const userEditProfile =
       if (userInfo.user.lastName !== lastName) {
         formData.append('lastName', lastName);
       }
-      if (phoneAuth && userInfo.user.phoneNumber !== phoneNumber) {
+      if (phoneAuth && userInfo.user.phone_number !== phoneNumber) {
         formData.append('phoneNumber', phoneNumber);
       }
       if (emailAuth && userInfo.user.emailAddress !== email) {

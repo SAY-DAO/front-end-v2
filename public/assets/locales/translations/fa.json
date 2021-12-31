@@ -485,7 +485,7 @@
     "p3": {
       "img": "https://sayapp.company/public/resources/img/purchased.jpg",
       "title": "رسید خرید کالای {{childSayName}} توسط SAY",
-      "paragraph": "در روز {{date}} {{needName}} از دیجی کالا برای {{childSayName}} سفارش داده شد."
+      "paragraph": "در روز {{date}} {{needName}} از فروشگاه آنلاین برای {{childSayName}} سفارش داده شد."
     },
     "p4": {
       "img": "https://sayapp.company/public/resources/img/ngo_delivered.jpg",

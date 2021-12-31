@@ -6,7 +6,6 @@ import LoadingButton from '@material-ui/lab/LoadingButton';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useTranslation, Trans } from 'react-i18next';
-// Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -219,7 +218,10 @@ const VerifyCodeForm = () => {
             {enableResend && !errorVerifyCode ? (
               <Grid sx={{ width: '100%', marginTop: 2 }}>
                 <Grid item xs={12}>
-                  <LinearProgress variant="determinate" value={progress} />
+                  <LinearProgress
+                    variant="determinate"
+                    value={parseInt(progress)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography

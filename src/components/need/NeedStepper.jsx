@@ -125,17 +125,13 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
 
   const [activeStep, setActiveStep] = React.useState(t('needStatus.0'));
   const [chosen, setChosen] = useState(0);
-  const [step, setStep] = useState(0);
-  const [steps, setSteps] = useState([
-    t('needStatus.0'),
-    t('needStatus.p1'),
-    t('needStatus.p2'),
-    t('needStatus.p3'),
-  ]);
+  const [progress, setProgress] = useState(0);
+  const [steps, setSteps] = useState([]);
 
   const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
   const { success } = ChildOneNeedReceipt;
 
+  // set steps for product or service
   useEffect(() => {
     if (!success && oneNeed) {
       dispatch(fetchOneNeedReceipts(oneNeed.id));
@@ -150,7 +146,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     } else {
       setSteps([t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')]);
     }
-  }, [oneNeed, success, step, t, dispatch]);
+  }, [oneNeed, success, progress, t, dispatch]);
 
   // ---- PAYMENT-----
   // partial payment status = 1
@@ -165,33 +161,37 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   // complete money transfer to NGO for service status = 3
   // complete delivery to child for service status = 4
 
+  // gray to orange - pending to complete
   useEffect(() => {
     if (oneNeed && oneNeed.status === 2) {
-      setStep(0);
+      setProgress(0); // complete payment
     } else if (oneNeed && oneNeed.status === 3) {
-      setStep(3);
+      setProgress(1); // complete purchase from online retailer
+    } else if (oneNeed && oneNeed.status === 4) {
+      setProgress(2); // complete purchase from online retailer
     } else if (oneNeed && oneNeed.status === 5) {
-      setStep(3);
+      setProgress(3); //
     }
   }, [oneNeed]);
 
-  const handleStep = (chosenStep) => () => {
-    setChosen(chosenStep);
-    if (chosenStep > step) {
-      setActiveStep(steps[step]);
+  const handleStep = (chosenIndex) => () => {
+    console.log(chosenIndex);
+    setChosen(chosenIndex);
+    if (chosenIndex > progress) {
+      setActiveStep(steps[progress]);
     } else {
-      setActiveStep(steps[chosenStep]);
+      setActiveStep(steps[chosenIndex]);
     }
   };
 
   const handleReceiptPage = () => {
-    history.push(`/child/needs/needPage/report/${chosen + 2}`);
+    history.push(`/child/needs/needPage/report/${chosen + 2}`); // index + 2
   };
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper
         alternativeLabel
-        activeStep={step}
+        activeStep={progress}
         connector={<ColorLibConnector />}
       >
         {steps &&

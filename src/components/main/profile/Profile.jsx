@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import AppBarBottom from '../AppBarBottom';
 import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
 import WalletModal from '../../modals/WalletModal';
