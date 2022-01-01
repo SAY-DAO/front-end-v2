@@ -71,39 +71,6 @@ export default function ChildNeeds({ theChild }) {
     }
   }, [dispatch, success, theChild]);
 
-  // useEffect(() => {
-  //   setLoadingChip(false);
-  //   if (success) {
-  // const sortedNeeds = theNeeds.needs.sort((a, b) => {
-  //   if (!a.isDone && !b.isDone) {
-  //     // Sorts needs by create date Ascending
-  //     return new Date(a.created) - new Date(b.created);
-  //   }
-  //   // Sorts needs by done date Ascending
-  //   return new Date(b.doneAt) - new Date(a.doneAt);
-  // });
-
-  //     // [[urgent], [growth], ...]
-  //     const allNeeds = [[], [], [], [], [], []];
-
-  //     for (let i = 0; i < sortedNeeds.length; i++) {
-  //       if (sortedNeeds[i].isDone) {
-  //         allNeeds[5].push(sortedNeeds[i]);
-  //       } else if (sortedNeeds[i].isUrgent) {
-  //         allNeeds[0].push(sortedNeeds[i]);
-  //       } else {
-  //         allNeeds[sortedNeeds[i].category + 1].push(sortedNeeds[i]);
-  //       }
-  //     }
-  //     setNeedsArray(allNeeds);
-  //   }
-
-  // Cleans up when leaves the page
-  //   return () => {
-  //     setNeedsArray([[], [], [], [], [], []]);
-  //   };
-  // }, [success, theNeeds]);
-
   const categorizeNeeds = () => {
     const allNeeds = theNeeds.needs.sort((a, b) => {
       if (!a.isDone && !b.isDone) {
@@ -128,29 +95,27 @@ export default function ChildNeeds({ theChild }) {
   };
 
   const needsArray = categorizeNeeds();
-  console.log(needsArray);
-  const classes = useStyles();
 
   // To set the first available category to the active one
   useEffect(() => {
     if (!category) {
       if (needsArray[0][0]) {
-        setCategory(0);
+        setCategory(0); // urgent
         setActiveCat(0);
       } else if (needsArray[1][0]) {
-        setCategory(1);
+        setCategory(1); // growth
         setActiveCat(1);
       } else if (needsArray[2][0]) {
-        setCategory(2);
+        setCategory(2); // joy
         setActiveCat(2);
       } else if (needsArray[3][0]) {
-        setCategory(3);
+        setCategory(3); // health
         setActiveCat(3);
       } else if (needsArray[4][0]) {
-        setCategory(4);
+        setCategory(4); // surroundings
         setActiveCat(4);
       } else if (needsArray[5][0]) {
-        setCategory(5);
+        setCategory(5); // done
         setActiveCat(5);
       }
     }
@@ -168,6 +133,7 @@ export default function ChildNeeds({ theChild }) {
     setActiveCat(index);
     // }
   };
+  const classes = useStyles();
 
   const renderNeedsByCategory = () => (
     <>

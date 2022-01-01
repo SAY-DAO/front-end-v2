@@ -105,7 +105,7 @@ const Profile = () => {
                   <Link to="/main/profile/edit">
                     <Typography
                       component="span"
-                      sx={{ padding: 1 }}
+                      sx={{ padding: 0 }}
                       color="primary"
                       variant="body2"
                     >

@@ -407,6 +407,7 @@
   },
   "childPage": {
     "childTab": {
+      "stats": "Stats",
       "requirements": "Requirements",
       "family": "Family",
       "story": "Story"

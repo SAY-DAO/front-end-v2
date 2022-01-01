@@ -403,6 +403,7 @@
   },
   "childPage": {
     "childTab": {
+      "stats": "آمار",
       "requirements": "نیازمندی‌ها",
       "family": "خانواده",
       "story": "داستان"
