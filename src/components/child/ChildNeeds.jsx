@@ -223,5 +223,5 @@ export default function ChildNeeds({ theChild, needsArray }) {
 
 ChildNeeds.propTypes = {
   theChild: PropTypes.object.isRequired,
-  needsArray: PropTypes.object.isRequired,
+  needsArray: PropTypes.array.isRequired,
 };

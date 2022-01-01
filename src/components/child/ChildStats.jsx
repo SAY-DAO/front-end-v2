@@ -137,5 +137,5 @@ export default function ChildStats({ needsArray }) {
 }
 
 ChildStats.propTypes = {
-  needsArray: PropTypes.object.isRequired,
+  needsArray: PropTypes.array.isRequired,
 };
