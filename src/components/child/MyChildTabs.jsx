@@ -60,9 +60,9 @@ export default function MyChildTabs({ theChild }) {
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
-
+  const [needsData, setNeedsData] = useState([]);
   const childNeeds = useSelector((state) => state.childNeeds);
-  const { success } = childNeeds;
+  const { theNeeds, success } = childNeeds;
 
   // setFamily and userRole
   useEffect(() => {
@@ -83,18 +83,48 @@ export default function MyChildTabs({ theChild }) {
 
   // fetch child needs
   useEffect(() => {
-    if (!success) {
-      dispatch(fetchChildNeeds(theChild.id));
-    }
-  }, [dispatch, success, theChild]);
+    dispatch(fetchChildNeeds(theChild.id));
+  }, [theChild]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  // sort needs
+  useEffect(() => {
+    if (theNeeds) {
+      // urgent ==> index 0
+      // growth 0 ==> index 1
+      // joy 1 ==> index 2
+      // health 2 ==> index 3
+      // surroundings 3 ==> index 4
+      // done ==> index 5
+      const needData = [[], [], [], [], [], []];
+      const allNeeds = theNeeds.needs.sort((a, b) => {
+        if (!a.isDone && !b.isDone) {
+          // Sort needs by create date Ascending
+          return new Date(a.created) - new Date(b.created);
+        }
+        // Sort done needs by done date Descending
+        return new Date(b.doneAt) - new Date(a.doneAt);
+      });
+
+      for (let i = 0; i < allNeeds.length; i += 1) {
+        if (allNeeds[i].isDone) {
+          needData[5].push(allNeeds[i]);
+        } else if (allNeeds[i].isUrgent) {
+          needData[0].push(allNeeds[i]);
+        } else {
+          needData[allNeeds[i].category + 1].push(allNeeds[i]);
+        }
+      }
+      setNeedsData(needData);
+    }
+  }, [theNeeds]);
+
   return (
     <>
-      {!success ? (
+      {!success || !needsData[0] ? (
         <CircularProgress />
       ) : (
         <Box sx={{ width: '100%' }}>
@@ -140,10 +170,10 @@ export default function MyChildTabs({ theChild }) {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <ChildStats theChild={theChild} />
+            <ChildStats needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ChildNeeds theChild={theChild} />
+            <ChildNeeds theChild={theChild} needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <ChildFamily theChild={theChild} />

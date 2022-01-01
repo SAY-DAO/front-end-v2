@@ -1,83 +1,71 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchChildNeeds } from '../../actions/childAction';
 
-export default function ChildStats({ theChild }) {
-  const dispatch = useDispatch();
+export default function ChildStats({ needsArray }) {
   const { t } = useTranslation();
 
-  const childNeeds = useSelector((state) => state.childNeeds);
-  const { theNeeds, success } = childNeeds;
+  const [needsData, setNeedsData] = useState();
+  const [pieData, setPieData] = useState();
 
-  // fetch child needs
+  // urgent ==> index 0
+  // growth 0 ==> index 1
+  // joy 1 ==> index 2
+  // health 2 ==> index 3
+  // surroundings 3 ==> index 4
   useEffect(() => {
-    if (!success) {
-      dispatch(fetchChildNeeds(theChild.id));
-    }
-  }, [dispatch, success, theChild]);
-
-  const categorizeNeeds = () => {
-    const allNeeds = theNeeds.needs.sort((a, b) => {
-      if (!a.isDone && !b.isDone) {
-        // Sort needs by create date Ascending
-        return new Date(a.created) - new Date(b.created);
-      }
-      // Sort done needs by done date Descending
-      return new Date(b.doneAt) - new Date(a.doneAt);
-    });
     const needData = [[], [], [], [], [], []];
-    for (let i = 0; i < allNeeds.length; i++) {
-      if (allNeeds[i].isDone) {
-        needData[5].push(allNeeds[i]);
-      } else if (allNeeds[i].isUrgent) {
-        needData[0].push(allNeeds[i]);
+    for (let i = 0; i < needsArray[5].length; i += 1) {
+      if (needsArray[5][i].isUrgent) {
+        needData[0].push(needsArray[5][i]);
       } else {
-        needData[allNeeds[i].category + 1].push(allNeeds[i]);
+        needData[needsArray[5][i].category + 1].push(needsArray[5][i]);
       }
     }
+    setNeedsData(needData);
+  }, [needsArray]);
 
-    return needData;
-  };
+  console.log(needsData);
 
-  const needsArray = categorizeNeeds();
-  console.log(needsArray);
+  useEffect(() => {
+    if (needsData) {
+      setPieData([
+        {
+          id: t('childData.needCategory.surroundings'),
+          value: needsData[4].length,
+          color: 'hsl(287, 70%, 50%)',
+        },
+        {
+          id: t('childData.needCategory.health'),
+          value: needsData[3].length,
+          color: 'hsl(294, 70%, 50%)',
+        },
+        {
+          id: t('childData.needCategory.joy'),
+          value: needsData[2].length,
+          color: 'hsl(182, 70%, 50%)',
+        },
+        {
+          id: t('childData.needCategory.growth'),
+          value: needsData[1].length,
+          color: 'hsl(124, 70%, 50%)',
+        },
+        {
+          id: t('childData.needCategory.urgent'),
+          value: needsData[0].length,
+          color: 'hsl(41, 70%, 50%)',
+        },
+      ]);
+    }
+  }, [needsData]);
 
-  const data = [
-    {
-      id: t('childData.needCategory.surroundings'),
-      value: needsArray[5].length,
-      color: 'hsl(287, 70%, 50%)',
-    },
-    {
-      id: t('childData.needCategory.health'),
-      value: needsArray[5].length,
-      color: 'hsl(294, 70%, 50%)',
-    },
-    {
-      id: t('childData.needCategory.joy'),
-      value: needsArray[5].length,
-      color: 'hsl(182, 70%, 50%)',
-    },
-    {
-      id: t('childData.needCategory.growth'),
-      value: needsArray[5].length,
-      color: 'hsl(124, 70%, 50%)',
-    },
-    {
-      id: t('childData.needCategory.urgent'),
-      value: needsArray[5].length,
-      color: 'hsl(41, 70%, 50%)',
-    },
-  ];
   return (
     <div style={{ height: '300px', width: '100%' }}>
       <ResponsivePie
-        data={data}
+        data={pieData}
         margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
         innerRadius={0.35}
         padAngle={0.7}
@@ -149,5 +137,5 @@ export default function ChildStats({ theChild }) {
 }
 
 ChildStats.propTypes = {
-  theChild: PropTypes.object,
+  needsArray: PropTypes.object.isRequired,
 };
