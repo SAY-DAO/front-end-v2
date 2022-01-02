@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ChildNeeds({ theChild }) {
+export default function ChildNeeds({ theChild, needsArray }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -63,94 +63,28 @@ export default function ChildNeeds({ theChild }) {
   const [inCart, setInCart] = useState({});
 
   const childNeeds = useSelector((state) => state.childNeeds);
-  const { theNeeds, success, loading } = childNeeds;
-
-  useEffect(() => {
-    if (!success) {
-      dispatch(fetchChildNeeds(theChild.id));
-    }
-  }, [dispatch, success, theChild]);
-
-  // useEffect(() => {
-  //   setLoadingChip(false);
-  //   if (success) {
-  // const sortedNeeds = theNeeds.needs.sort((a, b) => {
-  //   if (!a.isDone && !b.isDone) {
-  //     // Sorts needs by create date Ascending
-  //     return new Date(a.created) - new Date(b.created);
-  //   }
-  //   // Sorts needs by done date Ascending
-  //   return new Date(b.doneAt) - new Date(a.doneAt);
-  // });
-
-  //     // [[urgent], [growth], ...]
-  //     const allNeeds = [[], [], [], [], [], []];
-
-  //     for (let i = 0; i < sortedNeeds.length; i++) {
-  //       if (sortedNeeds[i].isDone) {
-  //         allNeeds[5].push(sortedNeeds[i]);
-  //       } else if (sortedNeeds[i].isUrgent) {
-  //         allNeeds[0].push(sortedNeeds[i]);
-  //       } else {
-  //         allNeeds[sortedNeeds[i].category + 1].push(sortedNeeds[i]);
-  //       }
-  //     }
-  //     setNeedsArray(allNeeds);
-  //   }
-
-  // Cleans up when leaves the page
-  //   return () => {
-  //     setNeedsArray([[], [], [], [], [], []]);
-  //   };
-  // }, [success, theNeeds]);
-
-  const categorizeNeeds = () => {
-    const allNeeds = theNeeds.needs.sort((a, b) => {
-      if (!a.isDone && !b.isDone) {
-        // Sort needs by create date Ascending
-        return new Date(a.created) - new Date(b.created);
-      }
-      // Sort done needs by done date Descending
-      return new Date(b.doneAt) - new Date(a.doneAt);
-    });
-    const needData = [[], [], [], [], [], []];
-    for (let i = 0; i < allNeeds.length; i++) {
-      if (allNeeds[i].isDone) {
-        needData[5].push(allNeeds[i]);
-      } else if (allNeeds[i].isUrgent) {
-        needData[0].push(allNeeds[i]);
-      } else {
-        needData[allNeeds[i].category + 1].push(allNeeds[i]);
-      }
-    }
-
-    return needData;
-  };
-
-  const needsArray = categorizeNeeds();
-  console.log(needsArray);
-  const classes = useStyles();
+  const { success, loading } = childNeeds;
 
   // To set the first available category to the active one
   useEffect(() => {
     if (!category) {
       if (needsArray[0][0]) {
-        setCategory(0);
+        setCategory(0); // urgent
         setActiveCat(0);
       } else if (needsArray[1][0]) {
-        setCategory(1);
+        setCategory(1); // growth 0
         setActiveCat(1);
       } else if (needsArray[2][0]) {
-        setCategory(2);
+        setCategory(2); // joy 1
         setActiveCat(2);
       } else if (needsArray[3][0]) {
-        setCategory(3);
+        setCategory(3); // health 2
         setActiveCat(3);
       } else if (needsArray[4][0]) {
-        setCategory(4);
+        setCategory(4); // surroundings 3
         setActiveCat(4);
       } else if (needsArray[5][0]) {
-        setCategory(5);
+        setCategory(5); // done
         setActiveCat(5);
       }
     }
@@ -158,16 +92,15 @@ export default function ChildNeeds({ theChild }) {
 
   const handleNeedCardClick = (needId, childId) => {
     dispatch({ type: SHAPARAK_RESET });
-    dispatch(fetchChildNeeds(theChild.id));
-    history.push(`/child/${childId}/needs/${needId}`);
+    history.push(`/child/${childId}/needs/${needId}`, { childTab: 1 }); // to use when going
   };
 
   const handleClick = (index) => {
-    // if (needsArray) {
     setCategory(index);
     setActiveCat(index);
-    // }
   };
+
+  const classes = useStyles();
 
   const renderNeedsByCategory = () => (
     <>
@@ -290,4 +223,5 @@ export default function ChildNeeds({ theChild }) {
 
 ChildNeeds.propTypes = {
   theChild: PropTypes.object.isRequired,
+  needsArray: PropTypes.array.isRequired,
 };

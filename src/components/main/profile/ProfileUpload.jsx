@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
 // For multi-language
 import AvatarEditor from 'react-avatar-editor';
 import { useTranslation } from 'react-i18next';
-import { Link, Redirect } from 'react-router-dom';
+import {
+  Grid,
+  Avatar,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
+import { useLocation, Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/styles';
 import Slider from '@material-ui/core/Slider';
-// import base64Img from "base64-img";
+import { Redirect, useHistory } from 'react-router';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import CloseIcon from '@mui/icons-material/Close';
+import DoneIcon from '@mui/icons-material/Done';
 
 const PrettoSlider = withStyles({
   root: {
@@ -13,11 +24,11 @@ const PrettoSlider = withStyles({
     height: 8,
   },
   thumb: {
+    top: '50%',
     height: 24,
     width: 24,
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -8,
     marginLeft: -12,
     '&:focus,&:hover,&$active': {
       boxShadow: 'inherit',
@@ -38,16 +49,19 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 // eslint-disable-next-line react/prop-types
-export default function UserProfileEdit({ propFile }) {
+export default function UserProfileEdit() {
   const { t } = useTranslation();
+  const history = useHistory();
+  const location = useLocation();
 
-  const [loading, setLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const [photo, setPhoto] = useState(null);
   const [editor, setEditor] = useState(null);
   const [done, setDone] = useState(false);
-  const [file, setFile] = useState(propFile);
+  const [file, setFile] = useState(location.state.imageUpload);
   const [tumb, setTumb] = useState(null);
 
   const scaleHandler = () => {
@@ -97,75 +111,121 @@ export default function UserProfileEdit({ propFile }) {
       setPhoto(theFile);
       setTumb(canvas);
       setDone(true);
+      history.push('/main/profile/edit', { newImage: theFile });
     }
   };
 
   const setEditorRef = (thisEditor) => setEditor(thisEditor);
 
   return (
-    <div className="setting flex-col al-center">
-      <div className="headerPage sticky-header flex-row al-center settingHead">
+    <Grid container>
+      <Grid item container justifyContent="space-between" alignItems="center">
         <Link
           to={{
             pathname: '/main/profile/edit',
             state: { newPhoto: null, tumbnail: null },
           }}
         >
-          <img
-            src="/images/back.svg"
-            alt="back"
-            style={{
+          <CloseIcon
+            sx={{
+              color: 'red',
               top: 0,
-              left: 0,
+              right: 0,
               width: '24px',
               margin: '18px',
-              position: 'fixed',
               zIndex: 10,
             }}
           />
         </Link>
-        <span className="flex-1">{t('profile.editProfile.avatar.title')}</span>
-      </div>
 
-      <div className="setting body-content flex-col al-center">
-        <AvatarEditor
-          image={file}
-          width={window.innerWidth - 100}
-          height={window.innerWidth - 100}
-          ref={setEditorRef}
-          border={50}
-          borderRadius={1000}
-          scale={scale}
-          rotate={rotate}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
+        <Typography
+          variant="h6"
+          sx={{
+            padding: 2,
+            fontWeight: 'lighter',
+            textAlign: 'center',
+          }}
+        >
+          {t('profile.editProfile.avatar.title')}
+        </Typography>
 
-        <div>
-          <span>{t('profile.editProfile.avatar.scale')}</span>
-          <div className="flex-row" style={{ width: '70%' }}>
-            <PrettoSlider
-              valueLabelDisplay="auto"
-              aria-label="pretto slider"
-              defaultValue={0}
-              onChange={scaleHandler}
-              onClick={scaleHandler}
+        {isLoading ? (
+          <CircularProgress
+            size={20}
+            sx={{
+              top: 0,
+              left: 0,
+              width: '24px',
+              margin: '18px',
+              zIndex: 10,
+            }}
+          />
+        ) : (
+          <IconButton onClick={onClickSave}>
+            <DoneIcon
+              sx={{
+                color: isDisabled ? 'gray' : 'green',
+                top: 0,
+                left: 0,
+                width: '24px',
+                margin: '18px',
+                zIndex: 10,
+              }}
             />
-          </div>
-        </div>
+          </IconButton>
+        )}
+      </Grid>
+      <Grid container sx={{ margin: 2 }}>
+        <div className="setting body-content flex-col al-center">
+          <AvatarEditor
+            image={file}
+            width={window.innerWidth - 100}
+            height={window.innerWidth - 100}
+            ref={setEditorRef}
+            border={50}
+            borderRadius={1000}
+            scale={scale}
+            rotate={rotate}
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
 
-        <div>
-          <span>{t('profile.editProfile.avatar.rotate')}</span>
-          <div className="flex-row" style={{ width: '70%' }}>
-            <PrettoSlider
-              valueLabelDisplay="auto"
-              aria-label="pretto slider"
-              defaultValue={0}
-              onChange={rotateHandler}
-              onClick={rotateHandler}
-            />
-          </div>
+          <Grid container sx={{ margin: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}
+            >
+              {t('profile.editProfile.avatar.scale')}
+            </Typography>
+            <div className="flex-row" style={{ width: '70%' }}>
+              <PrettoSlider
+                valueLabelDisplay="auto"
+                aria-label="pretto slider"
+                defaultValue={0}
+                onChange={scaleHandler}
+                onClick={scaleHandler}
+              />
+            </div>
+          </Grid>
+
+          <Grid container sx={{ margin: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}
+            >
+              {t('profile.editProfile.avatar.rotate')}
+            </Typography>
+            <div className="flex-row" style={{ width: '70%' }}>
+              <PrettoSlider
+                valueLabelDisplay="auto"
+                aria-label="pretto slider"
+                defaultValue={0}
+                onChange={rotateHandler}
+                onClick={rotateHandler}
+              />
+            </div>
+          </Grid>
         </div>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 }
