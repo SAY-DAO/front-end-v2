@@ -28,8 +28,6 @@ export default function ChildStats({ needsArray }) {
     setNeedsData(needData);
   }, [needsArray]);
 
-  console.log(needsData);
-
   useEffect(() => {
     if (needsData) {
       setPieData([

@@ -111,10 +111,6 @@ export default function UserProfileEdit() {
       setPhoto(theFile);
       setTumb(canvas);
       setDone(true);
-      const reader = new FileReader();
-      const ahmad = reader.readAsDataURL(file);
-      console.log(ahmad);
-
       history.push('/main/profile/edit', { newImage: theFile });
     }
   };

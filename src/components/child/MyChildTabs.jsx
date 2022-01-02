@@ -5,6 +5,7 @@ import { Tabs, Tab, Box, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import GoneModal from '../modals/GoneModal';
 import ChildFamily from './ChildFamily';
 import ChildStats from './ChildStats';
@@ -55,6 +56,7 @@ function a11yProps(index) {
 
 export default function MyChildTabs({ theChild }) {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { t } = useTranslation();
 
   const [isGone, setIsGone] = useState(false);
@@ -85,6 +87,14 @@ export default function MyChildTabs({ theChild }) {
   useEffect(() => {
     dispatch(fetchChildNeeds(theChild.id));
   }, [theChild]);
+
+  useEffect(() => {
+    console.log(location);
+    if (location.state) {
+      console.log(location.state);
+      setValue(location.state.childTab);
+    }
+  }, [dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -173,7 +183,11 @@ export default function MyChildTabs({ theChild }) {
             <ChildStats needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ChildNeeds theChild={theChild} needsArray={needsData} />
+            <ChildNeeds
+              theChild={theChild}
+              needsArray={needsData}
+              setValue={setValue}
+            />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <ChildFamily theChild={theChild} />

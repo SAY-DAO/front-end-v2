@@ -21,6 +21,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
@@ -86,6 +87,7 @@ const useStyles = makeStyles({
 export default function NeedAvailable({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const location = useLocation();
   const history = useHistory();
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -114,11 +116,7 @@ export default function NeedAvailable({ childId }) {
   const { theChild } = myChild;
 
   const theCart = useSelector((state) => state.theCart);
-  const {
-    cartItems,
-    loading: loadingCartItems,
-    success: successCartItems,
-  } = theCart;
+  const { cartItems, loading: loadingCartItems } = theCart;
 
   const shaparakGate = useSelector((state) => state.shaparakGate);
   const {
@@ -318,8 +316,6 @@ export default function NeedAvailable({ childId }) {
 
   // Shaparak gate  - redirect to bank - use gateway_payment_id to distinguish between cart payment
   useEffect(() => {
-    console.log(successShaparakGate, method);
-
     if (successShaparakGate && (method === 'payAll' || method === 'paySome')) {
       if (windowReference) {
         // only wallet -status 299
@@ -365,7 +361,7 @@ export default function NeedAvailable({ childId }) {
   // addToCard
   const handleContinueShop = (e) => {
     e.preventDefault();
-    history.push(`/child/${theChild.id}`);
+    history.push(`/child/${theChild.id}`, { childTab: 1 });
   };
 
   const handlePayment = (e) => {
@@ -390,7 +386,11 @@ export default function NeedAvailable({ childId }) {
       <Grid container direction="column">
         {theChild && !oneNeed.isDone && (
           <Grid item xs={12} className={classes.root}>
-            <Back isOrange={false} to={`/child/${childId}`} />
+            <Back
+              isOrange={false}
+              to={`/child/${childId}`}
+              state={{ childTab: 1 }}
+            />
             <Grid item xs={12}>
               <div style={{ minHeight: '350px' }} />
               <Avatar
