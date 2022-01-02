@@ -34,50 +34,49 @@ export default function ChildStats({ needsArray }) {
     if (needsData) {
       setPieData([
         {
-          id: t('childData.needCategory.surroundings'),
-          value: needsData[4].length,
-          color: 'hsl(287, 70%, 50%)',
-        },
-        {
-          id: t('childData.needCategory.health'),
-          value: needsData[3].length,
-          color: 'hsl(294, 70%, 50%)',
+          id: t('childData.needCategory.growth'),
+          label: t('childData.needCategory.growth'),
+          value: needsData[1].length,
         },
         {
           id: t('childData.needCategory.joy'),
+          label: t('childData.needCategory.joy'),
           value: needsData[2].length,
-          color: 'hsl(182, 70%, 50%)',
         },
         {
-          id: t('childData.needCategory.growth'),
-          value: needsData[1].length,
-          color: 'hsl(124, 70%, 50%)',
+          id: t('childData.needCategory.health'),
+          label: t('childData.needCategory.health'),
+          value: needsData[3].length,
         },
         {
-          id: t('childData.needCategory.urgent'),
-          value: needsData[0].length,
-          color: 'hsl(41, 70%, 50%)',
+          id: t('childData.needCategory.surroundings'),
+          label: t('childData.needCategory.surroundings'),
+          value: needsData[4].length,
         },
       ]);
     }
   }, [needsData]);
 
   return (
-    <div style={{ height: '300px', width: '100%' }}>
+    <div style={{ height: '300px', width: '100%', direction: 'ltr' }}>
       <ResponsivePie
         data={pieData}
-        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
         innerRadius={0.35}
-        padAngle={0.7}
-        cornerRadius={3}
+        padAngle={1.7}
+        cornerRadius={5}
         activeOuterRadiusOffset={8}
+        colors={{ scheme: 'nivo' }}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
         arcLinkLabelsSkipAngle={10}
         arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: 'color' }}
         arcLabelsSkipAngle={10}
+        arcLinkLabelsDiagonalLength={15} // label line
+        arcLinkLabelsStraightLength={5} // label line
+        arcLinkLabelsTextOffset={5} // offset text from line
+        arcLinkLabelsThickness={1}
         arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
         defs={[
           {
@@ -102,13 +101,7 @@ export default function ChildStats({ needsArray }) {
         fill={[
           {
             match: {
-              id: t('childData.needCategory.surroundings'),
-            },
-            id: 'dots',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.health'),
+              id: t('childData.needCategory.growth'),
             },
             id: 'dots',
           },
@@ -116,19 +109,44 @@ export default function ChildStats({ needsArray }) {
             match: {
               id: t('childData.needCategory.joy'),
             },
-            id: 'dots',
+            id: 'dotes',
           },
           {
             match: {
-              id: t('childData.needCategory.growth'),
-            },
-            id: 'dots',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.urgent'),
+              id: t('childData.needCategory.health'),
             },
             id: 'lines',
+          },
+          {
+            match: {
+              id: t('childData.needCategory.surroundings'),
+            },
+            id: 'dots',
+          },
+        ]}
+        legends={[
+          {
+            anchor: 'bottom',
+            direction: 'row',
+            justify: false,
+            translateX: 0,
+            translateY: 56,
+            itemsSpacing: 5,
+            itemWidth: 60,
+            itemHeight: 18,
+            itemTextColor: '#999',
+            itemDirection: 'left-to-right',
+            itemOpacity: 1,
+            symbolSize: 18,
+            symbolShape: 'circle',
+            effects: [
+              {
+                on: 'hover',
+                style: {
+                  itemTextColor: '#000',
+                },
+              },
+            ],
           },
         ]}
       />

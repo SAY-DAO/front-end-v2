@@ -135,18 +135,10 @@ export default function MyChildTabs({ theChild }) {
               centered
               sx={{ backgroundColor: 'white' }}
             >
-              {/* <Tab
-                label={
-                  <Typography variant="subtitle2">
-                    {t('childPage.childTab.stats')}
-                  </Typography>
-                }
-                {...a11yProps(0)}
-              /> */}
               <Tab
                 label={
                   <Typography variant="subtitle2">
-                    {t('childPage.childTab.requirements')}
+                    {t('childPage.childTab.stats')}
                   </Typography>
                 }
                 {...a11yProps(0)}
@@ -154,7 +146,7 @@ export default function MyChildTabs({ theChild }) {
               <Tab
                 label={
                   <Typography variant="subtitle2">
-                    {t('childPage.childTab.family')}
+                    {t('childPage.childTab.requirements')}
                   </Typography>
                 }
                 {...a11yProps(1)}
@@ -162,23 +154,31 @@ export default function MyChildTabs({ theChild }) {
               <Tab
                 label={
                   <Typography variant="subtitle2">
-                    {t('childPage.childTab.story')}
+                    {t('childPage.childTab.family')}
                   </Typography>
                 }
                 {...a11yProps(2)}
               />
+              <Tab
+                label={
+                  <Typography variant="subtitle2">
+                    {t('childPage.childTab.story')}
+                  </Typography>
+                }
+                {...a11yProps(3)}
+              />
             </Tabs>
           </Box>
-          {/* <TabPanel value={value} index={0}>
-            <ChildStats needsArray={needsData} />
-          </TabPanel> */}
           <TabPanel value={value} index={0}>
-            <ChildNeeds theChild={theChild} needsArray={needsData} />
+            <ChildStats needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ChildFamily theChild={theChild} />
+            <ChildNeeds theChild={theChild} needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={2}>
+            <ChildFamily theChild={theChild} />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
             <ChildStory theChild={theChild} />
           </TabPanel>
         </Box>

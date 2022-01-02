@@ -95,8 +95,6 @@ const App = () => (
                   path="/child/:childId/needs/:needId"
                   component={NeedPage}
                 />
-
-                {/* <Route exact path="/family/child/:childId" component={ChildRoom} /> */}
               </Switch>
             </React.StrictMode>
           </Container>

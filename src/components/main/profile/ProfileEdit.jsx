@@ -11,7 +11,8 @@ import {
 import FormControl from '@material-ui/core/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { Redirect, useHistory } from 'react-router';
+import { useLocation, Link } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,6 +20,10 @@ import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import Button from '@mui/material/Button';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import Message from '../../Message';
 import {
   CHECK_CONTACT_RESET,
@@ -39,6 +44,7 @@ const ProfileEdit = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [validateErr, setValidateErr] = useState('');
   const [userNameErr, setUserNameErr] = useState(false);
@@ -55,6 +61,7 @@ const ProfileEdit = () => {
   const [dialCode, setDialCode] = useState('');
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
+  const [uploadImage, setUploadImage] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -248,13 +255,16 @@ const ProfileEdit = () => {
     );
   };
 
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 69;
+  const onImageChange = (e) => {
+    if (e.target.files) {
+      setUploadImage(e.target.files);
+    }
 
-  const onChange = (imageList, addUpdateIndex) => {
+    console.log(e.target.files);
+  };
+  const onUploadImage = (e) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
-    setImages(imageList);
+    // console.log(e);
   };
 
   return (
@@ -265,6 +275,14 @@ const ProfileEdit = () => {
       alignItems="center"
       maxWidth
     >
+      {uploadImage && (
+        <Redirect
+          to={{
+            pathname: '/main/profile/upload',
+            state: { imageUpload: uploadImage[0] },
+          }}
+        />
+      )}
       <FormControl
         onSubmit={handleSubmit}
         variant="outlined"
@@ -344,25 +362,43 @@ const ProfileEdit = () => {
                   <Avatar
                     alt="user photo"
                     sx={{ width: 140, height: 140 }}
-                    src={imageUrl}
+                    src={
+                      location.state && location.state.newImage
+                        ? URL.createObjectURL(location.state.newImage)
+                        : imageUrl
+                    }
                   />
-                  <IconButton
-                    sx={{
-                      width: '100%',
-                      position: 'absolute',
-                      bottom: '-20px',
-                    }}
-                    onClick={() => history.push('/main/profile/upload')}
-                  >
-                    <CameraAltOutlinedIcon
-                      color="primary"
-                      fontSize="large"
-                      sx={{
-                        borderRadius: '20%',
-                        backgroundColor: 'white',
-                      }}
+
+                  <label htmlFor="upload-image">
+                    <input
+                      accept="image/*"
+                      id="upload-image"
+                      type="file"
+                      style={{ display: 'none' }}
+                      onChange={onImageChange}
                     />
-                  </IconButton>
+                    <IconButton
+                      name="upload-image"
+                      id="upload-image"
+                      color="primary"
+                      component="span"
+                      sx={{
+                        width: '100%',
+                        position: 'absolute',
+                        bottom: '-20px',
+                      }}
+                      onClick={onUploadImage}
+                    >
+                      <CameraAltOutlinedIcon
+                        color="primary"
+                        fontSize="large"
+                        sx={{
+                          borderRadius: '20%',
+                          backgroundColor: 'white',
+                        }}
+                      />
+                    </IconButton>
+                  </label>
                 </Grid>
               </div>
             </Grid>
