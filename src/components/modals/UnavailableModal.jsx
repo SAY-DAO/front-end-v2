@@ -27,9 +27,9 @@ export default function UnavailableModal({ unpayable }) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log('here');
   useEffect(() => {
-    if (unpayable) {
+    if (!open && unpayable) {
       handleOpen();
     }
   }, [unpayable]);
@@ -73,7 +73,6 @@ export default function UnavailableModal({ unpayable }) {
               </Grid>
               <Grid item xs={12}>
                 <Link
-                  href="#"
                   sx={{ fontSize: '0.9rem', fontWeight: 'bolder' }}
                   onClick={handleClose}
                 >

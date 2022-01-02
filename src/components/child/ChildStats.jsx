@@ -74,7 +74,7 @@ export default function ChildStats({ needsArray }) {
         arcLinkLabelsDiagonalLength={15} // label line
         arcLinkLabelsStraightLength={5} // label line
         arcLinkLabelsTextOffset={5} // offset text from line
-        arcLinkLabelsThickness={1}
+        arcLinkLabelsThickness={3}
         arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
         defs={[
           {
