@@ -357,6 +357,8 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
     dispatch(addToCart(theChild, oneNeed, amount));
   };
+  console.log(location);
+  console.log(history);
 
   // addToCard
   const handleContinueShop = (e) => {

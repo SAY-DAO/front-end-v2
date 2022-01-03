@@ -87,8 +87,4 @@ Back.propTypes = {
   state: PropTypes.object,
 };
 
-Back.defaultProps = {
-  step: '',
-  to: '#',
-};
 export default Back;

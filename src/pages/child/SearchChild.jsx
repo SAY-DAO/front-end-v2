@@ -28,46 +28,58 @@ const SearchChild = () => {
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [family, setFamily] = useState();
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
+    theChild,
     theToken,
     loading: loadingRandomSearch,
     error: errorRandomSearch,
     success: successRandomSearch,
   } = childRandomSearch;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
-
   const userDetails = useSelector((state) => state.userDetails);
-  const { error: errorUserDetails } = userDetails;
+  const {
+    theUser,
+    success: successUserDetails,
+    error: errorUserDetails,
+  } = userDetails;
 
   // login
   useEffect(() => {
     if (errorUserDetails) {
       history.push('/login?redirect=main/search');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [theUser, successUserDetails, history, errorUserDetails, dispatch]);
 
-  // loading button
-  useEffect(() => {
-    if (loadingRandomSearch) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingRandomSearch]);
-
-  // when user is not logged in and try to join a virtual family, we need the token to not search new child
+  // to check wether the child is already adopted by user
   useEffect(() => {
     if (successRandomSearch) {
-      history.push(`/search-result?=${theToken}`);
+      const myList = [];
+      setFamily(theChild.childFamilyMembers);
+      if (family && theUser) {
+        for (let f = 0; f < family.length; f += 1) {
+          const member = family[f];
+          if (!member.isDeleted) {
+            myList.push(member.member_id);
+          }
+        }
+        console.log(theChild.sayName);
+        console.log(family);
+        if (myList[0] && myList.includes(theUser.id)) {
+          setFamily(null);
+          dispatch(fetchRandomChild());
+        } else {
+          history.push(`/search-result?=${theToken}`);
+          setIsLoading(false);
+        }
+      }
     }
-  }, [successRandomSearch, theToken]);
+  }, [family, theChild, successRandomSearch]);
 
   const onClick = () => {
-    // InfoTabs also fetch random child when result is your already adopted child
+    setIsLoading(true);
     dispatch(fetchRandomChild());
   };
 

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
@@ -27,15 +28,13 @@ const style = {
 export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const location = useLocation();
   const history = useHistory();
 
   const [redirect, setRedirect] = useState();
 
   useEffect(() => {
-    setRedirect(
-      // eslint-disable-next-line no-restricted-globals
-      location.search.split('=')[2]
-    );
+    setRedirect(location.search.split('=')[2]);
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -113,7 +112,6 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
               >
                 <Grid item>
                   <Link
-                    href="#"
                     sx={{
                       fontSize: '0.8rem',
                       fontWeight: 'bolder',
@@ -126,7 +124,6 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
                 </Grid>
                 <Grid item>
                   <Link
-                    href="#"
                     sx={{
                       fontSize: '0.8rem',
                       fontWeight: 'bolder',

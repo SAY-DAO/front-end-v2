@@ -139,15 +139,6 @@ export default function InfoTabs() {
     }
   }, [theChild, family, previousRole, userRole, userInfo]);
 
-  // already in family
-  // Goes to the search page and reset the success state
-  // it invokes the search page to fetch new random child automatically
-  useEffect(() => {
-    if (alreadyInFamily) {
-      dispatch(fetchRandomChild());
-    }
-  }, [alreadyInFamily, theChild, history]);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

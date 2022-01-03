@@ -59,7 +59,7 @@ export default function MyChildTabs({ theChild }) {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const [isGone, setIsGone] = useState(false);
+  const [isGone, setIsGone] = useState(true);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
   const [needsData, setNeedsData] = useState([]);

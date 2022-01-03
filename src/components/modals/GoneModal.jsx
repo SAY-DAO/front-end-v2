@@ -73,7 +73,6 @@ export default function GoneModal({ isGone, childSayName }) {
               </Grid>
               <Grid item xs={12}>
                 <Link
-                  href="#"
                   sx={{ fontSize: '0.9rem', fontWeight: 'bolder' }}
                   onClick={handleClose}
                 >

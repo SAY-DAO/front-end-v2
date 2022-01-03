@@ -92,7 +92,7 @@ export default function ChildNeeds({ theChild, needsArray }) {
 
   const handleNeedCardClick = (needId, childId) => {
     dispatch({ type: SHAPARAK_RESET });
-    history.push(`/child/${childId}/needs/${needId}`, { childTab: 1 }); // to use when going
+    history.push(`/child/${childId}/needs/${needId}`, { childTab: 1 }); // state: to use when going back
   };
 
   const handleClick = (index) => {

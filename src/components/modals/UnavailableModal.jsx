@@ -27,7 +27,7 @@ export default function UnavailableModal({ unpayable }) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log('here');
+
   useEffect(() => {
     if (!open && unpayable) {
       handleOpen();

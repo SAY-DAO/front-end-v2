@@ -18,7 +18,6 @@ import {
 } from '../../constants/main/cartConstants';
 import { fetchMyHome } from '../../actions/main/homeAction';
 import { SHAPARAK_RESET } from '../../constants/paymentConstants';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -57,9 +56,6 @@ export default function AppBarBottom({ path }) {
     loading: loadingHome,
     error: errorHome,
   } = myHome;
-
-  const childRandomSearch = useSelector((state) => state.childRandomSearch);
-  const { success: successRandomSearch } = childRandomSearch;
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
@@ -104,7 +100,6 @@ export default function AppBarBottom({ path }) {
   }, [value]);
 
   const handleChange = (event, newValue) => {
-    console.log(event);
     setValue(newValue);
   };
 
