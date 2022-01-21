@@ -76,7 +76,6 @@
     },
     "timeout": "Oh..! <1/>Something is not working. Check back latter",
     "emptyCart": "Your Cart Is Empty!"
-
   },
   "divider": {
     "register": "OR"
@@ -90,7 +89,6 @@
     "email": "Email",
     "phoneNumber": "Phone Number",
     "code": "Code"
-
   },
   "currency": {
     "toman": " T"
@@ -183,9 +181,10 @@
   "userLayout": {
     "home": "Home",
     "search": "Search",
-    "profile": "Profile",
     "notifications": "Notifications",
-    "cart": "Cart"
+    "cart": "Cart",
+    "profile": "Profile",
+    "dao": "DAO"
   },
   "home": {
     "title": "Children"

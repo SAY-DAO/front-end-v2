@@ -31,8 +31,10 @@ import {
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
+import { familyNetworksReducer } from './daoReducer';
 
 export default combineReducers({
+  theNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,
   checkUserName: checkUserNameReducer,

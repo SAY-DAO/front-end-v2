@@ -85,7 +85,6 @@
     "email": "ایمیل",
     "phoneNumber": "شماره تلفن",
     "code": "کد"
-
   },
   "currency": {
     "toman": " تومان"
@@ -182,10 +181,10 @@
   "userLayout": {
     "home": "خانه",
     "search": "جستجو",
-    "profile": "پروفایل",
     "notifications": "اعلان‌ها",
-    "cart": "سبد خرید"
-
+    "cart": "سبد خرید",
+    "profile": "پروفایل",
+    "dao": "DAO"
   },
   "home": {
     "title": "کودکان"
@@ -409,7 +408,7 @@
       "story": "داستان"
     },
     "more": {
-      "growFamily": "گسترش خانواده", 
+      "growFamily": "گسترش خانواده",
       "leaveFamily": "ترک خانواده"
     },
     "growFamilyModal": {

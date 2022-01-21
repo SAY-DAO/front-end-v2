@@ -25,6 +25,7 @@ import Home from './components/main/Home';
 import ProfileEdit from './components/main/profile/ProfileEdit';
 import ProfileUpload from './components/main/profile/ProfileUpload';
 import Report from './pages/Report';
+import DAO from './components/main/DAO';
 
 // Configure JSS for RTL
 const jss = create({
@@ -69,8 +70,6 @@ const App = () => (
                   path="/main/profile/settings"
                   component={Settings}
                 />
-                <Route exact path="/main/home" component={Home} />
-                <Route exact path="/main/profile" component={Profile} />
                 <Route
                   exact
                   path="/main/profile/edit"
@@ -81,6 +80,9 @@ const App = () => (
                   path="/main/profile/upload"
                   component={ProfileUpload}
                 />
+                <Route exact path="/main/dao" component={DAO} />
+                <Route exact path="/main/profile" component={Profile} />
+                <Route exact path="/main/home" component={Home} />
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
                 <Route exact path="/search-result" component={SearchResult} />

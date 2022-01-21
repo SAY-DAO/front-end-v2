@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Paper from '@material-ui/core/Paper';
+import { Paper, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
@@ -88,6 +88,8 @@ export default function AppBarBottom({ path }) {
       history.push('/main/search');
     } else if (value === 'home') {
       history.push('/main/home');
+    } else if (value === 'dao') {
+      history.push('/main/dao');
     }
     const cartItems = localStorage.getItem('SAY-cartItems')
       ? JSON.parse(localStorage.getItem('SAY-cartItems'))
@@ -242,6 +244,18 @@ export default function AppBarBottom({ path }) {
                 }}
               />
             }
+          />
+          <BottomNavigationAction
+            value="dao"
+            label={t('userLayout.dao')}
+            className={classes.root}
+            sx={{
+              maxWidth: path === 'dao' ? '180px' : '25px',
+              minWidth: '70px',
+              borderRadius: '25px',
+              backgroundColor: path === 'dao' ? '#ffdfc1' : 'transparent',
+            }}
+            icon={<Typography>DAO</Typography>}
           />
         </BottomNavigation>
       </Paper>
