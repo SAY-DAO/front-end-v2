@@ -1,9 +1,9 @@
 import contents from './Contents';
 
 export default function validateUsername(userName) {
-  const valid = /^[A-Za-z0-9][.A-Za-z0-9]{5,15}$/;
+  const valid = /^[A-Za-z0-9][.A-Za-z0-9]{4,15}$/;
   const invalidStart = /^[.,?,!,&,%,@,#,*,(,),~,|,0,1,2,3,4,5,6,7,8,9]/;
-  const validLength = /^.{6,16}$/;
+  const validLength = /^.{5,16}$/;
   let result = '';
 
   if (userName) {

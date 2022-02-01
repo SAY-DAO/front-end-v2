@@ -382,6 +382,7 @@ export const userEditProfile =
 
       const {
         userLogin: { userInfo },
+        userDetails: { theUser },
       } = getState();
 
       const config = {
@@ -392,24 +393,35 @@ export const userEditProfile =
       };
 
       const formData = new FormData();
-      if (userInfo.user.avatarUrl !== avatarUrl) {
+      if (theUser.avatarUrl !== avatarUrl) {
         formData.append('avatarUrl', avatarUrl);
       }
-      if (userInfo.user.firstName !== firstName) {
+      if (theUser.firstName !== firstName) {
         formData.append('firstName', firstName);
       }
-      if (userInfo.user.lastName !== lastName) {
+      if (theUser.lastName !== lastName) {
         formData.append('lastName', lastName);
       }
-      if (phoneAuth && userInfo.user.phone_number !== phoneNumber) {
+      if (!phoneAuth && theUser.phone_number !== phoneNumber) {
         formData.append('phoneNumber', phoneNumber);
       }
-      if (emailAuth && userInfo.user.emailAddress !== email) {
+      if (!emailAuth && theUser.emailAddress !== email) {
         formData.append('email', email);
       }
-      if (userInfo.user.userName !== userName) {
+      if (theUser.userName !== userName) {
         formData.append('userName', userName);
       }
+      console.log(formData);
+      console.log(
+        phoneAuth,
+        emailAuth,
+        avatarUrl,
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        userName
+      );
       const { data } = await publicApi.patch(
         `/user/update/userId=me`,
         formData,

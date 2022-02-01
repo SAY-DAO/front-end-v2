@@ -53,7 +53,7 @@
     "wrongEmail": "Please enter a valid email address",
     "wrongPhone": "The number you entered is incomplete",
     "usernameStart": "Username cannot start with punctuation marks or numbers.",
-    "usernameLength": "Username must contain 8 to 16 characters.",
+    "usernameLength": "Username must contain 6 to 16 characters.",
     "wrongUsername": "User name can only contain alphabets, numbers and dot.",
     "usernameExists": "This userName is already in use",
     "phoneExists": "This phone number is already in use",

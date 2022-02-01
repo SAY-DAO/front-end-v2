@@ -63,8 +63,8 @@ const ProfileEdit = () => {
   const [userName, setUserName] = useState('');
   const [uploadImage, setUploadImage] = useState();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const userDetails = useSelector((state) => state.userDetails);
+  const { theUser, success: successUserDetails } = userDetails;
 
   const checkContact = useSelector((state) => state.checkContact);
   const {
@@ -74,11 +74,10 @@ const ProfileEdit = () => {
   } = checkContact;
 
   useEffect(() => {
-    dispatch({ type: USER_RESET_PASSWORD_RESET });
-    if (!userInfo && !successLogin) {
+    if (!theUser && !successUserDetails) {
       history.push('/login?redirect=main/profile/edit');
     }
-  }, [userInfo, successLogin, history]);
+  }, [theUser, successUserDetails, history]);
 
   // loading IconButton
   useEffect(() => {
@@ -91,12 +90,12 @@ const ProfileEdit = () => {
 
   // disable IconButton
   useEffect(() => {
-    if (!successCheck || (!userInfo && !successLogin)) {
+    if (errorCheck || !successUserDetails) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [successCheck, successLogin, userInfo]);
+  }, [errorCheck, successUserDetails, theUser]);
 
   //  clear error message when type
   useEffect(() => {
@@ -116,31 +115,34 @@ const ProfileEdit = () => {
 
   // email / phone user authenticated
   useEffect(() => {
-    if (userInfo && userInfo.user.phoneNumber) {
+    if (theUser && theUser.is_phonenumber_verified) {
       setPhoneAuth(true);
       setEmailAuth(false);
     }
-    if (userInfo && userInfo.user.emailAddress) {
+    if (theUser && theUser.is_email_verified) {
       setEmailAuth(true);
       setPhoneAuth(false);
     }
-  }, [successLogin, userInfo]);
+  }, [successUserDetails, theUser]);
 
   // set the back-end data
   useEffect(() => {
-    if (userInfo) {
-      setFirstName(userInfo.user.firstName);
-      setLastName(userInfo.user.lastName);
-      setPhoneNumber(userInfo.user.phone_number);
-      setEmail(userInfo.user.emailAddress);
-      setUserName(userInfo.user.userName);
-      setImageUrl(userInfo.user.avatarUrl);
+    if (theUser) {
+      setFirstName(theUser.firstName);
+      setLastName(theUser.lastName);
+      if (theUser.phone_number) {
+        setPhoneNumber(theUser.phone_number);
+      } else {
+        setEmail(theUser.emailAddress);
+      }
+      setUserName(theUser.userName);
+      setImageUrl(theUser.avatarUrl);
     }
-  }, [userInfo]);
+  }, [theUser]);
 
   // check phone every 1000 ms when typing
   useEffect(() => {
-    if (!phoneAuth && phoneNumber) {
+    if (!phoneAuth && theUser.phone_number !== phoneNumber) {
       setValidateErr('');
       const phoneResult = validatePhone(phoneNumber, countryCode);
       if (phoneResult && phoneResult.errorMessage) {
@@ -159,11 +161,11 @@ const ProfileEdit = () => {
         return () => clearTimeout(timeout);
       }
     }
-  }, [phoneNumber, countryCode, phoneAuth, dispatch, t]);
+  }, [phoneNumber, countryCode, phoneAuth, dispatch]);
 
   // check email every 1000 ms when typing
   useEffect(() => {
-    if (!emailAuth && email) {
+    if (!emailAuth && theUser.emailAddress !== email) {
       setValidateErr('');
       const emailResult = validateEmail(email);
       if (emailResult && emailResult.errorMessage) {
@@ -186,7 +188,7 @@ const ProfileEdit = () => {
     setValidateErr('');
     setUserNameErr(true);
     dispatch({ type: CHECK_USERNAME_RESET });
-    if (userName) {
+    if (userName && theUser.userName !== userName) {
       const result = validateUsername(userName);
       if (result && result.errorMessage) {
         const timeout = setTimeout(() => {
@@ -204,13 +206,6 @@ const ProfileEdit = () => {
     }
     setUserNameErr(false);
   }, [userName]);
-
-  // Success
-  useEffect(() => {
-    if (successCheck) {
-      history.push('/main/profile/settings');
-    }
-  }, [successCheck, history]);
 
   // first name changes
   const handleChangeFirstName = (e) => {
@@ -245,7 +240,7 @@ const ProfileEdit = () => {
       userEditProfile(
         phoneAuth,
         emailAuth,
-        // avatarUrl,
+        imageUrl,
         firstName,
         lastName,
         phoneNumber,
@@ -434,6 +429,7 @@ const ProfileEdit = () => {
             </Grid>
             <Grid item>
               <PhoneInput
+                disabled={phoneAuth}
                 style={{
                   direction: 'ltr',
                   display: phoneAuth ? 'none' : null,
