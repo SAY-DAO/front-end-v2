@@ -3,18 +3,11 @@ import React, { useState, useEffect } from 'react';
 // For multi-language
 import AvatarEditor from 'react-avatar-editor';
 import { useTranslation } from 'react-i18next';
-import {
-  Grid,
-  Avatar,
-  Typography,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Grid, Typography, IconButton, CircularProgress } from '@mui/material';
 import { useLocation, Link } from 'react-router-dom';
-import { withStyles, makeStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import Slider from '@material-ui/core/Slider';
-import { Redirect, useHistory } from 'react-router';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { useHistory } from 'react-router';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 
@@ -58,10 +51,8 @@ export default function UserProfileEdit() {
   const [isLoading, setIsLoading] = useState(false);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [photo, setPhoto] = useState(null);
   const [editor, setEditor] = useState(null);
-  const [done, setDone] = useState(false);
-  const [file, setFile] = useState(location.state.imageUpload);
+  const [file, setFile] = useState(location.state.imageUpload); // from ProfileEdit.jsx
   const [thumb, setThumb] = useState(null);
 
   // disable IconButton
@@ -73,6 +64,7 @@ export default function UserProfileEdit() {
     }
   }, [file]);
 
+  // scale
   const scaleHandler = (e) => {
     e.preventDefault();
     const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
@@ -80,6 +72,7 @@ export default function UserProfileEdit() {
     setScale(newScale);
   };
 
+  // rotate
   const rotateHandler = (e) => {
     e.preventDefault();
     const w = document.getElementsByClassName('MuiSlider-track')[1].style.width;
@@ -103,6 +96,7 @@ export default function UserProfileEdit() {
   };
 
   const onClickSave = (e) => {
+    setIsLoading(true);
     e.preventDefault();
 
     if (editor) {
@@ -121,13 +115,12 @@ export default function UserProfileEdit() {
       console.warn('test png file --> ', theFile);
       console.warn('uploaded file --> ', file);
 
-      setPhoto(theFile);
       setThumb(canvas);
-      setDone(true);
       history.push('/main/profile/edit', {
         newImage: theFile,
         thumbnail: thumb,
       });
+      setIsLoading(false);
     }
   };
 
