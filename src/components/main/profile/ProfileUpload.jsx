@@ -62,15 +62,26 @@ export default function UserProfileEdit() {
   const [editor, setEditor] = useState(null);
   const [done, setDone] = useState(false);
   const [file, setFile] = useState(location.state.imageUpload);
-  const [tumb, setTumb] = useState(null);
+  const [thumb, setThumb] = useState(null);
 
-  const scaleHandler = () => {
+  // disable IconButton
+  useEffect(() => {
+    if (!file) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [file]);
+
+  const scaleHandler = (e) => {
+    e.preventDefault();
     const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
     const newScale = 1 + w.split('%')[0] / 100;
     setScale(newScale);
   };
 
-  const rotateHandler = () => {
+  const rotateHandler = (e) => {
+    e.preventDefault();
     const w = document.getElementsByClassName('MuiSlider-track')[1].style.width;
     const newRotate = (w.split('%')[0] * 360) / 100;
     setRotate(newRotate);
@@ -91,7 +102,9 @@ export default function UserProfileEdit() {
     return new File([u8arr], filename, { type: mime });
   };
 
-  const onClickSave = () => {
+  const onClickSave = (e) => {
+    e.preventDefault();
+
     if (editor) {
       const canvas = editor.getImageScaledToCanvas().toDataURL('image/png');
 
@@ -109,9 +122,12 @@ export default function UserProfileEdit() {
       console.warn('uploaded file --> ', file);
 
       setPhoto(theFile);
-      setTumb(canvas);
+      setThumb(canvas);
       setDone(true);
-      history.push('/main/profile/edit', { newImage: theFile });
+      history.push('/main/profile/edit', {
+        newImage: theFile,
+        thumbnail: thumb,
+      });
     }
   };
 
@@ -123,7 +139,7 @@ export default function UserProfileEdit() {
         <Link
           to={{
             pathname: '/main/profile/edit',
-            state: { newPhoto: null, tumbnail: null },
+            state: { newPhoto: null, thumbnail: null },
           }}
         >
           <CloseIcon

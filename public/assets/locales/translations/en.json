@@ -76,7 +76,6 @@
     },
     "timeout": "Oh..! <1/>Something is not working. Check back latter",
     "emptyCart": "Your Cart Is Empty!"
-
   },
   "divider": {
     "register": "OR"
@@ -90,7 +89,6 @@
     "email": "Email",
     "phoneNumber": "Phone Number",
     "code": "Code"
-
   },
   "currency": {
     "toman": " T"
@@ -264,6 +262,9 @@
       "modalTitle": "Wallet",
       "modalDesc": "This wallet is not to be credited. It is for refunds in case of any discounts or price cuts."
     }
+  },
+  "profileUpdate": {
+    "success": "Your profile is updated"
   },
   "setting": {
     "title": "Setting",

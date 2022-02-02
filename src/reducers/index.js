@@ -10,6 +10,7 @@ import {
   userForgotPasswordReducer,
   userResetPasswordReducer,
   userDetailsReducer,
+  userUpdateProfileReducer,
 } from './userReducer';
 import {
   childRandomSearchReducer,
@@ -43,6 +44,7 @@ export default combineReducers({
   userDetails: userDetailsReducer,
   userForgotPass: userForgotPasswordReducer,
   userResetPass: userResetPasswordReducer,
+  userUpdateProfile: userUpdateProfileReducer,
   childRandomSearch: childRandomSearchReducer,
   childByToken: childByTokenReducer,
   joinResult: joinVirtualFamilyReducer,

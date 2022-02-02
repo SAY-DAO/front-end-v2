@@ -19,16 +19,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Button from '@mui/material/Button';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import Message from '../../Message';
 import {
   CHECK_CONTACT_RESET,
   CHECK_USERNAME_RESET,
-  USER_RESET_PASSWORD_RESET,
+  USER_UPDATE_PROFILE_RESET,
   USER_VERIFY_RESET,
 } from '../../../constants/main/userConstants';
 import {
@@ -66,14 +61,16 @@ const ProfileEdit = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { theUser, success: successUserDetails } = userDetails;
 
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success: successUserUpdate, error: errorUserUpdate } =
+    userUpdateProfile;
+
   const checkContact = useSelector((state) => state.checkContact);
-  const {
-    loading: loadingCheck,
-    error: errorCheck,
-    success: successCheck,
-  } = checkContact;
+  const { loading: loadingCheck, error: errorCheck } = checkContact;
 
   useEffect(() => {
+    dispatch({ type: USER_UPDATE_PROFILE_RESET });
+
     if (!theUser && !successUserDetails) {
       history.push('/login?redirect=main/profile/edit');
     }
@@ -136,7 +133,9 @@ const ProfileEdit = () => {
         setEmail(theUser.emailAddress);
       }
       setUserName(theUser.userName);
-      setImageUrl(theUser.avatarUrl);
+      if (!uploadImage) {
+        setImageUrl(theUser.avatarUrl);
+      }
     }
   }, [theUser]);
 
@@ -234,13 +233,20 @@ const ProfileEdit = () => {
     setUserName(e.target.value);
   };
 
+  const onImageChange = (e) => {
+    if (e.target.files[0]) {
+      setUploadImage(e.target.files);
+      setImageUrl(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
       userEditProfile(
         phoneAuth,
         emailAuth,
-        imageUrl,
+        location.state.newImage,
         firstName,
         lastName,
         phoneNumber,
@@ -248,18 +254,6 @@ const ProfileEdit = () => {
         userName
       )
     );
-  };
-
-  const onImageChange = (e) => {
-    if (e.target.files) {
-      setUploadImage(e.target.files);
-    }
-
-    console.log(e.target.files);
-  };
-  const onUploadImage = (e) => {
-    // data for submit
-    // console.log(e);
   };
 
   return (
@@ -270,6 +264,7 @@ const ProfileEdit = () => {
       alignItems="center"
       maxWidth
     >
+      {/*  when uploaded route to editing studio */}
       {uploadImage && (
         <Redirect
           to={{
@@ -359,11 +354,10 @@ const ProfileEdit = () => {
                     sx={{ width: 140, height: 140 }}
                     src={
                       location.state && location.state.newImage
-                        ? URL.createObjectURL(location.state.newImage)
+                        ? URL.createObjectURL(location.state.newImage) // image preview
                         : imageUrl
                     }
                   />
-
                   <label htmlFor="upload-image">
                     <input
                       accept="image/*"
@@ -372,17 +366,17 @@ const ProfileEdit = () => {
                       style={{ display: 'none' }}
                       onChange={onImageChange}
                     />
+
                     <IconButton
                       name="upload-image"
                       id="upload-image"
                       color="primary"
-                      component="span"
+                      component="div"
                       sx={{
                         width: '100%',
                         position: 'absolute',
                         bottom: '-20px',
                       }}
-                      onClick={onUploadImage}
                     >
                       <CameraAltOutlinedIcon
                         color="primary"
@@ -482,14 +476,21 @@ const ProfileEdit = () => {
         </form>
       </FormControl>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {(validateErr || errorCheck) && (
+        {(validateErr || errorCheck || errorUserUpdate) && (
           <Message
             input={messageInput}
-            backError={errorCheck}
+            backError={errorCheck || errorUserUpdate}
             variant="standard"
             severity="error"
           >
             {validateErr}
+          </Message>
+        )}
+      </Grid>
+      <Grid item xs={12} sx={{ textAlign: 'center' }}>
+        {successUserUpdate && (
+          <Message severity="success" variant="standard">
+            {t('profileUpdate.success')}
           </Message>
         )}
       </Grid>

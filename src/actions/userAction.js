@@ -411,17 +411,7 @@ export const userEditProfile =
       if (theUser.userName !== userName) {
         formData.append('userName', userName);
       }
-      console.log(formData);
-      console.log(
-        phoneAuth,
-        emailAuth,
-        avatarUrl,
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        userName
-      );
+
       const { data } = await publicApi.patch(
         `/user/update/userId=me`,
         formData,
