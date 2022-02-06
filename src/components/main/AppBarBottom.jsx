@@ -255,7 +255,7 @@ export default function AppBarBottom({ path }) {
               borderRadius: '25px',
               backgroundColor: path === 'dao' ? '#ffdfc1' : 'transparent',
             }}
-            icon={<Typography>DAO</Typography>}
+            icon={<Typography variant="subtitle2">DAO</Typography>}
           />
         </BottomNavigation>
       </Paper>
