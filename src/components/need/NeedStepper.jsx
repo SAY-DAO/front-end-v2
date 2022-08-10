@@ -4,9 +4,9 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { IconButton, StepLabel } from '@mui/material/';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import { LoadingButton } from '@mui/lab';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/styles';
 import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector';

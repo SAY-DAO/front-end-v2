@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
 import { Link, Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import Chip from '@material-ui/core/Chip';
-import Stack from '@material-ui/core/Stack';
-import { makeStyles } from '@material-ui/styles';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import { makeStyles } from '@mui/styles';
 import roles from '../../apis/roles';
 import { fetchRandomChild } from '../../actions/childAction';
 import GoneModal from '../modals/GoneModal';

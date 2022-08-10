@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import ReactDOM from 'react-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { ThemeProvider } from '@mui/material/styles';
+import { render } from 'react-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import theTheme from './resources/styles/theTheme';
@@ -14,7 +14,7 @@ import store from './store';
 
 const loadingMarkup = <CircularProgress />;
 
-ReactDOM.render(
+render(
   <ThemeProvider theme={theTheme}>
     <Suspense fallback={loadingMarkup}>
       <Router history={history}>
@@ -26,4 +26,5 @@ ReactDOM.render(
   </ThemeProvider>,
   document.getElementById('root')
 );
+
 swDev();

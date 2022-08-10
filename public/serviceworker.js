@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable no-undef */
+
 const staticCacheName = 'SAY-v2.0.0-beta';
 const urlsToCache = [
   '/static/js/main.chunk.js',
@@ -39,32 +39,36 @@ const urlsToCache = [
   '/images/otp.svg',
   '/images/register.svg',
   '/offline.html',
+  '/static/js/0.chunk.js',
+  '/static/js/bundle.js',
+  '/static/js/vendors~main.chunk.js',
+  '/static/js/main.482930e5.chunk.js',
+  '/static/js/2.a637ec1e.chunk.js',
 ];
 
 const self = this;
 
 // install Service Worker and save cache to Application - Cache
 self.addEventListener('install', (event) => {
-  // console.log('Attempting to install service worker and cache static assets');
+  console.log('Attempting to install service worker and cache static assets');
+  console.log(event);
+  console.log(staticCacheName);
   event.waitUntil(
-    caches.open(staticCacheName).then((cache) =>
-      // console.log('Opened cache');
-      cache.addAll(urlsToCache)
-    )
+    caches.open(staticCacheName).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
 // Serve files from the cache
 self.addEventListener('fetch', (event) => {
-  // console.log('Fetch event for ', event.request.url);
+  console.log('Fetch event for ', event.request.url);
   event.respondWith(
     caches
       .match(event.request)
       .then((response) => {
-        // if (response) {
-        //   console.log('Found ', event.request.url, ' in cache');
-        //   return response;
-        // }
+        if (response) {
+          console.log('Found ', event.request.url, ' in cache');
+          return response;
+        }
         // If fails, we send the request to the network.
         console.log('Network request for ', event.request.url);
         return fetch(event.request).then((res) =>
@@ -89,10 +93,10 @@ self.addEventListener('fetch', (event) => {
     caches
       .match(event.request)
       .then((response) => {
-        // if (response) {
-        //   console.log('Found ', event.request.url, ' in cache');
-        //   return response;
-        // }
+        if (response) {
+          console.log('Found ', event.request.url, ' in cache');
+          return response;
+        }
         console.log('Network request for ', event.request.url);
         return fetch(event.request);
 

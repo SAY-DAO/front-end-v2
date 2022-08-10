@@ -1,7 +1,7 @@
 import { Grid, Button, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import i18next from 'i18next';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
   root: {

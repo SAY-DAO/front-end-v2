@@ -2,16 +2,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { CircularProgress, Grid, Typography } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
 import { useTranslation, Trans } from 'react-i18next';
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@mui/styles';
+import LinearProgress from '@mui/material/LinearProgress';
 import NumberFormat from 'react-number-format';
+import { LoadingButton } from '@mui/lab';
 import Back from '../Back';
 import {
   verifyUser,

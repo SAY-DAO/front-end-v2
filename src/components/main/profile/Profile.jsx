@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Box, Card, Typography, Avatar } from '@mui/material';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';

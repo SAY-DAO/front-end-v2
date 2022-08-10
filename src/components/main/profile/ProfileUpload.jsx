@@ -11,10 +11,10 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useLocation, Link } from 'react-router-dom';
-import { withStyles, makeStyles } from '@material-ui/styles';
-import Slider from '@material-ui/core/Slider';
+import { withStyles, makeStyles } from '@mui/styles';
+import Slider from '@mui/material/Slider';
 import { Redirect, useHistory } from 'react-router';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 

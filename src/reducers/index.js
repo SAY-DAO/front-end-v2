@@ -34,7 +34,7 @@ import {
 import { familyNetworksReducer } from './daoReducer';
 
 export default combineReducers({
-  theNetwork: familyNetworksReducer,
+  familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,
   checkUserName: checkUserNameReducer,

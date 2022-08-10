@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@mui/material/CircularProgress';
+import { withStyles } from '@mui/styles';
 import { Trans } from 'react-i18next';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
-import { Box, Grid, Link, Modal } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import { Box, CircularProgress, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
 import { joinVirtualFamily } from '../../actions/familyAction';
 import { fetchMyHome } from '../../actions/main/homeAction';
 

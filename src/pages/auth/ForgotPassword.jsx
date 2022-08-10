@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
+import { LoadingButton } from '@mui/lab';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
