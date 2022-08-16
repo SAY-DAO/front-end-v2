@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 const SearchChild = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
   const [family, setFamily] = useState();
@@ -47,9 +47,9 @@ const SearchChild = () => {
   // login
   useEffect(() => {
     if (errorUserDetails) {
-      history.push('/login?redirect=main/search');
+      navigate('/login?redirect=main/search');
     }
-  }, [theUser, successUserDetails, history, errorUserDetails, dispatch]);
+  }, [theUser, successUserDetails, errorUserDetails, dispatch]);
 
   // to check wether the child is already adopted by user
   useEffect(() => {
@@ -69,7 +69,7 @@ const SearchChild = () => {
           setFamily(null);
           dispatch(fetchRandomChild());
         } else {
-          history.push(`/search-result?=${theToken}`);
+          navigate(`/search-result?=${theToken}`);
           setIsLoading(false);
         }
       }

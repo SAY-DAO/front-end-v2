@@ -305,10 +305,16 @@ export const fetchUserDetails = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
+    const userInfoLocal = localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo'))
+      : null;
+
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo && userInfo.accessToken,
+        Authorization: userInfo
+          ? userInfo.accessToken
+          : userInfoLocal.accessToken,
       },
     };
 

@@ -10,7 +10,7 @@ import {
   IconButton,
   CircularProgress,
 } from '@mui/material';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { withStyles, makeStyles } from '@mui/styles';
 import Slider from '@mui/material/Slider';
 import { Redirect, useHistory } from 'react-router';
@@ -51,7 +51,7 @@ const PrettoSlider = withStyles({
 // eslint-disable-next-line react/prop-types
 export default function UserProfileEdit() {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -111,7 +111,7 @@ export default function UserProfileEdit() {
       setPhoto(theFile);
       setTumb(canvas);
       setDone(true);
-      history.push('/main/profile/edit', { newImage: theFile });
+      navigate('/main/profile/edit', { newImage: theFile });
     }
   };
 

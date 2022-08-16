@@ -12,7 +12,7 @@ import StepConnector, {
 } from '@mui/material/StepConnector';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { fetchOneNeedReceipts } from '../../actions/childAction';
 
@@ -121,7 +121,7 @@ ColorLibStepIcon.propTypes = {
 };
 
 export default function HorizontalNonLinearStepper({ oneNeed }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -192,7 +192,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   };
 
   const handleReceiptPage = () => {
-    history.push(`/child/needs/needPage/report/${chosen + 2}`); // index + 2
+    navigate(`/child/needs/needPage/report/${chosen + 2}`); // index + 2
   };
   return (
     <Box sx={{ width: '100%' }}>

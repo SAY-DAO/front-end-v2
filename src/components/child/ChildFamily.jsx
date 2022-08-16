@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Typography, Grid, Avatar, Chip, Stack } from '@mui/material';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import roles from '../../apis/roles';
 
 export default function ChildFamily({ theChild }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   // useEffect(() => {
   //   if (!theChild.childFamilyMembers) {
-  //     history.push('/main/search');
+  //     navigate('/main/search');
   //   }
   // }, [theChild, history]);
 

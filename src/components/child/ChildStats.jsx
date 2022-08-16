@@ -57,97 +57,99 @@ export default function ChildStats({ needsArray }) {
 
   return (
     <div style={{ height: '300px', width: '100%', direction: 'ltr' }}>
-      <ResponsivePie
-        data={pieData}
-        margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
-        innerRadius={0.35}
-        padAngle={1.7}
-        cornerRadius={5}
-        activeOuterRadiusOffset={8}
-        colors={{ scheme: 'nivo' }}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLinkLabelsDiagonalLength={15} // label line
-        arcLinkLabelsStraightLength={5} // label line
-        arcLinkLabelsTextOffset={5} // offset text from line
-        arcLinkLabelsThickness={3}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-        defs={[
-          {
-            id: 'dots',
-            type: 'patternDots',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            size: 4,
-            padding: 1,
-            stagger: true,
-          },
-          {
-            id: 'lines',
-            type: 'patternLines',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            rotation: -45,
-            lineWidth: 6,
-            spacing: 10,
-          },
-        ]}
-        fill={[
-          {
-            match: {
-              id: t('childData.needCategory.growth'),
+      {pieData && (
+        <ResponsivePie
+          data={pieData}
+          margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
+          innerRadius={0.35}
+          padAngle={1.7}
+          cornerRadius={5}
+          activeOuterRadiusOffset={8}
+          colors={{ scheme: 'nivo' }}
+          borderWidth={1}
+          borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabelsTextColor="#333333"
+          arcLinkLabelsColor={{ from: 'color' }}
+          arcLabelsSkipAngle={10}
+          arcLinkLabelsDiagonalLength={15} // label line
+          arcLinkLabelsStraightLength={5} // label line
+          arcLinkLabelsTextOffset={5} // offset text from line
+          arcLinkLabelsThickness={3}
+          arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+          defs={[
+            {
+              id: 'dots',
+              type: 'patternDots',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              size: 4,
+              padding: 1,
+              stagger: true,
             },
-            id: 'dots',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.joy'),
+            {
+              id: 'lines',
+              type: 'patternLines',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              rotation: -45,
+              lineWidth: 6,
+              spacing: 10,
             },
-            id: 'dotes',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.health'),
-            },
-            id: 'lines',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.surroundings'),
-            },
-            id: 'dots',
-          },
-        ]}
-        legends={[
-          {
-            anchor: 'bottom',
-            direction: 'row',
-            justify: false,
-            translateX: 0,
-            translateY: 56,
-            itemsSpacing: 5,
-            itemWidth: 60,
-            itemHeight: 18,
-            itemTextColor: '#999',
-            itemDirection: 'left-to-right',
-            itemOpacity: 1,
-            symbolSize: 18,
-            symbolShape: 'circle',
-            effects: [
-              {
-                on: 'hover',
-                style: {
-                  itemTextColor: '#000',
-                },
+          ]}
+          fill={[
+            {
+              match: {
+                id: t('childData.needCategory.growth'),
               },
-            ],
-          },
-        ]}
-      />
+              id: 'dots',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.joy'),
+              },
+              id: 'dotes',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.health'),
+              },
+              id: 'lines',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.surroundings'),
+              },
+              id: 'dots',
+            },
+          ]}
+          legends={[
+            {
+              anchor: 'bottom',
+              direction: 'row',
+              justify: false,
+              translateX: 0,
+              translateY: 56,
+              itemsSpacing: 5,
+              itemWidth: 60,
+              itemHeight: 18,
+              itemTextColor: '#999',
+              itemDirection: 'left-to-right',
+              itemOpacity: 1,
+              symbolSize: 18,
+              symbolShape: 'circle',
+              effects: [
+                {
+                  on: 'hover',
+                  style: {
+                    itemTextColor: '#000',
+                  },
+                },
+              ],
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }

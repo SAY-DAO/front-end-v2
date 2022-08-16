@@ -31,7 +31,7 @@ import {
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
-import { familyNetworksReducer } from './daoReducer';
+import { familyNetworksReducer, signatureReducer } from './daoReducer';
 
 export default combineReducers({
   familyNetwork: familyNetworksReducer,
@@ -59,4 +59,5 @@ export default combineReducers({
   shaparakGate: paymentReducer,
   cartUpdate: cartUpdateReducer,
   cartPayCheck: checkCartPaymentReducer,
+  signature: signatureReducer,
 });

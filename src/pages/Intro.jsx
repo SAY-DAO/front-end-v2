@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { Typography, Grid, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LangButton from '../components/LangButton';
 import { fetchUserDetails } from '../actions/userAction';
@@ -10,7 +10,7 @@ import { fetchUserDetails } from '../actions/userAction';
 const Intro = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -22,9 +22,9 @@ const Intro = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (userInfo || successLogin || successUserDetails) {
-      history.push('/main/home');
+      navigate('/main/home');
     }
-  }, [userInfo, successLogin, successUserDetails, history, dispatch]);
+  }, [userInfo, successLogin, successUserDetails, dispatch]);
 
   return (
     <Container>
@@ -64,7 +64,7 @@ const Intro = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push('/register')}
+            onClick={() => navigate('/register')}
           >
             {t('button.register')}
           </Button>
@@ -73,7 +73,7 @@ const Intro = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => history.push('/login')}
+            onClick={() => navigate('/login')}
           >
             {t('button.login')}
           </Button>

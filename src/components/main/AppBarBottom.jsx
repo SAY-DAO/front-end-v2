@@ -4,7 +4,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Paper, Typography, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles, styled } from '@mui/styles';
 import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 export default function AppBarBottom({ path }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [value, setValue] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -77,17 +77,17 @@ export default function AppBarBottom({ path }) {
 
   useEffect(() => {
     if (value === 'profile') {
-      history.push('/main/profile');
+      navigate('/main/profile');
     } else if (value === 'cart') {
       dispatch({ type: SHAPARAK_RESET });
       dispatch({ type: CART_UPDATE_BACK_RESET });
-      history.push('/main/cart');
+      navigate('/main/cart');
     } else if (value === 'search') {
-      history.push('/main/search');
+      navigate('/main/search');
     } else if (value === 'home') {
-      history.push('/main/home');
+      navigate('/main/home');
     } else if (value === 'dao') {
-      history.push('/main/dao');
+      navigate('/main/dao');
     }
     const cartItems = localStorage.getItem('SAY-cartItems')
       ? JSON.parse(localStorage.getItem('SAY-cartItems'))

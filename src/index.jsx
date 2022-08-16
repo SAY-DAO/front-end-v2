@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
-import { render } from 'react-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
 import theTheme from './resources/styles/theTheme';
 import App from './App';
 import swDev from './swDev';
@@ -12,9 +12,12 @@ import './resources/styles/css/style.css';
 import history from './history';
 import store from './store';
 
+const container = document.getElementById('root');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+
 const loadingMarkup = <CircularProgress />;
 
-render(
+root.render(
   <ThemeProvider theme={theTheme}>
     <Suspense fallback={loadingMarkup}>
       <Router history={history}>
@@ -23,8 +26,7 @@ render(
         </Provider>
       </Router>
     </Suspense>
-  </ThemeProvider>,
-  document.getElementById('root')
+  </ThemeProvider>
 );
 
 swDev();

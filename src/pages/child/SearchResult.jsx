@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import Avatar from '@mui/material/Avatar';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
@@ -64,7 +64,7 @@ const useStyles = makeStyles({
 const SearchResult = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
@@ -88,14 +88,14 @@ const SearchResult = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push(`/login?redirect=search-result`);
+      navigate(`/login?redirect=search-result`);
     }
   }, [userInfo, successLogin, errorUserDetails]);
 
   useEffect(() => {
     if (!successRandomSearch) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
-      history.push('/main/search');
+      navigate('/main/search');
     }
   }, [successRandomSearch]);
 

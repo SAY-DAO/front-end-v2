@@ -14,14 +14,13 @@ import {
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
@@ -88,7 +87,7 @@ export default function NeedAvailable({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -139,18 +138,15 @@ export default function NeedAvailable({ childId }) {
     if (theChild && oneNeed) {
       dispatch(fetchUserDetails());
       if (errorUserDetails) {
-        history.push(
-          `/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
-        );
+        navigate(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
-        history.push(`/child/${theChild.id}`);
+        navigate(`/child/${theChild.id}`);
       } else if (!successUserDetails) {
         dispatch(fetchUserDetails());
       }
     }
   }, [
     errorUserDetails,
-    history,
     oneNeed,
     theChild,
     successUserDetails,
@@ -357,13 +353,11 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
     dispatch(addToCart(theChild, oneNeed, amount));
   };
-  console.log(location);
-  console.log(history);
 
   // addToCard
   const handleContinueShop = (e) => {
     e.preventDefault();
-    history.push(`/child/${theChild.id}`, { childTab: 1 });
+    navigate(`/child/${theChild.id}`, { childTab: 1 });
   };
 
   const handlePayment = (e) => {
@@ -727,7 +721,7 @@ export default function NeedAvailable({ childId }) {
                                   disabled={isDisabled}
                                   loading={isLoading}
                                   sx={{ marginBottom: 4 }}
-                                  onClick={() => history.push('/main/cart')}
+                                  onClick={() => navigate('/main/cart')}
                                 >
                                   {t('button.goToCart')}
                                 </LoadingButton>

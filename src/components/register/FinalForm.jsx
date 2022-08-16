@@ -16,7 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 
 const FinalForm = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
@@ -121,7 +121,7 @@ const FinalForm = () => {
   // change step
   useEffect(() => {
     if (successRegister) {
-      history.push('/main/search');
+      navigate('/main/search');
     }
   }, [successRegister]);
 

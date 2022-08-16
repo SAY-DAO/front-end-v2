@@ -5,7 +5,7 @@ import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { joinVirtualFamily } from '../../actions/familyAction';
 import { fetchMyHome } from '../../actions/main/homeAction';
@@ -35,7 +35,7 @@ export default function AdoptionModal({
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState();
@@ -63,9 +63,9 @@ export default function AdoptionModal({
       dispatch(fetchMyHome());
     }
     if (successJoin && successHome) {
-      history.push('/main/home');
+      navigate('/main/home');
     }
-  }, [successJoin, successHome, dispatch, history]);
+  }, [successJoin, successHome, dispatch]);
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function AdoptionModal({
     if (userRole === null && userInfo && selectedRole) {
       dispatch(joinVirtualFamily(selectedRole, familyId));
     } else if (!userInfo && !successLogin) {
-      history.push('/login');
+      navigate('/login');
     }
   };
 

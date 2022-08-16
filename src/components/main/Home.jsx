@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Grid, Divider, Typography, Avatar } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -71,7 +71,7 @@ const useStyles = makeStyles(() => ({
 const Home = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const myHome = useSelector((state) => state.myHome);
   const {
@@ -130,9 +130,9 @@ const Home = () => {
     dispatch(fetchMyHome());
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=main/home');
+      navigate('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history, errorUserDetails]);
+  }, [userInfo, successLogin, errorUserDetails]);
 
   // clear all intervals
   useEffect(() => {
@@ -170,14 +170,14 @@ const Home = () => {
   // if no children
   useEffect(() => {
     if (!successRandomSearch && children && !children[0]) {
-      history.push('/main/search');
+      navigate('/main/search');
     } else if (children && children[0]) {
-      history.push('/main/home');
+      navigate('/main/home');
     }
   }, [children, successHome, loadingHome]);
 
   const handleMyChildPage = (child) => {
-    history.push(`/child/${child.id}`);
+    navigate(`/child/${child.id}`);
   };
 
   const classes = useStyles();

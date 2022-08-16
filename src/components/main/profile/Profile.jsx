@@ -6,8 +6,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AppBarBottom from '../AppBarBottom';
 import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
 import WalletModal from '../../modals/WalletModal';
@@ -50,7 +49,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Profile = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -64,9 +63,9 @@ const Profile = () => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=main/profile');
+      navigate('/login?redirect=main/profile');
     }
-  }, [history, errorUserDetails, dispatch]);
+  }, [errorUserDetails, dispatch]);
 
   const classes = useStyles();
 
@@ -117,7 +116,7 @@ const Profile = () => {
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton
                   color="primary"
-                  onClick={() => history.push('/main/profile/settings')}
+                  onClick={() => navigate('/main/profile/settings')}
                 >
                   <Card
                     sx={{

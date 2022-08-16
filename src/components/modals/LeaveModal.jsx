@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Link, Modal, Typography, Backdrop } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import { useHistory } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
@@ -29,7 +28,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [redirect, setRedirect] = useState();
 
@@ -53,12 +52,12 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
       dispatch({ type: CHILD_BY_TOKEN_RESET });
       localStorage.removeItem('randomChildToken');
       if (redirect) {
-        history.push(redirect);
+        navigate(redirect);
       } else {
-        history.push('/main/search');
+        navigate('/main/search');
       }
     }
-  }, [leave, open, dispatch, history, redirect]);
+  }, [leave, open, dispatch, redirect]);
 
   useEffect(() => {
     if (backIsTrue) {

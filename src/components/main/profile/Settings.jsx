@@ -4,8 +4,7 @@ import { Grid, Typography, Divider, IconButton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import i18next from 'i18next';
 import LangButton from '../../LangButton';
 import Back from '../../Back';
@@ -24,7 +23,7 @@ const useStyles = makeStyles(() => ({
 export default function Settings() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
@@ -37,9 +36,9 @@ export default function Settings() {
 
   useEffect(() => {
     if (!userInfo && !successLogin) {
-      history.push('/login?redirect=main/home');
+      navigate('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin]);
 
   // cart badge number
   useEffect(() => {
@@ -116,7 +115,7 @@ export default function Settings() {
           alignItems="center"
         >
           <Grid item xs={2}>
-            <IconButton onClick={() => history.push('/setpassword')}>
+            <IconButton onClick={() => navigate('/setpassword')}>
               <img
                 src="/images/icons/changePassword.svg"
                 alt="change password icon"

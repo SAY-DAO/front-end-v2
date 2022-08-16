@@ -19,22 +19,24 @@ if (env === 'prod') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v3`;
 } else if (env === 'development') {
-  envApiUrl = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v2`;
-  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v3`;
+  envApiUrl = `http://${process.env.REACT_APP_DOMAIN_DEV}/api/v2`;
+  envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_DEV}/api/v3`;
 } else {
-  envApiUrl = `https://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v2`;
-  envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
+  envApiUrl = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v2`;
+  envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
+
+const envApiDao = `http://${process.env.REACT_APP_DAO_LOCAL}/dao/api/`;
 
 if (env !== 'local') {
   Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
-    normalizeDepth: 10, // Or however deep you want your state context to be.
-    environment: process.env.REACT_APP_NODE_ENV,
-    integrations: [new Integrations.BrowserTracing()],
-    // Can also use reactRouterV3Instrumentation or reactRouterV4Instrumentation
-    routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
-    tracesSampleRate: 1.0,
+    // dsn: process.env.REACT_APP_SENTRY_DSN,
+    // normalizeDepth: 10, // Or however deep you want your state context to be.
+    // environment: process.env.REACT_APP_NODE_ENV,
+    // integrations: [new Integrations.BrowserTracing()],
+    // // Can also use reactRouterV3Instrumentation or reactRouterV4Instrumentation
+    // routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
+    // tracesSampleRate: 1.0,
   });
 
   // Sentry.configureScope((scope) => {
@@ -75,4 +77,5 @@ if (env !== 'local') {
 }
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;
-export { apiUrl, apiUrl3 };
+const apiDao = envApiDao;
+export { apiUrl, apiUrl3, apiDao };

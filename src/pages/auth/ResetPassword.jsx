@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,7 +22,7 @@ import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
 
 const ResetPassword = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
@@ -50,9 +50,9 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=setpassword');
+      navigate('/login?redirect=setpassword');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
   // loading button
   useEffect(() => {
@@ -88,9 +88,9 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      history.push('/login?redirect=setpassword');
+      navigate('/login?redirect=setpassword');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin]);
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
@@ -131,7 +131,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (successReset) {
-      history.push('/main/profile/settings');
+      navigate('/main/profile/settings');
     }
   }, [successReset]);
 

@@ -12,7 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import CloseIcon from '@mui/icons-material/Close';
@@ -42,7 +42,7 @@ import validateUsername from '../../../inputsValidation/validateUsername';
 
 const ProfileEdit = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -76,9 +76,9 @@ const ProfileEdit = () => {
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      history.push('/login?redirect=main/profile/edit');
+      navigate('/login?redirect=main/profile/edit');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin]);
 
   // loading IconButton
   useEffect(() => {
@@ -208,9 +208,9 @@ const ProfileEdit = () => {
   // Success
   useEffect(() => {
     if (successCheck) {
-      history.push('/main/profile/settings');
+      navigate('/main/profile/settings');
     }
-  }, [successCheck, history]);
+  }, [successCheck]);
 
   // first name changes
   const handleChangeFirstName = (e) => {
@@ -303,7 +303,7 @@ const ProfileEdit = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <IconButton onClick={() => history.push('/main/profile')}>
+              <IconButton onClick={() => navigate('/main/profile')}>
                 <CloseIcon
                   sx={{
                     color: 'red',

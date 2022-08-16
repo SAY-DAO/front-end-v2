@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { useHistory } from 'react-router';
+import { useNavigate, Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import FormControl from '@mui/material/FormControl';
 import { LoadingButton } from '@mui/lab';
-import { Link } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +14,7 @@ import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { fetchUserDetails, login } from '../../actions/userAction';
 import {
+  USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
 } from '../../constants/main/userConstants';
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   // eslint-disable-next-line no-restricted-globals
   const redirect = location.search
     ? // eslint-disable-next-line no-restricted-globals
@@ -82,9 +82,9 @@ const Login = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if ((successLogin || userInfo) && successUserDetails) {
-      history.push(`/${redirect}`);
+      navigate(`/${redirect}`);
     }
-  }, [history, redirect, successLogin, successUserDetails]);
+  }, [redirect, successLogin, successUserDetails]);
 
   // Message input for some status error (422)
   useEffect(() => {
@@ -109,12 +109,14 @@ const Login = () => {
     setUserName(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const classes = useStyles();

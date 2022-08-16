@@ -89,9 +89,7 @@ export default function MyChildTabs({ theChild }) {
   }, [theChild]);
 
   useEffect(() => {
-    console.log(location);
     if (location.state) {
-      console.log(location.state);
       setValue(location.state.childTab);
     }
   }, [dispatch]);

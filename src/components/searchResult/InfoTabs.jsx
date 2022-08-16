@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Link, Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -63,7 +63,7 @@ function a11yProps(index) {
 export default function InfoTabs() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
@@ -103,7 +103,7 @@ export default function InfoTabs() {
       }
       setFamily(theChild.childFamilyMembers);
     }
-  }, [userRole, theChild, history, dispatch]);
+  }, [userRole, theChild, dispatch]);
 
   // check family members
   useEffect(() => {

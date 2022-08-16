@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import NeedPageProduct from '../need/NeedPageProduct';
 import {
   changeCartBadgeNumber,
@@ -30,7 +30,7 @@ import {
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [isDisabled, setIsDisabled] = useState(false);

@@ -2,17 +2,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Grid, Alert, Link } from '@mui/material';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from 'prop-types';
 import { ResponsiveNetwork } from '@nivo/network';
 import { fetchUserDetails } from '../../../actions/userAction';
-import { fetchFamilyNetworks } from '../../../actions/DaoAction';
+import { fetchFamilyNetworks } from '../../../actions/dao/DaoAction';
 
 const DaoDocs = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [data, setData] = useState();
   const [clicked, setClicked] = useState(false);
@@ -37,9 +37,9 @@ const DaoDocs = () => {
     }
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=main/home');
+      navigate('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history, errorUserDetails]);
+  }, [userInfo, successLogin, errorUserDetails]);
 
   // add child node every ... second
   // useEffect(() => {
@@ -284,7 +284,6 @@ const DaoDocs = () => {
         please visit our document page —
         <Link href="https://road-map-docs.pages.dev/"> check it out! </Link>
       </Alert>
-      <Grid sx={{ width: '100%' }} />
     </Grid>
   );
 };

@@ -1,8 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect } from 'react';
 import { Grid, CircularProgress } from '@mui/material';
-import { useHistory } from 'react-router';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChildOneNeed } from '../actions/childAction';
 import NeedAvailable from '../components/need/NeedAvailable';
@@ -10,7 +9,7 @@ import NeedDone from '../components/need/NeedDone';
 
 export default function NeedPage() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { childId, needId } = useParams();
 
   const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
@@ -21,9 +20,9 @@ export default function NeedPage() {
 
   useEffect(() => {
     if (!userInfo && !successLogin) {
-      history.push(`/login?redirect=main/home`);
+      navigate(`/login?redirect=main/home`);
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin]);
 
   // fetch need
   useEffect(() => {

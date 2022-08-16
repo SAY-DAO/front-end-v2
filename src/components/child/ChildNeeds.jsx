@@ -5,7 +5,7 @@ import { Grid, Stack, CircularProgress, Chip, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
 import { SHAPARAK_RESET } from '../../constants/paymentConstants';
@@ -53,7 +53,7 @@ const useStyles = makeStyles(() => ({
 export default function ChildNeeds({ theChild, needsArray }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // [[urgent], [growth], ...]
   // const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
@@ -92,7 +92,7 @@ export default function ChildNeeds({ theChild, needsArray }) {
 
   const handleNeedCardClick = (needId, childId) => {
     dispatch({ type: SHAPARAK_RESET });
-    history.push(`/child/${childId}/needs/${needId}`, { childTab: 1 }); // state: to use when going back
+    navigate(`/child/${childId}/needs/${needId}`, { childTab: 1 }); // state: to use when going back
   };
 
   const handleClick = (index) => {

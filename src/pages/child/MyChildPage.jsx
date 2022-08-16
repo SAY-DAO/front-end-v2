@@ -8,11 +8,10 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import Avatar from '@mui/material/Avatar';
 // import Weather from 'simple-react-weather';
-import { useHistory } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -67,7 +66,7 @@ const ITEM_HEIGHT = 20;
 
 const MyChildPage = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { childId } = useParams();
 
@@ -101,16 +100,16 @@ const MyChildPage = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=main/home');
+      navigate('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
   // left the family
   useEffect(() => {
     if (successLeft && children && children[0]) {
-      history.push('/main/home');
+      navigate('/main/home');
     }
-  }, [successLeft, dispatch, children, history]);
+  }, [successLeft, dispatch, children]);
 
   // we get the home date ahead to get our children's ids
   useEffect(() => {
@@ -135,11 +134,11 @@ const MyChildPage = () => {
       myChildrenIdList &&
       !myChildrenIdList.includes(Number(childId))
     ) {
-      history.push('/main/home');
+      navigate('/main/home');
     } else {
       dispatch(fetchMyChildById(childId));
     }
-  }, [childId, myChildrenIdList, history, dispatch]);
+  }, [childId, myChildrenIdList, dispatch]);
 
   // weather display
   useEffect(() => {

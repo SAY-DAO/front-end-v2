@@ -9,6 +9,7 @@ import { Card, CardContent, CardMedia, Grid } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import DaoDocs from './DAO/DaoDocs';
 import AppBarBottom from './AppBarBottom';
+import DaoPortal from './DAO/DaoPortal';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -21,11 +22,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -58,36 +55,21 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Docs" {...a11yProps(0)} />
-          <Tab label="Portal" {...a11yProps(1)} />
+          <Tab label="Portal" {...a11yProps(0)} />
+          <Tab label="Docs" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <Grid>
-          <DaoDocs />
+          <DaoPortal />
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Grid>
-          <Card sx={{ maxWidth: '80%', m: 'auto' }}>
-            <CardMedia
-              component="img"
-              height="50"
-              image="/static/images/cards/contemplative-reptile.jpg"
-              alt="green iguana"
-            />
-
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Lizard
-              </Typography>
-              <Grid>
-                <LoadingButton variant="contained"> Sign</LoadingButton>
-              </Grid>
-            </CardContent>
-          </Card>
+          <DaoDocs />
         </Grid>
       </TabPanel>
+
       <AppBarBottom path="dao" />
     </Box>
   );

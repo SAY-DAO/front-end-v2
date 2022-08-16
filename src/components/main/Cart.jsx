@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useNavigate } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
 import AppBarBottom from './AppBarBottom';
 import { fetchUserDetails } from '../../actions/userAction';
 
 export default function Cart() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -27,9 +27,9 @@ export default function Cart() {
     dispatch(fetchUserDetails());
 
     if (errorUserDetails) {
-      history.push('/login?redirect=main/cart');
+      navigate('/login?redirect=main/cart');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
   return (
     <Grid sx={{ width: '100%' }}>

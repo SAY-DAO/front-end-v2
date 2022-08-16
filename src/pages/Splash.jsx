@@ -1,14 +1,13 @@
-/* eslint-disable no-undef */
 import React from 'react';
 import { Grid } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Splash() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   function myFunction() {
     setTimeout(() => {
-      history.push('/Intro');
+      navigate('/Intro');
     }, 3000);
   }
 

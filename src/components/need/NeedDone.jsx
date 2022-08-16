@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Avatar, Box, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -67,7 +67,7 @@ const useStyles = makeStyles({
 export default function NeedDone({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
