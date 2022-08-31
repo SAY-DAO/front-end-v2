@@ -11,7 +11,7 @@ import {
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router';
+import { Redirect } from 'react-router';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -19,11 +19,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Button from '@mui/material/Button';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/styles';
 import Message from '../../Message';
 import {
   CHECK_CONTACT_RESET,
@@ -76,7 +71,7 @@ const ProfileEdit = () => {
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      navigate('/login?redirect=main/profile/edit');
+      navigate('/auth/login?redirect=main/profile/edit');
     }
   }, [userInfo, successLogin]);
 

@@ -56,12 +56,12 @@ const App = () => (
             <React.StrictMode>
               <Switch>
                 <Route exact path="/" component={Splash} />
-                <Route exact path="/intro" component={Intro} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
+                <Route exact path="/auth/intro" component={Intro} />
+                <Route exact path="/auth/register" component={Register} />
+                <Route exact path="/auth/login" component={Login} />
                 <Route
                   exact
-                  path="/forgot-password"
+                  path="/auth/forgot-password"
                   component={ForgotPassword}
                 />
                 <Route exact path="/setpassword" component={ResetPassword} />
@@ -85,7 +85,11 @@ const App = () => (
                 <Route exact path="/main/home" component={Home} />
                 <Route exact path="/main/cart" component={Cart} />
                 <Route exact path="/main/search" component={SearchChild} />
-                <Route exact path="/search-result" component={SearchResult} />
+                <Route
+                  exact
+                  path="/child/search-result"
+                  component={SearchResult}
+                />
                 <Route exact path="/child/:childId" component={MyChildPage} />
                 <Route
                   exact

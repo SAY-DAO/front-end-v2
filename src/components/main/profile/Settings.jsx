@@ -36,7 +36,7 @@ export default function Settings() {
 
   useEffect(() => {
     if (!userInfo && !successLogin) {
-      navigate('/login?redirect=main/home');
+      navigate('/auth/login?redirect=main/home');
     }
   }, [userInfo, successLogin]);
 

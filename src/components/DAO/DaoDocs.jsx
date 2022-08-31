@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from 'prop-types';
 import { ResponsiveNetwork } from '@nivo/network';
-import { fetchUserDetails } from '../../../actions/userAction';
-import { fetchFamilyNetworks } from '../../../actions/dao/DaoAction';
+import { fetchUserDetails } from '../../actions/userAction';
+import { fetchFamilyNetworks } from '../../actions/dao/DaoAction';
 
 const DaoDocs = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const DaoDocs = () => {
     }
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate('/login?redirect=main/home');
+      navigate('/auth/login?redirect=main/home');
     }
   }, [userInfo, successLogin, errorUserDetails]);
 

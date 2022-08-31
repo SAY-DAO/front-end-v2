@@ -211,7 +211,7 @@ const EntryForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" isOrange />
+      <Back to="/auth/intro" isOrange />
       <Grid item xs={12}>
         <img
           src="/images/register.svg"
@@ -277,7 +277,7 @@ const EntryForm = () => {
         <Typography variant="subtitle2">
           <Trans i18nKey="join.alreadyJoined">
             If already joined tap
-            <Link to="/Login">here</Link>
+            <Link to="/auth/login">here</Link>
           </Trans>
         </Typography>
       </Grid>

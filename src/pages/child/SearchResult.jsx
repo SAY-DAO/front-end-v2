@@ -12,54 +12,6 @@ import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import { fetchUserDetails } from '../../actions/userAction';
-import { fetchChildByTokenToken } from '../../actions/childAction';
-
-const useStyles = makeStyles({
-  root: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundRepeat: 'round',
-    backgroundImage:
-      'linear-gradient(to bottom,rgba(255, 255, 255, 0) 60%, #f7f7f7 100%),url("/images/child/background.png")',
-  },
-  childAvatar: {
-    width: 100,
-    height: 100,
-    top: '20%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#f9d6af',
-    boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
-  },
-  childSayName: {
-    color: 'white',
-    top: '32%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-  },
-  childAge: {
-    color: 'white',
-    top: '35%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, -50%)',
-  },
-  bioSummary: {
-    color: '#8c8c8c',
-    top: '40%',
-    left: '50%',
-    position: 'absolute',
-    transform: 'translate(-50%, 0%)',
-    textAlign: 'center',
-    width: '100%',
-    marginLeft: 2,
-    marginRight: 2,
-  },
-});
 
 const SearchResult = () => {
   const { t } = useTranslation();
@@ -88,7 +40,7 @@ const SearchResult = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate(`/login?redirect=search-result`);
+      navigate(`/auth/login?redirect=search-result`);
     }
   }, [userInfo, successLogin, errorUserDetails]);
 
@@ -130,7 +82,6 @@ const SearchResult = () => {
     setBackIsTrue(true);
   };
 
-  const classes = useStyles();
   return (
     <>
       <Grid container sx={{ marginTop: 36 }}>
@@ -142,23 +93,70 @@ const SearchResult = () => {
           ) : (
             <>
               <div
-                className={classes.root}
-                style={{ minHeight: imageHeight }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  backgroundRepeat: 'round',
+                  backgroundImage:
+                    'linear-gradient(to bottom,rgba(255, 255, 255, 0) 60%, #f7f7f7 100%),url("/images/child/background.png")',
+                  minHeight: imageHeight,
+                }}
               />
 
               <Avatar
-                className={classes.childAvatar}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  top: '20%',
+                  left: '50%',
+                  position: 'absolute',
+                  transform: 'translate(-50%, -50%)',
+                  backgroundColor: '#f9d6af',
+                  boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
+                }}
                 alt={`${theChild.sayName}`}
                 src={theChild.avatarUrl}
               />
-              <Typography className={classes.childSayName} variant="subtitle1">
+              <Typography
+                sx={{
+                  color: 'white',
+                  top: '32%',
+                  left: '50%',
+                  position: 'absolute',
+                  transform: 'translate(-50%, -50%)',
+                }}
+                variant="subtitle1"
+              >
                 {theChild.sayName}
               </Typography>
-              <Typography className={classes.childAge} variant="subtitle2">
+              <Typography
+                sx={{
+                  color: 'white',
+                  top: '35%',
+                  left: '50%',
+                  position: 'absolute',
+                  transform: 'translate(-50%, -50%)',
+                }}
+                variant="subtitle2"
+              >
                 {getAge(theChild.birthDate) + t('assets.age')}
               </Typography>
               <Box>
-                <Grid className={classes.bioSummary}>
+                <Grid
+                  sx={{
+                    color: '#8c8c8c',
+                    top: '40%',
+                    left: '50%',
+                    position: 'absolute',
+                    transform: 'translate(-50%, 0%)',
+                    textAlign: 'center',
+                    width: '100%',
+                    marginLeft: 2,
+                    marginRight: 2,
+                  }}
+                >
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
                     <Typography variant="body2">
                       {readLess && theChild.bioSummary}

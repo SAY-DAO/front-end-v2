@@ -1,6 +1,6 @@
 import axios from 'axios';
 import i18next from 'i18next';
-import { apiUrl, apiUrl3 } from '../env';
+import { apiUrl, apiUrl3, apiDao } from '../env';
 
 export const publicApi = axios.create({
   baseURL: apiUrl,
@@ -11,7 +11,7 @@ export const publicApi3 = axios.create({
 });
 
 export const daoApi = axios.create({
-  baseURL: apiUrl3,
+  baseURL: apiDao,
 });
 
 const getLanguage = () => i18next.language || window.localStorage.i18nextLng;

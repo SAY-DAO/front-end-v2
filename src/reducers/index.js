@@ -32,6 +32,7 @@ import {
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
 import { familyNetworksReducer, signatureReducer } from './daoReducer';
+import { allNeedsReducer } from './needReducer';
 
 export default combineReducers({
   familyNetwork: familyNetworksReducer,
@@ -51,6 +52,7 @@ export default combineReducers({
   leftFamily: LeaveVirtualFamilyReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
+  allNeeds: allNeedsReducer,
   childNeeds: childNeedsReducer,
   ChildOneNeed: childOneNeedReducer,
   ChildOneNeedReceipt: childOneNeedReceiptReducer,

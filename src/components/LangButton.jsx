@@ -3,21 +3,6 @@ import React, { useState, useEffect } from 'react';
 import i18next from 'i18next';
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles({
-  root: {
-    background: 'transparent',
-    border: '1px solid #F59E39',
-    borderRadius: '50%',
-    fontWeight: 200,
-    lineHeight: '19px',
-    width: '36px',
-    height: '36px',
-    minWidth: 0,
-    margin: 0,
-    color: '#f05a31',
-  },
-});
-
 const LangButton = () => {
   const [lang, setLang] = useState('');
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
@@ -53,12 +38,22 @@ const LangButton = () => {
     }
   };
 
-  const classes = useStyles();
   return (
     <Grid container>
       <Button
         variant="outlined"
-        className={classes.root}
+        sx={{
+          background: 'transparent',
+          border: '1px solid #F59E39',
+          borderRadius: '50%',
+          fontWeight: 200,
+          lineHeight: '19px',
+          width: '36px',
+          height: '36px',
+          minWidth: 0,
+          margin: 0,
+          color: '#f05a31',
+        }}
         onClick={clickHandler}
       >
         <Typography color="primary" variant="subtitle2">

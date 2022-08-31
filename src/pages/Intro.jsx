@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import { Typography, Grid, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LangButton from '../components/LangButton';
 import { fetchUserDetails } from '../actions/userAction';
@@ -64,7 +64,7 @@ const Intro = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate('/register')}
+            onClick={() => navigate('/auth/register')}
           >
             {t('button.register')}
           </Button>
@@ -73,7 +73,7 @@ const Intro = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/auth/login')}
           >
             {t('button.login')}
           </Button>

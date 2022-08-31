@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import ChildLayout from '../layout/child-layoyt/ChildLayout';
-import FullLayout from '../layout/full-layout/FullLayout';
 import Loadable from '../layout/loadable/Loadable';
 import MainLayout from '../layout/main-layout/MainLayout';
 import BlankLayout from '../layout/plain-layout/PlainLayout';
@@ -41,19 +40,15 @@ const DAO = Loadable(lazy(() => import('../components/main/DAO')));
 const Router = [
   {
     path: '/',
-    element: <FullLayout />,
+    element: <BlankLayout />,
     children: [
-      { path: '/', element: <Splash /> },
-      { path: '/intro', element: <Intro /> },
-      { path: '/Login', element: <Login /> },
-      { path: '/register', element: <Register /> },
-      { path: '/forgot-password', element: <ForgotPassword /> },
-      { path: '/main/profile', element: <Profile /> },
-      { path: '/main/cart', element: <Cart /> },
-      { path: '/main/profile/edit', element: <ProfileEdit /> },
-      { path: '/main/profile/upload', element: <ProfileUpload /> },
-      { path: '/main/dao', element: <DAO /> },
-      { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: '/', element: <Navigate to="/auth" /> },
+      { path: '/auth', element: <Splash /> },
+      { path: '/auth/intro', element: <Intro /> },
+      { path: '/auth/login', element: <Login /> },
+      { path: '/auth/register', element: <Register /> },
+      { path: '/auth/forgot-password', element: <ForgotPassword /> },
+      { path: '/auth/404', element: <Error /> },
     ],
   },
   {
@@ -63,6 +58,13 @@ const Router = [
       { path: '/main', element: <Navigate to="/main" /> },
       { path: '/main/profile/settings', element: <Settings /> },
       { path: '/main/home', element: <Home /> },
+      { path: '/main/profile', element: <Profile /> },
+      { path: '/main/cart', element: <Cart /> },
+      { path: '/main/search', element: <SearchChild /> },
+      { path: '/main/profile/edit', element: <ProfileEdit /> },
+      { path: '/main/profile/upload', element: <ProfileUpload /> },
+      { path: '/main/dao', element: <DAO /> },
+      { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
   {
@@ -72,25 +74,10 @@ const Router = [
       { path: '/child', element: <Navigate to="/child" /> },
       { path: '/child/:childId/needs/:needId', element: <NeedPage /> },
       { path: '/child/:childId', element: <MyChildPage /> },
-      { path: '/child/search-result', element: <SearchChild /> },
+      { path: '/child/search-result', element: <SearchResult /> },
       { path: '/child/needs/needPage/report/:status', element: <Report /> },
-    ],
-  },
-  {
-    path: 'auth',
-    element: <BlankLayout />,
-    children: [
-      { path: '404', element: <Error /> },
-      { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
 ];
 
 export default Router;
-
-/* <Route path="/cart/placeOrder/:workId?" component={Cart} />
-  <Route path="/orders/:orderId" component={Cart} />
-  <Route exact path="/login" component={EnterForm} />
-  <Route exact path="/register" component={RegisterForm} />
-  <Route path="/admin-panel/user/:userId/edit" component={UserEdit} />
-  <Route exact path="/admin-panel/:route" component={AdminPanel} /> */

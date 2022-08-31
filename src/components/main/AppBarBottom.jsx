@@ -4,7 +4,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Paper, Typography, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { makeStyles, styled } from '@mui/styles';
 import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,26 +17,22 @@ import {
 import { fetchMyHome } from '../../actions/main/homeAction';
 import { SHAPARAK_RESET } from '../../constants/paymentConstants';
 
-const useStyles = makeStyles({
-  root: {
-    '& .Mui-selected': {
-      position: 'absolute',
-    },
-  },
-});
-
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
+    padding: '440 4px',
     color: 'white',
   },
 }));
 
-export default function AppBarBottom({ path }) {
+export default function AppBarBottom() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
+  const path = location.pathname;
 
   const [value, setValue] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -103,7 +99,6 @@ export default function AppBarBottom({ path }) {
     setValue(newValue);
   };
 
-  const classes = useStyles();
   return (
     <Box>
       <CssBaseline />
@@ -119,6 +114,7 @@ export default function AppBarBottom({ path }) {
         elevation={0}
       >
         <BottomNavigation
+          showLabels
           value={path}
           onChange={handleChange}
           sx={{ height: '45px' }}
@@ -126,18 +122,24 @@ export default function AppBarBottom({ path }) {
           {!isDisabled && (
             <BottomNavigationAction
               value="home"
-              className={classes.root}
-              label={t('userLayout.home')}
+              label={path === '/main/home' && t('userLayout.home')}
               sx={{
-                maxWidth: path === 'home' ? '180px' : '25px',
+                '& .Mui-selected': {
+                  position: 'absolute',
+                },
+                maxWidth: path === '/main/home' ? '180px' : '25px',
                 minWidth: '70px',
                 borderRadius: '25px',
-                backgroundColor: path === 'home' ? '#ffdfc1' : 'transparent',
+                backgroundColor:
+                  path === '/main/home' ? '#ffdfc1' : 'transparent',
+                '& .MuiBottomNavigationAction-label': {
+                  color: 'rgb(251, 181, 99)',
+                },
               }}
               icon={
                 <img
                   src={
-                    path === 'home'
+                    path === '/main/home'
                       ? '/images/appBar/homeActive.svg'
                       : '/images/appBar/home.svg'
                   }
@@ -145,7 +147,7 @@ export default function AppBarBottom({ path }) {
                   style={{
                     maxWidth: '22px',
                     position: 'absolute',
-                    right: path === 'home' ? 8 : 35,
+                    right: path === '/main/home' ? 8 : 35,
                     bottom: 10,
                   }}
                 />
@@ -155,13 +157,19 @@ export default function AppBarBottom({ path }) {
           {!isDisabled && (
             <BottomNavigationAction
               value="cart"
-              className={classes.root}
-              label={t('userLayout.cart')}
+              label={path === '/main/cart' && t('userLayout.cart')}
               sx={{
-                maxWidth: path === 'cart' ? '180px' : '25px',
+                '& .Mui-selected': {
+                  position: 'absolute',
+                },
+                maxWidth: path === '/main/cart' ? '180px' : '25px',
                 minWidth: '65px',
                 borderRadius: '25px',
-                backgroundColor: path === 'cart' ? '#ffdfc1' : 'transparent',
+                backgroundColor:
+                  path === '/main/cart' ? '#ffdfc1' : 'transparent',
+                '& .MuiBottomNavigationAction-label': {
+                  color: 'rgb(251, 181, 99)',
+                },
               }}
               icon={
                 <StyledBadge
@@ -169,13 +177,13 @@ export default function AppBarBottom({ path }) {
                   color="primary"
                   style={{
                     position: 'absolute',
-                    right: path === 'cart' ? 8 : 35,
+                    right: path === '/main/cart' ? 8 : 35,
                     bottom: 10,
                   }}
                 >
                   <img
                     src={
-                      path === 'cart'
+                      path === '/main/cart'
                         ? '/images/appBar/cartActive.svg'
                         : '/images/appBar/cart.svg'
                     }
@@ -191,18 +199,24 @@ export default function AppBarBottom({ path }) {
 
           <BottomNavigationAction
             value="search"
-            className={classes.root}
-            label={t('userLayout.search')}
+            label={path === '/main/search' && t('userLayout.search')}
             sx={{
-              maxWidth: path === 'search' ? '180px' : '25px',
+              '& .Mui-selected': {
+                position: 'absolute',
+              },
+              maxWidth: path === '/main/search' ? '180px' : '25px',
               minWidth: '60px',
               borderRadius: '25px',
-              backgroundColor: path === 'search' ? '#ffdfc1' : 'transparent',
+              backgroundColor:
+                path === '/main/search' ? '#ffdfc1' : 'transparent',
+              '& .MuiBottomNavigationAction-label': {
+                color: 'rgb(251, 181, 99)',
+              },
             }}
             icon={
               <img
                 src={
-                  path === 'search'
+                  path === '/main/search'
                     ? '/images/appBar/searchActive.svg'
                     : '/images/appBar/search.svg'
                 }
@@ -210,7 +224,7 @@ export default function AppBarBottom({ path }) {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: path === 'search' ? 8 : 30,
+                  right: path === '/main/search' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -218,18 +232,24 @@ export default function AppBarBottom({ path }) {
           />
           <BottomNavigationAction
             value="profile"
-            label={t('userLayout.profile')}
-            className={classes.root}
+            label={path === '/main/profile' && t('userLayout.profile')}
             sx={{
-              maxWidth: path === 'profile' ? '180px' : '25px',
+              '& .Mui-selected': {
+                position: 'absolute',
+              },
+              maxWidth: path === '/main/profile' ? '180px' : '25px',
               minWidth: '70px',
               borderRadius: '25px',
-              backgroundColor: path === 'profile' ? '#ffdfc1' : 'transparent',
+              backgroundColor:
+                path === '/main/profile' ? '#ffdfc1' : 'transparent',
+              '& .MuiBottomNavigationAction-label': {
+                color: 'rgb(251, 181, 99)',
+              },
             }}
             icon={
               <img
                 src={
-                  path === 'profile'
+                  path === '/main/profile'
                     ? '/images/appBar/profileActive.svg'
                     : '/images/appBar/profile.svg'
                 }
@@ -237,7 +257,7 @@ export default function AppBarBottom({ path }) {
                 style={{
                   maxWidth: '22px',
                   position: 'absolute',
-                  right: path === 'profile' ? 8 : 30,
+                  right: path === '/main/profile' ? 8 : 30,
                   bottom: 10,
                 }}
               />
@@ -245,22 +265,27 @@ export default function AppBarBottom({ path }) {
           />
           <BottomNavigationAction
             value="dao"
-            label={t('userLayout.dao')}
-            className={classes.root}
+            label={path === '/main/dao' && t('userLayout.dao')}
             sx={{
-              maxWidth: path === 'dao' ? '180px' : '25px',
+              '& .Mui-selected': {
+                position: 'absolute',
+              },
+              maxWidth: path === '/main/dao' ? '180px' : '25px',
               minWidth: '70px',
               borderRadius: '25px',
-              backgroundColor: path === 'dao' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === '/main/dao' ? '#ffdfc1' : 'transparent',
+              '& .MuiBottomNavigationAction-label': {
+                color: 'rgb(251, 181, 99)',
+              },
             }}
-            icon={<Typography variant="subtitle2">DAO</Typography>}
+            icon={
+              path !== '/main/dao' && (
+                <Typography variant="subtitle2">DAO</Typography>
+              )
+            }
           />
         </BottomNavigation>
       </Paper>
     </Box>
   );
 }
-
-AppBarBottom.propTypes = {
-  path: PropTypes.string,
-};

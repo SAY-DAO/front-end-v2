@@ -15,58 +15,11 @@ import {
   CHILD_RANDOM_SEARCH_RESET,
 } from '../../constants/childConstants';
 import ChildCard from '../child/ChildCard';
-import AppBarBottom from './AppBarBottom';
 import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../constants/familyConstants';
-import { fetchUserDetails, logout } from '../../actions/userAction';
-
-const useStyles = makeStyles(() => ({
-  nameTitle: {
-    position: 'absolute',
-    color: ' rgba(102, 102, 102, 0.15)',
-    fontSize: '48px',
-    fontWeight: 900,
-    lineHeight: '56px',
-    whiteSpace: 'nowrap',
-    left: 'calc(100vw - 400px)',
-    top: '30px',
-    float: 'left',
-  },
-  userAvatar: {
-    width: 80,
-    height: 80,
-    zIndex: 10,
-  },
-  childAvatar: {
-    width: 55,
-    height: 55,
-    backgroundColor: '#FDE1C1',
-    margin: 'auto',
-  },
-  theCard: {
-    marginBottom: 10,
-    padding: 10,
-    minHeight: '70px',
-  },
-  icons: {
-    width: 14,
-    height: 14,
-    marginLeft: 4,
-    marginRight: 4,
-  },
-  sayName: {
-    textAlign: 'right',
-    padding: 5,
-    margin: 'auto',
-  },
-  actionArea: {
-    width: '100%',
-    margin: 0,
-    padding: 0,
-  },
-}));
+import { fetchUserDetails } from '../../actions/userAction';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -130,7 +83,7 @@ const Home = () => {
     dispatch(fetchMyHome());
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate('/login?redirect=main/home');
+      navigate('/auth/login?redirect=main/home');
     }
   }, [userInfo, successLogin, errorUserDetails]);
 
@@ -180,15 +133,13 @@ const Home = () => {
     navigate(`/child/${child.id}`);
   };
 
-  const classes = useStyles();
-
   return (
     <Grid
       container
       direction="column"
       alignItems="center"
       maxWidth
-      sx={{ paddingLeft: 2, paddingRight: 2 }}
+      sx={{ paddingLeft: 2, paddingRight: 2, maxHeight: '10%' }}
     >
       {!loadingHome && successHome && user && children ? (
         <>
@@ -207,13 +158,28 @@ const Home = () => {
               sx={{ marginTop: 1 }}
             >
               <Grid item xs={3} md={2}>
-                <Avatar src={user.avatarUrl} className={classes.userAvatar} />
+                <Avatar
+                  src={user.avatarUrl}
+                  sx={{ width: 80, height: 80, zIndex: 10 }}
+                />
               </Grid>
               <Grid item xs sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${user.firstName} ${user.lastName}`}</Typography>
               </Grid>
-              <Grid item>
-                <Typography className={classes.nameTitle}>
+              <Grid item sx={{ position: 'relative' }}>
+                <Typography
+                  sx={{
+                    position: 'absolute',
+                    color: ' rgba(102, 102, 102, 0.15)',
+                    fontSize: '48px',
+                    fontWeight: 900,
+                    lineHeight: '56px',
+                    whiteSpace: 'nowrap',
+                    left: 'calc(100vw - 400px)',
+                    top: '-50px',
+                    float: 'left',
+                  }}
+                >
                   {`${user.firstName} ${user.lastName}`}
                 </Typography>
               </Grid>
@@ -252,7 +218,6 @@ const Home = () => {
       ) : (
         <CircularProgress />
       )}
-      <AppBarBottom path="home" />
     </Grid>
   );
 };

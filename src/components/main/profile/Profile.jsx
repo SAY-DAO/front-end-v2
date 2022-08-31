@@ -12,42 +12,6 @@ import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants
 import WalletModal from '../../modals/WalletModal';
 import { fetchUserDetails } from '../../../actions/userAction';
 
-const useStyles = makeStyles(() => ({
-  nameTitle: {
-    position: 'absolute',
-    color: ' rgba(102, 102, 102, 0.15)',
-    fontSize: '48px',
-    fontWeight: 900,
-    lineHeight: '56px',
-    whiteSpace: 'nowrap',
-    left: 'calc(100vw - 350px)',
-    top: '30px',
-    float: 'left',
-  },
-  userAvatar: {
-    boxShadow: '1px 1px #888888',
-    width: 80,
-    height: 80,
-    zIndex: 10,
-  },
-  icons: {
-    width: 14,
-    height: 14,
-    marginLeft: 4,
-    marginRight: 4,
-  },
-  sayName: {
-    textAlign: 'right',
-    padding: 5,
-    margin: 'auto',
-  },
-  actionArea: {
-    width: '100%',
-    margin: 0,
-    padding: 0,
-  },
-}));
-
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,11 +27,9 @@ const Profile = () => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate('/login?redirect=main/profile');
+      navigate('/auth/login?redirect=main/profile');
     }
   }, [errorUserDetails, dispatch]);
-
-  const classes = useStyles();
 
   return (
     <Grid container direction="column" alignItems="center" maxWidth>
@@ -95,7 +57,12 @@ const Profile = () => {
               <Grid item xs={3} md={2}>
                 <Avatar
                   src={theUser.avatarUrl}
-                  className={classes.userAvatar}
+                  sx={{
+                    boxShadow: '1px 1px #888888',
+                    width: 80,
+                    height: 80,
+                    zIndex: 10,
+                  }}
                 />
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
@@ -135,8 +102,20 @@ const Profile = () => {
                 </IconButton>
               </Grid>
 
-              <Grid>
-                <Typography className={classes.nameTitle}>
+              <Grid item sx={{ position: 'relative' }}>
+                <Typography
+                  sx={{
+                    position: 'absolute',
+                    color: ' rgba(102, 102, 102, 0.15)',
+                    fontSize: '48px',
+                    fontWeight: 900,
+                    lineHeight: '56px',
+                    whiteSpace: 'nowrap',
+                    left: 'calc(100vw - 400px)',
+                    top: '-50px',
+                    float: 'left',
+                  }}
+                >
                   {`${theUser.firstName} ${theUser.lastName}`}
                 </Typography>
               </Grid>
@@ -187,7 +166,6 @@ const Profile = () => {
             </Grid>
           </Box>
 
-          <AppBarBottom path="profile" />
           {modal && <WalletModal modal={modal} setModal={setModal} />}
         </>
       ) : (

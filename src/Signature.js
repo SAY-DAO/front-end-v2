@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-// These constants must match the ones used in the smart contract.
 const SIGNING_DOMAIN_NAME = 'SAY-DAO';
 const SIGNING_DOMAIN_VERSION = '1';
 
@@ -14,13 +12,12 @@ class Signature {
     if (this.domainData != null) {
       return this.domainData;
     }
-    const chainId = await this.contract.getChainID();
 
     this.domainData = {
       name: SIGNING_DOMAIN_NAME,
       version: SIGNING_DOMAIN_VERSION,
       verifyingContract: this.contract.address,
-      chainId,
+      chainId: 4,
     };
     return this.domainData;
   }
@@ -45,7 +42,7 @@ class Signature {
         { name: 'content', type: 'string' },
       ],
     };
-
+    console.log('hi');
     // the data to sign / signature will be added to our solidity struct
     const voucher = {
       needId: parseInt(needId),
@@ -55,6 +52,7 @@ class Signature {
       signerAddress,
       content: `Your ${impacts} impacts will be ready for a firend to mint!`,
     };
+    console.log('bye');
 
     const signature = await this.signer._signTypedData(domain, types, voucher);
 

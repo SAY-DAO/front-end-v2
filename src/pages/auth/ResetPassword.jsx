@@ -50,7 +50,7 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate('/login?redirect=setpassword');
+      navigate('/auth/login?redirect=setpassword');
     }
   }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
@@ -88,7 +88,7 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      navigate('/login?redirect=setpassword');
+      navigate('/auth/login?redirect=setpassword');
     }
   }, [userInfo, successLogin]);
 

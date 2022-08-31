@@ -138,7 +138,9 @@ export default function NeedAvailable({ childId }) {
     if (theChild && oneNeed) {
       dispatch(fetchUserDetails());
       if (errorUserDetails) {
-        navigate(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
+        navigate(
+          `/auth/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
+        );
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
         navigate(`/child/${theChild.id}`);
       } else if (!successUserDetails) {

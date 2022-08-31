@@ -103,7 +103,7 @@ export default function AdoptionModal({
     if (userRole === null && userInfo && selectedRole) {
       dispatch(joinVirtualFamily(selectedRole, familyId));
     } else if (!userInfo && !successLogin) {
-      navigate('/login');
+      navigate('/auth/login');
     }
   };
 

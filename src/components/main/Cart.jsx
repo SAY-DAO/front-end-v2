@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useNavigate } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
-import AppBarBottom from './AppBarBottom';
+
 import { fetchUserDetails } from '../../actions/userAction';
 
 export default function Cart() {
@@ -27,7 +27,7 @@ export default function Cart() {
     dispatch(fetchUserDetails());
 
     if (errorUserDetails) {
-      navigate('/login?redirect=main/cart');
+      navigate('/auth/login?redirect=main/cart');
     }
   }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
@@ -63,8 +63,6 @@ export default function Cart() {
           <CartAccordion />
         </Grid>
       )}
-
-      <AppBarBottom path="cart" />
     </Grid>
   );
 }

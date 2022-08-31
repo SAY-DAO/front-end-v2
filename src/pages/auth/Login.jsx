@@ -129,7 +129,7 @@ const Login = () => {
       maxWidth
       sx={{ marginTop: 34 }}
     >
-      <Back to="/intro" isOrange />
+      <Back to="/auth/intro" isOrange />
       <Grid item xs={12}>
         <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
@@ -185,11 +185,11 @@ const Login = () => {
           <Typography variant="subtitle2">
             <Trans i18nKey="comeback.noAccount">
               Don't have an account yet?
-              <Link to="/register" className="link" />
+              <Link to="/auth/register" className="link" />
             </Trans>
           </Typography>
           <Typography variant="subtitle2">
-            <Link to="/forgot-password" className="link">
+            <Link to="/auth/forgot-password" className="link">
               {t('forgot-password.title')}
             </Link>
           </Typography>

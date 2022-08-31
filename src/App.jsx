@@ -34,7 +34,6 @@ function App() {
               margin: 'auto',
               paddingLeft: '0px !important',
               paddingRight: '0px !important',
-              paddingBottom: 10,
             }}
             maxWidth="lg"
           >

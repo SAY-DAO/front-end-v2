@@ -47,7 +47,7 @@ const SearchChild = () => {
   // login
   useEffect(() => {
     if (errorUserDetails) {
-      navigate('/login?redirect=main/search');
+      navigate('/auth/login?redirect=main/search');
     }
   }, [theUser, successUserDetails, errorUserDetails, dispatch]);
 
@@ -69,7 +69,7 @@ const SearchChild = () => {
           setFamily(null);
           dispatch(fetchRandomChild());
         } else {
-          navigate(`/search-result?=${theToken}`);
+          navigate(`/child/search-result?=${theToken}`);
           setIsLoading(false);
         }
       }
@@ -161,7 +161,6 @@ const SearchChild = () => {
           )}
         </Grid>
       </Grid>
-      <AppBarBottom path="search" />
     </Grid>
   );
 };

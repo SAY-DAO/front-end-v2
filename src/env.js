@@ -26,7 +26,7 @@ if (env === 'prod') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
-const envApiDao = `http://${process.env.REACT_APP_DAO_LOCAL}/dao/api/`;
+const envApiDao = `http://${process.env.REACT_APP_DAO_LOCAL}/api/dao`;
 
 if (env !== 'local') {
   Sentry.init({
