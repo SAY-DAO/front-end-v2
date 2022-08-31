@@ -12,12 +12,12 @@ import InputLabel from '@mui/material/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
-import { fetchUserDetails, login } from '../../actions/userAction';
+import { fetchUserDetails, login } from '../../redux/actions/userAction';
 import {
   USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {

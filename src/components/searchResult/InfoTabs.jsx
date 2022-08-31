@@ -12,12 +12,12 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 import roles from '../../apis/roles';
-import { fetchRandomChild } from '../../actions/childAction';
+import { fetchRandomChild } from '../../redux/actions/childAction';
 import GoneModal from '../modals/GoneModal';
 import AdoptModel from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../redux/constants/childConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {

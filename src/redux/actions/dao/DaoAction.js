@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { daoApi, publicApi } from '../../apis/sayBase';
+import { daoApi, publicApi } from '../../../apis/sayBase';
 import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
@@ -14,9 +14,9 @@ import {
   WALLET_CONNECT_SUCCESS,
   WALLET_CONNECT_FAIL,
 } from '../../constants/daoConstants';
-import Signature from '../../Signature';
-import VerifyVoucher from '../../build/contracts/tokens/ERC721/VerifyVoucher.sol/VerifyVoucher.json';
-import GovernanceToken from '../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
+import Signature from '../../../Signature';
+import VerifyVoucher from '../../../build/contracts/tokens/ERC721/VerifyVoucher.sol/VerifyVoucher.json';
+import GovernanceToken from '../../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
 
 export const connectWallet = () => async (dispatch) => {
   try {

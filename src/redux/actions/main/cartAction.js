@@ -1,4 +1,4 @@
-import { publicApi } from '../../apis/sayBase';
+import { publicApi } from '../../../apis/sayBase';
 import {
   CART_ADD_REQUEST,
   CART_ADD_SUCCESS,

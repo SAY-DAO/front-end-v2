@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import ChildLayout from '../layout/child-layoyt/ChildLayout';
-import Loadable from '../layout/loadable/Loadable';
-import MainLayout from '../layout/main-layout/MainLayout';
-import BlankLayout from '../layout/plain-layout/PlainLayout';
+import ChildLayout from '../layouts/child-layoyt/ChildLayout';
+import Loadable from '../layouts/loadable/Loadable';
+import MainLayout from '../layouts/main-layout/MainLayout';
+import BlankLayout from '../layouts/plain-layout/PlainLayout';
 
 const Error = Loadable(lazy(() => import('../components/Error')));
 

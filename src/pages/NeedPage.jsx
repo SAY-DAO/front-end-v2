@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Grid, CircularProgress } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChildOneNeed } from '../actions/childAction';
+import { fetchChildOneNeed } from '../redux/actions/childAction';
 import NeedAvailable from '../components/need/NeedAvailable';
 import NeedDone from '../components/need/NeedDone';
 

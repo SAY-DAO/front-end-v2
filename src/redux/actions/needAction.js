@@ -1,4 +1,4 @@
-import { publicApi } from '../apis/sayBase';
+import { publicApi } from '../../apis/sayBase';
 import {
   ALL_NEEDS_FAIL,
   ALL_NEEDS_REQUEST,

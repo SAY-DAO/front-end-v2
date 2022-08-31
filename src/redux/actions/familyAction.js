@@ -1,4 +1,4 @@
-import { publicApi, publicApi3 } from '../apis/sayBase';
+import { publicApi, publicApi3 } from '../../apis/sayBase';
 import {
   //   INVITE_TO_MY_FAMILY_REQUEST,
   //   INVITE_TO_MY_FAMILY_SUCCESS,

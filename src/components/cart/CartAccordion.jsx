@@ -13,20 +13,23 @@ import NeedPageProduct from '../need/NeedPageProduct';
 import {
   changeCartBadgeNumber,
   updateBackEndCart,
-} from '../../actions/main/cartAction';
+} from '../../redux/actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
+import {
+  checkCartPayment,
+  makeCartPayment,
+} from '../../redux/actions/paymentAction';
 import Message from '../Message';
 import {
   CHECK_CART_PAYMENT_RESET,
   SHAPARAK_RESET,
-} from '../../constants/paymentConstants';
+} from '../../redux/constants/paymentConstants';
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
   CART_UPDATE_BACK_RESET,
-} from '../../constants/main/cartConstants';
+} from '../../redux/constants/main/cartConstants';
 
 export default function CartAccordion() {
   const dispatch = useDispatch();

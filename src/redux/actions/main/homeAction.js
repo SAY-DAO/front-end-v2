@@ -1,4 +1,4 @@
-import { publicApi } from '../../apis/sayBase';
+import { publicApi } from '../../../apis/sayBase';
 import {
   HOME_REQUEST,
   HOME_SUCCESS,

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useNavigate } from 'react-router-dom';
 import CartAccordion from '../cart/CartAccordion';
 
-import { fetchUserDetails } from '../../actions/userAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
 
 export default function Cart() {
   const navigate = useNavigate();

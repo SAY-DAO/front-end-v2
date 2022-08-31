@@ -18,12 +18,12 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Message from '../../components/Message';
 import MyChildTabs from '../../components/child/MyChildTabs';
-import { fetchMyChildById } from '../../actions/childAction';
-import { fetchMyHome } from '../../actions/main/homeAction';
+import { fetchMyChildById } from '../../redux/actions/childAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 import Back from '../../components/Back';
-import { CHILD_ONE_NEED_RESET } from '../../constants/childConstants';
+import { CHILD_ONE_NEED_RESET } from '../../redux/constants/childConstants';
 import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal ';
-import { fetchUserDetails } from '../../actions/userAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
 
 const ITEM_HEIGHT = 20;
 

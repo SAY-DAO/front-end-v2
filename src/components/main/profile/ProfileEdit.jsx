@@ -25,12 +25,12 @@ import {
   CHECK_USERNAME_RESET,
   USER_RESET_PASSWORD_RESET,
   USER_VERIFY_RESET,
-} from '../../../constants/main/userConstants';
+} from '../../../redux/constants/main/userConstants';
 import {
   checkContactBeforeVerify,
   checkUserNameBeforeVerify,
   userEditProfile,
-} from '../../../actions/userAction';
+} from '../../../redux/actions/userAction';
 import validateEmail from '../../../inputsValidation/validateEmail';
 import validatePhone from '../../../inputsValidation/validatePhone';
 import validateUsername from '../../../inputsValidation/validateUsername';

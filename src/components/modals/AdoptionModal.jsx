@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { joinVirtualFamily } from '../../actions/familyAction';
-import { fetchMyHome } from '../../actions/main/homeAction';
+import { joinVirtualFamily } from '../../redux/actions/familyAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 
 const style = {
   position: 'absolute',

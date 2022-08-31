@@ -17,12 +17,12 @@ import {
   verifyUser,
   userVerifyCode,
   changeVerifyStep,
-} from '../../actions/userAction';
+} from '../../redux/actions/userAction';
 import Message from '../Message';
 import {
   CHECK_CONTACT_RESET,
   CODE_VERIFY_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

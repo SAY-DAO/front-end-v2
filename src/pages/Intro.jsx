@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LangButton from '../components/LangButton';
-import { fetchUserDetails } from '../actions/userAction';
+import { fetchUserDetails } from '../redux/actions/userAction';
 
 const Intro = () => {
   const { t } = useTranslation();

@@ -9,13 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Stack } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { signTransaction } from '../../actions/dao/DaoAction';
-import { fetchMyHome } from '../../actions/main/homeAction';
-import { fetchAlleeds } from '../../actions/needAction';
+import { signTransaction } from '../../redux/actions/dao/DaoAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
+import { fetchAlleeds } from '../../redux/actions/needAction';
 import DaoChildCard from './DaoChildCard';
 
 const useStyles = makeStyles({
@@ -59,6 +58,10 @@ export default function DaoPortal() {
     dispatch(fetchAlleeds());
   };
 
+  const handleMyChildPage = (child) => {
+    // navigate(`/child/${child.id}`);
+  };
+
   const classes = useStyles();
 
   return (
@@ -87,61 +90,20 @@ export default function DaoPortal() {
               {theUser.done_needs_count}
             </Typography>
           </Box>
-          <CardContent>
-            <Grid container direction="column">
-              <Grid item>
-                <Typography gutterBottom variant="h5" component="div">
-                  Please sign your need
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Box sx={{ width: '100%' }}>
-                  <Stack
-                    spacing={2}
-                    sx={{ mb: 1 }}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Typography sx={{ p: 1, m: 1 }}>
-                      Token {theUser.done_needs_count - gov}
-                    </Typography>
-                    <Slider
-                      aria-label="Small"
-                      defaultValue={Math.round(theUser.done_needs_count / 2)}
-                      step={20}
-                      marks
-                      min={0}
-                      max={theUser.done_needs_count}
-                      sx={{
-                        '& .muirtl-okr1mu-MuiSlider-thumb': {
-                          transform: 'translate(-0%, -50%)',
-                        },
-                        m: 1,
-                      }}
-                      value={gov}
-                      onChange={handleChange}
-                    />
-                    <Typography sx={{ p: 1, m: 1 }}>GOV {gov}</Typography>
-                  </Stack>
-                </Box>
-              </Grid>
-
-              <Grid item>
-                <LoadingButton
-                  onClick={handleSignature}
-                  className={classes.root}
-                >
-                  Sign
-                </LoadingButton>
-              </Grid>
-              <Grid item>
-                <LoadingButton onClick={handleClick} className={classes.root}>
-                  Fetch Needs
-                </LoadingButton>
-              </Grid>
-            </Grid>
-          </CardContent>
-          <DaoChildCard />
+          <Grid
+            item
+            xs={12}
+            sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
+          >
+            {children &&
+              children.map((child) => (
+                <DaoChildCard
+                  key={child.id}
+                  myChild={child}
+                  handleMyChildPage={handleMyChildPage}
+                />
+              ))}
+          </Grid>
         </Card>
       )}
     </Grid>

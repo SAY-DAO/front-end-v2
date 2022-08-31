@@ -1,4 +1,4 @@
-import { publicApi } from '../apis/sayBase';
+import { publicApi } from '../../apis/sayBase';
 import {
   SHAPARAK_PAYMENT_REQUEST,
   SHAPARAK_PAYMENT_SUCCESS,

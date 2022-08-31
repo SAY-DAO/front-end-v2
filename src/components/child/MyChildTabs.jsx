@@ -11,7 +11,7 @@ import ChildFamily from './ChildFamily';
 import ChildStats from './ChildStats';
 import ChildNeeds from './ChildNeeds';
 import ChildStory from './ChildStory';
-import { fetchChildNeeds } from '../../actions/childAction';
+import { fetchChildNeeds } from '../../redux/actions/childAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {

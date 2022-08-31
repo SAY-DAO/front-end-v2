@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { fetchRandomChild } from '../../actions/childAction';
+import { fetchRandomChild } from '../../redux/actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';
 

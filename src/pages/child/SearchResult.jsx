@@ -10,8 +10,8 @@ import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
-import { fetchUserDetails } from '../../actions/userAction';
+import { CHILD_RANDOM_SEARCH_RESET } from '../../redux/constants/childConstants';
+import { fetchUserDetails } from '../../redux/actions/userAction';
 
 const SearchResult = () => {
   const { t } = useTranslation();

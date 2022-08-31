@@ -5,17 +5,16 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Paper, Typography, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { makeStyles, styled } from '@mui/styles';
+import { styled } from '@mui/styles';
 import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { changeCartBadgeNumber } from '../../actions/main/cartAction';
+import { changeCartBadgeNumber } from '../../redux/actions/main/cartAction';
 import {
   CART_BADGE_RESET,
   CART_UPDATE_BACK_RESET,
-} from '../../constants/main/cartConstants';
-import { fetchMyHome } from '../../actions/main/homeAction';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
+} from '../../redux/constants/main/cartConstants';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -31,7 +30,6 @@ export default function AppBarBottom() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location);
   const path = location.pathname;
 
   const [value, setValue] = useState();

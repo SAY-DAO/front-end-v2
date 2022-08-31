@@ -1,25 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Grid, Divider, Typography, Avatar } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import CircularProgress from '@mui/material/CircularProgress';
-import { fetchMyHome } from '../../actions/main/homeAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
   CHILD_ONE_NEED_RESET,
   CHILD_RANDOM_SEARCH_RESET,
-} from '../../constants/childConstants';
+} from '../../redux/constants/childConstants';
 import ChildCard from '../child/ChildCard';
 import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
-} from '../../constants/familyConstants';
-import { fetchUserDetails } from '../../actions/userAction';
+} from '../../redux/constants/familyConstants';
+import { fetchUserDetails } from '../../redux/actions/userAction';
 
 const Home = () => {
   const { t } = useTranslation();

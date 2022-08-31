@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from 'prop-types';
 import { ResponsiveNetwork } from '@nivo/network';
-import { fetchUserDetails } from '../../actions/userAction';
-import { fetchFamilyNetworks } from '../../actions/dao/DaoAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
+import { fetchFamilyNetworks } from '../../redux/actions/dao/DaoAction';
 
 const DaoDocs = () => {
   const dispatch = useDispatch();

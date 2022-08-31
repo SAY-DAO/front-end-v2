@@ -9,7 +9,7 @@ import i18next from 'i18next';
 import LangButton from '../../LangButton';
 import Back from '../../Back';
 import Message from '../../Message';
-import { logout } from '../../../actions/userAction';
+import { logout } from '../../../redux/actions/userAction';
 
 const useStyles = makeStyles(() => ({
   icon: {

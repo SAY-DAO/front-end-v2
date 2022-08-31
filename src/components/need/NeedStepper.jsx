@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { fetchOneNeedReceipts } from '../../actions/childAction';
+import { fetchOneNeedReceipts } from '../../redux/actions/childAction';
 
 const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   backgroundColor:

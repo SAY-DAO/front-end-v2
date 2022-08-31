@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Back from '../components/Back';
 import Message from '../components/Message';
-import { CHILD_ONE_NEED_RECEIPT_RESET } from '../constants/childConstants';
+import { CHILD_ONE_NEED_RECEIPT_RESET } from '../redux/constants/childConstants';
 import { enDate, faDate } from '../date.js';
 
 const useStyles = makeStyles({

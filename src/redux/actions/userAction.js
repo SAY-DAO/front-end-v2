@@ -1,5 +1,5 @@
 import LogRocket from 'logrocket';
-import { publicApi } from '../apis/sayBase';
+import { publicApi } from '../../apis/sayBase';
 import { CART_ADD_RESET } from '../constants/main/cartConstants';
 import { HOME_RESET } from '../constants/main/homeConstants';
 import {
@@ -36,7 +36,7 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
 } from '../constants/main/userConstants';
-import { standalone } from '../standalone';
+import { standalone } from '../../standalone';
 
 const _standalone = standalone() ? 1 : 0;
 

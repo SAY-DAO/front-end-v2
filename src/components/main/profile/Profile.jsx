@@ -8,9 +8,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate, Link } from 'react-router-dom';
 import AppBarBottom from '../AppBarBottom';
-import { USER_RESET_PASSWORD_RESET } from '../../../constants/main/userConstants';
+import { USER_RESET_PASSWORD_RESET } from '../../../redux/constants/main/userConstants';
 import WalletModal from '../../modals/WalletModal';
-import { fetchUserDetails } from '../../../actions/userAction';
+import { fetchUserDetails } from '../../../redux/actions/userAction';
 
 const Profile = () => {
   const navigate = useNavigate();

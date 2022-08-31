@@ -27,12 +27,15 @@ import NeedPageTop from './NeedPageTop';
 import NeedPageProduct from './NeedPageProduct';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { addToCart } from '../../actions/main/cartAction';
-import { makePayment } from '../../actions/paymentAction';
+import { addToCart } from '../../redux/actions/main/cartAction';
+import { makePayment } from '../../redux/actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
-import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
-import { fetchUserDetails } from '../../actions/userAction';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
+import {
+  fetchChildOneNeed,
+  fetchMyChildById,
+} from '../../redux/actions/childAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 
 const useStyles = makeStyles({
   root: {

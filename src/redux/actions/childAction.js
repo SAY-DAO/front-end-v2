@@ -1,4 +1,4 @@
-import { publicApi, publicApi3 } from '../apis/sayBase';
+import { publicApi, publicApi3 } from '../../apis/sayBase';
 import {
   CHILD_RANDOM_SEARCH_REQUEST,
   CHILD_RANDOM_SEARCH_SUCCESS,

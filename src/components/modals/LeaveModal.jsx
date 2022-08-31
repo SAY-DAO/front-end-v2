@@ -9,7 +9,7 @@ import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
   CHILD_BY_TOKEN_RESET,
-} from '../../constants/childConstants';
+} from '../../redux/constants/childConstants';
 
 const style = {
   position: 'absolute',

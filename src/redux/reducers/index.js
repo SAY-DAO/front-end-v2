@@ -33,8 +33,10 @@ import {
 } from './familyReducer';
 import { familyNetworksReducer, signatureReducer } from './daoReducer';
 import { allNeedsReducer } from './needReducer';
+import themeReducer from './themeReducer';
 
 export default combineReducers({
+  themeOptions: themeReducer,
   familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,

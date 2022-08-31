@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Switch from '@mui/material/Switch';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchUserDetails } from '../../actions/userAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
 
 export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { t } = useTranslation();

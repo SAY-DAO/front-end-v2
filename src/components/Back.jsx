@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import i18next from 'i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeVerifyStep } from '../actions/userAction';
-import { USER_VERIFY_RESET } from '../constants/main/userConstants';
+import { changeVerifyStep } from '../redux/actions/userAction';
+import { USER_VERIFY_RESET } from '../redux/constants/main/userConstants';
 
 const Back = ({ step, to, isOrange, handleClickOverride, state }) => {
   const dispatch = useDispatch();

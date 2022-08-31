@@ -11,8 +11,11 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { safeFamilyMint, signTransaction } from '../../actions/dao/DaoAction';
-import { fetchMyHome } from '../../actions/main/homeAction';
+import {
+  safeFamilyMint,
+  signTransaction,
+} from '../../redux/actions/dao/DaoAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 
 const useStyles = makeStyles({
   root: {

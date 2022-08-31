@@ -6,9 +6,8 @@ import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchChildNeeds } from '../../actions/childAction';
 import NeedCard from '../need/NeedCard';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 
 const useStyles = makeStyles(() => ({
   chip: {

@@ -19,13 +19,16 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import { useNavigate } from 'react-router-dom';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
-import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
+import {
+  checkUserNameBeforeVerify,
+  register,
+} from '../../redux/actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
 import {
   CHECK_USERNAME_RESET,
   USER_REGISTER_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {

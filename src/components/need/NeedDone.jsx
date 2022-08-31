@@ -10,10 +10,13 @@ import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import NeedStepper from './NeedStepper';
-import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
+import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../redux/constants/childConstants';
 import NeedParticipants from './NeedParticipants';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
-import { fetchChildNeeds, fetchMyChildById } from '../../actions/childAction';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
+import {
+  fetchChildNeeds,
+  fetchMyChildById,
+} from '../../redux/actions/childAction';
 
 const useStyles = makeStyles({
   root: {
