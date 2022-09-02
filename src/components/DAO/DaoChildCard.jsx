@@ -32,87 +32,73 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
 }));
-export default function DaoChildCard({ myChild, handleMyChildPage }) {
+export default function DaoChildCard({ myChild }) {
   const { t } = useTranslation();
 
   const classes = useStyles();
 
   return (
-    <>
-      <Card elevation={4} className={classes.theCard}>
-        <CardActionArea
-          className={classes.actionArea}
-          onClick={() => handleMyChildPage(myChild)}
+    <Card elevation={2} className={classes.theCard} sx={{ width: '100%' }}>
+      <CardActionArea className={classes.actionArea}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
         >
           <Grid
             container
             direction="row"
-            justifyContent="space-between"
-            alignItems="flex-end"
+            justifyContent="flex-start"
+            alignItems="center"
+            item
+            spacing={1}
+            md={4}
+            xs={6}
           >
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              item
-              spacing={1}
-              md={4}
-              xs={6}
-            >
-              <Grid item xs={6}>
-                <Avatar
-                  src={myChild.avatarUrl}
-                  className={classes.childAvatar}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography variant="body1">{myChild.sayName}</Typography>
-              </Grid>
+            <Grid item xs={6}>
+              <Avatar src={myChild.avatarUrl} className={classes.childAvatar} />
             </Grid>
-            <Grid
-              container
-              direction="row"
-              justifyContent={window.innerWidth <= 320 ? 'flex-end' : 'center'}
-              alignItems="center"
-              item
-              spacing={1}
-              xs
-            >
-              <Grid
-                item
-                sx={{
-                  display: 'flex',
-                }}
-              >
-                <Typography component="span" sx={{ marginTop: '2px' }}>
-                  {myChild.done_needs_count}
-                </Typography>
-                <img
-                  src="/images/icons/Task.svg"
-                  alt="done icon"
-                  className={classes.icons}
-                />
-              </Grid>
-              <Grid item sx={{ display: 'flex' }}>
-                <Typography component="span" sx={{ marginTop: '2px' }}>
-                  {myChild.spent_credit.toLocaleString() + t('currency.toman')}
-                </Typography>
-                <img
-                  src="/images/icons/Money.svg"
-                  alt="money icon"
-                  className={classes.icons}
-                />
-              </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1">{myChild.sayName}</Typography>
             </Grid>
           </Grid>
-        </CardActionArea>
-      </Card>
-    </>
+          <Grid
+            container
+            direction="row"
+            justifyContent={window.innerWidth <= 320 ? 'flex-end' : 'center'}
+            alignItems="center"
+            item
+            spacing={1}
+            xs
+          >
+            <Grid item>
+              <Typography component="span" sx={{ marginTop: '2px' }}>
+                {myChild.done_needs_count}
+              </Typography>
+              <img
+                src="/images/icons/Task.svg"
+                alt="done icon"
+                className={classes.icons}
+              />
+            </Grid>
+            <Grid item>
+              <Typography component="span" sx={{ marginTop: '2px' }}>
+                {myChild.spent_credit.toLocaleString() + t('currency.toman')}
+              </Typography>
+              <img
+                src="/images/icons/Money.svg"
+                alt="money icon"
+                className={classes.icons}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </CardActionArea>
+    </Card>
   );
 }
 
 DaoChildCard.propTypes = {
   myChild: PropTypes.object.isRequired,
-  handleMyChildPage: PropTypes.func.isRequired,
 };

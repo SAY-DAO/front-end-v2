@@ -1,14 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import DaoDocs from '../DAO/DaoDocs';
 import DaoPortal from '../DAO/DaoPortal';
 import DaoMint from '../DAO/DaoMint';
+import { setActiveMode } from '../../redux/actions/themeAction';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,8 +41,16 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+export default function DAO() {
+  const dispatch = useDispatch();
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    dispatch(setActiveMode('dark'));
+    return () => {
+      dispatch(setActiveMode('light'));
+    };
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

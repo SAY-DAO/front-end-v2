@@ -31,7 +31,11 @@ import {
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
-import { familyNetworksReducer, signatureReducer } from './daoReducer';
+import {
+  familyNetworksReducer,
+  serverReducer,
+  signatureReducer,
+} from './daoReducer';
 import { allNeedsReducer } from './needReducer';
 import themeReducer from './themeReducer';
 
@@ -64,4 +68,5 @@ export default combineReducers({
   cartUpdate: cartUpdateReducer,
   cartPayCheck: checkCartPaymentReducer,
   signature: signatureReducer,
+  server: serverReducer,
 });

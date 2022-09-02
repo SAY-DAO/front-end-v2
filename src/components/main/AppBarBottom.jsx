@@ -49,6 +49,9 @@ export default function AppBarBottom() {
     error: errorHome,
   } = myHome;
 
+  const themeOptions = useSelector((state) => state.themeOptions);
+  const { activeMode } = themeOptions;
+
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
     if (!successHome && !loadingHome) {
@@ -273,7 +276,7 @@ export default function AppBarBottom() {
               borderRadius: '25px',
               backgroundColor: path === '/main/dao' ? '#ffdfc1' : 'transparent',
               '& .MuiBottomNavigationAction-label': {
-                color: 'rgb(251, 181, 99)',
+                color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
               },
             }}
             icon={

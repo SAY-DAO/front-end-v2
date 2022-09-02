@@ -13,10 +13,80 @@ import {
   WALLET_CONNECT_REQUEST,
   WALLET_CONNECT_SUCCESS,
   WALLET_CONNECT_FAIL,
+  UPDATE_FLASK_REQUEST,
+  UPDATE_SERVER_REQUEST,
+  UPDATE_SERVER_SUCCESS,
+  UPDATE_SERVER_FAIL,
 } from '../../constants/daoConstants';
 import Signature from '../../../Signature';
 import VerifyVoucher from '../../../build/contracts/tokens/ERC721/VerifyVoucher.sol/VerifyVoucher.json';
 import GovernanceToken from '../../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
+
+export const updateNestServer = (childId) => async (dispatch, getState) => {
+  let need = {};
+  const needList = [];
+  try {
+    dispatch({ type: UPDATE_FLASK_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+    const { data } = await publicApi.get(
+      `/child/${childId}/needs/summary`,
+      config
+    );
+
+    for (let i = 0; i < data.needs.length; i += 1) {
+      need = {
+        need_id: data.needs[i].id,
+        title: data.needs[i].name,
+        category: data.needs[i].category,
+        created: data.needs[i].created,
+        doneAt: data.needs[i].doneAt,
+        imageUrl: data.needs[i].imageUrl,
+        isDone: data.needs[i].isDone,
+        isUrgent: data.needs[i].isUrgent,
+        participants: data.needs[i].participants,
+        progress: data.needs[i].progress,
+        type: data.needs[i].type,
+        unpayable: data.needs[i].unpayable,
+        cost: data.needs[i].cost,
+      };
+      needList.push(need);
+    }
+
+    const needRequest = {
+      totalCount: data.total_count,
+      needData: needList,
+    };
+    console.log(needRequest);
+
+    const nestResponse = await daoApi.post(
+      `/needs/child/update/id=${childId}`,
+      needRequest
+    );
+    console.log(nestResponse.data);
+
+    dispatch({
+      type: UPDATE_SERVER_SUCCESS,
+      payload: nestResponse.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: UPDATE_SERVER_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.message,
+    });
+  }
+};
 
 export const connectWallet = () => async (dispatch) => {
   try {

@@ -1,13 +1,13 @@
-import { THEME_COLOR, DARK_THEME } from '../constants/themeConstants';
+import { THEME_COLOR, DARK_OR_LIGHT } from '../constants/themeConstants';
 
 const INIT_STATE = {
   activeMode: 'light', // light or dark
-  activeTheme: 'ORANGE_THEME',
+  activeTheme: 'ORIGINAL_THEME',
 };
 
 const themeReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case DARK_THEME:
+    case DARK_OR_LIGHT:
       return {
         ...state,
         activeMode: action.payload,

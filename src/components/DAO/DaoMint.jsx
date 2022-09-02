@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   safeFamilyMint,
   signTransaction,
-} from '../../redux/actions/dao/DaoAction';
+} from '../../redux/actions/main/daoAction';
 import { fetchMyHome } from '../../redux/actions/main/homeAction';
 
 const useStyles = makeStyles({

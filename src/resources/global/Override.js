@@ -4,37 +4,6 @@ const components = {
       // disableGutters: true, // If true, the left and right padding is removed.
     },
   },
-  MuiTypography: {
-    styleOverrides: {
-      subtitle1: {
-        color: '#636363',
-        fontWeight: 500,
-        fontSize: '13px',
-        lineHeight: '14px',
-      },
-      subtitle2: {
-        color: '#636363',
-        fontWeight: 300,
-        fontSize: '12px',
-        lineHeight: '14px',
-      },
-      body1: {
-        color: '#000000',
-        fontWeight: 200,
-        fontSize: '12px',
-        lineHeight: '14px',
-      },
-      body2: {
-        fontSize: '11px',
-        lineHeight: '18px',
-      },
-      span: {
-        color: '#636363',
-        fontSize: '10px',
-        lineHeight: '18px',
-      },
-    },
-  },
   MuiButton: {
     defaultProps: {
       // disableRipple: true, // No more ripple!
@@ -150,6 +119,17 @@ const components = {
     styleOverrides: {
       root: {
         textTransform: 'none',
+        '&.Mui-selected ': {
+          color: '#ffdfc1',
+        },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      indicator: {
+        backgroundColor: '#ffdfc1 !important',
+        color: '#ffdfc1 !important',
       },
     },
   },
@@ -175,14 +155,14 @@ const components = {
   MuiAccordionSummary: {
     styleOverrides: {
       root: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
       },
     },
   },
   MuiAccordionDetails: {
     styleOverrides: {
       root: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
       },
     },
   },

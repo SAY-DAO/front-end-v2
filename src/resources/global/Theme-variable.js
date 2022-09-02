@@ -2,8 +2,12 @@ import _ from 'lodash';
 import { createTheme } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import components from './Override';
+import typography from './Typography';
 
-import { BLUE_THEME, ORANGE_THEME } from '../../redux/constants/themeConstants';
+import {
+  BLUE_THEME,
+  ORIGINAL_THEME,
+} from '../../redux/constants/themeConstants';
 
 const baseTheme = {
   breakpoints: {
@@ -15,26 +19,21 @@ const baseTheme = {
       xl: 1200,
     },
   },
-  // direction: 'rtl',
-  fontFamily: 'iranyekan',
   palette: {
-    background: {
-      default: '#f7f7f7', // CSSBaseline is needed for this
-    },
     primary: {
       main: '#fbb563',
-      dark: 'black',
+      light: '#e6f4ff',
+      dark: '#1682d4',
     },
     secondary: {
       light: '#bfeeff',
       main: '#6be2fe',
+      dark: '#173f98',
       contrastText: '#ffcc00',
     },
     contrastThreshold: 3,
   },
-  typography: {
-    fontFamily: '"iranyekan", "roboto"',
-  },
+  typography,
   components,
 };
 
@@ -42,34 +41,33 @@ const themesOptions = [
   {
     name: BLUE_THEME,
     palette: {
-      // primary: {
-      //   main: '#1a97f5',
-      //   light: '#e6f4ff',
-      //   dark: '#1682d4',
-      // },
-      // secondary: {
-      //   main: '#1e4db7',
-      //   light: '#ddebff',
-      //   dark: '#173f98',
-      // },
+      primary: {
+        main: '#1a97f5',
+        light: '#e6f4ff',
+        dark: '#1682d4',
+      },
+      secondary: {
+        main: '#1e4db7',
+        light: '#ddebff',
+        dark: '#173f98',
+      },
     },
   },
 
   {
-    name: ORANGE_THEME,
+    name: ORIGINAL_THEME,
     palette: {
-      // primary: {
-      //   main: '#03c9d7',
-      //   light: '#e5fafb',
-      //   dark: '#05b2bd',
-      //   contrastText: '#ffffff',
-      // },
-      // secondary: {
-      //   main: '#fb9678',
-      //   light: '#fcf1ed',
-      //   dark: '#e67e5f',
-      //   contrastText: '#ffffff',
-      // },
+      primary: {
+        main: '#fbb563',
+        light: '#e6f4ff',
+        dark: '#1682d4',
+      },
+      secondary: {
+        light: '#bfeeff',
+        main: '#6be2fe',
+        dark: '#173f98',
+        contrastText: '#ffcc00',
+      },
     },
   },
 ];
@@ -83,13 +81,14 @@ export const BuildTheme = (config = {}) => {
     palette: {
       mode: activeMode,
       background: {
-        // default: activeMode === 'dark' ? '#20232a' : '#fafbfb',
-        // dark: activeMode === 'dark' ? '#1c2025' : '#ffffff',
-        // paper: activeMode === 'dark' ? '#282C34' : '#ffffff',
+        default: activeMode === 'dark' ? '#20232a' : '#f7f7f7',
+        dark: activeMode === 'dark' ? '#1c2025' : '#ffffff',
+        paper: activeMode === 'dark' ? '#282C34' : '#ffffff',
       },
       text: {
-        // primary: activeMode === 'dark' ? '#e6e5e8' : 'rgba(0, 0, 0, 0.87)',
-        // secondary: activeMode === 'dark' ? '#adb0bb' : '#777e89',
+        primary: activeMode === 'dark' ? 'white' : '#636363',
+        secondary: activeMode === 'dark' ? '#adb0bb' : '#777e89',
+        custom: 'red',
       },
     },
   };
@@ -98,11 +97,7 @@ export const BuildTheme = (config = {}) => {
     [myThemes] = myThemes;
   }
 
-  const theme = createTheme(
-    _.merge({}, baseTheme, baseMode, themeOptions, {
-      direction: config.direction,
-    })
-  );
+  const theme = createTheme(_.merge({}, baseTheme, baseMode, themeOptions, {}));
   return theme;
 };
 
