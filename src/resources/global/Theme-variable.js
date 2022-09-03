@@ -86,7 +86,7 @@ export const BuildTheme = (config = {}) => {
         paper: activeMode === 'dark' ? '#282C34' : '#ffffff',
       },
       text: {
-        primary: activeMode === 'dark' ? 'white' : '#636363',
+        primary: activeMode === 'dark' ? '#ffffff' : '#636363',
         secondary: activeMode === 'dark' ? '#adb0bb' : '#777e89',
         custom: 'red',
       },

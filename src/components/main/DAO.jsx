@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -10,6 +9,7 @@ import { useEffect, useState } from 'react';
 import DaoDocs from '../DAO/DaoDocs';
 import DaoPortal from '../DAO/DaoPortal';
 import DaoMint from '../DAO/DaoMint';
+import DaoMileStone from '../DAO/DaoMileStone';
 import { setActiveMode } from '../../redux/actions/themeAction';
 
 function TabPanel(props) {
@@ -65,8 +65,9 @@ export default function DAO() {
           aria-label="basic tabs example"
         >
           <Tab label="Portal" {...a11yProps(0)} />
-          <Tab label="Mint" {...a11yProps(1)} />
-          <Tab label="Docs" {...a11yProps(2)} />
+          <Tab label="MileStone" {...a11yProps(1)} />
+          <Tab label="Mint" {...a11yProps(2)} />
+          <Tab label="Docs" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -76,10 +77,15 @@ export default function DAO() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Grid>
-          <DaoMint />
+          <DaoMileStone />
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={2}>
+        <Grid>
+          <DaoMint />
+        </Grid>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
         <Grid>
           <DaoDocs />
         </Grid>

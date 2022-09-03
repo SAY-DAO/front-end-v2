@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 
 export default function ChildStats({ needsArray }) {
   const { t } = useTranslation();
-
   const [needsData, setNeedsData] = useState();
   const [pieData, setPieData] = useState();
 

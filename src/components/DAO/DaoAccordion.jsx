@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import {
   AccordionSummary,
   Accordion,
@@ -5,14 +6,17 @@ import {
   Grid,
   Typography,
   CircularProgress,
+  Divider,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box } from '@mui/system';
 import DaoChildCard from './DaoChildCard';
 import { updateNestServer } from '../../redux/actions/main/daoAction';
+import CollapsibleTable from './CollapsibleTable';
 
-export default function DaoAccarion() {
+export default function DaoAccardion() {
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
@@ -28,11 +32,25 @@ export default function DaoAccarion() {
 
   const handleChange = (childId) => (event, isExpanded) => {
     setExpanded(isExpanded ? childId : false);
-    dispatch(updateNestServer(childId));
+    dispatch(updateNestServer(childId, user.id));
   };
 
   return (
     <Grid container>
+      <Box
+        sx={{
+          width: '100%',
+          height: 200,
+          m: 1,
+          backgroundColor: 'primary.light',
+          '&:hover': {
+            backgroundColor: 'primary.light',
+            opacity: [0.9, 0.8, 0.7],
+          },
+        }}
+      />
+      <Divider sx={{ width: '100%', mt: 2, mb: 2 }}>My Children</Divider>
+
       {children &&
         children.map((child) => (
           <Accordion
@@ -63,11 +81,7 @@ export default function DaoAccarion() {
               }}
             >
               {updated ? (
-                updated.nestNeedResult.map((n) => (
-                  <Typography key={n.need_id}>
-                    {n.participants && n.participants.map((p) => p.id_user)}
-                  </Typography>
-                ))
+                <CollapsibleTable updated={updated} />
               ) : (
                 <CircularProgress />
               )}

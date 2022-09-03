@@ -29,6 +29,7 @@ export const updateNestServer = (childId) => async (dispatch, getState) => {
     dispatch({ type: UPDATE_FLASK_REQUEST });
     const {
       userLogin: { userInfo },
+      userDetails: { theUser },
     } = getState();
 
     const config = {
@@ -65,17 +66,17 @@ export const updateNestServer = (childId) => async (dispatch, getState) => {
       totalCount: data.total_count,
       needData: needList,
     };
-    console.log(needRequest);
 
-    const nestResponse = await daoApi.post(
-      `/needs/child/update/id=${childId}`,
-      needRequest
+    await daoApi.post(`/needs/child/update/id=${childId}`, needRequest);
+
+    const nestResponse2 = await daoApi.get(
+      `users/done?userId=${theUser.id}&childId=${childId}`
     );
-    console.log(nestResponse.data);
+    console.log(nestResponse2);
 
     dispatch({
       type: UPDATE_SERVER_SUCCESS,
-      payload: nestResponse.data,
+      payload: nestResponse2.data,
     });
   } catch (e) {
     dispatch({
