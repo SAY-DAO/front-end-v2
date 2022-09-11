@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useNavigate } from 'react-router-dom';
-import CartAccordion from '../cart/CartAccordion';
+import { useNavigate } from 'react-router-dom';
 
 import { fetchUserDetails } from '../../redux/actions/userAction';
+import CartAccordion from '../../components/cart/CartAccordion';
 
 export default function Cart() {
   const navigate = useNavigate();

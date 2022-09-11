@@ -14,7 +14,6 @@ import {
   WALLET_CONNECT_SUCCESS,
   WALLET_CONNECT_FAIL,
   UPDATE_FLASK_REQUEST,
-  UPDATE_SERVER_REQUEST,
   UPDATE_SERVER_SUCCESS,
   UPDATE_SERVER_FAIL,
 } from '../../constants/daoConstants';
@@ -45,7 +44,7 @@ export const updateNestServer = (childId) => async (dispatch, getState) => {
 
     for (let i = 0; i < data.needs.length; i += 1) {
       need = {
-        need_id: data.needs[i].id,
+        needId: data.needs[i].id,
         title: data.needs[i].name,
         category: data.needs[i].category,
         created: data.needs[i].created,
@@ -63,16 +62,17 @@ export const updateNestServer = (childId) => async (dispatch, getState) => {
     }
 
     const needRequest = {
-      totalCount: data.total_count,
+      totalCount: needList.length,
       needData: needList,
+      childId,
     };
+    console.log(needRequest);
 
-    await daoApi.post(`/needs/child/update/id=${childId}`, needRequest);
+    await daoApi.post(`/sync/update`, needRequest);
 
     const nestResponse2 = await daoApi.get(
       `users/done?userId=${theUser.id}&childId=${childId}`
     );
-    console.log(nestResponse2);
 
     dispatch({
       type: UPDATE_SERVER_SUCCESS,
@@ -144,73 +144,51 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction =
-  (needId, needTitle, needImage, userId, impacts) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({ type: SIGNATURE_REQUEST });
+export const signTransaction = (needId, userId) => async (dispatch) => {
+  try {
+    dispatch({ type: SIGNATURE_REQUEST });
 
-      await window.ethereum.enable();
-      // eslint-disable-next-line no-undef
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const signerAddress = await signer.getAddress();
-      // const theSellingPrice_BN = ethers.utils.parseUnits(
-      //   price.toString(),
-      //   'ether'
-      // );
-
-      const VerifySignature = new ethers.ContractFactory(
-        VerifyVoucher.abi,
-        VerifyVoucher.bytecode,
-        signer
-      );
-
-      const signerContract = VerifySignature.attach(
-        '0x004a0304523554961578f2b7050BDFdE57625228'
-      );
-
-      const theSignature = new Signature({ contract: signerContract, signer });
-
-      console.log(signerAddress, needId, needTitle, needImage, userId, impacts);
-      const voucher = await theSignature.signTransaction(
+    await window.ethereum.enable();
+    // eslint-disable-next-line no-undef
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+      request: {
+        verifyContractAddress: '0x004a0304523554961578f2b7050BDFdE57625228',
+        chainId: 1,
         signerAddress,
         needId,
-        needTitle,
-        needImage,
         userId,
-        impacts
-      );
+        impacts: 5,
+      },
+    };
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const { data } = await daoApi.post(`/signature/add`, config);
+    // eslint-disable-next-line no-underscore-dangle
+    const signature = await signer._signTypedData(
+      data.domain,
+      data.types,
+      data.FamilyVoucher
+    );
 
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: userInfo && userInfo.accessToken,
-        },
-        data: {
-          signature: voucher.signature, // This is the body part
-        },
-      };
-      const { data } = await daoApi.post(`/signature/add`, config);
+    dispatch({
+      type: SIGNATURE_SUCCESS,
+      payload: { data, signature },
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: SIGNATURE_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
-      dispatch({
-        type: SIGNATURE_SUCCESS,
-        payload: { data, voucher, signerAddress },
-      });
-    } catch (e) {
-      // check for generic and custom message to return using ternary statement
-      dispatch({
-        type: SIGNATURE_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
-    }
-  };
-
-export const safeFamilyMint = (voucher) => async (dispatch, getState) => {
+export const safeFamilyMint = (voucher) => async (dispatch) => {
   try {
     dispatch({ type: MINT_REQUEST });
     await dispatch(connectWallet()); // connect wallet to get the address

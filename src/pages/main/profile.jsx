@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Box, Card, Typography, Avatar } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import { useNavigate, Link } from 'react-router-dom';
-import AppBarBottom from '../AppBarBottom';
-import { USER_RESET_PASSWORD_RESET } from '../../../redux/constants/main/userConstants';
-import WalletModal from '../../modals/WalletModal';
-import { fetchUserDetails } from '../../../redux/actions/userAction';
+import { useNavigate } from 'react-router-dom';
+import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
+import { fetchUserDetails } from '../../redux/actions/userAction';
+import WalletModal from '../../components/modals/WalletModal';
 
 const Profile = () => {
   const navigate = useNavigate();

@@ -3,8 +3,8 @@ import { experimentalStyled, Box, Container } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyHome } from '../../redux/actions/main/homeAction';
-import AppBarBottom from '../../components/main/AppBarBottom';
 import { fetchUserDetails } from '../../redux/actions/userAction';
+import AppBarBottom from '../../components/AppBarBottom';
 
 const MainWrapper = experimentalStyled('div')(() => ({
   overflow: 'hidden',
@@ -13,7 +13,6 @@ const MainWrapper = experimentalStyled('div')(() => ({
 const PageWrapper = experimentalStyled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
-  // overflow: 'hidden',
 
   backgroundColor: theme.palette.background.default,
 }));
@@ -21,9 +20,6 @@ const PageWrapper = experimentalStyled('div')(({ theme }) => ({
 const MainLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const myHome = useSelector((state) => state.myHome);
-  const { success: successHome } = myHome;
 
   const userDetails = useSelector((state) => state.userDetails);
   const { success: successUserDetails, error: errorUserDetails } = userDetails;

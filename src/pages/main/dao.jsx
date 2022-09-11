@@ -5,11 +5,11 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import DaoDocs from '../DAO/DaoDocs';
-import DaoPortal from '../DAO/DaoPortal';
-import DaoMint from '../DAO/DaoMint';
-import DaoMileStone from '../DAO/DaoMileStone';
+import React, { useEffect, useState } from 'react';
+import DaoDocs from '../../components/DAO/DaoDocs';
+import DaoPortal from '../../components/DAO/DaoPortal';
+import DaoMint from '../../components/DAO/DaoMint';
+import DaoMileStone from '../../components/DAO/DaoMileStone';
 import { setActiveMode } from '../../redux/actions/themeAction';
 
 function TabPanel(props) {

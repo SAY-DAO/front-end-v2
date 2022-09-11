@@ -2,7 +2,7 @@ import { CircularProgress, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyHome } from '../../redux/actions/main/homeAction';
-import DaoAccardion from './DaoAccordion';
+import DaoAccardion from './portal/DaoAccordion';
 
 export default function DaoPortal() {
   const dispatch = useDispatch();

@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';

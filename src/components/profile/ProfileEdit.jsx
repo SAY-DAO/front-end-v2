@@ -19,21 +19,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import PhoneInput from 'react-phone-input-2';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import Message from '../../Message';
+import Message from '../Message';
 import {
   CHECK_CONTACT_RESET,
   CHECK_USERNAME_RESET,
   USER_RESET_PASSWORD_RESET,
   USER_VERIFY_RESET,
-} from '../../../redux/constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 import {
   checkContactBeforeVerify,
   checkUserNameBeforeVerify,
   userEditProfile,
-} from '../../../redux/actions/userAction';
-import validateEmail from '../../../inputsValidation/validateEmail';
-import validatePhone from '../../../inputsValidation/validatePhone';
-import validateUsername from '../../../inputsValidation/validateUsername';
+} from '../../redux/actions/userAction';
+import validateEmail from '../../inputsValidation/validateEmail';
+import validatePhone from '../../inputsValidation/validatePhone';
+import validateUsername from '../../inputsValidation/validateUsername';
 
 const ProfileEdit = () => {
   const { t } = useTranslation();

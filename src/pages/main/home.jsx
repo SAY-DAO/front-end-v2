@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { Grid, Divider, Typography, Avatar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +12,7 @@ import {
   CHILD_ONE_NEED_RESET,
   CHILD_RANDOM_SEARCH_RESET,
 } from '../../redux/constants/childConstants';
-import ChildCard from '../child/ChildCard';
+import ChildCard from '../../components/child/ChildCard';
 import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,

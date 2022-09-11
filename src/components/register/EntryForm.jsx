@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';

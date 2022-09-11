@@ -163,6 +163,11 @@ export default function InfoTabs() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab
+              sx={{
+                '&.Mui-selected': {
+                  color: '#fbb563',
+                },
+              }}
               label={
                 <Typography variant="body1">
                   {t('search-result.tab1')}
@@ -171,6 +176,11 @@ export default function InfoTabs() {
               {...a11yProps(0)}
             />
             <Tab
+              sx={{
+                '&.Mui-selected': {
+                  color: '#fbb563',
+                },
+              }}
               label={
                 <Typography variant="body1">
                   {t('search-result.tab2')}

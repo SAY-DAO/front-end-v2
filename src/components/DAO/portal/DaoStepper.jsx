@@ -1,17 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
-import { pink } from '@mui/material/colors';
 import Radio from '@mui/material/Radio';
 
 export default function DaoStepper() {
-  const [selectedValue, setSelectedValue] = React.useState('a');
+  const [selectedValue, setSelectedValue] = React.useState('pending');
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
+    console.log(event.target.value);
   };
 
   const controlProps = (item) => ({
-    checked: selectedValue === item,
+    // checked: selectedValue === item,
     onChange: handleChange,
     value: item,
     name: 'color-radio-button-demo',
@@ -21,37 +21,13 @@ export default function DaoStepper() {
   return (
     <div>
       <Radio
-        {...controlProps('a')}
-        size="small"
-        sx={{
-          m: 0,
-          p: 0,
-          '& .MuiSvgIcon-root': {
-            fontSize: 10,
-          },
-          '&.Mui-checked': {
-            color: '#26DFD0 ',
-          },
-        }}
-      />
-      <Radio
-        {...controlProps('b')}
-        color="secondary"
-        sx={{
-          m: 0,
-          p: 0,
-          '& .MuiSvgIcon-root': {
-            fontSize: 10,
-            borderRadius: 0,
-          },
-          '&.Mui-checked': {
-            color: '#F62AA0',
-          },
-        }}
-      />
-      <Radio
-        {...controlProps('c')}
-        color="success"
+        {...controlProps('pending')}
+        checked={
+          selectedValue === 'pending' ||
+          selectedValue === 'socialWorker' ||
+          selectedValue === 'family' ||
+          selectedValue === 'friend'
+        }
         sx={{
           m: 0,
           p: 0,
@@ -64,8 +40,42 @@ export default function DaoStepper() {
         }}
       />
       <Radio
-        {...controlProps('d')}
-        color="default"
+        {...controlProps('socialWorker')}
+        checked={
+          selectedValue === 'socialWorker' ||
+          selectedValue === 'family' ||
+          selectedValue === 'friend'
+        }
+        sx={{
+          m: 0,
+          p: 0,
+          '& .MuiSvgIcon-root': {
+            fontSize: 10,
+          },
+          '&.Mui-checked': {
+            color: '#26DFD0 ',
+          },
+        }}
+      />
+      <Radio
+        {...controlProps('family')}
+        checked={selectedValue === 'family' || selectedValue === 'friend'}
+        sx={{
+          m: 0,
+          p: 0,
+          '& .MuiSvgIcon-root': {
+            fontSize: 10,
+            borderRadius: 0,
+          },
+          '&.Mui-checked': {
+            color: '#F62AA0',
+          },
+        }}
+      />
+
+      <Radio
+        {...controlProps('friend')}
+        checked={selectedValue === 'friend'}
         sx={{
           m: 0,
           p: 0,

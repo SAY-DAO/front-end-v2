@@ -10,16 +10,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Chip,
-  Grid,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { LoadingButton } from '@mui/lab';
-import PageContainer from '../container/PageContainer';
+import PageContainer from '../../container/PageContainer';
 import DaoStepper from './DaoStepper';
 
-const CollapsibleTable = ({ updated }) => {
+const DaoDoneTable = ({ updated }) => {
   const { t } = useTranslation();
 
   // urgent ==> index 0
@@ -114,7 +112,9 @@ const CollapsibleTable = ({ updated }) => {
                     <TableCell
                       sx={{ textAlign: 'center', width: '100%', p: 0 }}
                     >
-                      <Typography variant="body2">${need.need_id}k</Typography>
+                      <Typography variant="body2">
+                        {need.signature ? need.signature.length + 1 : 0}
+                      </Typography>
                       <DaoStepper />
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>
@@ -163,8 +163,8 @@ const CollapsibleTable = ({ updated }) => {
     </PageContainer>
   );
 };
-export default CollapsibleTable;
+export default DaoDoneTable;
 
-CollapsibleTable.propTypes = {
+DaoDoneTable.propTypes = {
   updated: PropTypes.object.isRequired,
 };

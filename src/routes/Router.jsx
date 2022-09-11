@@ -7,35 +7,31 @@ import BlankLayout from '../layouts/plain-layout/PlainLayout';
 
 const Error = Loadable(lazy(() => import('../components/Error')));
 
-const Splash = Loadable(lazy(() => import('../pages/Splash')));
-const Intro = Loadable(lazy(() => import('../pages/Intro')));
+const Splash = Loadable(lazy(() => import('../pages/splash')));
+const Intro = Loadable(lazy(() => import('../pages/intro')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const ForgotPassword = Loadable(
   lazy(() => import('../pages/auth/ForgotPassword'))
 );
-const SearchChild = Loadable(lazy(() => import('../pages/child/SearchChild')));
+const SearchChild = Loadable(lazy(() => import('../pages/child/searchChild')));
 const SearchResult = Loadable(
-  lazy(() => import('../pages/child/SearchResult'))
+  lazy(() => import('../pages/child/searchResult'))
 );
-const NeedPage = Loadable(lazy(() => import('../pages/NeedPage')));
-const MyChildPage = Loadable(lazy(() => import('../pages/child/MyChildPage')));
-const Settings = Loadable(
-  lazy(() => import('../components/main/profile/Settings'))
-);
-const Profile = Loadable(
-  lazy(() => import('../components/main/profile/Profile'))
-);
-const Cart = Loadable(lazy(() => import('../components/main/Cart')));
-const Home = Loadable(lazy(() => import('../components/main/Home')));
+const NeedPage = Loadable(lazy(() => import('../pages/needPage')));
+const MyChildPage = Loadable(lazy(() => import('../pages/child/myChildPage')));
+const Settings = Loadable(lazy(() => import('../components/profile/Settings')));
+const Profile = Loadable(lazy(() => import('../pages/main/profile')));
+const Cart = Loadable(lazy(() => import('../pages/main/cart')));
+const Home = Loadable(lazy(() => import('../pages/main/home')));
 const ProfileEdit = Loadable(
-  lazy(() => import('../components/main/profile/ProfileEdit'))
+  lazy(() => import('../components/profile/ProfileEdit'))
 );
 const ProfileUpload = Loadable(
-  lazy(() => import('../components/main/profile/ProfileUpload'))
+  lazy(() => import('../components/profile/ProfileUpload'))
 );
-const Report = Loadable(lazy(() => import('../pages/Report')));
-const DAO = Loadable(lazy(() => import('../components/main/DAO')));
+const Report = Loadable(lazy(() => import('../pages/report')));
+const DAO = Loadable(lazy(() => import('../pages/main/dao')));
 
 const Router = [
   {

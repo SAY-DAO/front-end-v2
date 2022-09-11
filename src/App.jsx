@@ -27,7 +27,6 @@ function App() {
     stylisPlugins: [rtlPlugin],
   });
   const theTheme = ThemeSettings();
-  const customizer = useSelector((state) => state.CustomizerReducer);
 
   return (
     <CacheProvider value={cacheRtl}>

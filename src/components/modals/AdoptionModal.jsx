@@ -88,7 +88,6 @@ export default function AdoptionModal({
     } else {
       setContent(adoptText);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [childSayName, roles, rolesRelative, selectedRole, open]);
 
   useEffect(() => {

@@ -4,22 +4,23 @@ import {
   Accordion,
   AccordionDetails,
   Grid,
-  Typography,
   CircularProgress,
   Divider,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
 import DaoChildCard from './DaoChildCard';
-import { updateNestServer } from '../../redux/actions/main/daoAction';
-import CollapsibleTable from './CollapsibleTable';
+import { updateNestServer } from '../../../redux/actions/main/daoAction';
+import DaoDoneTable from './DaoDoneTable';
 
+// let child;
 export default function DaoAccardion() {
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
+  const [childId, setChildId] = useState();
 
   const myHome = useSelector((state) => state.myHome);
   const { user, children } = myHome;
@@ -30,9 +31,15 @@ export default function DaoAccardion() {
   const themeOptions = useSelector((state) => state.themeOptions);
   const { activeMode } = themeOptions;
 
-  const handleChange = (childId) => (event, isExpanded) => {
-    setExpanded(isExpanded ? childId : false);
-    dispatch(updateNestServer(childId, user.id));
+  useEffect(() => {
+    if (childId) {
+      dispatch(updateNestServer(childId, user.id));
+    }
+  }, [childId]);
+
+  const handleChange = (id) => (event, isExpanded) => {
+    setExpanded(isExpanded ? id : false);
+    setChildId(id);
   };
 
   return (
@@ -42,7 +49,7 @@ export default function DaoAccardion() {
           width: '100%',
           height: 200,
           m: 1,
-          backgroundColor: 'primary.light',
+          backgroundColor: '#282C34',
           '&:hover': {
             backgroundColor: 'primary.light',
             opacity: [0.9, 0.8, 0.7],
@@ -81,7 +88,7 @@ export default function DaoAccardion() {
               }}
             >
               {updated ? (
-                <CollapsibleTable updated={updated} />
+                <DaoDoneTable updated={updated} />
               ) : (
                 <CircularProgress />
               )}

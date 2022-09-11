@@ -5,11 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import i18next from 'i18next';
-import LangButton from '../../LangButton';
-import Back from '../../Back';
-import Message from '../../Message';
-import { logout } from '../../../redux/actions/userAction';
+import { logout } from '../../redux/actions/userAction';
+import Back from '../Back';
+import LangButton from '../LangButton';
+import Message from '../Message';
 
 const useStyles = makeStyles(() => ({
   icon: {

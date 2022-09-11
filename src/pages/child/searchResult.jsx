@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@mui/styles';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router-dom';
 import Message from '../../components/Message';

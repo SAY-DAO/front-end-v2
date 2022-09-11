@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { fetchRandomChild } from '../../redux/actions/childAction';
 import Message from '../../components/Message';
-import AppBarBottom from '../../components/main/AppBarBottom';
 
 const useStyles = makeStyles({
   root: {
