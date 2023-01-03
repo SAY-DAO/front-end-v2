@@ -28,16 +28,20 @@ export const makePayment =
       const formData = new FormData();
       if (method === 'payAll' || method === 'paySome') {
         formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
-        formData.append('need_id', needId);
+        formData.append('needId', needId);
         formData.append('amount', amount);
         formData.append('donate', donation);
         formData.append('useCredit', isCredit);
       }
 
-      const { data } = await publicApi.post(`/payment`, formData, config);
+      const { data, status } = await publicApi.post(
+        `/payment`,
+        formData,
+        config
+      );
       dispatch({
         type: SHAPARAK_PAYMENT_SUCCESS,
-        payload: data,
+        payload: { ...data, status },
       });
     } catch (e) {
       // check for generic and custom message to return using ternary statement
