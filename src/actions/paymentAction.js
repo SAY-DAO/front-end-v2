@@ -70,14 +70,14 @@ export const makeCartPayment =
       formData.append('donate', donation);
       formData.append('useCredit', isCredit);
 
-      const { data } = await publicApi.post(
+      const { data, status } = await publicApi.post(
         `/mycart/payment`,
         formData,
         config
       );
       dispatch({
         type: SHAPARAK_CART_PAYMENT_SUCCESS,
-        payload: data,
+        payload: { ...data, status },
       });
     } catch (e) {
       // check for generic and custom message to return using ternary statement
