@@ -23,7 +23,7 @@ import { fetchMyChildById } from '../../actions/childAction';
 import { fetchMyHome } from '../../actions/main/homeAction';
 import Back from '../../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../../constants/childConstants';
-import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal ';
+import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal';
 import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({

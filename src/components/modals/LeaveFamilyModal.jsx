@@ -19,9 +19,27 @@ const style = {
   p: 4,
 };
 
+const roles = [
+  'family.roles.father',
+  'family.roles.mother',
+  'family.roles.uncle',
+  'family.roles.aunt',
+  'family.roles.daei',
+  'family.roles.ame',
+];
+const rolesRelative = [
+  'family.rolesRelative.e',
+  'family.rolesRelative.e',
+  'family.rolesRelative.ye',
+  'family.rolesRelative.ye',
+  'family.rolesRelative.e',
+  'family.rolesRelative.ye',
+];
+
 export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const role = theChild.userRole;
 
   const [open, setOpen] = useState(false);
 
@@ -68,6 +86,8 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                 >
                   {t('childPage.leaveModalDesc', {
                     childSayName: theChild.sayName,
+                    rolesRelative: t(rolesRelative[role]),
+                    roles: t(roles[role]),
                   })}
                 </Typography>
               </Grid>
