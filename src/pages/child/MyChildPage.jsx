@@ -24,6 +24,7 @@ import { fetchMyHome } from '../../actions/main/homeAction';
 import Back from '../../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../../constants/childConstants';
 import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal';
+import GrowFamilyModal from '../../components/modals/GrowFamilyModal';
 import { fetchUserDetails } from '../../actions/userAction';
 
 const useStyles = makeStyles({
@@ -73,7 +74,8 @@ const MyChildPage = () => {
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [leaveOpen, setLeaveOpen] = useState(false);
+  const [growOpen, setGrowOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null); // Menu
   const open = Boolean(anchorEl); // Menu
 
@@ -182,7 +184,11 @@ const MyChildPage = () => {
   };
 
   const handleLeave = () => {
-    setMenuOpen(true);
+    setLeaveOpen(true);
+  };
+
+  const handleGrow = () => {
+    setGrowOpen(true);
   };
 
   const classes = useStyles();
@@ -221,8 +227,7 @@ const MyChildPage = () => {
                 }}
               >
                 <MenuItem
-                  disabled
-                  onClick={handleClose}
+                  onClick={handleGrow}
                   sx={{ minHeight: '15px', margin: 1 }}
                 >
                   <Typography variant="body2" sx={{ color: '#fe8896' }}>
@@ -289,11 +294,16 @@ const MyChildPage = () => {
       </Grid>
       {theChild && (
         <LeaveFamilyModal
-          setMenuOpen={setMenuOpen}
-          menuOpen={menuOpen}
+          setMenuOpen={setLeaveOpen}
+          menuOpen={leaveOpen}
           theChild={theChild}
-          // role={userRole}
-          // rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+        />
+      )}
+      {theChild && (
+        <GrowFamilyModal
+          setMenuOpen={setGrowOpen}
+          menuOpen={growOpen}
+          theChild={theChild}
         />
       )}
     </>

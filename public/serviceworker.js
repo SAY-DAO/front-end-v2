@@ -23,6 +23,7 @@ const urlsToCache = [
   '/images/icons/un.svg',
   '/images/icons/upload.svg',
   '/images/icons/wallet.svg',
+  '/images/icons/family.svg',
   '/images/icons/doneNeeds/child.svg',
   '/images/icons/doneNeeds/hand.svg',
   '/images/icons/doneNeeds/ngo.svg',
