@@ -242,6 +242,16 @@ const theTheme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          '&[disabled]': {
+            color: '#ccc',
+            pointerEvents: 'none',
+          },
+        },
+      },
+    },
   },
 });
 

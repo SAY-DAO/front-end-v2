@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { leaveFamily } from '../../actions/familyAction';
+import Share from '../ShareButton';
 
 const style = {
   position: 'absolute',
@@ -54,6 +55,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
   const [selectableRoles, setSelectableRoles] = useState([]);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -169,16 +171,28 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                 spacing={4}
               >
                 <Grid item>
-                  <Link
-                    href="#"
-                    sx={{
-                      fontSize: '0.8rem',
-                      fontWeight: 'bolder',
+                  <Share
+                    config={{
+                      params: {
+                        title: '',
+                        text: '',
+                        url: '',
+                      },
                     }}
-                    onClick={handleLeave}
-                  >
-                    {t('button.inviteRoleSelect.yes')}
-                  </Link>
+                    text={t('button.inviteRoleSelect.yes')}
+                    disabled={submitDisabled}
+                    copyFunc={() => {}}
+                  />
+                  {/* <Link
+                      href="#"
+                      sx={{
+                        fontSize: '0.8rem',
+                        fontWeight: 'bolder',
+                      }}
+                      onClick={handleClose}
+                    >
+                      {t('button.inviteRoleSelect.yes')}
+                    </Link> */}
                 </Grid>
                 <Grid item>
                   <Link
