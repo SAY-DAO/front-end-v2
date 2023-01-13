@@ -53,9 +53,12 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState('');
-  const [selectableRoles, setSelectableRoles] = useState([]);
+  const [inviteRole, setInviteRole] = useState('');
+  const [selectableRoles, setSelectableRoles] = useState({});
+  const [rolesOption, setRolesOption] = useState([]);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [shareText, setShareText] = useState('');
+  const [shareUrl, setShareUrl] = useState('');
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -83,22 +86,47 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
     for (let i = 0; i < onceRoles.length; i += 1) {
       delete selectableRolesObj[onceRoles[i]];
     }
-    setSelectableRoles(Object.assign([], Object.values(selectableRolesObj)));
-  };
-  const handleSelectedRole = (event) => {
-    setSelectedRole(event.target.value);
+    setSelectableRoles(selectableRolesObj);
   };
 
-  useEffect(() => {
-    handleSelectableRoles();
-  }, []);
+  const handleInviteRole = (event) => {
+    setInviteRole(event.target.value);
+  };
 
   useEffect(() => {
     if (menuOpen) {
       handleOpen();
       setMenuOpen(false);
+      handleSelectableRoles();
     }
   }, [menuOpen, setMenuOpen]);
+
+  // Generate menu items in select invite role
+  useEffect(() => {
+    const options = [];
+    Object.keys(selectableRoles).forEach((key, index) => {
+      options.push(
+        <MenuItem key={index} value={key}>
+          {t(selectableRoles[key])}
+        </MenuItem>
+      );
+    });
+    setRolesOption(options);
+  }, [selectableRoles]);
+
+  // Generate invite text
+  useEffect(() => {
+    setShareText(
+      t('childPage.growFamilyModal.share.text', {
+        roles: t(roles[theChild.userRole]),
+        rolesRelative: t(rolesRelative[theChild.userRole]),
+        childSayName: theChild.sayName,
+        inviteRoles: t(roles[inviteRole]),
+        inviteRolesRelative: t(rolesRelative[inviteRole]),
+      })
+    );
+  }, [inviteRole]);
+  console.log(shareText);
 
   return (
     <div>
@@ -149,15 +177,11 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                   <Select
                     labelId="role-label"
                     id="role"
-                    value={selectedRole}
+                    value={inviteRole}
                     label="Role"
-                    onChange={handleSelectedRole}
+                    onChange={handleInviteRole}
                   >
-                    {selectableRoles.map((role, index) => (
-                      <MenuItem key={index} value={index}>
-                        {t(role)}
-                      </MenuItem>
-                    ))}
+                    {rolesOption}
                   </Select>
                 </FormControl>
               </Grid>
@@ -174,10 +198,14 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                   <Share
                     config={{
                       params: {
-                        title: '',
-                        text: '',
-                        url: '',
+                        title: t('childPage.growFamilyModal.share.title'),
+                        text: shareText,
+                        url: shareUrl,
                       },
+                      /* tslint:disable-next-line:no-console */
+                      onShareSuccess: () => handleClose,
+                      /* tslint:disable-next-line:no-console */
+                      onShareError: (error) => {},
                     }}
                     text={t('button.inviteRoleSelect.yes')}
                     disabled={submitDisabled}
