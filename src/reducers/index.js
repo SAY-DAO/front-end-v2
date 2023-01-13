@@ -31,6 +31,7 @@ import {
 import {
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
+  invitationReducer,
 } from './familyReducer';
 
 export default combineReducers({
@@ -49,6 +50,7 @@ export default combineReducers({
   childByToken: childByTokenReducer,
   joinResult: joinVirtualFamilyReducer,
   leftFamily: LeaveVirtualFamilyReducer,
+  invite: invitationReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
   childNeeds: childNeedsReducer,

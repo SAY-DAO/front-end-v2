@@ -24,6 +24,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
+    "copy-to-clipboard": "^3.3.3",
     "dotenv": "^10.0.0",
     "history": "^5.0.0",
     "http-proxy-middleware": "^2.0.1",

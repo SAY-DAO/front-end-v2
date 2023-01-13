@@ -1,8 +1,8 @@
 import { publicApi, publicApi3 } from '../apis/sayBase';
 import {
-  //   INVITE_TO_MY_FAMILY_REQUEST,
-  //   INVITE_TO_MY_FAMILY_SUCCESS,
-  //   INVITE_TO_MY_FAMILY_FAIL,
+  INVITE_TO_MY_FAMILY_REQUEST,
+  INVITE_TO_MY_FAMILY_SUCCESS,
+  INVITE_TO_MY_FAMILY_FAIL,
   JOIN_VIRTUAL_FAMILY_REQUEST,
   JOIN_VIRTUAL_FAMILY_SUCCESS,
   JOIN_VIRTUAL_FAMILY_FAIL,
@@ -78,31 +78,37 @@ export const leaveFamily = (familyId) => async (dispatch, getState) => {
   }
 };
 
-// export const inviteToMyFamily =
-//   (familyId, selectedRole) => async (dispatch) => {
-//     try {
-//       dispatch({ type: INVITE_TO_MY_FAMILY_REQUEST });
-//       const config = {
-//         headers: {
-//           'Content-type': 'application/json',
-//         },
-//       };
+export const inviteToMyFamily =
+  (familyId, selectedRole) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: INVITE_TO_MY_FAMILY_REQUEST });
 
-//       const formData = new FormData();
-//       formData.append('family_id', familyId);
-//       formData.append('role', selectedRole);
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-//       const { data } = await publicApi.post(`/invitations`, formData, {
-//         config,
-//       });
-//       dispatch({
-//         type: INVITE_TO_MY_FAMILY_SUCCESS,
-//         payload: data,
-//       });
-//     } catch (e) {
-//       dispatch({
-//         type: INVITE_TO_MY_FAMILY_FAIL,
-//         payload: e.response && e.response.status ? e.response : e.message,
-//       });
-//     }
-//   };
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: userInfo && userInfo.accessToken,
+        },
+      };
+
+      const formData = new FormData();
+      formData.append('familyId', familyId);
+      formData.append('role', selectedRole);
+
+      const { data } = await publicApi.post(`/invitations/`, formData, {
+        config,
+      });
+      dispatch({
+        type: INVITE_TO_MY_FAMILY_SUCCESS,
+        payload: data,
+      });
+    } catch (e) {
+      dispatch({
+        type: INVITE_TO_MY_FAMILY_FAIL,
+        payload: e.response && e.response.status ? e.response : e.message,
+      });
+    }
+  };

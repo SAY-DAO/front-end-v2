@@ -12,10 +12,11 @@ import {
   Select,
 } from '@mui/material';
 import Fade from '@mui/material/Fade';
+import copy from 'copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { leaveFamily } from '../../actions/familyAction';
+import { inviteToMyFamily } from '../../actions/familyAction';
 import Share from '../ShareButton';
 
 const style = {
@@ -60,12 +61,19 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const [shareText, setShareText] = useState('');
   const [shareUrl, setShareUrl] = useState('');
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleLeave = () => {
-    dispatch(leaveFamily(theChild.familyId));
-    handleClose();
+  const invite = useSelector((state) => state.invite);
+  const { theInvite, success, loading, error } = invite;
+
+  const handleOpen = () => {
+    setOpen(true);
+    setSubmitDisabled(true);
   };
+  const handleClose = () => {
+    setOpen(false);
+    setInviteRole('');
+    setShareText('');
+  };
+
   // Remove Father or Mother role from selectable roles option if they are already taken.
   const handleSelectableRoles = () => {
     const onceRoles = [];
@@ -91,6 +99,14 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
 
   const handleInviteRole = (event) => {
     setInviteRole(event.target.value);
+    setSubmitDisabled(true);
+  };
+
+  // Copy link and text to clipboard in case sharing doesn't support
+  const handleCopy = () => {
+    copy(shareText + shareUrl);
+    setSubmitDisabled(true);
+    console.log('text copied!');
   };
 
   useEffect(() => {
@@ -116,17 +132,26 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
 
   // Generate invite text
   useEffect(() => {
-    setShareText(
-      t('childPage.growFamilyModal.share.text', {
-        roles: t(roles[theChild.userRole]),
-        rolesRelative: t(rolesRelative[theChild.userRole]),
-        childSayName: theChild.sayName,
-        inviteRoles: t(roles[inviteRole]),
-        inviteRolesRelative: t(rolesRelative[inviteRole]),
-      })
-    );
+    if (inviteRole) {
+      setShareText(
+        t('childPage.growFamilyModal.share.text', {
+          roles: t(roles[theChild.userRole]),
+          rolesRelative: t(rolesRelative[theChild.userRole]),
+          childSayName: theChild.sayName,
+          inviteRoles: t(roles[inviteRole]),
+          inviteRolesRelative: t(rolesRelative[inviteRole]),
+        })
+      );
+      dispatch(inviteToMyFamily(theChild.familyId, inviteRole));
+    }
   }, [inviteRole]);
-  console.log(shareText);
+
+  useEffect(() => {
+    if (success) {
+      setShareUrl(theInvite.link);
+      setSubmitDisabled(false);
+    }
+  }, [theInvite, success]);
 
   return (
     <div>
@@ -209,18 +234,8 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                     }}
                     text={t('button.inviteRoleSelect.yes')}
                     disabled={submitDisabled}
-                    copyFunc={() => {}}
+                    copyFunc={handleCopy}
                   />
-                  {/* <Link
-                      href="#"
-                      sx={{
-                        fontSize: '0.8rem',
-                        fontWeight: 'bolder',
-                      }}
-                      onClick={handleClose}
-                    >
-                      {t('button.inviteRoleSelect.yes')}
-                    </Link> */}
                 </Grid>
                 <Grid item>
                   <Link
