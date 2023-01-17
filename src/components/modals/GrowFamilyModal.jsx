@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { inviteToMyFamily } from '../../actions/familyAction';
 import Share from '../ShareButton';
+import CopyModal from './CopyModal';
 
 const style = {
   position: 'absolute',
@@ -60,6 +61,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [shareText, setShareText] = useState('');
   const [shareUrl, setShareUrl] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
 
   const invite = useSelector((state) => state.invite);
   const { theInvite, success, loading, error } = invite;
@@ -106,6 +108,8 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const handleCopy = () => {
     copy(shareText + shareUrl);
     setSubmitDisabled(true);
+    setIsCopied(true);
+    handleClose();
     console.log('text copied!');
   };
 
@@ -254,6 +258,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
           </Box>
         </Fade>
       </Modal>
+      {isCopied && <CopyModal isCopied={isCopied} />}
     </div>
   );
 }

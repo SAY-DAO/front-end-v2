@@ -19,19 +19,18 @@ const style = {
   p: 4,
 };
 
-export default function WalletModal({ modal, setModal }) {
+export default function CopyModal({ isCopied }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setModal(false);
-  };
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
-    if (modal) {
+    if (isCopied) {
       handleOpen();
     }
-  }, [modal]);
+  }, [isCopied]);
 
   return (
     <div>
@@ -54,24 +53,13 @@ export default function WalletModal({ modal, setModal }) {
               justifyContent="center"
               alignItems="center"
             >
-              <Grid
-                item
-                xs={12}
-                sx={{ marginTop: 1, marginBottom: 1, textAlign: 'center' }}
-              >
-                <Typography
-                  id="transition-modal-title"
-                  variant="subtitle1"
-                  sx={{ marginTop: 1, marginBottom: 1 }}
-                >
-                  {t('profile.creditModal.modalTitle')}
-                </Typography>
+              <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
                 <Typography
                   id="transition-modal-title"
                   variant="body2"
                   component="h2"
                 >
-                  {t('profile.creditModal.modalDesc')}
+                  {t('childPage.copyModalDesc')}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -91,7 +79,6 @@ export default function WalletModal({ modal, setModal }) {
   );
 }
 
-WalletModal.propTypes = {
-  modal: PropTypes.bool.isRequired,
-  setModal: PropTypes.func,
+CopyModal.propTypes = {
+  isCopied: PropTypes.bool.isRequired,
 };

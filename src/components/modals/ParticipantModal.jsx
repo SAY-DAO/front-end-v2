@@ -12,7 +12,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 280,
-  bgcolor: 'rgba(255, 255, 255, .7)',
+  bgcolor: 'rgba(255, 255, 255, .9)',
   border: '1px solid transparent',
   borderRadius: '3%',
   boxShadow: 24,
