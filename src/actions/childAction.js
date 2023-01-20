@@ -46,7 +46,7 @@ export const fetchRandomChild = () => async (dispatch) => {
   }
 };
 
-export const fetchChildByTokenToken = (token) => async (dispatch) => {
+export const fetchChildByToken = (token) => async (dispatch) => {
   try {
     dispatch({ type: CHILD_BY_TOKEN_REQUEST });
     const config = {

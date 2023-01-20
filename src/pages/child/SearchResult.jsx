@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
+import queryString from 'query-string';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
@@ -12,7 +13,7 @@ import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import { fetchUserDetails } from '../../actions/userAction';
-import { fetchChildByTokenToken } from '../../actions/childAction';
+import { fetchChildByToken } from '../../actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -65,6 +66,9 @@ const SearchResult = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { search } = useLocation();
+  const qsValues = queryString.parse(search);
+  console.log(qsValues);
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
