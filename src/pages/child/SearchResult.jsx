@@ -68,12 +68,13 @@ const SearchResult = () => {
   const history = useHistory();
   const { search } = useLocation();
   const qsValues = queryString.parse(search);
-  console.log(qsValues);
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
   const [imageHeight, setImageHeight] = useState('375px');
   const [backIsTrue, setBackIsTrue] = useState(false);
+  const [invitationToken, setInvitationToken] = useState(null);
+  const [searchedChild, setSearchedChild] = useState({});
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
@@ -82,11 +83,33 @@ const SearchResult = () => {
     success: successRandomSearch,
   } = childRandomSearch;
 
+  const childByToken = useSelector((state) => state.childByToken);
+  const {
+    child,
+    error: errorChildByToken,
+    success: successChildByToken,
+  } = childByToken;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
   const userDetails = useSelector((state) => state.userDetails);
   const { error: errorUserDetails } = userDetails;
+
+  useEffect(() => {
+    if (qsValues.token) {
+      setInvitationToken(qsValues.token);
+      console.log('there is a token');
+    } else {
+      console.log('there is noo token');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (invitationToken) {
+      dispatch(fetchChildByToken(invitationToken));
+    }
+  }, [invitationToken]);
 
   // login
   useEffect(() => {
@@ -97,11 +120,17 @@ const SearchResult = () => {
   }, [userInfo, successLogin, errorUserDetails]);
 
   useEffect(() => {
-    if (!successRandomSearch) {
+    if (!successRandomSearch && !qsValues.token) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
       history.push('/main/search');
+    } else if (successRandomSearch) {
+      setSearchedChild(theChild);
+      console.log('success random');
+    } else if (successChildByToken) {
+      setSearchedChild(child);
+      console.log('success by token');
     }
-  }, [successRandomSearch]);
+  }, [successRandomSearch, successChildByToken, qsValues]);
 
   // child age
   const getAge = (DOB) => {
@@ -141,7 +170,7 @@ const SearchResult = () => {
         <Back isOrange={false} handleClickOverride={handleBack} />
 
         <Grid item xs={12}>
-          {!successRandomSearch ? (
+          {!successRandomSearch && !successChildByToken ? (
             <CircularProgress />
           ) : (
             <>
@@ -152,21 +181,21 @@ const SearchResult = () => {
 
               <Avatar
                 className={classes.childAvatar}
-                alt={`${theChild.sayName}`}
-                src={theChild.avatarUrl}
+                alt={`${searchedChild.sayName}`}
+                src={searchedChild.avatarUrl}
               />
               <Typography className={classes.childSayName} variant="subtitle1">
-                {theChild.sayName}
+                {searchedChild.sayName}
               </Typography>
               <Typography className={classes.childAge} variant="subtitle2">
-                {getAge(theChild.birthDate) + t('assets.age')}
+                {getAge(searchedChild.birthDate) + t('assets.age')}
               </Typography>
               <Box>
                 <Grid className={classes.bioSummary}>
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
                     <Typography variant="body2">
-                      {readLess && theChild.bioSummary}
-                      {readMore && theChild.bio}
+                      {readLess && searchedChild.bioSummary}
+                      {readMore && searchedChild.bio}
                       <br />
                       <Link href="#" onClick={handleMoreOrLess}>
                         {readMore
@@ -177,12 +206,15 @@ const SearchResult = () => {
                   </Grid>
 
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
-                    {theChild && theChild.voiceUrl && (
-                      <VoiceBar url={theChild.voiceUrl} />
+                    {searchedChild && searchedChild.voiceUrl && (
+                      <VoiceBar url={searchedChild.voiceUrl} />
                     )}
                   </Grid>
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
-                    <InfoTabs />
+                    <InfoTabs
+                      theChild={searchedChild}
+                      isInvite={Boolean(invitationToken)}
+                    />
                   </Grid>
                 </Grid>
               </Box>

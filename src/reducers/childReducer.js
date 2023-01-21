@@ -54,8 +54,7 @@ export const childByTokenReducer = (state = {}, action) => {
       return {
         loading: false,
         success: true,
-        token: action.payload.token,
-        child: action.payload.child,
+        child: action.payload,
       };
     case CHILD_BY_TOKEN_FAIL:
       return { loading: false, error: action.payload };

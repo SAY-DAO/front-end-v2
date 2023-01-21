@@ -1,23 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import { Link, Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import Chip from '@material-ui/core/Chip';
-import Stack from '@material-ui/core/Stack';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../apis/roles';
-import { fetchRandomChild } from '../../actions/childAction';
 import GoneModal from '../modals/GoneModal';
 import AdoptModel from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
+import AvailableRoles from './AvailableRoles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +58,7 @@ function a11yProps(index) {
   };
 }
 
-export default function InfoTabs() {
+export default function InfoTabs({ theChild, isInvite }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -68,8 +66,8 @@ export default function InfoTabs() {
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState(null);
-  const [isFather, setIsFather] = useState(false);
-  const [isMother, setIsMother] = useState(false);
+  const [hasFather, setHasFather] = useState(false);
+  const [hasMother, setHasMother] = useState(false);
   const [father, setFather] = useState('');
   const [mother, setMother] = useState('');
   const [family, setFamily] = useState([]);
@@ -78,9 +76,6 @@ export default function InfoTabs() {
   const [adoption, setAdoption] = useState(false);
   const [alreadyInFamily, setAlreadyInFamily] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
-
-  const childRandomSearch = useSelector((state) => state.childRandomSearch);
-  const { theChild } = childRandomSearch;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -128,11 +123,11 @@ export default function InfoTabs() {
         // father role is taken
         if (member.role === 0) {
           setFather(member.username);
-          setIsFather(true);
+          setHasFather(true);
         }
         // mother role is taken
         if (member.role === 1) {
-          setIsMother(true);
+          setHasMother(true);
           setMother(member.username);
         }
       }
@@ -144,7 +139,7 @@ export default function InfoTabs() {
   };
 
   // selecting role
-  const handleSelectRole = async (selectedValue) => {
+  const handleSelectRole = useCallback(async (selectedValue) => {
     if (isGone) {
       setIsGone(false);
       setIsGone(true);
@@ -155,7 +150,7 @@ export default function InfoTabs() {
       setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
     }
-  };
+  }, []);
 
   return (
     <>
@@ -184,252 +179,15 @@ export default function InfoTabs() {
           <ChildFamily theChild={theChild} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Stack direction="column" spacing={1}>
-            {/* Mother 1 */}
-            {!isMother ? (
-              <Chip
-                variant="outlined"
-                label={
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ minWidth: 220 }}
-                  >
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle1">
-                        {t('family.roles.mother')}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      {!isGone && (
-                        <Link onClick={() => handleSelectRole(1)}>
-                          <Typography
-                            sx={{ padding: 2, fontWeight: 600 }}
-                            variant="body2"
-                            color="primary"
-                          >
-                            {t('search-result.getRole')}
-                          </Typography>
-                        </Link>
-                      )}
-                    </Grid>
-                  </Grid>
-                }
-              />
-            ) : (
-              <Chip
-                variant="outlined"
-                label={
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ minWidth: 220 }}
-                  >
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle1">
-                        {t('family.roles.mother')}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle2">
-                        @{mother}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                }
-              />
-            )}
-            {/* mother's sister 3 */}
-            <Chip
-              variant="outlined"
-              label={
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ minWidth: 220 }}
-                >
-                  <Grid item xs={6}>
-                    <Typography sx={{ padding: 2 }} variant="subtitle1">
-                      {t('family.roles.aunt')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {!isGone && (
-                      <Link onClick={() => handleSelectRole(3)}>
-                        <Typography
-                          sx={{ padding: 2, fontWeight: 600 }}
-                          variant="body2"
-                          color="primary"
-                        >
-                          {t('search-result.getRole')}
-                        </Typography>
-                      </Link>
-                    )}
-                  </Grid>
-                </Grid>
-              }
-            />
-            {/* mother's brother 4 */}
-            <Chip
-              variant="outlined"
-              label={
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ minWidth: 220 }}
-                >
-                  <Grid item xs={6}>
-                    <Typography sx={{ padding: 2 }} variant="subtitle1">
-                      {t('family.roles.daei')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {!isGone && (
-                      <Link onClick={() => handleSelectRole(4)}>
-                        <Typography
-                          sx={{ padding: 2, fontWeight: 600 }}
-                          variant="body2"
-                          color="primary"
-                        >
-                          {t('search-result.getRole')}
-                        </Typography>
-                      </Link>
-                    )}
-                  </Grid>
-                </Grid>
-              }
-            />
-            {/* father */}
-            {!isFather ? (
-              <Chip
-                variant="outlined"
-                label={
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ minWidth: 220 }}
-                  >
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle1">
-                        {t('family.roles.father')}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      {!isGone && (
-                        <Link onClick={() => handleSelectRole(0)}>
-                          <Typography
-                            sx={{ padding: 2, fontWeight: 600 }}
-                            variant="body2"
-                            color="primary"
-                          >
-                            {t('search-result.getRole')}
-                          </Typography>
-                        </Link>
-                      )}
-                    </Grid>
-                  </Grid>
-                }
-              />
-            ) : (
-              <Chip
-                variant="outlined"
-                label={
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    sx={{ minWidth: 220 }}
-                  >
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle1">
-                        {t('family.roles.father')}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography sx={{ padding: 2 }} variant="subtitle2">
-                        @{father}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                }
-              />
-            )}
-            {/* father's sister  5 */}
-            <Chip
-              variant="outlined"
-              label={
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ minWidth: 220 }}
-                >
-                  <Grid item xs={6}>
-                    <Typography sx={{ padding: 2 }} variant="subtitle1">
-                      {t('family.roles.ame')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {!isGone && (
-                      <Link onClick={() => handleSelectRole(5)}>
-                        <Typography
-                          sx={{ padding: 2, fontWeight: 600 }}
-                          variant="body2"
-                          color="primary"
-                        >
-                          {t('search-result.getRole')}
-                        </Typography>
-                      </Link>
-                    )}
-                  </Grid>
-                </Grid>
-              }
-            />
-            {/* father's brother 2 */}
-            <Chip
-              variant="outlined"
-              label={
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ minWidth: 220 }}
-                >
-                  <Grid item xs={6}>
-                    <Typography sx={{ padding: 2 }} variant="subtitle1">
-                      {t('family.roles.uncle')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {!isGone && (
-                      <Link onClick={() => handleSelectRole(2)}>
-                        <Typography
-                          sx={{ padding: 2, fontWeight: 600 }}
-                          variant="body2"
-                          color="primary"
-                        >
-                          {t('search-result.getRole')}
-                        </Typography>
-                      </Link>
-                    )}
-                  </Grid>
-                </Grid>
-              }
-            />
-          </Stack>
+          <AvailableRoles
+            userRole={userRole}
+            hasFather={hasFather}
+            hasMother={hasMother}
+            father={father}
+            mother={mother}
+            isGone={isGone}
+            handleSelectRole={handleSelectRole}
+          />
         </TabPanel>
       </Box>
       {/* Gone warn popup */}
@@ -467,3 +225,8 @@ export default function InfoTabs() {
     </>
   );
 }
+
+InfoTabs.propTypes = {
+  theChild: PropTypes.object.isRequired,
+  isInvite: PropTypes.bool.isRequired,
+};
