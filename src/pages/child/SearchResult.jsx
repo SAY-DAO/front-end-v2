@@ -10,7 +10,7 @@ import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
-import LeaveModel from '../../components/modals/LeaveModal';
+import LeaveModal from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import { fetchUserDetails } from '../../actions/userAction';
 import { fetchChildByToken } from '../../actions/childAction';
@@ -222,7 +222,7 @@ const SearchResult = () => {
           )}
         </Grid>
         {/* Leave warn popup */}
-        <LeaveModel setBackIsTrue={setBackIsTrue} backIsTrue={backIsTrue} />
+        <LeaveModal setBackIsTrue={setBackIsTrue} backIsTrue={backIsTrue} />
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorRandomSearch && (
