@@ -96,12 +96,11 @@ const SearchResult = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { error: errorUserDetails } = userDetails;
 
+  // Set invitation token if the url contains it
   useEffect(() => {
     if (qsValues.token) {
       setInvitationToken(qsValues.token);
-      console.log('there is a token');
-    } else {
-      console.log('there is noo token');
+      localStorage.setItem('invitationToken', JSON.stringify(qsValues.token));
     }
   }, []);
 
