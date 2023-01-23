@@ -120,7 +120,7 @@ const SearchResult = () => {
   }, [userInfo, successLogin, errorUserDetails]);
 
   useEffect(() => {
-    if (!successRandomSearch && !qsValues.token) {
+    if (!successRandomSearch && !qsValues.token && !successChildByToken) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
       history.push('/main/search');
     } else if (successRandomSearch) {
