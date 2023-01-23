@@ -50,15 +50,15 @@ const theTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         subtitle1: {
+          '&.MuiTypography-gutterBottom': {
+            marginBottom: '24px',
+          },
           color: '#636363',
           fontWeight: 500,
           fontSize: '13px',
           lineHeight: '14px',
         },
         subtitle2: {
-          '&.MuiTypography-gutterBottom': {
-            marginBottom: '24px',
-          },
           color: '#636363',
           fontWeight: 300,
           fontSize: '12px',

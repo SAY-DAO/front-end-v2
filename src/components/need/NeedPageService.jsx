@@ -28,13 +28,13 @@ export default function NeedPageService({ oneNeed }) {
               }}
             >
               <Typography
-                variant="subtitle2"
+                variant="subtitle1"
                 gutterBottom
                 sx={{
                   whiteSpace: 'nowrap',
                   width: '80px',
                   textOverflow: 'ellipsis',
-                  fontSize: '10px',
+                  fontSize: '12px',
                   lineHeight: '16px',
                 }}
               >
@@ -44,7 +44,7 @@ export default function NeedPageService({ oneNeed }) {
                 })}
               </Typography>
               <Typography
-                variant="subtitle1"
+                variant="subtitle2"
                 sx={{
                   whiteSpace: 'nowrap',
                   width: '80px',
