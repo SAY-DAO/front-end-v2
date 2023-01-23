@@ -56,6 +56,9 @@ const theTheme = createTheme({
           lineHeight: '14px',
         },
         subtitle2: {
+          '&.MuiTypography-gutterBottom': {
+            marginBottom: '24px',
+          },
           color: '#636363',
           fontWeight: 300,
           fontSize: '12px',

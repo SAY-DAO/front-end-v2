@@ -26,6 +26,7 @@ import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import NeedPageProduct from './NeedPageProduct';
+import NeedPageService from './NeedPageService';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
 import { addToCart } from '../../actions/main/cartAction';
@@ -442,7 +443,11 @@ export default function NeedAvailable({ childId }) {
                   </Grid>
                 </Grid>
                 <Grid item xs={12} md={8}>
-                  <NeedPageProduct oneNeed={oneNeed} />
+                  {oneNeed.type === 1 ? (
+                    <NeedPageProduct oneNeed={oneNeed} />
+                  ) : (
+                    <NeedPageService oneNeed={oneNeed} />
+                  )}
                 </Grid>
                 <Grid
                   item
