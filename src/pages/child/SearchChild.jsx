@@ -46,6 +46,10 @@ const SearchChild = () => {
     error: errorUserDetails,
   } = userDetails;
 
+  useEffect(() => {
+    localStorage.removeItem('randomChildToken');
+  }, []);
+
   // login
   useEffect(() => {
     if (errorUserDetails) {
