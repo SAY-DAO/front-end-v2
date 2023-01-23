@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import roles from '../../apis/roles';
 import GoneModal from '../modals/GoneModal';
-import AdoptModel from '../modals/AdoptionModal';
+import AdoptModal from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
@@ -118,6 +118,7 @@ export default function InfoTabs({ theChild, isInvite }) {
           }
         } else if (userInfo.user.id === member.member_id) {
           setAlreadyInFamily(true); // route to child page
+          history.push(`/child/${theChild.id}`);
         }
         currentMember.push(member);
         // father role is taken
@@ -211,7 +212,7 @@ export default function InfoTabs({ theChild, isInvite }) {
       )}
       {/* Adoption popup */}
       {selectedRole && (
-        <AdoptModel
+        <AdoptModal
           adoption={adoption}
           setAdoption={setAdoption}
           selectedRole={selectedRole}

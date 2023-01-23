@@ -46,12 +46,17 @@ export const fetchRandomChild = () => async (dispatch) => {
   }
 };
 
-export const fetchChildByToken = (token) => async (dispatch) => {
+export const fetchChildByToken = (token) => async (dispatch, getState) => {
   try {
     dispatch({ type: CHILD_BY_TOKEN_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
     const config = {
       headers: {
         'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
 
