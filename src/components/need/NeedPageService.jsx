@@ -25,6 +25,8 @@ export default function NeedPageService({ oneNeed }) {
                 paddingTop: '10px !important',
                 paddingLeft: 0,
                 paddingRight: 0,
+                width: '100%',
+                height: 'auto',
               }}
             >
               <Typography
@@ -32,7 +34,7 @@ export default function NeedPageService({ oneNeed }) {
                 gutterBottom
                 sx={{
                   whiteSpace: 'nowrap',
-                  width: '80px',
+                  overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   fontSize: '12px',
                   lineHeight: '16px',
@@ -46,8 +48,8 @@ export default function NeedPageService({ oneNeed }) {
               <Typography
                 variant="subtitle2"
                 sx={{
-                  whiteSpace: 'nowrap',
-                  width: '80px',
+                  whiteSpace: 'wrap',
+                  overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
               >
