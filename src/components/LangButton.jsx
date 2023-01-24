@@ -41,10 +41,12 @@ const LangButton = () => {
     switch (await currentLang) {
       case 'en':
         setLang('fa');
+        localStorage.setItem('i18nextLng', 'fa');
         attrs.dir.value = 'rtl';
         break;
       case 'fa':
         setLang('en');
+        localStorage.setItem('i18nextLng', 'en');
         attrs.dir.value = 'ltr';
         break;
       default:
