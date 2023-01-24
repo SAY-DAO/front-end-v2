@@ -22,6 +22,7 @@ i18n
   .init({
     supportedLngs: ['en', 'fa'],
     fallbackLng: 'fa',
+    lng: 'fa',
     // debug: true,
     detection: {
       order: [
