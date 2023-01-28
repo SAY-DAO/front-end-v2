@@ -62,6 +62,7 @@ export default function AdoptionModal({
   useEffect(() => {
     if (successJoin) {
       dispatch(fetchMyHome());
+      localStorage.removeItem('invitationToken');
     }
     if (successJoin && successHome) {
       history.push('/main/home');
@@ -101,7 +102,7 @@ export default function AdoptionModal({
   }, [selectedRole, adoption]);
 
   const handleJoin = () => {
-    if (userRole === null && userInfo && selectedRole) {
+    if (userInfo && selectedRole) {
       dispatch(joinVirtualFamily(selectedRole, familyId));
     } else if (!userInfo && !successLogin) {
       history.push('/login');

@@ -4,7 +4,7 @@ import { Stack, Chip, Grid, Typography, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export default function AvailableRoles({
-  userRole,
+  inviteeRole,
   mother,
   father,
   isGone,
@@ -14,7 +14,7 @@ export default function AvailableRoles({
 
   // Mother 1
   const motherChip = () => {
-    if ((userRole === 1 || userRole === null) && !mother)
+    if ((inviteeRole === 1 || inviteeRole === null) && !mother)
       return (
         <Chip
           variant="outlined"
@@ -78,7 +78,7 @@ export default function AvailableRoles({
 
   // Father 0
   const fatherChip = () => {
-    if ((userRole === 0 || userRole === null) && !father)
+    if ((inviteeRole === 0 || inviteeRole === null) && !father)
       return (
         <Chip
           variant="outlined"
@@ -146,7 +146,7 @@ export default function AvailableRoles({
       {motherChip()}
 
       {/* mother's sister 3 */}
-      {userRole === 3 || userRole === null ? (
+      {inviteeRole === 3 || inviteeRole === null ? (
         <Chip
           variant="outlined"
           label={
@@ -183,7 +183,7 @@ export default function AvailableRoles({
       )}
 
       {/* mother's brother 4 */}
-      {userRole === 4 || userRole === null ? (
+      {inviteeRole === 4 || inviteeRole === null ? (
         <Chip
           variant="outlined"
           label={
@@ -223,7 +223,7 @@ export default function AvailableRoles({
       {fatherChip()}
 
       {/* father's sister  5 */}
-      {userRole === 5 || userRole === null ? (
+      {inviteeRole === 5 || inviteeRole === null ? (
         <Chip
           variant="outlined"
           label={
@@ -260,7 +260,7 @@ export default function AvailableRoles({
       )}
 
       {/* father's brother 2 */}
-      {userRole === 2 || userRole === null ? (
+      {inviteeRole === 2 || inviteeRole === null ? (
         <Chip
           variant="outlined"
           label={
@@ -300,7 +300,7 @@ export default function AvailableRoles({
 }
 
 AvailableRoles.propTypes = {
-  userRole: PropTypes.number,
+  inviteeRole: PropTypes.number,
   isGone: PropTypes.bool,
   father: PropTypes.string,
   mother: PropTypes.string,
