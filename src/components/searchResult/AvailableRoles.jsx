@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 export default function AvailableRoles({
   userRole,
-  hasFather,
-  hasMother,
   mother,
   father,
   isGone,
@@ -16,7 +14,7 @@ export default function AvailableRoles({
 
   // Mother 1
   const motherChip = () => {
-    if ((userRole === 1 || userRole === null) && !hasMother)
+    if ((userRole === 1 || userRole === null) && !mother)
       return (
         <Chip
           variant="outlined"
@@ -50,7 +48,7 @@ export default function AvailableRoles({
           }
         />
       );
-    if (hasMother)
+    if (mother)
       return (
         <Chip
           variant="outlined"
@@ -80,7 +78,7 @@ export default function AvailableRoles({
 
   // Father 0
   const fatherChip = () => {
-    if ((userRole === 0 || userRole === null) && !hasFather)
+    if ((userRole === 0 || userRole === null) && !father)
       return (
         <Chip
           variant="outlined"
@@ -114,7 +112,7 @@ export default function AvailableRoles({
           }
         />
       );
-    if (hasFather)
+    if (father)
       return (
         <Chip
           variant="outlined"
@@ -303,8 +301,6 @@ export default function AvailableRoles({
 
 AvailableRoles.propTypes = {
   userRole: PropTypes.number,
-  hasFather: PropTypes.bool.isRequired,
-  hasMother: PropTypes.bool.isRequired,
   isGone: PropTypes.bool,
   father: PropTypes.string,
   mother: PropTypes.string,

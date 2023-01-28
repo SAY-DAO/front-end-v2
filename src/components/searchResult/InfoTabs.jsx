@@ -66,8 +66,6 @@ export default function InfoTabs({ theChild, isInvite }) {
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState(null);
-  const [hasFather, setHasFather] = useState(false);
-  const [hasMother, setHasMother] = useState(false);
   const [father, setFather] = useState('');
   const [mother, setMother] = useState('');
   const [family, setFamily] = useState([]);
@@ -182,8 +180,6 @@ export default function InfoTabs({ theChild, isInvite }) {
         <TabPanel value={value} index={1}>
           <AvailableRoles
             userRole={userRole}
-            hasFather={hasFather}
-            hasMother={hasMother}
             father={father}
             mother={mother}
             isGone={isGone}
