@@ -72,7 +72,6 @@ export default function InfoTabs({ theChild, isInvite }) {
   const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [adoption, setAdoption] = useState(false);
-  const [alreadyInFamily, setAlreadyInFamily] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -98,6 +97,20 @@ export default function InfoTabs({ theChild, isInvite }) {
     }
   }, [userRole, theChild, history, dispatch]);
 
+  // error code: 746
+  const handlePreviousRole = (memberRole) => {
+    setPreviousRole(memberRole);
+    if (userRole !== null && userRole !== previousRole) {
+      setBackToPrevRole(true);
+    }
+  };
+
+  // error code: 747
+  const handleAlreadyInFamily = () => {
+    localStorage.removeItem('invitationToken');
+    history.push(`/child/${theChild.id}`);
+  };
+
   // check family members
   useEffect(() => {
     const currentMember = [];
@@ -108,25 +121,19 @@ export default function InfoTabs({ theChild, isInvite }) {
           if (member.member_id !== null) {
             // member_id from back end / userInfo.user.id from local storage
             if (member.member_id === userInfo.user.id) {
-              setPreviousRole(member.role);
-              if (userRole !== null && userRole !== previousRole) {
-                setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
-              }
+              handlePreviousRole(member.role);
             }
           }
         } else if (userInfo.user.id === member.member_id) {
-          setAlreadyInFamily(true); // route to child page
-          history.push(`/child/${theChild.id}`);
+          handleAlreadyInFamily();
         }
         currentMember.push(member);
         // father role is taken
         if (member.role === 0) {
           setFather(member.username);
-          setHasFather(true);
         }
         // mother role is taken
         if (member.role === 1) {
-          setHasMother(true);
           setMother(member.username);
         }
       }
