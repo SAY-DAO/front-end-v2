@@ -13,6 +13,7 @@ import roles from '../../apis/roles';
 import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
+import CannotBeMemberModal from '../modals/CannotBeMemberModal';
 import ChildFamily from '../child/ChildFamily';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import AvailableRoles from './AvailableRoles';
@@ -72,8 +73,10 @@ export default function InfoTabs({ theChild, isInvite }) {
   const [family, setFamily] = useState([]);
   const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
+  const [cannotBeMember, setCannotBeMember] = useState(false);
   const [adoption, setAdoption] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
+  const [goToSearch, setGoToSearch] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -102,6 +105,12 @@ export default function InfoTabs({ theChild, isInvite }) {
     setInviteeRole(userRole);
   }, [userRole]);
 
+  useEffect(() => {
+    if (goToSearch) {
+      history.push('/main/search');
+    }
+  }, [goToSearch]);
+
   // error code: 746
   const handlePreviousRole = (memberRole) => {
     setPreviousRole(memberRole);
@@ -117,6 +126,14 @@ export default function InfoTabs({ theChild, isInvite }) {
   const handleAlreadyInFamily = () => {
     localStorage.removeItem('invitationToken');
     history.push(`/child/${theChild.id}`);
+  };
+
+  const handleCannotBeMember = () => {
+    const cannotBeFather = Boolean(previousRole === 0 && father);
+    const cannotBeMother = Boolean(previousRole === 1 && mother);
+    if (cannotBeFather || cannotBeMother) {
+      setCannotBeMember(true);
+    }
   };
 
   // check family members
@@ -145,6 +162,7 @@ export default function InfoTabs({ theChild, isInvite }) {
           setMother(member.username);
         }
       }
+      handleCannotBeMember();
     }
   }, [theChild, family, previousRole, userRole, userInfo]);
 
@@ -152,15 +170,16 @@ export default function InfoTabs({ theChild, isInvite }) {
     setValue(newValue);
   };
 
-  // selecting role
+  // FIX: won't handle prev role warn, previousRole is null inside the function.
   const handleSelectRole = useCallback(async (selectedValue) => {
     if (isGone) {
       setIsGone(false);
       setIsGone(true);
     } else if (previousRole !== null && selectedValue !== previousRole) {
+      console.log('here');
       setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
     } else {
-      console.log(previousRole, selectedValue);
+      console.log('this: ', previousRole, selectedValue);
       setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
     }
@@ -202,6 +221,18 @@ export default function InfoTabs({ theChild, isInvite }) {
           />
         </TabPanel>
       </Box>
+      {/* Role has been taken popup */}
+      {/* Cannot be member anymore popup */}
+      {previousRole && (
+        <CannotBeMemberModal
+          cannotBeMember={cannotBeMember}
+          setCannotBeMember={setCannotBeMember}
+          previousRole={`${t(roles.roles[previousRole])}`}
+          childSayName={theChild.sayName}
+          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          isInvite={isInvite}
+        />
+      )}
       {/* Gone warn popup */}
       {theChild && theChild.sayName && (
         <GoneModal
