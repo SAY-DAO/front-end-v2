@@ -76,7 +76,6 @@ export default function InfoTabs({ theChild, isInvite }) {
   const [cannotBeMember, setCannotBeMember] = useState(false);
   const [adoption, setAdoption] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
-  const [goToSearch, setGoToSearch] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -105,12 +104,6 @@ export default function InfoTabs({ theChild, isInvite }) {
     setInviteeRole(userRole);
   }, [userRole]);
 
-  useEffect(() => {
-    if (goToSearch) {
-      history.push('/main/search');
-    }
-  }, [goToSearch]);
-
   // error code: 746
   const handlePreviousRole = (memberRole) => {
     setPreviousRole(memberRole);
@@ -138,7 +131,6 @@ export default function InfoTabs({ theChild, isInvite }) {
 
   // check family members
   useEffect(() => {
-    const currentMember = [];
     if (family && userInfo) {
       for (let f = 0; f < family.length; f += 1) {
         const member = family[f];
@@ -152,7 +144,6 @@ export default function InfoTabs({ theChild, isInvite }) {
         } else if (userInfo.user.id === member.member_id) {
           handleAlreadyInFamily();
         }
-        currentMember.push(member);
         // father role is taken
         if (member.role === 0) {
           setFather(member.username);
@@ -170,20 +161,18 @@ export default function InfoTabs({ theChild, isInvite }) {
     setValue(newValue);
   };
 
-  // FIX: won't handle prev role warn, previousRole is null inside the function.
-  const handleSelectRole = useCallback(async (selectedValue) => {
+  const handleSelectRole = async (selectedValue) => {
     if (isGone) {
       setIsGone(false);
       setIsGone(true);
     } else if (previousRole !== null && selectedValue !== previousRole) {
-      console.log('here');
       setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
     } else {
       console.log('this: ', previousRole, selectedValue);
       setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
     }
-  }, []);
+  };
 
   return (
     <>
@@ -223,7 +212,7 @@ export default function InfoTabs({ theChild, isInvite }) {
       </Box>
       {/* Role has been taken popup */}
       {/* Cannot be member anymore popup */}
-      {previousRole && (
+      {cannotBeMember && (
         <CannotBeMemberModal
           cannotBeMember={cannotBeMember}
           setCannotBeMember={setCannotBeMember}
