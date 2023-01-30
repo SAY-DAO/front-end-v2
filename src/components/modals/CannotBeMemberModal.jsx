@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import Backdrop from '@mui/material/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
@@ -28,6 +29,7 @@ export default function CannotBeMemberModal({
   isInvite,
 }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const warnTextKey = isInvite
     ? 'error.adoption.cannotBeMemberInvite'
     : 'error.adoption.cannotBeMember';
@@ -38,6 +40,7 @@ export default function CannotBeMemberModal({
   const handleClose = () => {
     setCannotBeMember(false);
     setOpen(false);
+    history.push('/main/search');
   };
 
   useEffect(() => {
