@@ -8,7 +8,10 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
-import { joinVirtualFamily } from '../../actions/familyAction';
+import {
+  joinVirtualFamily,
+  acceptInvitation,
+} from '../../actions/familyAction';
 import { fetchMyHome } from '../../actions/main/homeAction';
 
 const style = {
@@ -29,7 +32,8 @@ export default function AdoptionModal({
   setAdoption,
   selectedRole,
   familyId,
-  userRole,
+  isInvite,
+  invitationToken,
   childSayName,
   roles,
   rolesRelative,
@@ -55,19 +59,28 @@ export default function AdoptionModal({
   const joinResult = useSelector((state) => state.joinResult);
   const { loading: loadingJoin, success: successJoin } = joinResult;
 
+  const acceptInvite = useSelector((state) => state.acceptInvite);
+  const {
+    loading: loadingAcceptInvite,
+    success: successAcceptInvite,
+    error: errorAcceptInvite,
+    loblob,
+  } = acceptInvite;
+
   const myHome = useSelector((state) => state.myHome);
   const { success: successHome } = myHome;
 
   // redirect after joining
   useEffect(() => {
-    if (successJoin) {
+    console.log(errorAcceptInvite);
+    if (successJoin || successAcceptInvite) {
       dispatch(fetchMyHome());
       localStorage.removeItem('invitationToken');
     }
-    if (successJoin && successHome) {
+    if ((successJoin || successAcceptInvite) && successHome) {
       history.push('/main/home');
     }
-  }, [successJoin, successHome, dispatch, history]);
+  }, [successJoin, successAcceptInvite, successHome, dispatch, history]);
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -103,7 +116,11 @@ export default function AdoptionModal({
 
   const handleJoin = () => {
     if (userInfo && selectedRole) {
-      dispatch(joinVirtualFamily(selectedRole, familyId));
+      if (isInvite) {
+        dispatch(acceptInvitation(invitationToken));
+      } else {
+        dispatch(joinVirtualFamily(selectedRole, familyId));
+      }
     } else if (!userInfo && !successLogin) {
       history.push('/login');
     }
@@ -164,7 +181,7 @@ export default function AdoptionModal({
                     }}
                     onClick={handleJoin}
                   >
-                    {!loadingJoin ? (
+                    {!loadingJoin && !loadingAcceptInvite ? (
                       t('button.accept.yes')
                     ) : (
                       <CircularProgress size={30} />
@@ -198,7 +215,8 @@ AdoptionModal.propTypes = {
   setAdoption: PropTypes.func,
   selectedRole: PropTypes.number.isRequired,
   familyId: PropTypes.number.isRequired,
-  userRole: PropTypes.number,
+  isInvite: PropTypes.bool,
+  invitationToken: PropTypes.string,
   childSayName: PropTypes.string.isRequired,
   roles: PropTypes.string.isRequired,
   rolesRelative: PropTypes.string.isRequired,

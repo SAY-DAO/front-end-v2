@@ -59,7 +59,7 @@ function a11yProps(index) {
   };
 }
 
-export default function InfoTabs({ theChild, isInvite }) {
+export default function InfoTabs({ theChild, isInvite, invitationToken }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -248,7 +248,8 @@ export default function InfoTabs({ theChild, isInvite }) {
           setAdoption={setAdoption}
           selectedRole={selectedRole}
           familyId={theChild.familyId}
-          userRole={userRole}
+          isInvite={isInvite}
+          invitationToken={invitationToken}
           childSayName={theChild.sayName}
           roles={`${t(roles.roles[selectedRole])}`}
           rolesRelative={`${t(roles.rolesRelative[selectedRole])}`}
@@ -261,4 +262,5 @@ export default function InfoTabs({ theChild, isInvite }) {
 InfoTabs.propTypes = {
   theChild: PropTypes.object.isRequired,
   isInvite: PropTypes.bool.isRequired,
+  invitationToken: PropTypes.string,
 };

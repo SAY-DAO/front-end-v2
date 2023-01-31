@@ -9,6 +9,9 @@ import {
   LEAVE_VIRTUAL_FAMILY_REQUEST,
   LEAVE_VIRTUAL_FAMILY_SUCCESS,
   LEAVE_VIRTUAL_FAMILY_FAIL,
+  ACCEPT_INVITATION_REQUEST,
+  ACCEPT_INVITATION_SUCCESS,
+  ACCEPT_INVITATION_FAIL,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamily =
@@ -112,3 +115,33 @@ export const inviteToMyFamily =
       });
     }
   };
+
+export const acceptInvitation = (token) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ACCEPT_INVITATION_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+
+    const { data } = await publicApi3.post(`/invitations/${token}/accept`, {
+      config,
+    });
+    dispatch({
+      type: ACCEPT_INVITATION_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ACCEPT_INVITATION_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};

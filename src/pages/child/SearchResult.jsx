@@ -213,6 +213,7 @@ const SearchResult = () => {
                     <InfoTabs
                       theChild={searchedChild}
                       isInvite={Boolean(invitationToken)}
+                      invitationToken={invitationToken}
                     />
                   </Grid>
                 </Grid>
