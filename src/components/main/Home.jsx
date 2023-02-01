@@ -19,6 +19,7 @@ import AppBarBottom from './AppBarBottom';
 import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
+  ACCEPT_INVITATION_RESET,
 } from '../../constants/familyConstants';
 import { fetchUserDetails, logout } from '../../actions/userAction';
 
@@ -91,6 +92,9 @@ const Home = () => {
   const joinResult = useSelector((state) => state.joinResult);
   const { success: successJoin } = joinResult;
 
+  const acceptInvite = useSelector((state) => state.acceptInvite);
+  const { success: successAcceptInvite } = acceptInvite;
+
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const { success: successRandomSearch } = childRandomSearch;
 
@@ -158,6 +162,9 @@ const Home = () => {
     }
     if (successJoin) {
       dispatch({ type: JOIN_VIRTUAL_FAMILY_RESET });
+    }
+    if (successAcceptInvite) {
+      dispatch({ type: ACCEPT_INVITATION_RESET });
     }
     if (successLeft) {
       dispatch({ type: LEAVE_VIRTUAL_FAMILY_RESET });
