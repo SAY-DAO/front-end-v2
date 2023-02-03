@@ -124,10 +124,8 @@ const SearchResult = () => {
       history.push('/main/search');
     } else if (successRandomSearch) {
       setSearchedChild(theChild);
-      console.log('success random');
     } else if (successChildByToken) {
       setSearchedChild(child);
-      console.log('success by token');
     }
   }, [successRandomSearch, successChildByToken, qsValues]);
 

@@ -168,7 +168,6 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
     } else if (previousRole !== null && selectedValue !== previousRole) {
       setBackToPrevRole(true); // Modal: prevRole - Pops up that you only can go back to your previous role for this family
     } else {
-      console.log('this: ', previousRole, selectedValue);
       setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
     }

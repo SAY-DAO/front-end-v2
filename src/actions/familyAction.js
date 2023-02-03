@@ -131,9 +131,11 @@ export const acceptInvitation = (token) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi3.post(`/invitations/${token}/accept`, {
-      config,
-    });
+    const { data } = await publicApi3.post(
+      `invitations/${token}/accept`,
+      {},
+      config
+    );
     dispatch({
       type: ACCEPT_INVITATION_SUCCESS,
       payload: data,

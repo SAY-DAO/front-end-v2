@@ -64,7 +64,6 @@ export default function AdoptionModal({
     loading: loadingAcceptInvite,
     success: successAcceptInvite,
     error: errorAcceptInvite,
-    loblob,
   } = acceptInvite;
 
   const myHome = useSelector((state) => state.myHome);
@@ -72,7 +71,6 @@ export default function AdoptionModal({
 
   // redirect after joining
   useEffect(() => {
-    console.log(errorAcceptInvite);
     if (successJoin || successAcceptInvite) {
       dispatch(fetchMyHome());
       localStorage.removeItem('invitationToken');
