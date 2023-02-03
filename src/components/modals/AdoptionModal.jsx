@@ -105,7 +105,7 @@ export default function AdoptionModal({
   }, [childSayName, roles, rolesRelative, selectedRole, open]);
 
   useEffect(() => {
-    if (adoption && selectedRole) {
+    if (adoption && selectedRole !== null) {
       handleOpen();
     } else {
       handleClose();
@@ -113,7 +113,7 @@ export default function AdoptionModal({
   }, [selectedRole, adoption]);
 
   const handleJoin = () => {
-    if (userInfo && selectedRole) {
+    if (userInfo && selectedRole !== null) {
       if (isInvite) {
         dispatch(acceptInvitation(invitationToken));
       } else {

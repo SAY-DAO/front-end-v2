@@ -143,14 +143,15 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
           }
         } else if (userInfo.user.id === member.member_id) {
           handleAlreadyInFamily();
-        }
-        // father role is taken
-        if (member.role === 0) {
-          setFather(member.username);
-        }
-        // mother role is taken
-        if (member.role === 1) {
-          setMother(member.username);
+        } else {
+          // father role is taken
+          if (member.role === 0) {
+            setFather(member.username);
+          }
+          // mother role is taken
+          if (member.role === 1) {
+            setMother(member.username);
+          }
         }
       }
       handleCannotBeMember();
@@ -241,7 +242,7 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
         />
       )}
       {/* Adoption popup */}
-      {selectedRole && (
+      {selectedRole !== null && (
         <AdoptModal
           adoption={adoption}
           setAdoption={setAdoption}
