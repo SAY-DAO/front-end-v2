@@ -20,16 +20,21 @@ import {
   CHILD_BY_TOKEN_FAIL,
 } from '../constants/childConstants';
 
-export const fetchRandomChild = () => async (dispatch) => {
+export const fetchRandomChild = () => async (dispatch, getState) => {
   try {
     dispatch({ type: CHILD_RANDOM_SEARCH_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
     const config = {
       headers: {
         'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
 
-    const { data } = await publicApi3.post('/search/random', config);
+    const { data } = await publicApi3.post('/search/random', {}, config);
 
     dispatch({
       type: CHILD_RANDOM_SEARCH_SUCCESS,
@@ -56,7 +61,7 @@ export const fetchChildByToken = (token) => async (dispatch, getState) => {
     const config = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: userInfo && userInfo.accessToken,
+        Authorization: userInfo ? userInfo && userInfo.accessToken : '',
       },
     };
 

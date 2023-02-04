@@ -120,7 +120,7 @@ export default function AdoptionModal({
         dispatch(joinVirtualFamily(selectedRole, familyId));
       }
     } else if (!userInfo && !successLogin) {
-      history.push('/login');
+      history.push('/register?redirect=search-result');
     }
   };
 

@@ -16,7 +16,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
+import queryString from 'query-string';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
@@ -42,6 +43,13 @@ const FinalForm = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const { search } = useLocation();
+  const queryStringValue = queryString.parse(search);
+  // eslint-disable-next-line no-restricted-globals
+  const redirect = queryStringValue.redirect
+    ? // eslint-disable-next-line no-restricted-globals
+      queryStringValue.redirect
+    : 'main/search';
 
   const [validateErr, setValidateErr] = useState('');
   const [userNameErr, setUserNameErr] = useState(false);
@@ -121,7 +129,7 @@ const FinalForm = () => {
   // change step
   useEffect(() => {
     if (successRegister) {
-      history.push('/main/search');
+      history.push(`/${redirect}`);
     }
   }, [successRegister]);
 

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { makeStyles } from '@material-ui/styles';
 import FormControl from '@material-ui/core/FormControl';
 import LoadingButton from '@material-ui/lab/LoadingButton';
@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
+import queryString from 'query-string';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { fetchUserDetails, login } from '../../actions/userAction';
@@ -35,10 +36,12 @@ const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { search } = useLocation();
+  const queryStringValue = queryString.parse(search);
   // eslint-disable-next-line no-restricted-globals
-  const redirect = location.search
+  const redirect = queryStringValue.redirect
     ? // eslint-disable-next-line no-restricted-globals
-      location.search.split('redirect=')[1]
+      queryStringValue.redirect
     : 'main/home';
 
   const [userName, setUserName] = useState('');

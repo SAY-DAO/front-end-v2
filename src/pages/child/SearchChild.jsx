@@ -39,6 +39,9 @@ const SearchChild = () => {
     success: successRandomSearch,
   } = childRandomSearch;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
+
   const userDetails = useSelector((state) => state.userDetails);
   const {
     theUser,
@@ -53,10 +56,19 @@ const SearchChild = () => {
 
   // login
   useEffect(() => {
+    dispatch(fetchUserDetails());
     if (errorUserDetails) {
       history.push('/login?redirect=main/search');
     }
-  }, [theUser, successUserDetails, history, errorUserDetails, dispatch]);
+  }, [
+    theUser,
+    successUserDetails,
+    history,
+    errorUserDetails,
+    dispatch,
+    userInfo,
+    successLogin,
+  ]);
 
   // to check wether the child is already adopted by user
   useEffect(() => {

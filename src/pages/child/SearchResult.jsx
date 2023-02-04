@@ -12,7 +12,6 @@ import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModal from '../../components/modals/LeaveModal';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
-import { fetchUserDetails } from '../../actions/userAction';
 import { fetchChildByToken } from '../../actions/childAction';
 
 const useStyles = makeStyles({
@@ -90,17 +89,13 @@ const SearchResult = () => {
     success: successChildByToken,
   } = childByToken;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
-
-  const userDetails = useSelector((state) => state.userDetails);
-  const { error: errorUserDetails } = userDetails;
-
   // Set invitation token if the url contains it
   useEffect(() => {
+    setInvitationToken(
+      qsValues.token || localStorage.getItem('invitationToken')
+    );
     if (qsValues.token) {
-      setInvitationToken(qsValues.token);
-      localStorage.setItem('invitationToken', JSON.stringify(qsValues.token));
+      localStorage.setItem('invitationToken', qsValues.token);
     }
   }, []);
 
@@ -110,16 +105,13 @@ const SearchResult = () => {
     }
   }, [invitationToken]);
 
-  // login
   useEffect(() => {
-    dispatch(fetchUserDetails());
-    if (errorUserDetails) {
-      history.push(`/login?redirect=search-result`);
-    }
-  }, [userInfo, successLogin, errorUserDetails]);
-
-  useEffect(() => {
-    if (!successRandomSearch && !qsValues.token && !successChildByToken) {
+    if (
+      !successRandomSearch &&
+      !qsValues.token &&
+      !successChildByToken &&
+      !invitationToken
+    ) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
       history.push('/main/search');
     } else if (successRandomSearch) {
