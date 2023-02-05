@@ -43,6 +43,9 @@ const Login = () => {
     ? // eslint-disable-next-line no-restricted-globals
       queryStringValue.redirect
     : 'main/home';
+  const redirectQueryString = queryStringValue.redirect
+    ? `?redirect=${queryStringValue.redirect}`
+    : '';
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -187,7 +190,7 @@ const Login = () => {
           <Typography variant="subtitle2">
             <Trans i18nKey="comeback.noAccount">
               Don't have an account yet?
-              <Link to="/register" className="link" />
+              <Link to={`/register${redirectQueryString}`} className="link" />
             </Trans>
           </Typography>
           <Typography variant="subtitle2">

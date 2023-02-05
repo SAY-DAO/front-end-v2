@@ -6,7 +6,9 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useTranslation, Trans } from 'react-i18next';
 import PhoneInput from 'react-phone-input-2';
+import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -40,6 +42,11 @@ const useStyles = makeStyles({
 const EntryForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { search } = useLocation();
+  const queryStringValue = queryString.parse(search);
+  const redirectLogin = queryStringValue.redirect
+    ? `?redirect=${queryStringValue.redirect}`
+    : '';
 
   const [validateErr, setValidateErr] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -277,7 +284,7 @@ const EntryForm = () => {
         <Typography variant="subtitle2">
           <Trans i18nKey="join.alreadyJoined">
             If already joined tap
-            <Link to="/Login">here</Link>
+            <Link to={`/Login${redirectLogin}`}>here</Link>
           </Trans>
         </Typography>
       </Grid>
