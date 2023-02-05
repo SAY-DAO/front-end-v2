@@ -59,7 +59,12 @@ function a11yProps(index) {
   };
 }
 
-export default function InfoTabs({ theChild, isInvite, invitationToken }) {
+export default function InfoTabs({
+  theChild,
+  isInvite,
+  invitationToken,
+  fromLocalStorage,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -102,6 +107,10 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
 
   useEffect(() => {
     setInviteeRole(userRole);
+    if (fromLocalStorage) {
+      setSelectedRole(userRole);
+      setAdoption(true);
+    }
   }, [userRole]);
 
   // error code: 746
@@ -264,4 +273,5 @@ InfoTabs.propTypes = {
   theChild: PropTypes.object.isRequired,
   isInvite: PropTypes.bool.isRequired,
   invitationToken: PropTypes.string,
+  fromLocalStorage: PropTypes.bool,
 };

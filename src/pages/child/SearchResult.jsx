@@ -74,6 +74,7 @@ const SearchResult = () => {
   const [backIsTrue, setBackIsTrue] = useState(false);
   const [invitationToken, setInvitationToken] = useState(null);
   const [searchedChild, setSearchedChild] = useState({});
+  const [fromLocalStorage, setFromLocalStorage] = useState(false);
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
@@ -96,6 +97,9 @@ const SearchResult = () => {
     );
     if (qsValues.token) {
       localStorage.setItem('invitationToken', qsValues.token);
+    }
+    if (!qsValues.token && localStorage.getItem('invitationToken')) {
+      setFromLocalStorage(true);
     }
   }, []);
 
@@ -204,6 +208,7 @@ const SearchResult = () => {
                       theChild={searchedChild}
                       isInvite={Boolean(invitationToken)}
                       invitationToken={invitationToken}
+                      fromLocalStorage={fromLocalStorage}
                     />
                   </Grid>
                 </Grid>
