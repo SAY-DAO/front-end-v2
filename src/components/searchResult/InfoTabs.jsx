@@ -75,7 +75,7 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [cannotBeMember, setCannotBeMember] = useState(false);
   const [adoption, setAdoption] = useState(false);
-  const [selectedRole, setSelectedRole] = useState();
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -131,27 +131,28 @@ export default function InfoTabs({ theChild, isInvite, invitationToken }) {
 
   // check family members
   useEffect(() => {
-    if (family && userInfo) {
+    if (family) {
       for (let f = 0; f < family.length; f += 1) {
         const member = family[f];
-        if (member.isDeleted) {
-          if (member.member_id !== null) {
-            // member_id from back end / userInfo.user.id from local storage
-            if (member.member_id === userInfo.user.id) {
-              handlePreviousRole(member.role);
+        if (userInfo) {
+          if (member.isDeleted) {
+            if (member.member_id !== null) {
+              // member_id from back end / userInfo.user.id from local storage
+              if (member.member_id === userInfo.user.id) {
+                handlePreviousRole(member.role);
+              }
             }
+          } else if (userInfo.user.id === member.member_id) {
+            handleAlreadyInFamily();
           }
-        } else if (userInfo.user.id === member.member_id) {
-          handleAlreadyInFamily();
-        } else {
-          // father role is taken
-          if (member.role === 0) {
-            setFather(member.username);
-          }
-          // mother role is taken
-          if (member.role === 1) {
-            setMother(member.username);
-          }
+        }
+        // father role is taken
+        if (member.role === 0 && !member.isDeleted) {
+          setFather(member.username);
+        }
+        // mother role is taken
+        if (member.role === 1 && !member.isDeleted) {
+          setMother(member.username);
         }
       }
       handleCannotBeMember();
