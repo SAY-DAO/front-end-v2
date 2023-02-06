@@ -14,6 +14,7 @@ import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import CannotBeMemberModal from '../modals/CannotBeMemberModal';
+import TakenRoleModal from '../modals/TakenRoleModal';
 import ChildFamily from '../child/ChildFamily';
 import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import AvailableRoles from './AvailableRoles';
@@ -79,6 +80,7 @@ export default function InfoTabs({
   const [previousRole, setPreviousRole] = useState(null);
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [cannotBeMember, setCannotBeMember] = useState(false);
+  const [takenRole, setTakenRole] = useState(false);
   const [adoption, setAdoption] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
 
@@ -138,6 +140,18 @@ export default function InfoTabs({
     }
   };
 
+  const handleFaMoTaken = () => {
+    if (previousRole === null) {
+      if ((userRole === 0 && father) || (userRole === 1 && mother)) {
+        setTakenRole(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleFaMoTaken();
+  }, [father, mother]);
+
   // check family members
   useEffect(() => {
     if (family) {
@@ -165,6 +179,7 @@ export default function InfoTabs({
         }
       }
       handleCannotBeMember();
+      handleFaMoTaken();
     }
   }, [theChild, family, previousRole, userRole, userInfo]);
 
@@ -220,7 +235,16 @@ export default function InfoTabs({
           />
         </TabPanel>
       </Box>
-      {/* Role has been taken popup */}
+      {/* Father/Mother Role has been taken popup */}
+      {takenRole && (
+        <TakenRoleModal
+          takenRole={takenRole}
+          setTakenRole={setTakenRole}
+          childSayName={theChild.sayName}
+          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          roles={`${t(roles.roles[userRole])}`}
+        />
+      )}
       {/* Cannot be member anymore popup */}
       {cannotBeMember && (
         <CannotBeMemberModal
