@@ -143,6 +143,7 @@ export default function InfoTabs({
   const handleFaMoTaken = () => {
     if (previousRole === null) {
       if ((userRole === 0 && father) || (userRole === 1 && mother)) {
+        setInviteeRole(null);
         setTakenRole(true);
       }
     }
