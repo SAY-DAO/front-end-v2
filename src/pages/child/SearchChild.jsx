@@ -52,6 +52,7 @@ const SearchChild = () => {
   useEffect(() => {
     localStorage.removeItem('randomChildToken');
     localStorage.removeItem('invitationToken');
+    localStorage.removeItem('selectedRole');
   }, []);
 
   // login

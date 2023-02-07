@@ -74,6 +74,7 @@ export default function AdoptionModal({
     if (successJoin || successAcceptInvite) {
       dispatch(fetchMyHome());
       localStorage.removeItem('invitationToken');
+      localStorage.removeItem('selectedRole');
     }
     if ((successJoin || successAcceptInvite) && successHome) {
       history.push('/main/home');

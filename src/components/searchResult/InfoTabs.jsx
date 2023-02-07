@@ -81,6 +81,7 @@ export default function InfoTabs({
   const [backToPrevRole, setBackToPrevRole] = useState(false);
   const [cannotBeMember, setCannotBeMember] = useState(false);
   const [takenRole, setTakenRole] = useState(false);
+  const [isTakenRole, setIsTakenRole] = useState(false);
   const [adoption, setAdoption] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
 
@@ -110,7 +111,7 @@ export default function InfoTabs({
   useEffect(() => {
     setInviteeRole(userRole);
     if (fromLocalStorage) {
-      setSelectedRole(userRole);
+      setSelectedRole(localStorage.getItem('selectedRole') || userRole);
       setAdoption(true);
     }
   }, [userRole]);
@@ -144,7 +145,10 @@ export default function InfoTabs({
     if (previousRole === null) {
       if ((userRole === 0 && father) || (userRole === 1 && mother)) {
         setInviteeRole(null);
-        setTakenRole(true);
+        if (!fromLocalStorage) {
+          setIsTakenRole(true);
+          setTakenRole(true);
+        }
       }
     }
   };
@@ -189,6 +193,7 @@ export default function InfoTabs({
   };
 
   const handleSelectRole = async (selectedValue) => {
+    localStorage.removeItem('selectedRole');
     if (isGone) {
       setIsGone(false);
       setIsGone(true);
@@ -197,6 +202,9 @@ export default function InfoTabs({
     } else {
       setAdoption(true); // Modal: adoption
       setSelectedRole(selectedValue);
+      if (isTakenRole) {
+        localStorage.setItem('selectedRole', selectedValue);
+      }
     }
   };
 
