@@ -258,7 +258,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
           </Box>
         </Fade>
       </Modal>
-      {isCopied && <CopyModal isCopied={isCopied} />}
+      {isCopied && <CopyModal isCopied={isCopied} setIsCopied={setIsCopied} />}
     </div>
   );
 }

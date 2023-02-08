@@ -19,16 +19,21 @@ const style = {
   p: 4,
 };
 
-export default function CopyModal({ isCopied }) {
+export default function CopyModal({ isCopied, setIsCopied }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setIsCopied(false);
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (isCopied) {
       handleOpen();
+    } else {
+      handleClose();
     }
   }, [isCopied]);
 
@@ -81,4 +86,5 @@ export default function CopyModal({ isCopied }) {
 
 CopyModal.propTypes = {
   isCopied: PropTypes.bool.isRequired,
+  setIsCopied: PropTypes.func,
 };
