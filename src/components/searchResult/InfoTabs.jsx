@@ -102,7 +102,7 @@ export default function InfoTabs({
   // setFamily and userRole
   useEffect(() => {
     if (theChild) {
-      if (theChild.userRole !== null) {
+      if (theChild.userRole !== null && theChild.userRole !== undefined) {
         setUserRole(theChild.userRole);
       }
       setFamily(theChild.childFamilyMembers);
