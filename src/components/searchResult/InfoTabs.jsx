@@ -121,7 +121,11 @@ export default function InfoTabs({
   const handlePreviousRole = (memberRole) => {
     setPreviousRole(memberRole);
     // For invitation. The search case handled in handleSelectRole.
-    if (userRole !== null && userRole !== previousRole) {
+    if (
+      userRole !== null &&
+      previousRole !== null &&
+      userRole !== previousRole
+    ) {
       localStorage.removeItem('invitationToken');
       setInviteeRole(null);
       setIsInvite(false);
@@ -280,7 +284,7 @@ export default function InfoTabs({
         />
       )}
       {/* Back to Previous Role warn popup */}
-      {previousRole && (
+      {previousRole !== null && (
         <PrevRoleModal
           backToPrevRole={backToPrevRole}
           setBackToPrevRole={setBackToPrevRole}
