@@ -62,7 +62,6 @@ const SearchChild = () => {
       history.push('/login?redirect=main/search');
     }
   }, [
-    theUser,
     successUserDetails,
     history,
     errorUserDetails,
