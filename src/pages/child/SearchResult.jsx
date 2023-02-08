@@ -75,6 +75,7 @@ const SearchResult = () => {
   const [invitationToken, setInvitationToken] = useState(null);
   const [searchedChild, setSearchedChild] = useState({});
   const [fromLocalStorage, setFromLocalStorage] = useState(false);
+  const [isInvite, setIsInvite] = useState(false);
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
   const {
@@ -106,6 +107,7 @@ const SearchResult = () => {
   useEffect(() => {
     if (invitationToken) {
       dispatch(fetchChildByToken(invitationToken));
+      setIsInvite(true);
     }
   }, [invitationToken]);
 
@@ -206,7 +208,8 @@ const SearchResult = () => {
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
                     <InfoTabs
                       theChild={searchedChild}
-                      isInvite={Boolean(invitationToken)}
+                      isInvite={isInvite}
+                      setIsInvite={setIsInvite}
                       invitationToken={invitationToken}
                       fromLocalStorage={fromLocalStorage}
                     />

@@ -63,6 +63,7 @@ function a11yProps(index) {
 export default function InfoTabs({
   theChild,
   isInvite,
+  setIsInvite,
   invitationToken,
   fromLocalStorage,
 }) {
@@ -116,13 +117,15 @@ export default function InfoTabs({
     }
   }, [userRole]);
 
-  // error code: 746
+  // error code: 746 - will not join with invitation
   const handlePreviousRole = (memberRole) => {
     setPreviousRole(memberRole);
     // For invitation. The search case handled in handleSelectRole.
     if (userRole !== null && userRole !== previousRole) {
       localStorage.removeItem('invitationToken');
       setInviteeRole(null);
+      setIsInvite(false);
+      setAdoption(false);
       setBackToPrevRole(true);
     }
   };
@@ -141,10 +144,12 @@ export default function InfoTabs({
     }
   };
 
+  // error code: 744 - will not join with invitation
   const handleFaMoTaken = () => {
     if (previousRole === null) {
       if ((userRole === 0 && father) || (userRole === 1 && mother)) {
         setInviteeRole(null);
+        setIsInvite(false);
         if (!fromLocalStorage) {
           setIsTakenRole(true);
           setTakenRole(true);
@@ -305,6 +310,7 @@ export default function InfoTabs({
 InfoTabs.propTypes = {
   theChild: PropTypes.object.isRequired,
   isInvite: PropTypes.bool.isRequired,
+  setIsInvite: PropTypes.func,
   invitationToken: PropTypes.string,
   fromLocalStorage: PropTypes.bool,
 };
