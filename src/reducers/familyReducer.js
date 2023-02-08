@@ -64,7 +64,7 @@ export const acceptInvitationReducer = (state = {}, action) => {
     case ACCEPT_INVITATION_REQUEST:
       return { loading: true, success: false };
     case ACCEPT_INVITATION_SUCCESS:
-      return { loading: false, success: true, loblob: action.payload };
+      return { loading: false, success: true };
     case ACCEPT_INVITATION_FAIL:
       return { loading: false, error: action.payload };
     case ACCEPT_INVITATION_RESET:
