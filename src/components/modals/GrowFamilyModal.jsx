@@ -71,8 +71,8 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
     setSubmitDisabled(true);
   };
   const handleClose = () => {
-    setOpen(false);
     setMenuOpen(false);
+    setOpen(false);
     setInviteRole('');
     setShareText('');
   };

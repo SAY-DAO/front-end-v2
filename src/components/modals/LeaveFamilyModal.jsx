@@ -44,7 +44,10 @@ export default function LeaveFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setMenuOpen(false);
+    setOpen(false);
+  };
   const handleLeave = () => {
     dispatch(leaveFamily(theChild.familyId));
     handleClose();
