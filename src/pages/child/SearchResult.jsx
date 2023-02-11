@@ -11,7 +11,10 @@ import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModal from '../../components/modals/LeaveModal';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
+import {
+  CHILD_RANDOM_SEARCH_RESET,
+  CHILD_BY_TOKEN_RESET,
+} from '../../constants/childConstants';
 import { fetchChildByToken } from '../../actions/childAction';
 
 const useStyles = makeStyles({
@@ -111,6 +114,7 @@ const SearchResult = () => {
     }
   }, [invitationToken]);
 
+  // FIXME
   useEffect(() => {
     if (
       !successRandomSearch &&
@@ -120,12 +124,15 @@ const SearchResult = () => {
     ) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
       history.push('/main/search');
+    } else if (errorChildByToken) {
+      dispatch({ type: CHILD_BY_TOKEN_RESET });
+      history.push('/main/search');
     } else if (successRandomSearch) {
       setSearchedChild(theChild);
     } else if (successChildByToken) {
       setSearchedChild(child);
     }
-  }, [successRandomSearch, successChildByToken, qsValues]);
+  }, [successRandomSearch, successChildByToken, qsValues, errorChildByToken]);
 
   // child age
   const getAge = (DOB) => {
