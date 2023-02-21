@@ -5,6 +5,7 @@ const dynamicCacheName = 'SAY-dynamic-v1';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/offline.html',
   '/assets/locales/translations/fa.json',
   '/assets/locales/translations/en.json',
   '/images/Say_donation.png',
@@ -50,10 +51,10 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   // console.log('service worker has been activated');
   e.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then((keyList) => {
       return Promise.all(
-        keys
-          .filter((key) => key !== staticCacheName)
+        keyList
+          .filter((key) => key !== staticCacheName && key !== dynamicCacheName)
           .map((key) => caches.delete(key))
       );
     })
@@ -65,14 +66,20 @@ self.addEventListener('fetch', (e) => {
   // console.log('fetch event', e);
   e.respondWith(
     (async () => {
-      const r = await caches.match(e.request);
-      if (r) {
-        return r;
+      try {
+        const r = await caches.match(e.request);
+        if (r) {
+          return r;
+        }
+        const response = await fetch(e.request);
+        const cache = await caches.open(dynamicCacheName);
+        await cache.put(e.request.url, response.clone());
+        return response;
+      } catch {
+        if (e.request.url.indexOf('.html') > -1) {
+          return caches.match('/offline.html');
+        }
       }
-      const response = await fetch(e.request);
-      const cache = await caches.open(dynamicCacheName);
-      await cache.put(e.request.url, response.clone());
-      return response;
     })()
   );
 });
