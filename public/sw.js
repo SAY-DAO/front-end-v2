@@ -1,15 +1,9 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.1-beta';
+const staticCacheName = 'SAY-v2.0.2-beta';
 const dynamicCacheName = 'SAY-dynamic-v1';
 const urlsToCache = [
   '/',
-  '/static/js/main.chunk.js',
-  '/static/js/0.chunk.js',
-  '/static/js/bundle.js',
-  '/static/js/vendors~main.chunk.js',
-  '/static/js/main.482930e5.chunk.js',
-  '/static/js/2.a637ec1e.chunk.js',
   '/index.html',
   '/offline.html',
   '/assets/locales/translations/fa.json',
