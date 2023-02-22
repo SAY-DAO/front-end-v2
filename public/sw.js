@@ -40,7 +40,6 @@ const urlsToCache = [
   '/images/icons/doneNeeds/package.svg',
   '/images/icons/doneNeeds/receipts/done.jpg',
   '/images/icons/doneNeeds/receipts/ngo_delivered.jpg',
-  '/images/icons/doneNeeds/receipts/done.jpg',
 ];
 
 // Limiting cache size
