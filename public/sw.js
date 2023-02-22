@@ -1,9 +1,15 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.0-beta';
+const staticCacheName = 'SAY-v2.0.1-beta';
 const dynamicCacheName = 'SAY-dynamic-v1';
 const urlsToCache = [
   '/',
+  '/static/js/main.chunk.js',
+  '/static/js/0.chunk.js',
+  '/static/js/bundle.js',
+  '/static/js/vendors~main.chunk.js',
+  '/static/js/main.482930e5.chunk.js',
+  '/static/js/2.a637ec1e.chunk.js',
   '/index.html',
   '/offline.html',
   '/assets/locales/translations/fa.json',
@@ -21,6 +27,7 @@ const urlsToCache = [
   '/images/back.svg',
   '/images/back_orange.svg',
   '/images/back_gray.svg',
+  '/images/say_donation.svg',
   '/images/icons/changePassword.svg',
   '/images/icons/email.svg',
   '/images/icons/exit.svg',
@@ -33,6 +40,13 @@ const urlsToCache = [
   '/images/icons/un.svg',
   '/images/icons/upload.svg',
   '/images/icons/wallet.svg',
+  '/images/icons/doneNeeds/child.svg',
+  '/images/icons/doneNeeds/hand.svg',
+  '/images/icons/doneNeeds/ngo.svg',
+  '/images/icons/doneNeeds/package.svg',
+  '/images/icons/doneNeeds/receipts/done.jpg',
+  '/images/icons/doneNeeds/receipts/ngo_delivered.jpg',
+  '/images/icons/doneNeeds/receipts/done.jpg',
 ];
 
 // Limiting cache size
@@ -51,7 +65,6 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     (async () => {
       const cache = await caches.open(staticCacheName);
-      console.log('caching shell assets');
       await cache.addAll(urlsToCache);
     })()
   );
