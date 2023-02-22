@@ -35,6 +35,16 @@ const urlsToCache = [
   '/images/icons/wallet.svg',
 ];
 
+// Limiting cache size
+const limitCacheSize = async (name, size) => {
+  const cache = await caches.open(name);
+  const keyList = await cache.keys();
+  if (keyList.length > size) {
+    await cache.delete(keyList[0]);
+    await limitCacheSize(name, size);
+  }
+};
+
 // Install service worker
 self.addEventListener('install', (e) => {
   // console.log('service worker installed');
@@ -74,6 +84,7 @@ self.addEventListener('fetch', (e) => {
         const response = await fetch(e.request);
         const cache = await caches.open(dynamicCacheName);
         await cache.put(e.request.url, response.clone());
+        await limitCacheSize(dynamicCacheName, 15);
         return response;
       } catch {
         if (e.request.url.indexOf('.html') > -1) {
