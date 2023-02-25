@@ -76,7 +76,8 @@ const MyChildPage = () => {
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
   const [leaveOpen, setLeaveOpen] = useState(false);
   const [growOpen, setGrowOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null); // Menu
+  const [anchorEl, setAnchorEl] = useState(null); // Menu
+  const [isGone, setIsGone] = useState(false);
   const open = Boolean(anchorEl); // Menu
 
   const myHome = useSelector((state) => state.myHome);
@@ -227,6 +228,7 @@ const MyChildPage = () => {
                 }}
               >
                 <MenuItem
+                  disabled={isGone}
                   onClick={handleGrow}
                   sx={{ minHeight: '15px', margin: 1 }}
                 >
@@ -279,7 +281,13 @@ const MyChildPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ maxWidth: '100% !important' }}>
-            {theChild && <MyChildTabs theChild={theChild} />}
+            {theChild && (
+              <MyChildTabs
+                theChild={theChild}
+                isGone={isGone}
+                setIsGone={setIsGone}
+              />
+            )}
           </Grid>
         </Grid>
       )}

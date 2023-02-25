@@ -54,12 +54,11 @@ function a11yProps(index) {
   };
 }
 
-export default function MyChildTabs({ theChild }) {
+export default function MyChildTabs({ theChild, isGone, setIsGone }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
 
-  const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
   const [needsData, setNeedsData] = useState([]);
@@ -205,4 +204,6 @@ export default function MyChildTabs({ theChild }) {
 
 MyChildTabs.propTypes = {
   theChild: PropTypes.object,
+  isGone: PropTypes.bool,
+  setIsGone: PropTypes.func,
 };
