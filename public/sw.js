@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 const staticCacheName = 'SAY-v2.0.3-beta';
-const dynamicCacheName = 'SAY-dynamic-v4';
+const dynamicCacheName = 'SAY-dynamic-v5';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -79,7 +79,10 @@ self.addEventListener('activate', (e) => {
 
 // fetch event
 self.addEventListener('fetch', (e) => {
-  if (e.request.url.indexOf('/api/') === -1) {
+  if (
+    e.request.url.indexOf('/api/') === -1 &&
+    e.request.url.startsWith('http')
+  ) {
     e.respondWith(
       (async () => {
         try {
@@ -90,12 +93,13 @@ self.addEventListener('fetch', (e) => {
           const response = await fetch(e.request);
           const cache = await caches.open(dynamicCacheName);
           await cache.put(e.request.url, response.clone());
-          await limitCacheSize(dynamicCacheName, 15);
+          await limitCacheSize(dynamicCacheName, 50);
           return response;
-        } catch {
-          if (e.request.url.indexOf('.html') > -1) {
-            return caches.match('/offline.html');
-          }
+        } catch (err) {
+          console.log('catch', err);
+          // if (e.request.url.indexOf('.html') > -1) {
+          // return caches.match('/offline.html');
+          // }
         }
       })()
     );
