@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.2-beta';
-const dynamicCacheName = 'SAY-dynamic-v1';
+const staticCacheName = 'SAY-v2.0.3-beta';
+const dynamicCacheName = 'SAY-dynamic-v4';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -79,24 +79,25 @@ self.addEventListener('activate', (e) => {
 
 // fetch event
 self.addEventListener('fetch', (e) => {
-  // console.log('fetch event', e);
-  e.respondWith(
-    (async () => {
-      try {
-        const r = await caches.match(e.request);
-        if (r) {
-          return r;
+  if (e.request.url.indexOf('/api/') === -1) {
+    e.respondWith(
+      (async () => {
+        try {
+          const r = await caches.match(e.request);
+          if (r) {
+            return r;
+          }
+          const response = await fetch(e.request);
+          const cache = await caches.open(dynamicCacheName);
+          await cache.put(e.request.url, response.clone());
+          await limitCacheSize(dynamicCacheName, 15);
+          return response;
+        } catch {
+          if (e.request.url.indexOf('.html') > -1) {
+            return caches.match('/offline.html');
+          }
         }
-        const response = await fetch(e.request);
-        const cache = await caches.open(dynamicCacheName);
-        await cache.put(e.request.url, response.clone());
-        await limitCacheSize(dynamicCacheName, 15);
-        return response;
-      } catch {
-        if (e.request.url.indexOf('.html') > -1) {
-          return caches.match('/offline.html');
-        }
-      }
-    })()
-  );
+      })()
+    );
+  }
 });
