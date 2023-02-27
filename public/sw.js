@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.3-beta';
-const dynamicCacheName = 'SAY-dynamic-v5';
+const staticCacheName = 'SAY-v2.0.1-beta';
+const dynamicCacheName = 'SAY-dynamic-v1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -54,7 +54,6 @@ const limitCacheSize = async (name, size) => {
 
 // Install service worker
 self.addEventListener('install', (e) => {
-  // console.log('service worker installed');
   e.waitUntil(
     (async () => {
       const cache = await caches.open(staticCacheName);
@@ -65,12 +64,12 @@ self.addEventListener('install', (e) => {
 
 // activate event - deleting old caches
 self.addEventListener('activate', (e) => {
-  // console.log('service worker has been activated');
+  const cacheKeepList = [staticCacheName, dynamicCacheName];
   e.waitUntil(
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList
-          .filter((key) => key !== staticCacheName && key !== dynamicCacheName)
+          .filter((key) => !cacheKeepList.includes(key))
           .map((key) => caches.delete(key))
       );
     })
