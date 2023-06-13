@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import ChildLayout from '../layouts/child-layoyt/ChildLayout';
 import Loadable from '../layouts/loadable/Loadable';
-import MainLayout from '../layouts/main-layout/MainLayout';
+// import MainLayout from '../layouts/main-layout/MainLayout';
 import BlankLayout from '../layouts/plain-layout/PlainLayout';
 
 const Error = Loadable(lazy(() => import('../components/Error')));
@@ -49,7 +49,7 @@ const Router = [
   },
   {
     path: '/main',
-    element: <MainLayout />,
+    element: <ChildLayout />,
     children: [
       { path: '/main', element: <Navigate to="/main" /> },
       { path: '/main/profile/settings', element: <Settings /> },
