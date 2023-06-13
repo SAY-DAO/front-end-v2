@@ -45,13 +45,13 @@ export default function Report() {
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
+  const childOneNeed = useSelector((state) => state.childOneNeed);
   const {
     oneNeed,
     loading: loadingOneNeed,
     error: errorOneNeed,
     // success: successOneNeed,
-  } = ChildOneNeed;
+  } = childOneNeed;
 
   // // loading button
   useEffect(() => {

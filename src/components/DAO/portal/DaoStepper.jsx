@@ -1,9 +1,9 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
+import { useState } from 'react';
 
 export default function DaoStepper() {
-  const [selectedValue, setSelectedValue] = React.useState('pending');
+  const [selectedValue, setSelectedValue] = useState('pending');
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);

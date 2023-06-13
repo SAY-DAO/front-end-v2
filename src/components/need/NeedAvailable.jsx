@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
@@ -89,7 +89,6 @@ const useStyles = makeStyles({
 export default function NeedAvailable({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -128,13 +127,13 @@ export default function NeedAvailable({ childId }) {
     error: errorShaparakGate,
   } = shaparakGate;
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
+  const childOneNeed = useSelector((state) => state.childOneNeed);
   const {
     oneNeed,
     loading: loadingOneNeed,
     error: errorOneNeed,
     success: successOneNeed,
-  } = ChildOneNeed;
+  } = childOneNeed;
 
   // login
   useEffect(() => {

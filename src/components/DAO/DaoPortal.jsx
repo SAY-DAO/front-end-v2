@@ -8,7 +8,7 @@ export default function DaoPortal() {
   const dispatch = useDispatch();
 
   const myHome = useSelector((state) => state.myHome);
-  const { children, success: successHome } = myHome;
+  const { user, children, success: successHome } = myHome;
 
   const userDetails = useSelector((state) => state.userDetails);
   const { success: successUserDetails } = userDetails;
@@ -29,7 +29,7 @@ export default function DaoPortal() {
           xs={12}
           sx={{ mt: 3, mb: 8, textAlign: 'center', width: '100%' }}
         >
-          <DaoAccardion childrenList={children} />
+          <DaoAccardion childrenList={children} userId={user.id} />
         </Grid>
       )}
     </Grid>

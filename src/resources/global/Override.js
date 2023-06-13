@@ -23,6 +23,13 @@ const components = {
         minWidth: '240px',
         borderRadius: '48px',
       },
+      outlinedSecondary: {
+        minWidth: '140px',
+        borderRadius: '10px',
+        // background: 'linear-gradient(5deg, white 100%, #F59E39 100%)',
+        color: ' #F05A31 ',
+        borderColor: ' #F05A31 ',
+      },
       filledPrimary: {
         color: 'white',
       },
@@ -120,7 +127,7 @@ const components = {
       root: {
         textTransform: 'none',
         '&.Mui-selected ': {
-          color: '#ffdfc1',
+          color: '#fbb563',
         },
       },
     },

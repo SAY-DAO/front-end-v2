@@ -9,7 +9,6 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/main-layout/themeBuilder/ThemeSettings';
 

@@ -1,4 +1,5 @@
-﻿@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+﻿@import url(fontiran.css);
+/* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
 
 body {
   margin: 0;
@@ -13,9 +14,11 @@ body {
 .styles_simpleReactWeatherIcon__3sqXV {
   font-size: 100%;
 }
+
 .styles_simpleReactWeatherTemp__2PnUn {
   font-size: 12px;
 }
+
 .styles_simpleReactWeather__3uy4l {
   max-width: 50px;
   min-width: 50px;
@@ -105,3 +108,43 @@ a:visited {
   color: #666666;
   margin: 0 2px;
 }
+
+/* Need Paid Card */
+.card {
+  min-height: 170px;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 1px 2px rgb(190, 181, 181)  !important;
+  transform-style: preserve-3d;
+  /* to help flip*/
+  transform: perspective(1000px) rotateY(var(--rotate-y, 0))
+    translateY(var(--translate-y, 0));     /* rotate/flip front and back + perspective for animation + translate move up and down*/
+  transition: 400ms !important;
+  /* cursor: pointer; */
+  margin-top: 0.6rem;
+}
+
+.card:hover {
+  --translate-y: 2px;
+  box-shadow: 0 0 5px 2px rgb(141, 135, 135);
+}
+
+.card.flip {
+  --rotate-y: 180deg;
+}
+
+.card.front {
+  left: 0;
+}
+
+.card .front,
+.card .back {
+  position: absolute;
+  padding: 1rem;
+  backface-visibility: hidden ;
+  /* anything backward in hidden */
+}
+
+.card .back {
+  transform: rotateY(180deg)  !important;
+}
+

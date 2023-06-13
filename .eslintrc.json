@@ -1,5 +1,9 @@
 {
     "extends": [
       "wesbos"
-    ]
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": "off" ,
+      "react/jsx-props-no-spreading": "off"
+    }
   }

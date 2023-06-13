@@ -3,12 +3,10 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Typography, Grid, FormControl, Divider, Paper } from '@mui/material';
-import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
-import { useNavigate } from 'react-router-dom';
 import NeedPageProduct from '../need/NeedPageProduct';
 import {
   changeCartBadgeNumber,
@@ -33,7 +31,6 @@ import {
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [isDisabled, setIsDisabled] = useState(false);

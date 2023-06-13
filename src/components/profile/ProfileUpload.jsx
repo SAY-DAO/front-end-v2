@@ -3,18 +3,10 @@ import React, { useState, useEffect } from 'react';
 // For multi-language
 import AvatarEditor from 'react-avatar-editor';
 import { useTranslation } from 'react-i18next';
-import {
-  Grid,
-  Avatar,
-  Typography,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Grid, Typography, IconButton, CircularProgress } from '@mui/material';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { withStyles, makeStyles } from '@mui/styles';
+import { withStyles } from '@mui/styles';
 import Slider from '@mui/material/Slider';
-import { Redirect, useHistory } from 'react-router';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 

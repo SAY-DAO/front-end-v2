@@ -12,6 +12,7 @@ import ChildStats from './ChildStats';
 import ChildNeeds from './ChildNeeds';
 import ChildStory from './ChildStory';
 import { fetchChildNeeds } from '../../redux/actions/childAction';
+import { getOrganizedNeeds, sortNeeds } from '../../utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,31 +102,8 @@ export default function MyChildTabs({ theChild }) {
   // sort needs
   useEffect(() => {
     if (theNeeds) {
-      // urgent ==> index 0
-      // growth 0 ==> index 1
-      // joy 1 ==> index 2
-      // health 2 ==> index 3
-      // surroundings 3 ==> index 4
-      // done ==> index 5
-      const needData = [[], [], [], [], [], []];
-      const allNeeds = theNeeds.needs.sort((a, b) => {
-        if (!a.isDone && !b.isDone) {
-          // Sort needs by create date Ascending
-          return new Date(a.created) - new Date(b.created);
-        }
-        // Sort done needs by done date Descending
-        return new Date(b.doneAt) - new Date(a.doneAt);
-      });
-
-      for (let i = 0; i < allNeeds.length; i += 1) {
-        if (allNeeds[i].isDone) {
-          needData[5].push(allNeeds[i]);
-        } else if (allNeeds[i].isUrgent) {
-          needData[0].push(allNeeds[i]);
-        } else {
-          needData[allNeeds[i].category + 1].push(allNeeds[i]);
-        }
-      }
+      const sortedNeeds = sortNeeds(theNeeds);
+      const needData = getOrganizedNeeds(sortedNeeds);
       setNeedsData(needData);
     }
   }, [theNeeds]);

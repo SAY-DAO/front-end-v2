@@ -6,18 +6,15 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Link, Box, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 import roles from '../../apis/roles';
-import { fetchRandomChild } from '../../redux/actions/childAction';
 import GoneModal from '../modals/GoneModal';
 import AdoptModel from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import ChildFamily from '../child/ChildFamily';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../redux/constants/childConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +60,6 @@ function a11yProps(index) {
 export default function InfoTabs() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);

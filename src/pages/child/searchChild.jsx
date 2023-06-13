@@ -31,7 +31,6 @@ const SearchChild = () => {
   const {
     theChild,
     theToken,
-    loading: loadingRandomSearch,
     error: errorRandomSearch,
     success: successRandomSearch,
   } = childRandomSearch;

@@ -33,14 +33,15 @@ import {
 } from './familyReducer';
 import {
   familyNetworksReducer,
-  serverReducer,
   signatureReducer,
-} from './daoReducer';
+  walletReducer,
+} from './blockchainReducer';
 import { allNeedsReducer } from './needReducer';
 import themeReducer from './themeReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
+  wallet: walletReducer,
   familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,
@@ -60,13 +61,12 @@ export default combineReducers({
   myChild: myChildReducer,
   allNeeds: allNeedsReducer,
   childNeeds: childNeedsReducer,
-  ChildOneNeed: childOneNeedReducer,
-  ChildOneNeedReceipt: childOneNeedReceiptReducer,
+  childOneNeed: childOneNeedReducer,
+  childOneNeedReceipt: childOneNeedReceiptReducer,
   theCart: cartAddReducer,
   cartBadge: cartBadgeReducer,
   shaparakGate: paymentReducer,
   cartUpdate: cartUpdateReducer,
   cartPayCheck: checkCartPaymentReducer,
   signature: signatureReducer,
-  server: serverReducer,
 });

@@ -20,13 +20,6 @@ import DaoStepper from './DaoStepper';
 const DaoDoneTable = ({ updated }) => {
   const { t } = useTranslation();
 
-  // urgent ==> index 0
-  // growth ==> index 1
-  // joy ==> index 2
-  // health ==> index 3
-  // surroundings ==> index 4
-  // all ==> index 5
-
   return (
     <PageContainer
       title="Impact Table"
@@ -73,7 +66,7 @@ const DaoDoneTable = ({ updated }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {updated.doneNeeds[5].map((need, index) => (
+                {updated.map((need, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <Box display="flex" alignItems="center">
@@ -120,11 +113,12 @@ const DaoDoneTable = ({ updated }) => {
                     <TableCell sx={{ textAlign: 'center' }}>
                       <LoadingButton
                         variant="outlined"
+                        size="small"
                         sx={{
                           fontWeight: 400,
                           fontSize: '12px',
                           lineHeight: '14px',
-                          minWidth: '60px',
+                          // minWidth: '60px',
                           // backgroundColor:
                           //   need.status === 'Active'
                           //     ? (theme) => theme.palette.success.light

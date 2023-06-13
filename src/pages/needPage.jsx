@@ -12,8 +12,8 @@ export default function NeedPage() {
   const navigate = useNavigate();
   const { childId, needId } = useParams();
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
-  const { oneNeed, success: successOneNeed } = ChildOneNeed;
+  const childOneNeed = useSelector((state) => state.childOneNeed);
+  const { oneNeed, success: successOneNeed } = childOneNeed;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;

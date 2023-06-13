@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import {
   AccordionSummary,
   Accordion,
@@ -11,31 +10,21 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/system';
+import PropTypes from 'prop-types';
 import DaoChildCard from './DaoChildCard';
-import { updateNestServer } from '../../../redux/actions/main/daoAction';
 import DaoDoneTable from './DaoDoneTable';
 
-// let child;
-export default function DaoAccardion() {
+export default function DaoAccardion({ childrenList, userId }) {
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [childId, setChildId] = useState();
-
-  const myHome = useSelector((state) => state.myHome);
-  const { user, children } = myHome;
 
   const server = useSelector((state) => state.server);
   const { updated } = server;
 
   const themeOptions = useSelector((state) => state.themeOptions);
   const { activeMode } = themeOptions;
-
-  useEffect(() => {
-    if (childId) {
-      dispatch(updateNestServer(childId, user.id));
-    }
-  }, [childId]);
 
   const handleChange = (id) => (event, isExpanded) => {
     setExpanded(isExpanded ? id : false);
@@ -58,8 +47,8 @@ export default function DaoAccardion() {
       />
       <Divider sx={{ width: '100%', mt: 2, mb: 2 }}>My Children</Divider>
 
-      {children &&
-        children.map((child) => (
+      {childrenList &&
+        childrenList.map((child) => (
           <Accordion
             key={child.id}
             expanded={expanded === child.id}
@@ -98,3 +87,8 @@ export default function DaoAccardion() {
     </Grid>
   );
 }
+
+DaoAccardion.propTypes = {
+  childrenList: PropTypes.array.isRequired,
+  userId: PropTypes.number.isRequired,
+};

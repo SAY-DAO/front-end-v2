@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { fetchOneNeedReceipts } from '../../redux/actions/childAction';
 
-const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+const ColorLibStepIconRoot = styled('div')(({ theme, ownerstate }) => ({
   backgroundColor:
     theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
@@ -26,12 +26,12 @@ const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   borderRadius: '50%',
   justifyContent: 'center',
   alignItems: 'center',
-  ...(ownerState.active && {
+  ...(ownerstate.active && {
     backgroundImage:
       'linear-gradient( 136deg, #f2a367 0%, #f2a367 50%, #f2a367 100%)',
     boxShadow: '2px 6px 10px 2px rgba(0,0,0,.25)',
   }),
-  ...(ownerState.completed && {
+  ...(ownerstate.completed && {
     backgroundImage:
       'linear-gradient( 136deg, #f2a367 0%,#f2a367 50%, #f2a367 100%)',
   }),
@@ -105,7 +105,7 @@ function ColorLibStepIcon(props) {
   };
   return (
     <ColorLibStepIconRoot
-      ownerState={{ completed, active }}
+      ownerstate={{ completed, active }}
       className={className}
     >
       {icons[String(props.icon)]}
@@ -131,8 +131,8 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   const [progress, setProgress] = useState([t('needStatus.0')]);
   const [steps, setSteps] = useState([]);
 
-  const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
-  const { success } = ChildOneNeedReceipt;
+  const childOneNeedReceipt = useSelector((state) => state.childOneNeedReceipt);
+  const { success } = childOneNeedReceipt;
 
   // set steps for product or service
   useEffect(() => {
@@ -149,7 +149,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
     } else {
       setSteps([t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')]);
     }
-  }, [oneNeed, success, progress, t, dispatch]);
+  }, [oneNeed, success, progress, t]);
 
   // ---- PAYMENT-----
   // partial payment status = 1

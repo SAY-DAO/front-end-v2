@@ -16,7 +16,6 @@ const DaoDocs = () => {
 
   const [data, setData] = useState();
   const [clicked, setClicked] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -114,7 +113,6 @@ const DaoDocs = () => {
     let prevCircle = document.getElementById(prevId);
 
     if (!node.id.includes('.')) {
-      setLoading(true);
       // select element and increase 'r'
       const activeId = e.target.id;
       const theId = Number(node.id.replace(/^\D+/g, '')); // theId = 37

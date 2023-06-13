@@ -1,27 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  Box,
-  Typography,
-  CircularProgress,
-  Divider,
-} from '@mui/material';
+import { Grid, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@mui/styles';
 import Avatar from '@mui/material/Avatar';
 // import Weather from 'simple-react-weather';
 import { useNavigate } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Message from '../Message';
 import { fetchMyChildById } from '../../redux/actions/childAction';
 import { CHILD_ONE_NEED_RESET } from '../../redux/constants/childConstants';
 import DaoTimeLine from './DaoTimeLine';
-
-const ITEM_HEIGHT = 20;
 
 const DaoMileStone = () => {
   const { t } = useTranslation();
@@ -32,10 +19,7 @@ const DaoMileStone = () => {
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
 
   const myHome = useSelector((state) => state.myHome);
-  const { children, success: successHome } = myHome;
-
-  const leftFamily = useSelector((state) => state.leftFamily);
-  const { success: successLeft } = leftFamily;
+  const { children } = myHome;
 
   const myChild = useSelector((state) => state.myChild);
   const {
@@ -47,8 +31,10 @@ const DaoMileStone = () => {
 
   useEffect(() => {
     if (children) {
+      const list = [];
       for (let i = 0; i < children.length; i += 1) {
-        myChildrenIdList.push(children[i].id);
+        list.push(children[i].id);
+        setMyChildrenIdList(list);
       }
     }
   });

@@ -1,13 +1,22 @@
 /* eslint-disable no-plusplus */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Stack, CircularProgress, Chip, Box } from '@mui/material';
+import {
+  Grid,
+  Stack,
+  CircularProgress,
+  Chip,
+  Box,
+  Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import NeedCard from '../need/NeedCard';
 import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
+import { PaymentStatusEnum } from '../../utils/helpers';
+import NeedPaidCard from '../need/NeedPaidCard';
 
 const useStyles = makeStyles(() => ({
   chip: {
@@ -33,12 +42,21 @@ const useStyles = makeStyles(() => ({
     border: 0,
     backgroundColor: '#FFDFC1',
     boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)',
+    '$:before': {
+      content: '',
+      position: 'absolute',
+      top: '60px',
+      left: '-30px',
+      zIndex: 1,
+      border: 'solid 15px transparent',
+      borderRightColor: '#FFF',
+    },
     '&:focusVisible': {
       backgroundColor: 'red',
     },
     '&:hover': {
       backgroundColor: '#FFDFC1 !important',
-      color: '#f59e39',
+      color: 'black',
     },
     '&:active': {
       boxShadow: 'none',
@@ -54,8 +72,6 @@ export default function ChildNeeds({ theChild, needsArray }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // [[urgent], [growth], ...]
-  // const [needsArray, setNeedsArray] = useState([[], [], [], [], [], []]);
   const [category, setCategory] = useState(0);
   const [activeCat, setActiveCat] = useState();
   // const [loadingChip, setLoadingChip] = useState(false);
@@ -116,17 +132,18 @@ export default function ChildNeeds({ theChild, needsArray }) {
             width: '100%',
           }}
         >
-          {/* TODO: pagination is needed here */}
-          {needsArray[category].map((need) => (
-            <NeedCard
-              inCart={inCart}
-              setInCart={setInCart}
-              key={need.id}
-              handleNeedCardClick={handleNeedCardClick}
-              need={need}
-              childId={theChild.id}
-            />
-          ))}
+          {needsArray[category].map((need) =>
+            !need.isDone ? (
+              <NeedCard
+                key={need.id}
+                handleNeedCardClick={handleNeedCardClick}
+                need={need}
+                childId={theChild.id}
+              />
+            ) : (
+              <NeedPaidCard key={need.id} need={need} childId={theChild.id} />
+            )
+          )}
         </Stack>
       )}
     </>
@@ -199,9 +216,10 @@ export default function ChildNeeds({ theChild, needsArray }) {
                       }
                     />
                   )}
+                  <Typography sx={{ m: 1 }}>|</Typography>
                   {needsArray[5][0] && (
                     <Chip
-                      label={t('childData.needCategory.done')}
+                      label={t('childData.needCategory.paid')}
                       onClick={() => handleClick(5)}
                       variant="outlined"
                       className={
@@ -211,6 +229,7 @@ export default function ChildNeeds({ theChild, needsArray }) {
                   )}
                 </Stack>
               </Box>
+
               {renderNeedsByCategory()}
             </Grid>
           )}

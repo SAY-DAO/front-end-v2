@@ -25,13 +25,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const myHome = useSelector((state) => state.myHome);
-  const {
-    user,
-    children,
-    loading: loadingHome,
-    success: successHome,
-    error: errorHome,
-  } = myHome;
+  const { user, children, loading: loadingHome, success: successHome } = myHome;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -51,8 +45,8 @@ const Home = () => {
   const childNeeds = useSelector((state) => state.childNeeds);
   const { success: successNeeds } = childNeeds;
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
-  const { success: successOneNeed } = ChildOneNeed;
+  const childOneNeed = useSelector((state) => state.childOneNeed);
+  const { success: successOneNeed } = childOneNeed;
 
   const userDetails = useSelector((state) => state.userDetails);
   const { error: errorUserDetails } = userDetails;
