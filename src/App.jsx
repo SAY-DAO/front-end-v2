@@ -10,7 +10,7 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import Router from './routes/Router';
-// import ThemeSettings from './layouts/main-layout/themeBuilder/ThemeSettings';
+import ThemeSettings from './layouts/main-layout/themeBuilder/ThemeSettings';
 
 function App() {
   const routing = useRoutes(Router);
@@ -25,8 +25,9 @@ function App() {
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
   });
-  // const theTheme = ThemeSettings();
+  const theTheme = ThemeSettings();
 
+  
   return (
     <CacheProvider value={cacheRtl}>
       <StylesProvider jss={jss}>
@@ -40,13 +41,13 @@ function App() {
             }}
             maxWidth="lg"
           >
-            {/* <ThemeProvider theme={theTheme}> */}
-            <CssBaseline />
-            {/* hint: if on useEffect will Dispatch twice to check for errors */}
-            {/* <React.StrictMode> */}
-            {routing}
-            {/* </React.StrictMode> */}
-            {/* </ThemeProvider> */}
+            <ThemeProvider theme={theTheme}>
+              <CssBaseline />
+              {/* hint: if on useEffect will Dispatch twice to check for errors */}
+              {/* <React.StrictMode> */}
+              {routing}
+              {/* </React.StrictMode> */}
+            </ThemeProvider>
           </Container>
         </div>
       </StylesProvider>
