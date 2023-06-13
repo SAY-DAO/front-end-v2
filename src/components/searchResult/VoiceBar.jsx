@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sound from 'react-sound';
-import { withStyles } from '@material-ui/styles';
-import Slider from '@material-ui/core/Slider';
-import PlayCircleIcon from '@material-ui/icons/PlayCircle';
-import PauseCircleIcon from '@material-ui/icons/PauseCircle';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@mui/styles';
+import Slider from '@mui/material/Slider';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 
 // from material-ui customized slider

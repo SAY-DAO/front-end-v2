@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Alert from '@material-ui/core/Alert';
+import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import * as Sentry from '@sentry/react';
 import contents from '../inputsValidation/Contents';
 

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/styles';
 import ReactDOM from 'react-dom';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import theTheme from './resources/styles/theTheme';

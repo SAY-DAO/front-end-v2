@@ -9,8 +9,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/styles';
-import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@mui/styles';
+import Avatar from '@mui/material/Avatar';
 // import Weather from 'simple-react-weather';
 import { useHistory } from 'react-router';
 import IconButton from '@mui/material/IconButton';

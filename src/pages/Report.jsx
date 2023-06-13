@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Paper, CircularProgress } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Back from '../components/Back';
@@ -105,7 +105,9 @@ export default function Report() {
           setImage(t('report.p2s2.img'));
           setTitle(
             <Trans i18nKey="report.p2s2.title">
-              One of{{ childSayName }}’s needs is completely done
+              One of
+              {{ childSayName }}
+              ’s needs is completely done
             </Trans>
           );
           setParagraph(
@@ -129,8 +131,10 @@ export default function Report() {
               setParagraph(
                 <Trans i18nKey="report.s3.paragraph">
                   The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
-                  Tomans for purchasing{{ childSayName }}’s {{ needName }}, has
-                  been transferred into the NGO’s bank account, on
+                  Tomans for purchasing
+                  {{ childSayName }}
+                  ’s {{ needName }}, has been transferred into the NGO’s bank
+                  account, on
                   {{
                     date: formatDate(
                       oneNeed.ngo_delivery_date,
@@ -147,7 +151,8 @@ export default function Report() {
               setImage(t('report.p3.img'));
               setTitle(
                 <Trans i18nKey="report.p3.title">
-                  Purchase receipt for {{ childSayName }}’s needs
+                  Purchase receipt for {{ childSayName }}
+                  ’s needs
                 </Trans>
               );
               setParagraph(
@@ -175,14 +180,16 @@ export default function Report() {
               setImage(t('report.s4.img'));
               setTitle(
                 <Trans i18nKey="report.s4.title">
-                  {{ childSayName }}’s {{ needName }} has been paid for
+                  {{ childSayName }}
+                  ’s {{ needName }} has been paid for
                 </Trans>
               );
               setParagraph(
                 <Trans i18nKey="report.s4.paragraph">
                   The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
-                  Tomans for{{ childSayName }}’s {{ needName }}, has been paid
-                  by the NGO on
+                  Tomans for
+                  {{ childSayName }}
+                  ’s {{ needName }}, has been paid by the NGO on
                   {{
                     date: formatDate(
                       oneNeed.child_delivery_date,
@@ -221,12 +228,14 @@ export default function Report() {
           setImage(t('report.p5.img'));
           setTitle(
             <Trans i18nKey="report.p5.title">
-              Product delivered to{{ childSayName }}
+              Product delivered to
+              {{ childSayName }}
             </Trans>
           );
           setParagraph(
             <Trans i18nKey="report.p5.paragraph">
-              {{ needName }} is delivered to{{ childSayName }} on
+              {{ needName }} is delivered to
+              {{ childSayName }} on
               {{
                 date: formatDate(
                   oneNeed.child_delivery_date,

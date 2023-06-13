@@ -1,13 +1,13 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
-import { StylesProvider, jssPreset } from '@material-ui/styles';
+import { StylesProvider, jssPreset } from '@mui/styles';
 import Splash from './pages/Splash';
 import Intro from './pages/Intro';
 import Register from './pages/auth/Register';
