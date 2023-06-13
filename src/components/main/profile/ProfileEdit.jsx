@@ -238,7 +238,7 @@ const ProfileEdit = () => {
       userEditProfile(
         phoneAuth,
         emailAuth,
-        location.state.newImage, // from ProfileUpload.jsx
+        location.state && location.state.newImage, // from ProfileUpload.jsx
         firstName,
         lastName,
         phoneNumber,

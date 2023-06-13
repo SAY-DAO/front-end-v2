@@ -62,7 +62,7 @@ export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
     const { data } = await publicApi.get(
       `/check/${theKey === 'email' ? 'email' : 'phone'}/${value}`,
       formData,
-      config
+      config,
     );
     dispatch({
       type: CHECK_CONTACT_SUCCESS,
@@ -120,7 +120,7 @@ export const verifyUser = (theKey, value, dialCode) => async (dispatch) => {
 
       {
         config,
-      }
+      },
     );
     dispatch({
       type: USER_VERIFY_SUCCESS,
@@ -150,11 +150,7 @@ export const userVerifyCode = (id, code) => async (dispatch) => {
     const formData = new FormData();
     formData.append('code', code);
 
-    const { data } = await publicApi.patch(
-      `/auth/verify/${id}`,
-      formData,
-      config
-    );
+    const { data } = await publicApi.patch(`/auth/verify/${id}`, formData, config);
     dispatch({
       type: CODE_VERIFY_SUCCESS,
       payload: data,
@@ -169,51 +165,50 @@ export const userVerifyCode = (id, code) => async (dispatch) => {
   }
 };
 
-export const register =
-  (userName, password, theKey, value, otp) => async (dispatch) => {
-    try {
-      const formData = new FormData();
-      formData.append('username', userName);
-      formData.append('password', password);
-      formData.append('verifyCode', otp);
+export const register = (userName, password, theKey, value, otp) => async (dispatch) => {
+  try {
+    const formData = new FormData();
+    formData.append('username', userName);
+    formData.append('password', password);
+    formData.append('verifyCode', otp);
 
-      if (theKey === 'email') {
-        formData.append('email', value);
-      }
-      if (theKey === 'phone') {
-        formData.append('phoneNumber', value);
-        // formData.append('countryCode', dialCode);
-      }
-      formData.append('isInstalled', _standalone);
-
-      dispatch({ type: USER_REGISTER_REQUEST });
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      };
-      const { data } = await publicApi.post('/auth/register', formData, {
-        config,
-      });
-      dispatch({
-        type: USER_REGISTER_SUCCESS,
-        payload: data,
-      });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-
-      dispatch({
-        type: USER_LOGIN_SUCCESS,
-        payload: data,
-      });
-      localStorage.removeItem('verifyInfo');
-    } catch (e) {
-      // check for generic and custom message to return using ternary statement
-      dispatch({
-        type: USER_REGISTER_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
+    if (theKey === 'email') {
+      formData.append('email', value);
     }
-  };
+    if (theKey === 'phone') {
+      formData.append('phoneNumber', value);
+      // formData.append('countryCode', dialCode);
+    }
+    formData.append('isInstalled', _standalone);
+
+    dispatch({ type: USER_REGISTER_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const { data } = await publicApi.post('/auth/register', formData, {
+      config,
+    });
+    dispatch({
+      type: USER_REGISTER_SUCCESS,
+      payload: data,
+    });
+    localStorage.setItem('userInfo', JSON.stringify(data));
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+    localStorage.removeItem('verifyInfo');
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: USER_REGISTER_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const login = (userName, password) => async (dispatch) => {
   try {
@@ -229,7 +224,7 @@ export const login = (userName, password) => async (dispatch) => {
     // required for back-end
     formData.append('isInstalled', _standalone);
 
-    const { data } = await publicApi.post('/auth/login', formData, config);
+    const { data } = await publicApi.post('/auth/login', formData, { config });
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -281,11 +276,9 @@ export const forgotPassword = (theKey, value) => async (dispatch) => {
       resetType = 'phone';
     }
 
-    const { data } = await publicApi.post(
-      `/auth/password/reset/${resetType}`,
-      formData,
-      config
-    );
+    const { data } = await publicApi.post(`/auth/password/reset/${resetType}`, formData, {
+      config,
+    });
     dispatch({
       type: USER_FORGOT_PASSWORD_SUCCESS,
       payload: data,
@@ -322,10 +315,7 @@ export const fetchUserDetails = () => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: USER_DETAILS_FAIL,
-      payload:
-        e.response && e.response.data.detail
-          ? e.response.data.detail
-          : e.message,
+      payload: e.response && e.response.data.detail ? e.response.data.detail : e.message,
     });
   }
 };
@@ -348,11 +338,7 @@ export const resetPassword = (password) => async (dispatch, getState) => {
     const formData = new FormData();
     formData.append('password', password);
 
-    const { data } = await publicApi.patch(
-      `/user/update/userId=me`,
-      formData,
-      config
-    );
+    const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
     dispatch({
       type: USER_RESET_PASSWORD_SUCCESS,
       payload: data,
@@ -366,16 +352,7 @@ export const resetPassword = (password) => async (dispatch, getState) => {
 };
 
 export const userEditProfile =
-  (
-    phoneAuth,
-    emailAuth,
-    avatarUrl,
-    firstName,
-    lastName,
-    phoneNumber,
-    email,
-    userName
-  ) =>
+  (phoneAuth, emailAuth, avatarUrl, firstName, lastName, phoneNumber, email, userName) =>
   async (dispatch, getState) => {
     try {
       dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
@@ -412,11 +389,7 @@ export const userEditProfile =
         formData.append('userName', userName);
       }
 
-      const { data } = await publicApi.patch(
-        `/user/update/userId=me`,
-        formData,
-        config
-      );
+      const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
 
       dispatch({
         type: USER_UPDATE_PROFILE_SUCCESS,
