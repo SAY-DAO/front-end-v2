@@ -3,18 +3,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
-import FormControl from '@material-ui/core/FormControl';
+import LoadingButton from '@mui/lab/LoadingButton';
+import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import { makeStyles } from '@mui/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { useHistory, useLocation } from 'react-router';
 import queryString from 'query-string';

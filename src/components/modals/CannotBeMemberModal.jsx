@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import Backdrop from '@mui/material/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 

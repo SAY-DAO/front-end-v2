@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import { Grid, Typography, Divider, IconButton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import i18next from 'i18next';

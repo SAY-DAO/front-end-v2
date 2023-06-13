@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/material/styles';
 import { withTranslation } from 'react-i18next';
 
 const styles = {

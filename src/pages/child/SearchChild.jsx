@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { fetchRandomChild } from '../../actions/childAction';
 import Message from '../../components/Message';
 import AppBarBottom from '../../components/main/AppBarBottom';

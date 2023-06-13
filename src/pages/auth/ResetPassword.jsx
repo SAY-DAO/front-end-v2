@@ -3,16 +3,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
-import LoadingButton from '@material-ui/lab/LoadingButton';
-import FormControl from '@material-ui/core/FormControl';
+import LoadingButton from '@mui/lab/LoadingButton';
+import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { fetchUserDetails, resetPassword } from '../../actions/userAction';
 import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';

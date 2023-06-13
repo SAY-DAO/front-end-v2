@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography, LinearProgress, Card } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
   progressBar: {

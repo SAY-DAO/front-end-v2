@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadingButton from '@material-ui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from 'react-router';
 import NeedPageProduct from '../need/NeedPageProduct';
 import {

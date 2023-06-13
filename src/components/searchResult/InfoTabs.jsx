@@ -1,14 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import roles from '../../apis/roles';
 import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';

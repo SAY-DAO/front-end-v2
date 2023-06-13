@@ -8,8 +8,8 @@ import {
   CardActionArea,
   AvatarGroup,
 } from '@mui/material';
-import { makeStyles } from '@material-ui/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@mui/styles';
+import LinearProgress from '@mui/material/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 
