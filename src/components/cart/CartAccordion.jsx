@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -10,18 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useHistory } from 'react-router';
 import NeedPageProduct from '../need/NeedPageProduct';
-import {
-  changeCartBadgeNumber,
-  updateBackEndCart,
-} from '../../actions/main/cartAction';
+import { changeCartBadgeNumber, updateBackEndCart } from '../../actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
 import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
 import Message from '../Message';
-import {
-  CHECK_CART_PAYMENT_RESET,
-  SHAPARAK_RESET,
-} from '../../constants/paymentConstants';
+import { CHECK_CART_PAYMENT_RESET, SHAPARAK_RESET } from '../../constants/paymentConstants';
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
@@ -83,21 +78,14 @@ export default function CartAccordion() {
     } else {
       setIsLoading(false);
     }
-  }, [
-    loadingUpdate,
-    loadingShaparakGate,
-    loadingCartPayCheck,
-    successCartPayCheck,
-  ]);
+  }, [loadingUpdate, loadingShaparakGate, loadingCartPayCheck, successCartPayCheck]);
 
   // disable button
   useEffect(() => {
     if (
       !successCartUpdate ||
       !successCartPayCheck ||
-      (cartCheckPayResult &&
-        cartCheckPayResult.needs &&
-        cartCheckPayResult.needs[0])
+      (cartCheckPayResult && cartCheckPayResult.needs && cartCheckPayResult.needs[0])
     ) {
       setIsDisabled(false);
     } else if (isSuccess) {
@@ -118,10 +106,7 @@ export default function CartAccordion() {
         }
       }
       // Set a timeout for the above interval (10 Minutes)
-      const doneNeedInterval = setInterval(
-        () => dispatch(checkCartPayment()),
-        8000
-      );
+      const doneNeedInterval = setInterval(() => dispatch(checkCartPayment()), 8000);
       setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
     }
   }, [
@@ -170,8 +155,7 @@ export default function CartAccordion() {
         window.localStorage.removeItem('SAY-cartItems');
         // clear all intervals
         // Get a reference to the last interval + 1
-        const intervalId = window.setInterval(function () {},
-        Number.MAX_SAFE_INTEGER);
+        const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
         // Clear any timeout/interval up to that id
         for (let i = 1; i < intervalId; i += 1) {
           window.clearInterval(i);
@@ -187,8 +171,7 @@ export default function CartAccordion() {
   // set donation
   useEffect(() => {
     const theDonation =
-      (percentage * addedAmount) / 100 -
-      (((percentage * addedAmount) / 100) % 100);
+      (percentage * addedAmount) / 100 - (((percentage * addedAmount) / 100) % 100);
     setDonation(theDonation);
   }, [percentage, addedAmount]);
 
@@ -222,10 +205,7 @@ export default function CartAccordion() {
     setAmount(remaining);
     if (isCredit) {
       if (userCredit < remaining + donation) {
-        if (
-          remaining + donation - userCredit > 0 &&
-          remaining + donation - userCredit < 1000
-        ) {
+        if (remaining + donation - userCredit > 0 && remaining + donation - userCredit < 1000) {
           setFinalAmount(1000); // for the button
         }
         if (remaining + donation - userCredit >= 1000) {
@@ -283,18 +263,14 @@ export default function CartAccordion() {
             id="panel1bh-header"
           >
             <Typography variant="subtitle2" sx={{ width: '33%' }}>
-              {childrenNeedObj[childId].sayName}{' '}
-              {`(${childrenNeedObj[childId].items.length})`}
+              {childrenNeedObj[childId].sayName} {`(${childrenNeedObj[childId].items.length})`}
             </Typography>
 
             <Typography variant="body1">
-              {childrenNeedObj[childId].totalAmount.toLocaleString() +
-                t('currency.toman')}
+              {childrenNeedObj[childId].totalAmount.toLocaleString() + t('currency.toman')}
             </Typography>
           </AccordionSummary>
-          <AccordionDetails
-            sx={{ padding: 0, paddingTop: 2, paddingBottom: 1 }}
-          >
+          <AccordionDetails sx={{ padding: 0, paddingTop: 2, paddingBottom: 1 }}>
             {childrenNeedObj[childId].items.map((item, index) => (
               <Grid key={index} sx={{ marginTop: 1 }}>
                 <NeedPageProduct oneNeed={item} handleDelete={handleDelete} />
@@ -303,20 +279,11 @@ export default function CartAccordion() {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-end"
-        alignItems="flex-start"
-      >
+      <Grid container direction="column" justifyContent="flex-end" alignItems="flex-start">
         <Grid item sx={{ width: '100%', padding: 0 }}>
           <Paper>
             {cartItems && cartItems[0] && (
-              <FormControl
-                required
-                variant="standard"
-                sx={{ width: '100%', padding: 2 }}
-              >
+              <FormControl required variant="standard" sx={{ width: '100%', padding: 2 }}>
                 <form
                   style={{
                     width: '100%',
@@ -342,9 +309,7 @@ export default function CartAccordion() {
                       }}
                     >
                       <Grid item xs={3}>
-                        <Typography variant="subtitle2">
-                          {t('needPage.payTitle')}
-                        </Typography>
+                        <Typography variant="subtitle2">{t('needPage.payTitle')}</Typography>
                       </Grid>
                       <Grid item xs={9}>
                         <Divider sx={{ width: '95%' }} />
@@ -353,10 +318,7 @@ export default function CartAccordion() {
                     {!isSuccess && (
                       <Grid item>
                         <Grid item xs={12}>
-                          <Donation
-                            setPercentage={setPercentage}
-                            amount={addedAmount}
-                          />
+                          <Donation setPercentage={setPercentage} amount={addedAmount} />
                           <Wallet
                             isCredit={isCredit}
                             setIsCredit={setIsCredit}
@@ -382,8 +344,7 @@ export default function CartAccordion() {
                                 }}
                               >
                                 {!onlyWallet
-                                  ? finalAmount.toLocaleString() +
-                                    t('currency.toman')
+                                  ? finalAmount.toLocaleString() + t('currency.toman')
                                   : t('button.payFromCredit')}
                               </Typography>
                             )}
@@ -399,9 +360,7 @@ export default function CartAccordion() {
             <Grid item xs={12} sx={{ textAlign: 'center' }}>
               {(errorShaparakGate || errorUpdate || errorCartPayCheck) && (
                 <Message
-                  backError={
-                    errorShaparakGate || errorUpdate || errorCartPayCheck
-                  }
+                  backError={errorShaparakGate || errorUpdate || errorCartPayCheck}
                   variant="standard"
                   severity="error"
                 />

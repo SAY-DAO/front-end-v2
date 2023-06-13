@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
@@ -54,19 +55,13 @@ const Login = () => {
   const [messageInput, setMessageInput] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
-  const {
-    userInfo,
-    loading: loadingLogin,
-    error: errorLogin,
-    success: successLogin,
-  } = userLogin;
+  const { userInfo, loading: loadingLogin, error: errorLogin, success: successLogin } = userLogin;
 
   const userRegister = useSelector((state) => state.userRegister);
   const { success: successRegister } = userRegister;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { loading: loadingUserDetails, success: successUserDetails } =
-    userDetails;
+  const { loading: loadingUserDetails, success: successUserDetails } = userDetails;
 
   // loading button
   useEffect(() => {
@@ -138,13 +133,7 @@ const Login = () => {
       <Grid item xs={12}>
         <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        item
-      >
+      <Grid container direction="column" justifyContent="center" alignItems="center" item>
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -168,9 +157,7 @@ const Login = () => {
                   onChange={handleChangePassword}
                   label="password"
                 />
-                <InputLabel htmlFor="password">
-                  {t('placeholder.password')}
-                </InputLabel>
+                <InputLabel htmlFor="password">{t('placeholder.password')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>

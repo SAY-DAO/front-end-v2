@@ -59,7 +59,12 @@
     "styled-components": "^6.0.0-rc.3",
     "stylis": "^4.2.0",
     "stylis-plugin-rtl": "^2.1.1",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^3.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run build && git add dist"
+    }
   },
   "scripts": {
     "start": "react-scripts start",

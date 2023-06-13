@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import roles from '../../apis/roles';
+import roles from '../../apis/roles.json';
 import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
@@ -121,11 +121,7 @@ export default function InfoTabs({
   const handlePreviousRole = (memberRole) => {
     setPreviousRole(memberRole);
     // For invitation. The search case handled in handleSelectRole.
-    if (
-      userRole !== null &&
-      previousRole !== null &&
-      userRole !== previousRole
-    ) {
+    if (userRole !== null && previousRole !== null && userRole !== previousRole) {
       localStorage.removeItem('invitationToken');
       setInviteeRole(null);
       setIsInvite(false);
@@ -223,19 +219,11 @@ export default function InfoTabs({
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} centered>
             <Tab
-              label={
-                <Typography variant="body1">
-                  {t('search-result.tab1')}
-                </Typography>
-              }
+              label={<Typography variant="body1">{t('search-result.tab1')}</Typography>}
               {...a11yProps(0)}
             />
             <Tab
-              label={
-                <Typography variant="body1">
-                  {t('search-result.tab2')}
-                </Typography>
-              }
+              label={<Typography variant="body1">{t('search-result.tab2')}</Typography>}
               {...a11yProps(1)}
             />
           </Tabs>

@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
-import { Box, Grid, Link, Modal } from '@mui/material';
+import { Box, Grid, Link, Modal, CircularProgress } from '@mui/material';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { CircularProgress } from '@mui/material';
-import {
-  joinVirtualFamily,
-  acceptInvitation,
-} from '../../actions/familyAction';
+import { joinVirtualFamily, acceptInvitation } from '../../actions/familyAction';
 import { fetchMyHome } from '../../actions/main/homeAction';
 
 const style = {
@@ -88,14 +84,14 @@ export default function AdoptionModal({
         childSayName,
         roles,
         rolesRelative,
-      })
+      }),
     );
     setAdoptText(
       t('search-result.adoptModal.desc', {
         childSayName,
         roles,
         rolesRelative,
-      })
+      }),
     );
     if (!userInfo && !successLogin) {
       setContent(authWarnText);
@@ -140,25 +136,12 @@ export default function AdoptionModal({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
+            <Grid container direction="column" justifyContent="center" alignItems="center">
               <Grid item xs={12}>
-                <img
-                  src="/images/child/gone.svg"
-                  alt="icon"
-                  style={{ minWidth: '45px' }}
-                />
+                <img src="/images/child/gone.svg" alt="icon" style={{ minWidth: '45px' }} />
               </Grid>
               <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
-                <Typography
-                  id="transition-modal-title"
-                  variant="body2"
-                  component="h2"
-                >
+                <Typography id="transition-modal-title" variant="body2" component="h2">
                   {content}
                 </Typography>
               </Grid>

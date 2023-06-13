@@ -117,8 +117,7 @@ export default function NeedDone({ childId }) {
 
     // clear all intervals
     // Get a reference to the last interval + 1
-    const intervalId = window.setInterval(function () {},
-    Number.MAX_SAFE_INTEGER);
+    const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
 
     // Clear any timeout/interval up to that id
     for (let i = 1; i < intervalId; i += 1) {
@@ -170,12 +169,7 @@ export default function NeedDone({ childId }) {
                     <Grid item>
                       <NeedStepper oneNeed={oneNeed} />
                     </Grid>
-                    <Grid
-                      item
-                      container
-                      direction="row"
-                      sx={{ marginTop: 5, padding: 2 }}
-                    >
+                    <Grid item container direction="row" sx={{ marginTop: 5, padding: 2 }}>
                       <Grid item xs={3}>
                         <Typography variant="subtitle2">
                           {t('needPage.participants.title')}
@@ -194,13 +188,7 @@ export default function NeedDone({ childId }) {
         )}
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorOneNeed && (
-          <Message
-            backError={errorOneNeed}
-            variant="standard"
-            severity="error"
-          />
-        )}
+        {errorOneNeed && <Message backError={errorOneNeed} variant="standard" severity="error" />}
       </Grid>
     </>
   );

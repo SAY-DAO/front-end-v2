@@ -1,13 +1,7 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  Grid,
-  Avatar,
-  Card,
-  CardActionArea,
-  AvatarGroup,
-} from '@mui/material';
+import { Typography, Grid, Avatar, Card, CardActionArea, AvatarGroup } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useTranslation } from 'react-i18next';
@@ -107,10 +101,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <Typography
-                    variant="subtitle2"
-                    className={classes.percentage}
-                  >
+                  <Typography variant="subtitle2" className={classes.percentage}>
                     %{need.progress}
                   </Typography>
                 </Grid>
@@ -126,10 +117,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
             >
               <Grid item container direction="column" sx={{ display: 'flex' }}>
                 <Grid item xs>
-                  <AvatarGroup
-                    max={3}
-                    sx={{ margin: 'auto', direction: 'ltr !important' }}
-                  >
+                  <AvatarGroup max={3} sx={{ margin: 'auto', direction: 'ltr !important' }}>
                     {need.participants.map((user, index) => (
                       <Avatar
                         key={index}
@@ -149,9 +137,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                         ? need.cost.toLocaleString() + t('currency.toman')
                         : !inCart && '-'}
                       {inCart && (
-                        <CheckCircleOutlineSharpIcon
-                          sx={{ color: '#4caf50', opacity: '0.9' }}
-                        />
+                        <CheckCircleOutlineSharpIcon sx={{ color: '#4caf50', opacity: '0.9' }} />
                       )}
                     </Typography>
                   ) : (

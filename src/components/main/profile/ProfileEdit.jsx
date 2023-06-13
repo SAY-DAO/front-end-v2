@@ -1,13 +1,8 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  Avatar,
-  Typography,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Grid, Avatar, Typography, IconButton, CircularProgress } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,8 +57,7 @@ const ProfileEdit = () => {
   const { theUser, success: successUserDetails } = userDetails;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success: successUserUpdate, error: errorUserUpdate } =
-    userUpdateProfile;
+  const { success: successUserUpdate, error: errorUserUpdate } = userUpdateProfile;
 
   const checkContact = useSelector((state) => state.checkContact);
   const { loading: loadingCheck, error: errorCheck } = checkContact;
@@ -153,9 +147,7 @@ const ProfileEdit = () => {
       if (!phoneResult && phoneNumber) {
         setValidateErr('');
         const timeout = setTimeout(() => {
-          dispatch(
-            checkContactBeforeVerify('phone_number', phoneNumber, countryCode)
-          );
+          dispatch(checkContactBeforeVerify('phone_number', phoneNumber, countryCode));
         }, 1000);
         return () => clearTimeout(timeout);
       }
@@ -251,19 +243,13 @@ const ProfileEdit = () => {
         lastName,
         phoneNumber,
         email,
-        userName
-      )
+        userName,
+      ),
     );
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
+    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
       {/*  when uploaded route to editing studio */}
       {uploadImage && (
         <Redirect
@@ -273,11 +259,7 @@ const ProfileEdit = () => {
           }}
         />
       )}
-      <FormControl
-        onSubmit={handleSubmit}
-        variant="outlined"
-        sx={{ width: '100%' }}
-      >
+      <FormControl onSubmit={handleSubmit} variant="outlined" sx={{ width: '100%' }}>
         <form style={{ width: '100%' }}>
           <Grid
             container
@@ -287,12 +269,7 @@ const ProfileEdit = () => {
             item
             spacing={2}
           >
-            <Grid
-              item
-              container
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Grid item container justifyContent="space-between" alignItems="center">
               <IconButton onClick={() => history.push('/main/profile')}>
                 <CloseIcon
                   sx={{
@@ -399,9 +376,7 @@ const ProfileEdit = () => {
                   value={firstName}
                   onChange={handleChangeFirstName}
                   startAdornment={
-                    <InputAdornment position="start">
-                      {t('placeholder.name')}
-                    </InputAdornment>
+                    <InputAdornment position="start">{t('placeholder.name')}</InputAdornment>
                   }
                 />
               </FormControl>
@@ -414,9 +389,7 @@ const ProfileEdit = () => {
                   value={lastName}
                   onChange={handleChangeLastName}
                   startAdornment={
-                    <InputAdornment position="start">
-                      {t('placeholder.lastName')}
-                    </InputAdornment>
+                    <InputAdornment position="start">{t('placeholder.lastName')}</InputAdornment>
                   }
                 />
               </FormControl>
@@ -449,9 +422,7 @@ const ProfileEdit = () => {
                   value={email}
                   onChange={handleChangeEmail}
                   startAdornment={
-                    <InputAdornment position="start">
-                      {t('placeholder.email')}
-                    </InputAdornment>
+                    <InputAdornment position="start">{t('placeholder.email')}</InputAdornment>
                   }
                 />
               </FormControl>
@@ -465,9 +436,7 @@ const ProfileEdit = () => {
                   value={userName}
                   onChange={handleChangeUserName}
                   startAdornment={
-                    <InputAdornment position="start">
-                      {t('placeholder.userName')}
-                    </InputAdornment>
+                    <InputAdornment position="start">{t('placeholder.userName')}</InputAdornment>
                   }
                 />
               </FormControl>

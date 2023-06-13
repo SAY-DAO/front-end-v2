@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  Box,
-  Typography,
-  CircularProgress,
-  Divider,
-} from '@mui/material';
+import { Grid, Box, Typography, CircularProgress, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -133,11 +127,7 @@ const MyChildPage = () => {
   // when the child is not adopted by user and route to the child's page
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RESET });
-    if (
-      successMyChild &&
-      myChildrenIdList &&
-      !myChildrenIdList.includes(Number(childId))
-    ) {
+    if (successMyChild && myChildrenIdList && !myChildrenIdList.includes(Number(childId))) {
       history.push('/main/home');
     } else {
       dispatch(fetchMyChildById(childId));
@@ -147,7 +137,7 @@ const MyChildPage = () => {
   // weather display
   useEffect(() => {
     if (successMyChild) {
-      setTimeout(function () {
+      setTimeout(() => {
         setWeatherDisplay(true);
       }, 500);
     }
@@ -156,8 +146,7 @@ const MyChildPage = () => {
   // clear all intervals
   useEffect(() => {
     // Get a reference to the last interval + 1
-    const intervalId = window.setInterval(function () {},
-    Number.MAX_SAFE_INTEGER);
+    const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
     // Clear any timeout/interval up to that id
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
@@ -239,10 +228,7 @@ const MyChildPage = () => {
                 <Grid item xs={12}>
                   <Divider sx={{ width: '80%', margin: 'auto' }} />
                 </Grid>
-                <MenuItem
-                  onClick={handleLeave}
-                  sx={{ minHeight: '20px', margin: 1 }}
-                >
+                <MenuItem onClick={handleLeave} sx={{ minHeight: '20px', margin: 1 }}>
                   <Typography variant="body2" sx={{ color: '#fe8896' }}>
                     {t('childPage.more.leaveFamily')}
                   </Typography>
@@ -259,10 +245,7 @@ const MyChildPage = () => {
                     alt={`${theChild.sayName}`}
                     src={theChild.avatarUrl}
                   />
-                  <Typography
-                    className={classes.childSayName}
-                    variant="subtitle1"
-                  >
+                  <Typography className={classes.childSayName} variant="subtitle1">
                     {theChild.sayName}
                   </Typography>
                   <Typography className={classes.childAge} variant="subtitle2">
@@ -281,38 +264,18 @@ const MyChildPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ maxWidth: '100% !important' }}>
-            {theChild && (
-              <MyChildTabs
-                theChild={theChild}
-                isGone={isGone}
-                setIsGone={setIsGone}
-              />
-            )}
+            {theChild && <MyChildTabs theChild={theChild} isGone={isGone} setIsGone={setIsGone} />}
           </Grid>
         </Grid>
       )}
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorMyChild && (
-          <Message
-            backError={errorMyChild}
-            variant="standard"
-            severity="error"
-          />
-        )}
+        {errorMyChild && <Message backError={errorMyChild} variant="standard" severity="error" />}
       </Grid>
       {theChild && (
-        <LeaveFamilyModal
-          setMenuOpen={setLeaveOpen}
-          menuOpen={leaveOpen}
-          theChild={theChild}
-        />
+        <LeaveFamilyModal setMenuOpen={setLeaveOpen} menuOpen={leaveOpen} theChild={theChild} />
       )}
       {theChild && (
-        <GrowFamilyModal
-          setMenuOpen={setGrowOpen}
-          menuOpen={growOpen}
-          theChild={theChild}
-        />
+        <GrowFamilyModal setMenuOpen={setGrowOpen} menuOpen={growOpen} theChild={theChild} />
       )}
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import contents from './Contents';
 
 export default function validateUsername(userName) {

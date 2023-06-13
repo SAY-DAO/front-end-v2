@@ -9470,7 +9470,7 @@ __metadata:
     styled-components: ^6.0.0-rc.3
     stylis: ^4.2.0
     stylis-plugin-rtl: ^2.1.1
-    web-vitals: ^1.0.1
+    web-vitals: ^3.3.2
   languageName: unknown
   linkType: soft
 
@@ -18420,10 +18420,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-vitals@npm:^1.0.1":
-  version: 1.1.2
-  resolution: "web-vitals@npm:1.1.2"
-  checksum: 92071029089277166e11141b735831d9011e85737d32c1360034676db898ab0ca95f19041ee01904f2189ad6e711b9da6b17567e4831290a429a586c98bc573f
+"web-vitals@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "web-vitals@npm:3.3.2"
+  checksum: 76e832341d213d5de6f6767fef7f8c02163ab94326912a6355bbf6e194d930196ca5094b0d0d493b4c194acaaabcc96f0adc87870b913a7b9a51b225807abccf
   languageName: node
   linkType: hard
 

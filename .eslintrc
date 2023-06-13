@@ -7,11 +7,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".mdx"
-        ]
+        "extensions": [".js", ".jsx", ".mdx"]
       }
     }
   },
@@ -21,11 +17,7 @@
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended"
   ],
-  "plugins": [
-    "prettier",
-    "react",
-    "react-hooks"
-  ],
+  "plugins": ["prettier", "react", "react-hooks"],
   "parser": "babel-eslint",
   "rules": {
     "no-unused-vars": "off",
@@ -45,9 +37,9 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
-    "react/jsx-no-bind":"off",
+    "react/jsx-no-bind": "off",
     "no-nested-ternary": "off",
     "react/destructuring-assignment": "off",
-    "no-underscore-dangle":"off"
+    "no-underscore-dangle": "off"
   }
 }

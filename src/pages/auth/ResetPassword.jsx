@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -34,11 +35,7 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userResetPass = useSelector((state) => state.userResetPass);
-  const {
-    loading: loadingReset,
-    error: errorReset,
-    success: successReset,
-  } = userResetPass;
+  const { loading: loadingReset, error: errorReset, success: successReset } = userResetPass;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -65,25 +62,12 @@ const ResetPassword = () => {
 
   // disable button
   useEffect(() => {
-    if (
-      passwordErr ||
-      repeatPasswordErr ||
-      errorReset ||
-      !password ||
-      !repeatPassword
-    ) {
+    if (passwordErr || repeatPasswordErr || errorReset || !password || !repeatPassword) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [
-    password,
-    repeatPassword,
-    passwordErr,
-    repeatPasswordErr,
-    errorReset,
-    successReset,
-  ]);
+  }, [password, repeatPassword, passwordErr, repeatPasswordErr, errorReset, successReset]);
 
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
@@ -151,13 +135,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
+    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
       <Back to="/main/profile/settings" isOrange />
 
       <Grid
@@ -168,10 +146,7 @@ const ResetPassword = () => {
         item
         sx={{ direction: 'ltr', marginTop: 10 }}
       >
-        <Typography
-          variant="h5"
-          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
-        >
+        <Typography variant="h5" sx={{ marginBottom: 6, fontWeight: 'lighter' }}>
           {t('change-password.title')}
         </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
@@ -195,9 +170,7 @@ const ResetPassword = () => {
                   }
                   label="password"
                 />
-                <InputLabel htmlFor="password">
-                  {t('placeholder.password')}
-                </InputLabel>
+                <InputLabel htmlFor="password">{t('placeholder.password')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -219,9 +192,7 @@ const ResetPassword = () => {
                   }
                   label="repeatPassword"
                 />
-                <InputLabel htmlFor="repeatPassword">
-                  {t('placeholder.repeatPassword')}
-                </InputLabel>
+                <InputLabel htmlFor="repeatPassword">{t('placeholder.repeatPassword')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>

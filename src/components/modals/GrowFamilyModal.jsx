@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -81,10 +82,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const handleSelectableRoles = () => {
     const onceRoles = [];
     const selectableRolesObj = { ...roles };
-    const family = Object.assign(
-      [],
-      Object.values(theChild.childFamilyMembers)
-    );
+    const family = Object.assign([], Object.values(theChild.childFamilyMembers));
 
     for (let f = 0; f < family.length; f += 1) {
       const member = family[f];
@@ -129,7 +127,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
       options.push(
         <MenuItem key={index} value={key}>
           {t(selectableRoles[key])}
-        </MenuItem>
+        </MenuItem>,
       );
     });
     setRolesOption(options);
@@ -145,7 +143,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
           childSayName: theChild.sayName,
           inviteRoles: t(roles[inviteRole]),
           inviteRolesRelative: t(rolesRelative[inviteRole]),
-        })
+        }),
       );
       dispatch(inviteToMyFamily(theChild.familyId, inviteRole));
     }
@@ -173,37 +171,18 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
+            <Grid container direction="column" justifyContent="center" alignItems="center">
               <Grid item xs={12}>
-                <img
-                  src="/images/icons/family.svg"
-                  alt="icon"
-                  style={{ minWidth: '45px' }}
-                />
+                <img src="/images/icons/family.svg" alt="icon" style={{ minWidth: '45px' }} />
               </Grid>
               <Grid item xs={12} sx={{ margin: 2, textAlign: 'center' }}>
-                <Typography
-                  id="transition-modal-title"
-                  variant="body2"
-                  component="h2"
-                >
+                <Typography id="transition-modal-title" variant="body2" component="h2">
                   {t('childPage.selectRoleModalDesc')}
                 </Typography>
               </Grid>
               <Grid item xs={12} sx={{ marginBottom: 2, textAlign: 'center' }}>
-                <FormControl
-                  fullWidth
-                  variant="standard"
-                  sx={{ minWidth: 150 }}
-                >
-                  <InputLabel id="role-label">
-                    {t('search-result.tab2')}
-                  </InputLabel>
+                <FormControl fullWidth variant="standard" sx={{ minWidth: 150 }}>
+                  <InputLabel id="role-label">{t('search-result.tab2')}</InputLabel>
                   <Select
                     labelId="role-label"
                     id="role"
@@ -235,7 +214,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                       /* tslint:disable-next-line:no-console */
                       onShareSuccess: () => handleClose,
                       /* tslint:disable-next-line:no-console */
-                      onShareError: (error) => {},
+                      onShareError: (err) => {},
                     }}
                     text={t('button.inviteRoleSelect.yes')}
                     disabled={submitDisabled}
