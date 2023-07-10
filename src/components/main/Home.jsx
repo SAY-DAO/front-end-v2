@@ -75,13 +75,7 @@ const Home = () => {
   const history = useHistory();
 
   const myHome = useSelector((state) => state.myHome);
-  const {
-    user,
-    children,
-    loading: loadingHome,
-    success: successHome,
-    error: errorHome,
-  } = myHome;
+  const { user, children, loading: loadingHome, success: successHome, error: errorHome } = myHome;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -112,8 +106,7 @@ const Home = () => {
 
   // check for language on browser reload dir="" needs to change according to lang
   useEffect(() => {
-    const getLanguage = () =>
-      i18next.language || window.localStorage.i18nextLng;
+    const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
     if (document.getElementById('direction')) {
       const currentLang = getLanguage();
@@ -141,8 +134,7 @@ const Home = () => {
   // clear all intervals
   useEffect(() => {
     // Get a reference to the last interval + 1
-    const intervalId = window.setInterval(function () {},
-    Number.MAX_SAFE_INTEGER);
+    const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
     // Clear any timeout/interval up to that id
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
@@ -199,12 +191,7 @@ const Home = () => {
     >
       {!loadingHome && successHome && user && children ? (
         <>
-          <Grid
-            container
-            direction="column"
-            alignItems="center"
-            sx={{ marginTop: 4 }}
-          >
+          <Grid container direction="column" alignItems="center" sx={{ marginTop: 4 }}>
             <Grid
               item
               container
@@ -240,18 +227,10 @@ const Home = () => {
                 <Divider sx={{ width: '95%' }} />
               </Grid>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}
-            >
+            <Grid item xs={12} sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}>
               {children &&
                 children.map((child) => (
-                  <ChildCard
-                    key={child.id}
-                    handleMyChildPage={handleMyChildPage}
-                    myChild={child}
-                  />
+                  <ChildCard key={child.id} handleMyChildPage={handleMyChildPage} myChild={child} />
                 ))}
             </Grid>
           </Grid>

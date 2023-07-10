@@ -101,7 +101,7 @@ const Profile = () => {
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${theUser.firstName} ${theUser.lastName}`}</Typography>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link to="/main/profile/edit">
                     <Typography
                       component="span"
@@ -112,7 +112,7 @@ const Profile = () => {
                       {t('profile.editProfile.title')}
                     </Typography>
                   </Link>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton

@@ -13,16 +13,9 @@ import { makeStyles } from '@mui/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import NumberFormat from 'react-number-format';
 import Back from '../Back';
-import {
-  verifyUser,
-  userVerifyCode,
-  changeVerifyStep,
-} from '../../actions/userAction';
+import { verifyUser, userVerifyCode, changeVerifyStep } from '../../actions/userAction';
 import Message from '../Message';
-import {
-  CHECK_CONTACT_RESET,
-  CODE_VERIFY_RESET,
-} from '../../constants/main/userConstants';
+import { CHECK_CONTACT_RESET, CODE_VERIFY_RESET } from '../../constants/main/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -166,17 +159,11 @@ const VerifyCodeForm = () => {
         >
           <Back step="EntryForm" isOrange />
           <Grid item xs={12}>
-            <img
-              src="/images/otp.svg"
-              className={classes.root}
-              alt="otp page"
-            />
+            <img src="/images/otp.svg" className={classes.root} alt="otp page" />
           </Grid>
           <Grid item xs={12} sx={{ marginBottom: 1 }}>
             <Typography variant="subtitle1">
-              <Trans
-                i18nKey={`verify.content.by${capitalize(verifyInfo.type)}`}
-              >
+              <Trans i18nKey={`verify.content.by${capitalize(verifyInfo.type)}`}>
                 <span dir="ltr">{{ verificationMethod }}</span>
               </Trans>
             </Typography>
@@ -209,19 +196,11 @@ const VerifyCodeForm = () => {
               {t('button.submit')}
             </LoadingButton>
           </Grid>
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid container direction="column" justifyContent="center" alignItems="center">
             {enableResend && !errorVerifyCode ? (
               <Grid sx={{ width: '100%', marginTop: 2 }}>
                 <Grid item xs={12}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={parseInt(progress)}
-                  />
+                  <LinearProgress variant="determinate" value={parseInt(progress, 10)} />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography

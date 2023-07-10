@@ -12,7 +12,7 @@ export const publicApi3 = axios.create({
 
 const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
-publicApi.interceptors.request.use(function (configuration) {
+publicApi.interceptors.request.use((configuration) => {
   // To pass language to backend
   const config = {
     ...configuration,
@@ -24,7 +24,7 @@ publicApi.interceptors.request.use(function (configuration) {
   return config;
 });
 
-publicApi3.interceptors.request.use(function (configuration) {
+publicApi3.interceptors.request.use((configuration) => {
   // To pass language to backend
   const config = {
     ...configuration,

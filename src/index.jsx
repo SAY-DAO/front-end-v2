@@ -1,5 +1,9 @@
 import React, { Suspense } from 'react';
+<<<<<<< HEAD
 import { ThemeProvider } from '@mui/styles';
+=======
+import { ThemeProvider } from '@mui/material/styles';
+>>>>>>> release
 import ReactDOM from 'react-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Router } from 'react-router';

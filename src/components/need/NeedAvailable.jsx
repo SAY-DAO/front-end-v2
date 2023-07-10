@@ -139,43 +139,23 @@ export default function NeedAvailable({ childId }) {
     if (theChild && oneNeed) {
       dispatch(fetchUserDetails());
       if (errorUserDetails) {
-        history.push(
-          `/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`
-        );
+        history.push(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
         history.push(`/child/${theChild.id}`);
       } else if (!successUserDetails) {
         dispatch(fetchUserDetails());
       }
     }
-  }, [
-    errorUserDetails,
-    history,
-    oneNeed,
-    theChild,
-    successUserDetails,
-    dispatch,
-    errorOneNeed,
-  ]);
+  }, [errorUserDetails, history, oneNeed, theChild, successUserDetails, dispatch, errorOneNeed]);
 
   // loading button
   useEffect(() => {
-    if (
-      loadingOneNeed ||
-      loadingCartItems ||
-      loadingShaparakGate ||
-      successShaparakGate
-    ) {
+    if (loadingOneNeed || loadingCartItems || loadingShaparakGate || successShaparakGate) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [
-    loadingOneNeed,
-    loadingCartItems,
-    loadingShaparakGate,
-    successShaparakGate,
-  ]);
+  }, [loadingOneNeed, loadingCartItems, loadingShaparakGate, successShaparakGate]);
 
   // disable button
   useEffect(() => {
@@ -233,8 +213,7 @@ export default function NeedAvailable({ childId }) {
 
   // set donation
   useEffect(() => {
-    const theDonation =
-      (percentage * amount) / 100 - (((percentage * amount) / 100) % 100);
+    const theDonation = (percentage * amount) / 100 - (((percentage * amount) / 100) % 100);
     setDonation(theDonation);
   }, [percentage, amount]);
 
@@ -259,10 +238,7 @@ export default function NeedAvailable({ childId }) {
       setAmount(remaining);
       if (isCredit) {
         if (userCredit < remaining + donation) {
-          if (
-            remaining + donation - userCredit > 0 &&
-            remaining + donation - userCredit < 1000
-          ) {
+          if (remaining + donation - userCredit > 0 && remaining + donation - userCredit < 1000) {
             setFinalAmount(1000); // for the button
           }
           if (remaining + donation - userCredit >= 1000) {
@@ -327,10 +303,7 @@ export default function NeedAvailable({ childId }) {
         }
       }
       // Set a timeout for the above interval (10 Minutes)
-      const doneNeedInterval = setInterval(
-        () => dispatch(fetchChildOneNeed(oneNeed.id)),
-        8000
-      );
+      const doneNeedInterval = setInterval(() => dispatch(fetchChildOneNeed(oneNeed.id)), 8000);
       setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
       dispatch({ type: SHAPARAK_RESET });
     }
@@ -369,7 +342,7 @@ export default function NeedAvailable({ childId }) {
   const handlePayment = (e) => {
     e.preventDefault();
 
-    if (amount >= parseInt(payLimit) && !unpayable) {
+    if (amount >= parseInt(payLimit, 10) && !unpayable) {
       const ref = window.open('', '_blank');
       setWindowReference(ref);
 
@@ -388,11 +361,7 @@ export default function NeedAvailable({ childId }) {
       <Grid container direction="column">
         {theChild && !oneNeed.isDone && (
           <Grid item xs={12} className={classes.root}>
-            <Back
-              isOrange={false}
-              to={`/child/${childId}`}
-              state={{ childTab: 1 }}
-            />
+            <Back isOrange={false} to={`/child/${childId}`} state={{ childTab: 1 }} />
             <Grid item xs={12}>
               <div style={{ minHeight: '350px' }} />
               <Avatar
@@ -424,11 +393,7 @@ export default function NeedAvailable({ childId }) {
                 >
                   <NeedPageTop oneNeed={oneNeed} />
                 </Grid>
-                {oneNeed.details || oneNeed.img ? (
-                  <NeedInfo oneNeed={oneNeed} />
-                ) : (
-                  ''
-                )}
+                {oneNeed.details || oneNeed.img ? <NeedInfo oneNeed={oneNeed} /> : ''}
 
                 <Grid
                   item
@@ -441,9 +406,7 @@ export default function NeedAvailable({ childId }) {
                   sx={{ marginTop: 5, padding: 0, textAlign: 'center' }}
                 >
                   <Grid item xs={3}>
-                    <Typography variant="subtitle2">
-                      {t('needPage.payTitle')}
-                    </Typography>
+                    <Typography variant="subtitle2">{t('needPage.payTitle')}</Typography>
                   </Grid>
                   <Grid item xs={9}>
                     <Divider sx={{ width: '95%' }} />
@@ -538,10 +501,7 @@ export default function NeedAvailable({ childId }) {
                               }}
                             />
                           </Grid>
-                          <Donation
-                            setPercentage={setPercentage}
-                            amount={amount}
-                          />
+                          <Donation setPercentage={setPercentage} amount={amount} />
                           <Wallet
                             isCredit={isCredit}
                             setIsCredit={setIsCredit}
@@ -566,15 +526,11 @@ export default function NeedAvailable({ childId }) {
                                       sx={{
                                         paddingRight: 2,
                                         paddingLeft: 2,
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
+                                        color: isDisabled || bankMinDisable ? 'lightGrey' : 'white',
                                       }}
                                     >
                                       {!onlyWallet
-                                        ? finalAmount.toLocaleString() +
-                                          t('currency.toman')
+                                        ? finalAmount.toLocaleString() + t('currency.toman')
                                         : t('button.payFromCredit')}
                                     </Typography>
                                   )}
@@ -582,10 +538,7 @@ export default function NeedAvailable({ childId }) {
                                     component="span"
                                     variant="subtitle1"
                                     sx={{
-                                      color:
-                                        isDisabled || bankMinDisable
-                                          ? 'lightGrey'
-                                          : 'white',
+                                      color: isDisabled || bankMinDisable ? 'lightGrey' : 'white',
                                     }}
                                   >
                                     {!onlyWallet ? t('button.pay') : null}
@@ -608,10 +561,7 @@ export default function NeedAvailable({ childId }) {
                                   }}
                                 />
                               </Grid>
-                              <Donation
-                                setPercentage={setPercentage}
-                                amount={amount}
-                              />
+                              <Donation setPercentage={setPercentage} amount={amount} />
                               <Wallet
                                 isCredit={isCredit}
                                 setIsCredit={setIsCredit}
@@ -647,17 +597,11 @@ export default function NeedAvailable({ childId }) {
                                       sx={{
                                         paddingRight: method === 'payAll' && 2,
                                         paddingLeft: 2,
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
+                                        color: isDisabled || bankMinDisable ? 'lightGrey' : 'white',
                                       }}
                                     >
-                                      {method === 'payAll' &&
-                                      !onlyWallet &&
-                                      finalAmount
-                                        ? finalAmount.toLocaleString() +
-                                          t('currency.toman')
+                                      {method === 'payAll' && !onlyWallet && finalAmount
+                                        ? finalAmount.toLocaleString() + t('currency.toman')
                                         : method === 'payAll' && onlyWallet
                                         ? t('button.payFromCredit')
                                         : null}
@@ -666,10 +610,7 @@ export default function NeedAvailable({ childId }) {
                                       component="div"
                                       variant="subtitle1"
                                       sx={{
-                                        color:
-                                          isDisabled || bankMinDisable
-                                            ? 'lightGrey'
-                                            : 'white',
+                                        color: isDisabled || bankMinDisable ? 'lightGrey' : 'white',
                                         display: 'contents',
                                       }}
                                     >
@@ -680,9 +621,7 @@ export default function NeedAvailable({ childId }) {
                                           <span
                                             style={{
                                               padding: 5,
-                                              color: !inCart
-                                                ? 'white'
-                                                : '#fbb563',
+                                              color: !inCart ? 'white' : '#fbb563',
                                             }}
                                           >
                                             {!inCart
@@ -719,11 +658,7 @@ export default function NeedAvailable({ childId }) {
                                 </LoadingButton>
                               )}
                             </Grid>
-                            <Grid
-                              item
-                              xs={10}
-                              sx={{ textAlign: 'center', marginBottom: 2 }}
-                            >
+                            <Grid item xs={10} sx={{ textAlign: 'center', marginBottom: 2 }}>
                               {(errorOneNeed || errorShaparakGate) && (
                                 <Message
                                   backError={errorOneNeed || errorShaparakGate}

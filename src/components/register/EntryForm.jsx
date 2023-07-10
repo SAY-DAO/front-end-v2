@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@mui/material';

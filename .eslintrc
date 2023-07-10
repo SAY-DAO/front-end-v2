@@ -7,11 +7,15 @@
   "settings": {
     "import/resolver": {
       "node": {
+<<<<<<< HEAD
         "extensions": [
           ".js",
           ".jsx",
           ".mdx"
         ]
+=======
+        "extensions": [".js", ".jsx", ".mdx"]
+>>>>>>> release
       }
     }
   },
@@ -21,6 +25,7 @@
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended"
   ],
+<<<<<<< HEAD
   "plugins": [
     "prettier",
     "react",
@@ -28,6 +33,13 @@
   ],
   "parser": "babel-eslint",
   "rules": {
+=======
+  "plugins": ["prettier", "react", "react-hooks"],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-unused-vars": "off",
+    "import/prefer-default-export": "off",
+>>>>>>> release
     "comma-dangle": "off",
     "import/no-unresolved": "off",
     "jsx-a11y/anchor-is-valid": "off",
@@ -43,9 +55,16 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
+<<<<<<< HEAD
     "react/jsx-no-bind":"off",
     "no-nested-ternary": "off",
     "react/destructuring-assignment": "off",
     "no-underscore-dangle":"off"
+=======
+    "react/jsx-no-bind": "off",
+    "no-nested-ternary": "off",
+    "react/destructuring-assignment": "off",
+    "no-underscore-dangle": "off"
+>>>>>>> release
   }
 }

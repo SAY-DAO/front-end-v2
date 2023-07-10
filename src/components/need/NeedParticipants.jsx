@@ -1,9 +1,10 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Typography, Grid, Chip, Stack, IconButton } from '@mui/material';
-import roles from '../../apis/roles';
+import roles from '../../apis/roles.json';
 import ParticipantModal from '../modals/ParticipantModal';
 
 export default function ChildFamily({ participants }) {
@@ -52,10 +53,7 @@ export default function ChildFamily({ participants }) {
                           `${t(roles.roles[member.user_role])}`
                         ) : (
                           <>
-                            <IconButton
-                              color="primary"
-                              onClick={() => handleModal('OTHERS')}
-                            >
+                            <IconButton color="primary" onClick={() => handleModal('OTHERS')}>
                               <InfoOutlinedIcon />
                             </IconButton>
                             <Typography variant="subtitle2" component="span">
@@ -65,10 +63,7 @@ export default function ChildFamily({ participants }) {
                         )}
                         {member.user_role === -2 && (
                           <>
-                            <IconButton
-                              color="primary"
-                              onClick={() => handleModal('SAY')}
-                            >
+                            <IconButton color="primary" onClick={() => handleModal('SAY')}>
                               <InfoOutlinedIcon />
                             </IconButton>
                             <Typography variant="subtitle2" component="span">
@@ -81,15 +76,11 @@ export default function ChildFamily({ participants }) {
                   }
                   size="medium"
                 />
-              )
+              ),
           )}
       </Stack>
       {modal && modalContent && (
-        <ParticipantModal
-          modal={modal}
-          setModal={setModal}
-          modalContent={modalContent}
-        />
+        <ParticipantModal modal={modal} setModal={setModal} modalContent={modalContent} />
       )}
     </Grid>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -23,10 +24,7 @@ import validateUsername from '../../inputsValidation/validateUsername';
 import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-import {
-  CHECK_USERNAME_RESET,
-  USER_REGISTER_RESET,
-} from '../../constants/main/userConstants';
+import { CHECK_USERNAME_RESET, USER_REGISTER_RESET } from '../../constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -66,18 +64,10 @@ const FinalForm = () => {
   const [messageInput, setMessageInput] = useState('');
 
   const checkUserName = useSelector((state) => state.checkUserName);
-  const {
-    loading: loadingCheck,
-    error: errorCheck,
-    success: successCheck,
-  } = checkUserName;
+  const { loading: loadingCheck, error: errorCheck, success: successCheck } = checkUserName;
 
   const userRegister = useSelector((state) => state.userRegister);
-  const {
-    loading: loadingRegister,
-    error: errorRegister,
-    success: successRegister,
-  } = userRegister;
+  const { loading: loadingRegister, error: errorRegister, success: successRegister } = userRegister;
 
   const userVerifyInfo = useSelector((state) => state.userVerifyInfo);
   const { verifyInfo } = userVerifyInfo;
@@ -237,27 +227,11 @@ const FinalForm = () => {
 
   const classes = useStyles();
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
+    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
       <Grid item xs={12}>
-        <img
-          src="/images/finalForm.svg"
-          className={classes.root}
-          alt="otp page"
-        />
+        <img src="/images/finalForm.svg" className={classes.root} alt="otp page" />
       </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        item
-      >
+      <Grid container direction="column" justifyContent="center" alignItems="center" item>
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -279,9 +253,7 @@ const FinalForm = () => {
                   }
                   label="userName"
                 />
-                <InputLabel htmlFor="userName">
-                  {t('placeholder.userName')}
-                </InputLabel>
+                <InputLabel htmlFor="userName">{t('placeholder.userName')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -303,9 +275,7 @@ const FinalForm = () => {
                   }
                   label="password"
                 />
-                <InputLabel htmlFor="password">
-                  {t('placeholder.password')}
-                </InputLabel>
+                <InputLabel htmlFor="password">{t('placeholder.password')}</InputLabel>
                 <PasswordStrengthBar
                   id="pass-checker"
                   password={password}
@@ -341,9 +311,7 @@ const FinalForm = () => {
                   }
                   label="repeatPassword"
                 />
-                <InputLabel htmlFor="repeatPassword">
-                  {t('placeholder.repeatPassword')}
-                </InputLabel>
+                <InputLabel htmlFor="repeatPassword">{t('placeholder.repeatPassword')}</InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Paper, CircularProgress } from '@mui/material';
 import { useTranslation, Trans } from 'react-i18next';
@@ -7,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import Back from '../components/Back';
 import Message from '../components/Message';
 import { CHILD_ONE_NEED_RECEIPT_RESET } from '../constants/childConstants';
-import { enDate, faDate } from '../date.js';
+import { enDate, faDate } from '../date';
 
 const useStyles = makeStyles({
   root: {
@@ -34,8 +35,7 @@ export default function Report() {
   const [paragraph, setParagraph] = useState('');
   const [title, setTitle] = useState('');
   const [socialWorkerCode, setSocialWorkerCode] = useState('');
-  const [socialWorkerGeneratedCode, setSocialWorkerGeneratedCode] =
-    useState('');
+  const [socialWorkerGeneratedCode, setSocialWorkerGeneratedCode] = useState('');
   const [swId, setSwId] = useState(false);
   const [showDkc, setShowDkc] = useState(false);
   const [dkcNumber, setDkcNumber] = useState('');
@@ -95,30 +95,32 @@ export default function Report() {
   useEffect(() => {
     if (oneNeed && theChild) {
       setSocialWorkerCode(
-        <Trans i18nKey="report.swId">
-          The social worker ID: {{ socialWorkerGeneratedCode }}
-        </Trans>
+        <Trans i18nKey="report.swId">The social worker ID: {{ socialWorkerGeneratedCode }}</Trans>,
       );
       setDkcNumber(<Trans i18nKey="report.dkc">DKC number: {{ dkc }}</Trans>);
-      switch (parseInt(status)) {
+      switch (parseInt(status, 10)) {
         case 2: // done (p2s2)
           setImage(t('report.p2s2.img'));
           setTitle(
             <Trans i18nKey="report.p2s2.title">
+<<<<<<< HEAD
               One of
               {{ childSayName }}
               ’s needs is completely done
             </Trans>
+=======
+              One of{{ childSayName }}’s needs is completely done
+            </Trans>,
+>>>>>>> release
           );
           setParagraph(
             <Trans i18nKey="report.p2s2.paragraph">
-              With your collaborations, all expenses for {{ needName }} has been
-              paid for on
+              With your collaborations, all expenses for {{ needName }} has been paid for on
               {{
                 date: formatDate(oneNeed.doneAt, t('assets.language')),
               }}
               .{{ childSayName }}
-            </Trans>
+            </Trans>,
           );
           break;
 
@@ -130,19 +132,21 @@ export default function Report() {
               setTitle(t('report.s3.title'));
               setParagraph(
                 <Trans i18nKey="report.s3.paragraph">
+<<<<<<< HEAD
                   The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
                   Tomans for purchasing
                   {{ childSayName }}
                   ’s {{ needName }}, has been transferred into the NGO’s bank
+=======
+                  The amount of {{ needCost: oneNeed.cost.toLocaleString() }} Tomans for purchasing
+                  {{ childSayName }}’s {{ needName }}, has been transferred into the NGO’s bank
+>>>>>>> release
                   account, on
                   {{
-                    date: formatDate(
-                      oneNeed.ngo_delivery_date,
-                      t('assets.language')
-                    ),
+                    date: formatDate(oneNeed.ngo_delivery_date, t('assets.language')),
                   }}
                   .
-                </Trans>
+                </Trans>,
               );
               break;
 
@@ -151,21 +155,23 @@ export default function Report() {
               setImage(t('report.p3.img'));
               setTitle(
                 <Trans i18nKey="report.p3.title">
+<<<<<<< HEAD
                   Purchase receipt for {{ childSayName }}
                   ’s needs
                 </Trans>
+=======
+                  Purchase receipt for {{ childSayName }}’s needs
+                </Trans>,
+>>>>>>> release
               );
               setParagraph(
                 <Trans i18nKey="report.p3.paragraph">
                   {{ needName }} is ordered for {{ childSayName }} on
                   {{
-                    date: formatDate(
-                      oneNeed.purchase_date,
-                      t('assets.language')
-                    ),
+                    date: formatDate(oneNeed.purchase_date, t('assets.language')),
                   }}
                   .
-                </Trans>
+                </Trans>,
               );
               break;
 
@@ -180,6 +186,7 @@ export default function Report() {
               setImage(t('report.s4.img'));
               setTitle(
                 <Trans i18nKey="report.s4.title">
+<<<<<<< HEAD
                   {{ childSayName }}
                   ’s {{ needName }} has been paid for
                 </Trans>
@@ -190,14 +197,20 @@ export default function Report() {
                   Tomans for
                   {{ childSayName }}
                   ’s {{ needName }}, has been paid by the NGO on
+=======
+                  {{ childSayName }}’s {{ needName }} has been paid for
+                </Trans>,
+              );
+              setParagraph(
+                <Trans i18nKey="report.s4.paragraph">
+                  The amount of {{ needCost: oneNeed.cost.toLocaleString() }} Tomans for
+                  {{ childSayName }}’s {{ needName }}, has been paid by the NGO on
+>>>>>>> release
                   {{
-                    date: formatDate(
-                      oneNeed.child_delivery_date,
-                      t('assets.language')
-                    ),
+                    date: formatDate(oneNeed.child_delivery_date, t('assets.language')),
                   }}
                   .
-                </Trans>
+                </Trans>,
               );
               break;
 
@@ -209,13 +222,10 @@ export default function Report() {
                 <Trans i18nKey="report.p4.paragraph">
                   On{' '}
                   {{
-                    date: formatDate(
-                      oneNeed.ngo_delivery_date,
-                      t('assets.language')
-                    ),
+                    date: formatDate(oneNeed.ngo_delivery_date, t('assets.language')),
                   }}{' '}
                   {{ needName }} is delivered to the NGO.
-                </Trans>
+                </Trans>,
               );
               break;
 
@@ -226,24 +236,25 @@ export default function Report() {
 
         case 5: // delivery to child (p5)
           setImage(t('report.p5.img'));
+<<<<<<< HEAD
           setTitle(
             <Trans i18nKey="report.p5.title">
               Product delivered to
               {{ childSayName }}
             </Trans>
           );
+=======
+          setTitle(<Trans i18nKey="report.p5.title">Product delivered to{{ childSayName }}</Trans>);
+>>>>>>> release
           setParagraph(
             <Trans i18nKey="report.p5.paragraph">
               {{ needName }} is delivered to
               {{ childSayName }} on
               {{
-                date: formatDate(
-                  oneNeed.child_delivery_date,
-                  t('assets.language')
-                ),
+                date: formatDate(oneNeed.child_delivery_date, t('assets.language')),
               }}
               .
-            </Trans>
+            </Trans>,
           );
           break;
         default:
@@ -299,23 +310,12 @@ export default function Report() {
                   </Grid>
                   <Grid item xs={8} sx={{ textAlign: 'center' }}>
                     <Typography variant="body1">{paragraph}</Typography>
-                    {swId && (
-                      <Typography variant="body2">
-                        {socialWorkerCode}
-                      </Typography>
-                    )}
-                    {showDkc && (
-                      <Typography variant="body2">{dkcNumber}</Typography>
-                    )}
+                    {swId && <Typography variant="body2">{socialWorkerCode}</Typography>}
+                    {showDkc && <Typography variant="body2">{dkcNumber}</Typography>}
                   </Grid>
                 </Grid>
               </Paper>
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid container direction="column" justifyContent="center" alignItems="center">
                 <a href="http://say.company" target="_blank" rel="noreferrer">
                   <img
                     src="https://sayapp.company/public/resources/img/logo-white.png"
@@ -328,11 +328,7 @@ export default function Report() {
           </Grid>
           <Grid item xs={10} sx={{ textAlign: 'center' }}>
             {errorOneNeed && (
-              <Message
-                backError={errorOneNeed}
-                variant="standard"
-                severity="error"
-              />
+              <Message backError={errorOneNeed} variant="standard" severity="error" />
             )}
           </Grid>
         </>
