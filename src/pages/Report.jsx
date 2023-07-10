@@ -103,15 +103,8 @@ export default function Report() {
           setImage(t('report.p2s2.img'));
           setTitle(
             <Trans i18nKey="report.p2s2.title">
-<<<<<<< HEAD
-              One of
-              {{ childSayName }}
-              ’s needs is completely done
-            </Trans>
-=======
               One of{{ childSayName }}’s needs is completely done
             </Trans>,
->>>>>>> release
           );
           setParagraph(
             <Trans i18nKey="report.p2s2.paragraph">
@@ -132,15 +125,8 @@ export default function Report() {
               setTitle(t('report.s3.title'));
               setParagraph(
                 <Trans i18nKey="report.s3.paragraph">
-<<<<<<< HEAD
-                  The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
-                  Tomans for purchasing
-                  {{ childSayName }}
-                  ’s {{ needName }}, has been transferred into the NGO’s bank
-=======
                   The amount of {{ needCost: oneNeed.cost.toLocaleString() }} Tomans for purchasing
                   {{ childSayName }}’s {{ needName }}, has been transferred into the NGO’s bank
->>>>>>> release
                   account, on
                   {{
                     date: formatDate(oneNeed.ngo_delivery_date, t('assets.language')),
@@ -155,14 +141,8 @@ export default function Report() {
               setImage(t('report.p3.img'));
               setTitle(
                 <Trans i18nKey="report.p3.title">
-<<<<<<< HEAD
-                  Purchase receipt for {{ childSayName }}
-                  ’s needs
-                </Trans>
-=======
                   Purchase receipt for {{ childSayName }}’s needs
                 </Trans>,
->>>>>>> release
               );
               setParagraph(
                 <Trans i18nKey="report.p3.paragraph">
@@ -186,18 +166,6 @@ export default function Report() {
               setImage(t('report.s4.img'));
               setTitle(
                 <Trans i18nKey="report.s4.title">
-<<<<<<< HEAD
-                  {{ childSayName }}
-                  ’s {{ needName }} has been paid for
-                </Trans>
-              );
-              setParagraph(
-                <Trans i18nKey="report.s4.paragraph">
-                  The amount of {{ needCost: oneNeed.cost.toLocaleString() }}{' '}
-                  Tomans for
-                  {{ childSayName }}
-                  ’s {{ needName }}, has been paid by the NGO on
-=======
                   {{ childSayName }}’s {{ needName }} has been paid for
                 </Trans>,
               );
@@ -205,7 +173,6 @@ export default function Report() {
                 <Trans i18nKey="report.s4.paragraph">
                   The amount of {{ needCost: oneNeed.cost.toLocaleString() }} Tomans for
                   {{ childSayName }}’s {{ needName }}, has been paid by the NGO on
->>>>>>> release
                   {{
                     date: formatDate(oneNeed.child_delivery_date, t('assets.language')),
                   }}
@@ -236,16 +203,7 @@ export default function Report() {
 
         case 5: // delivery to child (p5)
           setImage(t('report.p5.img'));
-<<<<<<< HEAD
-          setTitle(
-            <Trans i18nKey="report.p5.title">
-              Product delivered to
-              {{ childSayName }}
-            </Trans>
-          );
-=======
           setTitle(<Trans i18nKey="report.p5.title">Product delivered to{{ childSayName }}</Trans>);
->>>>>>> release
           setParagraph(
             <Trans i18nKey="report.p5.paragraph">
               {{ needName }} is delivered to

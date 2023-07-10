@@ -1,18 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD
-import {
-  Typography,
-  Grid,
-  Avatar,
-  Card,
-  CardActionArea,
-  AvatarGroup,
-} from '@mui/material';
-=======
 import { Typography, Grid, Avatar, Card, CardActionArea, AvatarGroup } from '@mui/material';
->>>>>>> release
 import { makeStyles } from '@mui/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useTranslation } from 'react-i18next';

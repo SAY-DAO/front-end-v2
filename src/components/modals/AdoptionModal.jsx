@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
-<<<<<<< HEAD
-import { Box, Grid, Link, Modal } from '@mui/material';
-=======
 import { Box, Grid, Link, Modal, CircularProgress } from '@mui/material';
->>>>>>> release
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-<<<<<<< HEAD
-import { CircularProgress } from '@mui/material';
-import {
-  joinVirtualFamily,
-  acceptInvitation,
-} from '../../actions/familyAction';
-=======
 import { joinVirtualFamily, acceptInvitation } from '../../actions/familyAction';
->>>>>>> release
 import { fetchMyHome } from '../../actions/main/homeAction';
 
 const style = {
@@ -71,7 +59,6 @@ export default function AdoptionModal({
   const {
     loading: loadingAcceptInvite,
     success: successAcceptInvite,
-    error: errorAcceptInvite,
   } = acceptInvite;
 
   const myHome = useSelector((state) => state.myHome);

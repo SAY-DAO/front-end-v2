@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -9,18 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-<<<<<<< HEAD
-import roles from '../../apis/roles';
-=======
 import roles from '../../apis/roles.json';
->>>>>>> release
 import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';
 import PrevRoleModal from '../modals/PrevRoleModal';
 import CannotBeMemberModal from '../modals/CannotBeMemberModal';
 import TakenRoleModal from '../modals/TakenRoleModal';
 import ChildFamily from '../child/ChildFamily';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../constants/childConstants';
 import AvailableRoles from './AvailableRoles';
 
 const useStyles = makeStyles((theme) => ({

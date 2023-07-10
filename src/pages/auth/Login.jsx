@@ -17,7 +17,6 @@ import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { fetchUserDetails, login } from '../../actions/userAction';
 import {
-  USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
 } from '../../constants/main/userConstants';

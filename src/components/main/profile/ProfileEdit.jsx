@@ -1,18 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import {
-  Grid,
-  Avatar,
-  Typography,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
-=======
 import { Grid, Avatar, Typography, IconButton, CircularProgress } from '@mui/material';
->>>>>>> release
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';

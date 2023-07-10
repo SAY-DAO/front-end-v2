@@ -2,10 +2,6 @@
 
 /.vscode
 /.yarn
-<<<<<<< HEAD
-=======
-.pnp.cjs
->>>>>>> release
 # dependencies
 /node_modules
 /.pnp

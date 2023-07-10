@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Stack, Chip, Grid, Typography, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
