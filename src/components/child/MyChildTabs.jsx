@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, Box, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import GoneModal from '../modals/GoneModal';
@@ -11,23 +10,10 @@ import ChildFamily from './ChildFamily';
 import ChildStats from './ChildStats';
 import ChildNeeds from './ChildNeeds';
 import ChildStory from './ChildStory';
-import { fetchChildNeeds } from '../../actions/childAction';
+import { fetchChildNeeds } from '../../redux/actions/childAction';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    '& > *': {
-      margin: theme.spacing(0.5),
-      marginTop: theme.spacing(1),
-    },
-  },
-}));
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const classes = useStyles();
-
   return (
     <div
       role="tabpanel"
@@ -36,7 +22,21 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <div className={classes.root}>{children}</div>}
+      {value === index && (
+        <div
+          className={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            '& > *': {
+              margin: (theme) => theme.spacing(0.5),
+              marginTop: (theme) => theme.spacing(1),
+            },
+          }}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -54,11 +54,12 @@ function a11yProps(index) {
   };
 }
 
-export default function MyChildTabs({ theChild, isGone, setIsGone }) {
+export default function MyChildTabs({ theChild }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
 
+  const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
   const [needsData, setNeedsData] = useState([]);
@@ -138,18 +139,9 @@ export default function MyChildTabs({ theChild, isGone, setIsGone }) {
       ) : (
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              centered
-              sx={{ backgroundColor: 'white' }}
-            >
+            <Tabs value={value} onChange={handleChange} centered sx={{ backgroundColor: 'white' }}>
               <Tab
-                label={
-                  <Typography variant="subtitle2">
-                    {t('childPage.childTab.stats')}
-                  </Typography>
-                }
+                label={<Typography variant="subtitle2">{t('childPage.childTab.stats')}</Typography>}
                 {...a11yProps(0)}
               />
               <Tab
@@ -162,18 +154,12 @@ export default function MyChildTabs({ theChild, isGone, setIsGone }) {
               />
               <Tab
                 label={
-                  <Typography variant="subtitle2">
-                    {t('childPage.childTab.family')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('childPage.childTab.family')}</Typography>
                 }
                 {...a11yProps(2)}
               />
               <Tab
-                label={
-                  <Typography variant="subtitle2">
-                    {t('childPage.childTab.story')}
-                  </Typography>
-                }
+                label={<Typography variant="subtitle2">{t('childPage.childTab.story')}</Typography>}
                 {...a11yProps(3)}
               />
             </Tabs>
@@ -182,11 +168,7 @@ export default function MyChildTabs({ theChild, isGone, setIsGone }) {
             <ChildStats needsArray={needsData} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ChildNeeds
-              theChild={theChild}
-              needsArray={needsData}
-              setValue={setValue}
-            />
+            <ChildNeeds theChild={theChild} needsArray={needsData} setValue={setValue} />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <ChildFamily theChild={theChild} />

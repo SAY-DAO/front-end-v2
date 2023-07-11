@@ -1,31 +1,27 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Typography, Grid, FormControl, Divider, Paper } from '@mui/material';
-import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useHistory } from 'react-router';
 import NeedPageProduct from '../need/NeedPageProduct';
-import { changeCartBadgeNumber, updateBackEndCart } from '../../actions/main/cartAction';
+import { changeCartBadgeNumber, updateBackEndCart } from '../../redux/actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
+import { checkCartPayment, makeCartPayment } from '../../redux/actions/paymentAction';
 import Message from '../Message';
-import { CHECK_CART_PAYMENT_RESET, SHAPARAK_RESET } from '../../constants/paymentConstants';
+import { CHECK_CART_PAYMENT_RESET, SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
   CART_UPDATE_BACK_RESET,
-} from '../../constants/main/cartConstants';
+} from '../../redux/constants/main/cartConstants';
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { t } = useTranslation();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -272,6 +268,7 @@ export default function CartAccordion() {
           </AccordionSummary>
           <AccordionDetails sx={{ padding: 0, paddingTop: 2, paddingBottom: 1 }}>
             {childrenNeedObj[childId].items.map((item, index) => (
+              // eslint-disable-next-line react/no-array-index-key
               <Grid key={index} sx={{ marginTop: 1 }}>
                 <NeedPageProduct oneNeed={item} handleDelete={handleDelete} />
               </Grid>

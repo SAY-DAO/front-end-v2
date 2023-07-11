@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import i18next from 'i18next';
-import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeVerifyStep } from '../actions/userAction';
-import { USER_VERIFY_RESET } from '../constants/main/userConstants';
+import { changeVerifyStep } from '../redux/actions/userAction';
+import { USER_VERIFY_RESET } from '../redux/constants/main/userConstants';
 
 const Back = ({ step, to, isOrange, handleClickOverride, state }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // check for language on browser reload dir="" needs to change according to lang
   useEffect(() => {
-    const getLanguage = () =>
-      i18next.language || window.localStorage.i18nextLng;
+    const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
 
     if (document.getElementById('direction')) {
       const currentLang = getLanguage();
@@ -34,7 +32,7 @@ const Back = ({ step, to, isOrange, handleClickOverride, state }) => {
     if (!handleClickOverride) {
       dispatch(changeVerifyStep(step));
       dispatch({ type: USER_VERIFY_RESET });
-      history.push(to, state);
+      navigate(to, state);
     } else {
       handleClickOverride();
     }

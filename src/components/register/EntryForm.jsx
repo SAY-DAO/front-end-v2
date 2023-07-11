@@ -16,7 +16,7 @@ import {
   changeVerifyStep,
   verifyUser,
   checkContactBeforeVerify,
-} from '../../actions/userAction';
+} from '../../redux/actions/userAction';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
@@ -25,7 +25,7 @@ import Back from '../Back';
 import {
   CHECK_CONTACT_RESET,
   USER_VERIFY_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 

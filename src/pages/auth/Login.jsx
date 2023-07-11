@@ -1,25 +1,22 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import FormControl from '@mui/material/FormControl';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Link } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import queryString from 'query-string';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
-import { fetchUserDetails, login } from '../../actions/userAction';
+import { fetchUserDetails, login } from '../../redux/actions/userAction';
 import {
+  USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -35,17 +32,12 @@ const useStyles = makeStyles({
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { search } = useLocation();
-  const queryStringValue = queryString.parse(search);
+  const navigate = useNavigate();
   // eslint-disable-next-line no-restricted-globals
-  const redirect = queryStringValue.redirect
+  const redirect = location.search
     ? // eslint-disable-next-line no-restricted-globals
-      queryStringValue.redirect
+      location.search.split('redirect=')[1]
     : 'main/home';
-  const redirectQueryString = queryStringValue.redirect
-    ? `?redirect=${queryStringValue.redirect}`
-    : '';
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -54,13 +46,19 @@ const Login = () => {
   const [messageInput, setMessageInput] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, loading: loadingLogin, error: errorLogin, success: successLogin } = userLogin;
+  const {
+    userInfo,
+    loading: loadingLogin,
+    error: errorLogin,
+    success: successLogin,
+  } = userLogin;
 
   const userRegister = useSelector((state) => state.userRegister);
   const { success: successRegister } = userRegister;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { loading: loadingUserDetails, success: successUserDetails } = userDetails;
+  const { loading: loadingUserDetails, success: successUserDetails } =
+    userDetails;
 
   // loading button
   useEffect(() => {
@@ -83,9 +81,9 @@ const Login = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if ((successLogin || userInfo) && successUserDetails) {
-      history.push(`/${redirect}`);
+      navigate(`/${redirect}`);
     }
-  }, [history, redirect, successLogin, successUserDetails]);
+  }, [redirect, successLogin, successUserDetails]);
 
   // Message input for some status error (422)
   useEffect(() => {
@@ -110,12 +108,14 @@ const Login = () => {
     setUserName(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const classes = useStyles();
@@ -128,11 +128,17 @@ const Login = () => {
       maxWidth
       sx={{ marginTop: 34 }}
     >
-      <Back to="/intro" isOrange />
+      <Back to="/auth/intro" isOrange />
       <Grid item xs={12}>
         <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
-      <Grid container direction="column" justifyContent="center" alignItems="center" item>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        item
+      >
         <FormControl onSubmit={handleSubmit} variant="outlined">
           <form>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -156,7 +162,9 @@ const Login = () => {
                   onChange={handleChangePassword}
                   label="password"
                 />
-                <InputLabel htmlFor="password">{t('placeholder.password')}</InputLabel>
+                <InputLabel htmlFor="password">
+                  {t('placeholder.password')}
+                </InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>
@@ -176,11 +184,11 @@ const Login = () => {
           <Typography variant="subtitle2">
             <Trans i18nKey="comeback.noAccount">
               Don't have an account yet?
-              <Link to={`/register${redirectQueryString}`} className="link" />
+              <Link to="/auth/register" className="link" />
             </Trans>
           </Typography>
           <Typography variant="subtitle2">
-            <Link to="/forgot-password" className="link">
+            <Link to="/auth/forgot-password" className="link">
               {t('forgot-password.title')}
             </Link>
           </Typography>

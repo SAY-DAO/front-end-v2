@@ -1,3 +1,3 @@
 const standalone = () => matchMedia('(display-mode: standalone)').matches;
 
-export { standalone };
+export default standalone ;

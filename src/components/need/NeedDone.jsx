@@ -1,8 +1,6 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Avatar, Box, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,10 +8,10 @@ import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import NeedStepper from './NeedStepper';
-import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../constants/childConstants';
+import { CHILD_ONE_NEED_RECEIPT_RESET } from '../../redux/constants/childConstants';
 import NeedParticipants from './NeedParticipants';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
-import { fetchChildNeeds, fetchMyChildById } from '../../actions/childAction';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
+import { fetchChildNeeds, fetchMyChildById } from '../../redux/actions/childAction';
 
 const useStyles = makeStyles({
   root: {
@@ -67,21 +65,14 @@ const useStyles = makeStyles({
 export default function NeedDone({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
 
-  const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const myChild = useSelector((state) => state.myChild);
   const { theChild } = myChild;
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
-  const {
-    oneNeed,
-    loading: loadingOneNeed,
-    error: errorOneNeed,
-    success: successOneNeed,
-  } = ChildOneNeed;
+  const childOneNeed = useSelector((state) => state.childOneNeed);
+  const { oneNeed, loading: loadingOneNeed, error: errorOneNeed } = childOneNeed;
 
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RECEIPT_RESET });
@@ -96,15 +87,6 @@ export default function NeedDone({ childId }) {
       setIsLoading(false);
     }
   }, [loadingOneNeed]);
-
-  // disable button
-  useEffect(() => {
-    if (successOneNeed) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [successOneNeed]);
 
   // When payment is done we land here with an interval from NeedAvailable.jsx
   useEffect(() => {

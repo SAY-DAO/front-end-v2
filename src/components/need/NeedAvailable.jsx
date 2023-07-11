@@ -1,10 +1,8 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import {
   Grid,
   Typography,
   Avatar,
-  Box,
   Divider,
   FormControlLabel,
   FormGroup,
@@ -14,25 +12,24 @@ import {
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 import Back from '../Back';
 import Message from '../Message';
 import NeedPageTop from './NeedPageTop';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { addToCart } from '../../actions/main/cartAction';
-import { makePayment } from '../../actions/paymentAction';
+import { addToCart } from '../../redux/actions/main/cartAction';
+import { makePayment } from '../../redux/actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
-import { fetchChildOneNeed, fetchMyChildById } from '../../actions/childAction';
-import { fetchUserDetails } from '../../actions/userAction';
-import { SHAPARAK_RESET } from '../../constants/paymentConstants';
+import { fetchChildOneNeed, fetchMyChildById } from '../../redux/actions/childAction';
+import { fetchUserDetails } from '../../redux/actions/userAction';
+import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 import NeedInfo from './NeedInfo';
 
 const useStyles = makeStyles({
@@ -87,8 +84,7 @@ const useStyles = makeStyles({
 export default function NeedAvailable({ childId }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -126,27 +122,27 @@ export default function NeedAvailable({ childId }) {
     error: errorShaparakGate,
   } = shaparakGate;
 
-  const ChildOneNeed = useSelector((state) => state.ChildOneNeed);
+  const childOneNeed = useSelector((state) => state.childOneNeed);
   const {
     oneNeed,
     loading: loadingOneNeed,
     error: errorOneNeed,
     success: successOneNeed,
-  } = ChildOneNeed;
+  } = childOneNeed;
 
   // login
   useEffect(() => {
     if (theChild && oneNeed) {
       dispatch(fetchUserDetails());
       if (errorUserDetails) {
-        history.push(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
+        navigate(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
-        history.push(`/child/${theChild.id}`);
+        navigate(`/child/${theChild.id}`);
       } else if (!successUserDetails) {
         dispatch(fetchUserDetails());
       }
     }
-  }, [errorUserDetails, history, oneNeed, theChild, successUserDetails, dispatch, errorOneNeed]);
+  }, [errorUserDetails, oneNeed, theChild, successUserDetails, errorOneNeed]);
 
   // loading button
   useEffect(() => {
@@ -330,13 +326,11 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
     dispatch(addToCart(theChild, oneNeed, amount));
   };
-  console.log(location);
-  console.log(history);
 
   // addToCard
   const handleContinueShop = (e) => {
     e.preventDefault();
-    history.push(`/child/${theChild.id}`, { childTab: 1 });
+    navigate(`/child/${theChild.id}`, { childTab: 1 });
   };
 
   const handlePayment = (e) => {
@@ -652,7 +646,7 @@ export default function NeedAvailable({ childId }) {
                                   disabled={isDisabled}
                                   loading={isLoading}
                                   sx={{ marginBottom: 4 }}
-                                  onClick={() => history.push('/main/cart')}
+                                  onClick={() => navigate('/main/cart')}
                                 >
                                   {t('button.goToCart')}
                                 </LoadingButton>

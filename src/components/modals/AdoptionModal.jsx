@@ -5,10 +5,10 @@ import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { joinVirtualFamily, acceptInvitation } from '../../actions/familyAction';
-import { fetchMyHome } from '../../actions/main/homeAction';
+import { joinVirtualFamily, acceptInvitation } from '../../redux/actions/familyAction';
+import fetchMyHome from '../../redux/actions/main/homeAction';
 
 const style = {
   position: 'absolute',
@@ -36,7 +36,7 @@ export default function AdoptionModal({
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState();
@@ -56,10 +56,7 @@ export default function AdoptionModal({
   const { loading: loadingJoin, success: successJoin } = joinResult;
 
   const acceptInvite = useSelector((state) => state.acceptInvite);
-  const {
-    loading: loadingAcceptInvite,
-    success: successAcceptInvite,
-  } = acceptInvite;
+  const { loading: loadingAcceptInvite, success: successAcceptInvite } = acceptInvite;
 
   const myHome = useSelector((state) => state.myHome);
   const { success: successHome } = myHome;
@@ -72,9 +69,9 @@ export default function AdoptionModal({
       localStorage.removeItem('selectedRole');
     }
     if ((successJoin || successAcceptInvite) && successHome) {
-      history.push('/main/home');
+      navigate('/main/home');
     }
-  }, [successJoin, successAcceptInvite, successHome, dispatch, history]);
+  }, [successJoin, successAcceptInvite, successHome, dispatch, navigate]);
 
   // modal contents when selecting a role
   useEffect(() => {
@@ -116,7 +113,7 @@ export default function AdoptionModal({
         dispatch(joinVirtualFamily(selectedRole, familyId));
       }
     } else if (!userInfo && !successLogin) {
-      history.push('/register?redirect=search-result');
+      navigate('/register?redirect=search-result');
     }
   };
 

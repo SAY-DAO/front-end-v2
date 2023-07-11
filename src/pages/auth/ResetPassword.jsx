@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -8,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -19,11 +18,11 @@ import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
 import Back from '../../components/Back';
-import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
+import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 
 const ResetPassword = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [validateErr, setValidateErr] = useState('');
@@ -35,7 +34,11 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userResetPass = useSelector((state) => state.userResetPass);
-  const { loading: loadingReset, error: errorReset, success: successReset } = userResetPass;
+  const {
+    loading: loadingReset,
+    error: errorReset,
+    success: successReset,
+  } = userResetPass;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -47,9 +50,9 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      history.push('/login?redirect=setpassword');
+      navigate('/auth/login?redirect=setpassword');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
   // loading button
   useEffect(() => {
@@ -62,19 +65,32 @@ const ResetPassword = () => {
 
   // disable button
   useEffect(() => {
-    if (passwordErr || repeatPasswordErr || errorReset || !password || !repeatPassword) {
+    if (
+      passwordErr ||
+      repeatPasswordErr ||
+      errorReset ||
+      !password ||
+      !repeatPassword
+    ) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [password, repeatPassword, passwordErr, repeatPasswordErr, errorReset, successReset]);
+  }, [
+    password,
+    repeatPassword,
+    passwordErr,
+    repeatPasswordErr,
+    errorReset,
+    successReset,
+  ]);
 
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
     if (!userInfo && !successLogin) {
-      history.push('/login?redirect=setpassword');
+      navigate('/auth/login?redirect=setpassword');
     }
-  }, [userInfo, successLogin, history]);
+  }, [userInfo, successLogin]);
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
@@ -115,7 +131,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (successReset) {
-      history.push('/main/profile/settings');
+      navigate('/main/profile/settings');
     }
   }, [successReset]);
 
@@ -135,7 +151,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      maxWidth
+    >
       <Back to="/main/profile/settings" isOrange />
 
       <Grid
@@ -146,7 +168,10 @@ const ResetPassword = () => {
         item
         sx={{ direction: 'ltr', marginTop: 10 }}
       >
-        <Typography variant="h5" sx={{ marginBottom: 6, fontWeight: 'lighter' }}>
+        <Typography
+          variant="h5"
+          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
+        >
           {t('change-password.title')}
         </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
@@ -170,7 +195,9 @@ const ResetPassword = () => {
                   }
                   label="password"
                 />
-                <InputLabel htmlFor="password">{t('placeholder.password')}</InputLabel>
+                <InputLabel htmlFor="password">
+                  {t('placeholder.password')}
+                </InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4 }}>
@@ -192,7 +219,9 @@ const ResetPassword = () => {
                   }
                   label="repeatPassword"
                 />
-                <InputLabel htmlFor="repeatPassword">{t('placeholder.repeatPassword')}</InputLabel>
+                <InputLabel htmlFor="repeatPassword">
+                  {t('placeholder.repeatPassword')}
+                </InputLabel>
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ marginTop: 4, textAlign: 'center' }}>

@@ -1,20 +1,19 @@
 /* eslint-disable consistent-return */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Divider, Typography } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { LoadingButton } from '@mui/lab';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { forgotPassword } from '../../actions/userAction';
+import { forgotPassword } from '../../redux/actions/userAction';
 import Message from '../../components/Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../../components/Back';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
-import { USER_FORGOT_PASSWORD_RESET } from '../../constants/main/userConstants';
+import { USER_FORGOT_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -132,7 +131,7 @@ const ForgotPassword = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/login" isOrange />
+      <Back to="/auth/login" isOrange />
       <Grid
         container
         direction="column"

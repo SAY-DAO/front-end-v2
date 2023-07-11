@@ -7,18 +7,15 @@ import { IconButton, StepLabel } from '@mui/material/';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/styles';
-import StepConnector, {
-  stepConnectorClasses,
-} from '@mui/material/StepConnector';
+import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { fetchOneNeedReceipts } from '../../actions/childAction';
+import { fetchOneNeedReceipts } from '../../redux/actions/childAction';
 
 const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
   width: 40,
   height: 40,
@@ -27,13 +24,11 @@ const ColorLibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   ...(ownerState.active && {
-    backgroundImage:
-      'linear-gradient( 136deg, #f2a367 0%, #f2a367 50%, #f2a367 100%)',
+    backgroundImage: 'linear-gradient( 136deg, #f2a367 0%, #f2a367 50%, #f2a367 100%)',
     boxShadow: '2px 6px 10px 2px rgba(0,0,0,.25)',
   }),
   ...(ownerState.completed && {
-    backgroundImage:
-      'linear-gradient( 136deg, #f2a367 0%,#f2a367 50%, #f2a367 100%)',
+    backgroundImage: 'linear-gradient( 136deg, #f2a367 0%,#f2a367 50%, #f2a367 100%)',
   }),
 }));
 
@@ -43,21 +38,18 @@ const ColorLibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,#f2a367 0%,#f2a367 50%,#f2a367 100%)',
+      backgroundImage: 'linear-gradient( 95deg,#f2a367 0%,#f2a367 50%,#f2a367 100%)',
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        'linear-gradient( 95deg,#f2a367 0%,#f2a367 50%,#f2a367 100%)',
+      backgroundImage: 'linear-gradient( 95deg,#f2a367 0%,#f2a367 50%,#f2a367 100%)',
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
     height: 1,
     border: 0,
-    backgroundColor:
-      theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
     borderRadius: 1,
   },
 }));
@@ -68,11 +60,7 @@ function ColorLibStepIcon(props) {
   const icons = {
     1: (
       <IconButton>
-        <img
-          src="/images/icons/doneNeeds/hand.svg"
-          alt="hand icon"
-          style={{ width: '28px' }}
-        />
+        <img src="/images/icons/doneNeeds/hand.svg" alt="hand icon" style={{ width: '28px' }} />
       </IconButton>
     ),
     2: (
@@ -86,28 +74,17 @@ function ColorLibStepIcon(props) {
     ),
     3: (
       <IconButton>
-        <img
-          src="/images/icons/doneNeeds/ngo.svg"
-          alt="ngo icon"
-          style={{ width: '28px' }}
-        />
+        <img src="/images/icons/doneNeeds/ngo.svg" alt="ngo icon" style={{ width: '28px' }} />
       </IconButton>
     ),
     4: (
       <IconButton>
-        <img
-          src="/images/icons/doneNeeds/child.svg"
-          alt="child icon"
-          style={{ width: '28px' }}
-        />
+        <img src="/images/icons/doneNeeds/child.svg" alt="child icon" style={{ width: '28px' }} />
       </IconButton>
     ),
   };
   return (
-    <ColorLibStepIconRoot
-      ownerState={{ completed, active }}
-      className={className}
-    >
+    <ColorLibStepIconRoot ownerState={{ completed, active }} className={className}>
       {icons[String(props.icon)]}
     </ColorLibStepIconRoot>
   );
@@ -121,7 +98,7 @@ ColorLibStepIcon.propTypes = {
 };
 
 export default function HorizontalNonLinearStepper({ oneNeed }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -131,8 +108,8 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   const [progress, setProgress] = useState([t('needStatus.0')]);
   const [steps, setSteps] = useState([]);
 
-  const ChildOneNeedReceipt = useSelector((state) => state.ChildOneNeedReceipt);
-  const { success } = ChildOneNeedReceipt;
+  const childOneNeedReceipt = useSelector((state) => state.childOneNeedReceipt);
+  const { success } = childOneNeedReceipt;
 
   // set steps for product or service
   useEffect(() => {
@@ -140,12 +117,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
       dispatch(fetchOneNeedReceipts(oneNeed.id));
     }
     if (oneNeed && oneNeed.type === 1) {
-      setSteps([
-        t('needStatus.0'),
-        t('needStatus.p1'),
-        t('needStatus.p2'),
-        t('needStatus.p3'),
-      ]);
+      setSteps([t('needStatus.0'), t('needStatus.p1'), t('needStatus.p2'), t('needStatus.p3')]);
     } else {
       setSteps([t('needStatus.0'), t('needStatus.s1'), t('needStatus.s2')]);
     }
@@ -192,7 +164,7 @@ export default function HorizontalNonLinearStepper({ oneNeed }) {
   };
 
   const handleReceiptPage = () => {
-    history.push(`/child/needs/needPage/report/${chosen + 2}`); // index + 2
+    navigate(`/child/needs/needPage/report/${chosen + 2}`); // index + 2
   };
   return (
     <Box sx={{ width: '100%' }}>
