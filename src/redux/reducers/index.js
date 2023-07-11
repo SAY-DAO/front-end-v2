@@ -28,6 +28,7 @@ import {
   cartBadgeReducer,
 } from './cartReducer';
 import {
+  invitationReducer,
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
@@ -57,6 +58,7 @@ export default combineReducers({
   childByToken: childByTokenReducer,
   joinResult: joinVirtualFamilyReducer,
   leftFamily: LeaveVirtualFamilyReducer,
+  invite: invitationReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
   allNeeds: allNeedsReducer,

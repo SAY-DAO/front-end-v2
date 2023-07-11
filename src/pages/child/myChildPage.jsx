@@ -1,11 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import {
-  Grid,
-  Typography,
-  CircularProgress,
-  Divider,
-} from '@mui/material';
+import { Grid, Typography, CircularProgress, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
@@ -18,11 +13,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Message from '../../components/Message';
 import MyChildTabs from '../../components/child/MyChildTabs';
 import { fetchMyChildById } from '../../redux/actions/childAction';
-import fetchMyHome  from '../../redux/actions/main/homeAction';
+import fetchMyHome from '../../redux/actions/main/homeAction';
 import Back from '../../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../../redux/constants/childConstants';
 import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal';
 import { fetchUserDetails } from '../../redux/actions/userAction';
+import GrowFamilyModal from '../../components/modals/GrowFamilyModal';
 
 const ITEM_HEIGHT = 20;
 
@@ -34,8 +30,10 @@ const MyChildPage = () => {
 
   const [weatherDisplay, setWeatherDisplay] = useState(false);
   const [myChildrenIdList, setMyChildrenIdList] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null); // Menu
+  const [leaveOpen, setLeaveOpen] = useState(false);
+  const [growOpen, setGrowOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null); // Menu
+  const [isGone, setIsGone] = useState(false);
   const open = Boolean(anchorEl); // Menu
 
   const myHome = useSelector((state) => state.myHome);
@@ -91,11 +89,7 @@ const MyChildPage = () => {
   // when the child is not adopted by user and route to the child's page
   useEffect(() => {
     dispatch({ type: CHILD_ONE_NEED_RESET });
-    if (
-      successMyChild &&
-      myChildrenIdList &&
-      !myChildrenIdList.includes(Number(childId))
-    ) {
+    if (successMyChild && myChildrenIdList && !myChildrenIdList.includes(Number(childId))) {
       navigate('/main/home');
     } else {
       dispatch(fetchMyChildById(childId));
@@ -114,8 +108,7 @@ const MyChildPage = () => {
   // clear all intervals
   useEffect(() => {
     // Get a reference to the last interval + 1
-    const intervalId = window.setInterval(() => {},
-    Number.MAX_SAFE_INTEGER);
+    const intervalId = window.setInterval(() => {}, Number.MAX_SAFE_INTEGER);
     // Clear any timeout/interval up to that id
     for (let i = 1; i < intervalId; i += 1) {
       window.clearInterval(i);
@@ -143,7 +136,11 @@ const MyChildPage = () => {
   };
 
   const handleLeave = () => {
-    setMenuOpen(true);
+    setLeaveOpen(true);
+  };
+
+  const handleGrow = () => {
+    setGrowOpen(true);
   };
 
   return (
@@ -195,8 +192,8 @@ const MyChildPage = () => {
                 }}
               >
                 <MenuItem
-                  disabled
-                  onClick={handleClose}
+                  disabled={isGone}
+                  onClick={handleGrow}
                   sx={{ minHeight: '15px', margin: 1 }}
                 >
                   <Typography variant="body2" sx={{ color: '#fe8896' }}>
@@ -206,10 +203,7 @@ const MyChildPage = () => {
                 <Grid item xs={12}>
                   <Divider sx={{ width: '80%', margin: 'auto' }} />
                 </Grid>
-                <MenuItem
-                  onClick={handleLeave}
-                  sx={{ minHeight: '20px', margin: 1 }}
-                >
+                <MenuItem onClick={handleLeave} sx={{ minHeight: '20px', margin: 1 }}>
                   <Typography variant="body2" sx={{ color: '#fe8896' }}>
                     {t('childPage.more.leaveFamily')}
                   </Typography>
@@ -277,22 +271,13 @@ const MyChildPage = () => {
         </Grid>
       )}
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
-        {errorMyChild && (
-          <Message
-            backError={errorMyChild}
-            variant="standard"
-            severity="error"
-          />
-        )}
+        {errorMyChild && <Message backError={errorMyChild} variant="standard" severity="error" />}
       </Grid>
       {theChild && (
-        <LeaveFamilyModal
-          setMenuOpen={setMenuOpen}
-          menuOpen={menuOpen}
-          theChild={theChild}
-          // role={userRole}
-          // rolesRelative={`${t(roles.rolesRelative[userRole])}`}
-        />
+        <LeaveFamilyModal setMenuOpen={setLeaveOpen} menuOpen={leaveOpen} theChild={theChild} />
+      )}
+      {theChild && (
+        <GrowFamilyModal setMenuOpen={setGrowOpen} menuOpen={growOpen} theChild={theChild} />
       )}
     </>
   );
