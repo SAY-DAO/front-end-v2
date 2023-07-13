@@ -1,6 +1,4 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable no-undef */
-const staticCacheName = 'SAY-v2.0.0-beta';
+const staticCacheName = 'SAY-DAPP-v2.0.0';
 const urlsToCache = [
   '/static/js/main.chunk.js',
   '/static/js/0.chunk.js',
@@ -46,54 +44,51 @@ const self = this;
 
 // install Service Worker and save cache to Application - Cache
 self.addEventListener('install', (event) => {
-  // console.log('Attempting to install service worker and cache static assets');
+  console.log('Service Worker: Installing service worker');
+  self.skipWaiting(); // to take over old service worker without waiting for session to be finishes e,g: opening new tab
+
   event.waitUntil(
-    caches.open(staticCacheName).then((cache) =>
-      // console.log('Opened cache');
-      cache.addAll(urlsToCache)
-    )
+    caches
+      .open(staticCacheName)
+      .then((cache) => {
+        console.log('Service Worker: Caching');
+        cache.addAll(urlsToCache);
+      })
+      .catch((e) => console.log({e})),
   );
 });
 
-// Serve files from the cache
+// activate
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker: Activating new service worker...');
+  const cacheAllowlist = [staticCacheName];
+
+  // remove unwanted caches
+  event.waitUntil(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheAllowlist.indexOf(cacheName) === -1) {
+            console.log('Service Worker: Deleting old service worker...');
+            return caches.delete(cacheName);
+          }
+        }),
+      ),
+    ),
+  );
+});
+
+// fetch
 self.addEventListener('fetch', (event) => {
-  // console.log('Fetch event for ', event.request.url);
+  console.log('Service Worker: Fetching ', event.request.url);
   event.respondWith(
     caches
       .match(event.request)
       .then((response) => {
-        // if (response) {
-        //   console.log('Found ', event.request.url, ' in cache');
-        //   return response;
-        // }
-        // If fails, we send the request to the network.
-        console.log('Network request for ', event.request.url);
-        return fetch(event.request).then((res) =>
-          // TODO 5 - Respond with custom 404 page
-          caches.open(staticCacheName).then((cache) => {
-            cache.put(event.request.url, res.clone());
-            return res;
-          })
-        );
-      })
-      .catch((error) => {
-        // Respond with custom offline page
-        console.log('offline error ', error);
-        // return caches.match('offline.html'); // will ineterfere with action error responses
-      })
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  console.log('Fetch event for ', event.request.url);
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        // if (response) {
-        //   console.log('Found ', event.request.url, ' in cache');
-        //   return response;
-        // }
+        if (response) {
+          console.log('Found ', event.request.url, ' in cache');
+          return response;
+        }
         console.log('Network request for ', event.request.url);
         return fetch(event.request);
 
@@ -102,25 +97,6 @@ self.addEventListener('fetch', (event) => {
       .catch((error) => {
         console.log(error);
         // TODO 6 - Respond with custom offline page
-      })
-  );
-});
-
-// Delete outdated caches
-self.addEventListener('activate', (event) => {
-  console.log('Activating new service worker...');
-
-  const cacheAllowlist = [staticCacheName];
-
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheAllowlist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      )
-    )
+      }),
   );
 });

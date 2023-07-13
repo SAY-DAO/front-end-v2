@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 import { fetchUserDetails } from '../../redux/actions/userAction';
 import WalletModal from '../../components/modals/WalletModal';
@@ -65,7 +65,7 @@ const Profile = () => {
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${theUser.firstName} ${theUser.lastName}`}</Typography>
-                {/* <Grid item xs>
+                <Grid item xs>
                   <Link to="/main/profile/edit">
                     <Typography
                       component="span"
@@ -76,7 +76,7 @@ const Profile = () => {
                       {t('profile.editProfile.title')}
                     </Typography>
                   </Link>
-                </Grid> */}
+                </Grid>
               </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton
