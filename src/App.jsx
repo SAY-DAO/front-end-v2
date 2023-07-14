@@ -9,8 +9,10 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
+import { WagmiConfig } from 'wagmi';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
+import { config } from './wallet';
 
 function App() {
   const routing = useRoutes(Router);
@@ -26,31 +28,33 @@ function App() {
     stylisPlugins: [rtlPlugin],
   });
   const theTheme = ThemeSettings();
-  
+
   return (
-    <CacheProvider value={cacheRtl}>
-      <StylesProvider jss={jss}>
-        <div id="direction" dir="">
-          <CssBaseline />
-          <Container
-            sx={{
-              margin: 'auto',
-              paddingLeft: '0px !important',
-              paddingRight: '0px !important',
-            }}
-            maxWidth="lg"
-          >
-            <ThemeProvider theme={theTheme}>
-              <CssBaseline />
-              {/* hint: if on useEffect will Dispatch twice to check for errors */}
-              {/* <React.StrictMode> */}
-              {routing}
-              {/* </React.StrictMode> */}
-            </ThemeProvider>
-          </Container>
-        </div>
-      </StylesProvider>
-    </CacheProvider>
+    <WagmiConfig config={config}>
+      <CacheProvider value={cacheRtl}>
+        <StylesProvider jss={jss}>
+          <div id="direction" dir="">
+            <CssBaseline />
+            <Container
+              sx={{
+                margin: 'auto',
+                paddingLeft: '0px !important',
+                paddingRight: '0px !important',
+              }}
+              maxWidth="lg"
+            >
+              <ThemeProvider theme={theTheme}>
+                <CssBaseline />
+                {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                {/* <React.StrictMode> */}
+                {routing}
+                {/* </React.StrictMode> */}
+              </ThemeProvider>
+            </Container>
+          </div>
+        </StylesProvider>
+      </CacheProvider>
+    </WagmiConfig>
   );
 }
 

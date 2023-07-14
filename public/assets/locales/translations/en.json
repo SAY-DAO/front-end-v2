@@ -183,7 +183,8 @@
     "search": "Search",
     "profile": "Profile",
     "notifications": "Notifications",
-    "cart": "Cart"
+    "cart": "Cart",
+    "dao": "DAO"
   },
   "home": {
     "title": "Children"

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -72,17 +73,17 @@ export default function DAO() {
       </Box>
       <TabPanel value={value} index={0}>
         <Grid>
-          <DaoPortal />
+          {/* <DaoPortal /> */}
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Grid>
-          <DaoMileStone />
+          {/* <DaoMileStone /> */}
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Grid>
-          <DaoMint />
+          {/* <DaoMint /> */}
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>

@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { experimentalStyled as styled } from '@mui/material/styles';
-import { Paper, Box } from '@mui/material';
+import { Paper, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
@@ -41,8 +41,8 @@ export default function AppBarBottom() {
   const myHome = useSelector((state) => state.myHome);
   const { children, success: successHome, loading: loadingHome, error: errorHome } = myHome;
 
-  // const themeOptions = useSelector((state) => state.themeOptions);
-  // const { activeMode } = themeOptions;
+  const themeOptions = useSelector((state) => state.themeOptions);
+  const { activeMode } = themeOptions;
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
@@ -240,7 +240,7 @@ export default function AppBarBottom() {
               />
             }
           />
-          {/* <BottomNavigationAction
+          <BottomNavigationAction
             value="dao"
             label={path === '/main/dao' && t('userLayout.dao')}
             sx={{
@@ -257,10 +257,10 @@ export default function AppBarBottom() {
             }}
             icon={
               path !== '/main/dao' && (
-                <Typography variant="subtitle2">DAO</Typography>
+                <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
               )
             }
-          /> */}
+          />
         </BottomNavigation>
       </Paper>
     </Box>
