@@ -5,8 +5,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import DaoDocs from '../../components/DAO/DaoDocs';
 import DaoPortal from '../../components/DAO/DaoPortal';
 import DaoMint from '../../components/DAO/DaoMint';
@@ -44,7 +45,12 @@ function a11yProps(index) {
 
 export default function DAO() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [value, setValue] = useState(0);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, success: successLogin } = userLogin;
 
   useEffect(() => {
     dispatch(setActiveMode('dark'));
@@ -53,6 +59,12 @@ export default function DAO() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      navigate('/auth/login?redirect=main/dao');
+    }
+  }, [userInfo, successLogin]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -60,11 +72,7 @@ export default function DAO() {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Portal" {...a11yProps(0)} />
           <Tab label="MileStone" {...a11yProps(1)} />
           <Tab label="Mint" {...a11yProps(2)} />
@@ -72,19 +80,13 @@ export default function DAO() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Grid>
-          {/* <DaoPortal /> */}
-        </Grid>
+        <Grid>{/* <DaoPortal /> */}</Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Grid>
-          {/* <DaoMileStone /> */}
-        </Grid>
+        <Grid>{/* <DaoMileStone /> */}</Grid>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Grid>
-          {/* <DaoMint /> */}
-        </Grid>
+        <Grid>{/* <DaoMint /> */}</Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>
         <Grid>
