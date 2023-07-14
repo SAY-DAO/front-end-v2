@@ -1,6 +1,6 @@
 const staticCacheName = 'SAY-DAPP-v2.0.0';
 const urlsToCache = [
-  'static/js/bundle.js',
+  '/',
   'images/back_gray.svg',
   'images/back_orange.svg',
   'images/logo.png',
@@ -34,7 +34,7 @@ const urlsToCache = [
   'images/register.svg',
   'assets/locales/translations/fa.json',
   'assets/locales/translations/en.json',
-  'offline.html'
+  'offline.html',
 ];
 
 const self = this;
@@ -51,7 +51,7 @@ self.addEventListener('install', (event) => {
         console.log('Service Worker: Caching');
         cache.addAll(urlsToCache);
       })
-      .catch((e) => console.log({e})),
+      .catch((e) => console.log({ e })),
   );
 });
 
