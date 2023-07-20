@@ -1,98 +1,146 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-props-no-spreading */
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import DaoDocs from '../../components/DAO/DaoDocs';
-import DaoPortal from '../../components/DAO/DaoPortal';
-import DaoMint from '../../components/DAO/DaoMint';
-import DaoMileStone from '../../components/DAO/DaoMileStone';
-import { setActiveMode } from '../../redux/actions/themeAction';
+import React, { useState, useEffect } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Box, CardActionArea, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-export default function DAO() {
-  const dispatch = useDispatch();
+export default function Dao() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const [value, setValue] = useState(0);
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const [tabNumber, setTabNumber] = useState();
 
   useEffect(() => {
-    dispatch(setActiveMode('dark'));
-    return () => {
-      dispatch(setActiveMode('light'));
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!userInfo && !successLogin) {
-      navigate('/auth/login?redirect=main/dao');
+    if (tabNumber === 0) {
+      navigate('/main/dao/tabs/signature');
     }
-  }, [userInfo, successLogin]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    if (tabNumber === 1) {
+      navigate('/main/dao/tabs/mint');
+    }
+    if (tabNumber === 2) {
+      navigate('/main/dao/tabs/proposals');
+    }
+    if (tabNumber === 3) {
+      navigate('/main/dao/tabs/contribute');
+    }
+    if (tabNumber === 4) {
+      navigate('/main/dao/tabs/docs');
+    }
+  }, [tabNumber]);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Portal" {...a11yProps(0)} />
-          <Tab label="MileStone" {...a11yProps(1)} />
-          <Tab label="Mint" {...a11yProps(2)} />
-          <Tab label="Docs" {...a11yProps(3)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <Grid>{/* <DaoPortal /> */}</Grid>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Grid>{/* <DaoMileStone /> */}</Grid>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Grid>{/* <DaoMint /> */}</Grid>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <Grid>
-          <DaoDocs />
+    <Box sx={{ flexGrow: 1, pb: 10 }}>
+      <Grid container spacing={1} sx={{ p: 4 }}>
+        <Grid container item spacing={2} sx={{ mb: 1 }}>
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+              <CardActionArea onClick={() => setTabNumber(0)}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/images/dao/pc.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                  {t('dao.tabs.signatures')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles,
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+              <CardActionArea onClick={() => setTabNumber(1)}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/images/dao/pc.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                  {t('dao.tabs.mintables')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles,
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
         </Grid>
-      </TabPanel>
+        <Grid container item spacing={2} sx={{ mb: 1 }}>
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+              <CardActionArea onClick={() => setTabNumber(2)}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/images/dao/pc.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                  {t('dao.tabs.proposals')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles,
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+              <CardActionArea onClick={() => setTabNumber(3)}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/images/dao/pc.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                  {t('dao.tabs.contributes')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles,
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        </Grid>
+        <Grid container item spacing={2} justifyContent="center">
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+              <CardActionArea onClick={() => setTabNumber(4)}>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="/images/dao/pc.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                  {t('dao.tabs.docs')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lizards are a widespread group of squamate reptiles,
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

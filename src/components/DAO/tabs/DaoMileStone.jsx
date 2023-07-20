@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 // import Weather from 'simple-react-weather';
 import { useNavigate } from 'react-router-dom';
-import Message from '../Message';
-import { fetchMyChildById } from '../../redux/actions/childAction';
-import { CHILD_ONE_NEED_RESET } from '../../redux/constants/childConstants';
+import Message from '../../Message';
+import { fetchMyChildById } from '../../../redux/actions/childAction';
+import { CHILD_ONE_NEED_RESET } from '../../../redux/constants/childConstants';
 import DaoTimeLine from './DaoTimeLine';
 
 const DaoMileStone = () => {

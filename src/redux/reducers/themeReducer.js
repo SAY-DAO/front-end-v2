@@ -1,6 +1,7 @@
-import { THEME_COLOR, DARK_OR_LIGHT } from '../constants/themeConstants';
+import { THEME_COLOR, DARK_OR_LIGHT, DIRECTION } from '../constants/themeConstants';
 
 const INIT_STATE = {
+  activeDir: 'rtl',
   activeMode: 'light', // light or dark
   activeTheme: 'ORIGINAL_THEME',
 };
@@ -17,6 +18,12 @@ const themeReducer = (state = INIT_STATE, action) => {
         ...state,
         activeTheme: action.payload,
       };
+    case DIRECTION:
+      return {
+        ...state,
+        activeDir: action.payload,
+      };
+
     default:
       return state;
   }

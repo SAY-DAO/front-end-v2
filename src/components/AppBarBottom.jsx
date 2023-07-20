@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { experimentalStyled as styled } from '@mui/material/styles';
-import { Paper, Box } from '@mui/material';
+import { Paper, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
@@ -41,8 +42,8 @@ export default function AppBarBottom() {
   const myHome = useSelector((state) => state.myHome);
   const { children, success: successHome, loading: loadingHome, error: errorHome } = myHome;
 
-  // const themeOptions = useSelector((state) => state.themeOptions);
-  // const { activeMode } = themeOptions;
+  const themeOptions = useSelector((state) => state.themeOptions);
+  const { activeMode } = themeOptions;
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
@@ -67,8 +68,9 @@ export default function AppBarBottom() {
       navigate('/main/search');
     } else if (value === 'home') {
       navigate('/main/home');
-    } else if (value === 'dao') {
-      navigate('/main/dao');
+    } else if (value === 'daoPortal') {
+      navigate('/main/dao/portal');
+      setValue();
     }
     const cartItems = localStorage.getItem('SAY-cartItems')
       ? JSON.parse(localStorage.getItem('SAY-cartItems'))
@@ -241,22 +243,22 @@ export default function AppBarBottom() {
             }
           />
           {/* <BottomNavigationAction
-            value="dao"
+            value="daoPortal"
             label={path === '/main/dao' && t('userLayout.dao')}
             sx={{
               '& .Mui-selected': {
                 position: 'absolute',
               },
-              maxWidth: path === '/main/dao' ? '180px' : '25px',
+              maxWidth: path === '/main/dao/portal' ? '180px' : '25px',
               minWidth: '70px',
               borderRadius: '25px',
-              backgroundColor: path === '/main/dao' ? '#ffdfc1' : 'transparent',
+              backgroundColor: path === '/main/dao/portal' ? '#ffdfc1' : 'transparent',
               '& .MuiBottomNavigationAction-label': {
                 color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
               },
             }}
             icon={
-              path !== '/main/dao' && (
+              path !== '/main/dao/portal' && (
                 <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
               )
             }

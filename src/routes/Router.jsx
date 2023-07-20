@@ -4,6 +4,7 @@ import AppBarLayout from '../layouts/AppBarLayout';
 import Loadable from '../layouts/loadable/Loadable';
 // import MainLayout from '../layouts/main-layout/MainLayout';
 import BlankLayout from '../layouts/PlainLayout';
+import DaoTabs from '../components/DAO/tabs/DaoTabs';
 
 const Error = Loadable(lazy(() => import('../components/Error')));
 
@@ -51,7 +52,12 @@ const Router = [
       { path: '/main/search', element: <SearchChild /> },
       { path: '/main/profile/edit', element: <ProfileEdit /> },
       { path: '/main/profile/upload', element: <ProfileUpload /> },
-      { path: '/main/dao', element: <DAO /> },
+      { path: '/main/dao/portal', element: <DAO /> },
+      { path: '/main/dao/tabs/signature', element: <DaoTabs tabSelected={0} /> },
+      { path: '/main/dao/tabs/mint', element: <DaoTabs tabSelected={1} /> },
+      { path: '/main/dao/tabs/proposals', element: <DaoTabs tabSelected={2} /> },
+      { path: '/main/dao/tabs/contribute', element: <DaoTabs tabSelected={3} /> },
+      { path: '/main/dao/tabs/docs', element: <DaoTabs tabSelected={4} /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },

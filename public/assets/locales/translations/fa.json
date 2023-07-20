@@ -85,7 +85,6 @@
     "email": "ایمیل",
     "phoneNumber": "شماره تلفن",
     "code": "کد"
-
   },
   "currency": {
     "toman": " تومان"
@@ -186,7 +185,6 @@
     "notifications": "اعلان‌ها",
     "cart": "سبد خرید",
     "dao": "DAO"
-
   },
   "home": {
     "title": "کودکان"
@@ -413,7 +411,7 @@
       "story": "داستان"
     },
     "more": {
-      "growFamily": "گسترش خانواده", 
+      "growFamily": "گسترش خانواده",
       "leaveFamily": "ترک خانواده"
     },
     "growFamilyModal": {
@@ -516,5 +514,22 @@
     "address": "ایران - تهران - ایرانشهر - آذرشهر - پلاک 22 - واحد 4",
     "phoneNumber": "تلفن: <1>0 2 1 - 2 2 3 4 7 8 1 4</1>",
     "download": "دریافت گزارش"
+  },
+  "dao": {
+    "tabs": {
+      "signatures": "امضای دیجیتال",
+      "mintables": "استخراج توکن",
+      "proposals": "صندوق رای",
+      "contributes": "مشارکت",
+      "docs": "مستندات"
+    },
+    "signaturesTab": {
+      "waiting": "در انتضار",
+      "ready": "آماده امضا",
+      "mined": "استخراج شده",
+      "difficulty": "ضریب سختی",
+      "distance": "ضریب فاصله",
+      "needRatio": "ضریب نیاز"
+    }
   }
 }

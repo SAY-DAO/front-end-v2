@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function WalletModal({ modal, setModal }) {
+export default function FiatWalletModal({ modal, setModal }) {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -48,17 +48,8 @@ export default function WalletModal({ modal, setModal }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Grid
-                item
-                xs={12}
-                sx={{ marginTop: 1, marginBottom: 1, textAlign: 'center' }}
-              >
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Grid item xs={12} sx={{ marginTop: 1, marginBottom: 1, textAlign: 'center' }}>
                 <Typography
                   id="transition-modal-title"
                   variant="subtitle1"
@@ -66,11 +57,7 @@ export default function WalletModal({ modal, setModal }) {
                 >
                   {t('profile.creditModal.modalTitle')}
                 </Typography>
-                <Typography
-                  id="transition-modal-title"
-                  variant="body2"
-                  component="h2"
-                >
+                <Typography id="transition-modal-title" variant="body2" component="h2">
                   {t('profile.creditModal.modalDesc')}
                 </Typography>
               </Grid>
@@ -91,7 +78,7 @@ export default function WalletModal({ modal, setModal }) {
   );
 }
 
-WalletModal.propTypes = {
+FiatWalletModal.propTypes = {
   modal: PropTypes.bool.isRequired,
   setModal: PropTypes.func,
 };

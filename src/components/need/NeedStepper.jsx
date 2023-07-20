@@ -6,7 +6,7 @@ import Step from '@mui/material/Step';
 import { IconButton, StepLabel } from '@mui/material/';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';

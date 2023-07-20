@@ -22,27 +22,19 @@ import {
 
 import homeReducer from './homeReducer';
 import { checkCartPaymentReducer, paymentReducer } from './paymentReducder';
-import {
-  cartAddReducer,
-  cartUpdateReducer,
-  cartBadgeReducer,
-} from './cartReducer';
+import { cartAddReducer, cartUpdateReducer, cartBadgeReducer } from './cartReducer';
 import {
   invitationReducer,
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
-import {
-  familyNetworksReducer,
-  signatureReducer,
-  walletReducer,
-} from './blockchainReducer';
+import { familyNetworksReducer, signatureReducer, readyToSignReducer } from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
-  wallet: walletReducer,
+  signingNeeds: readyToSignReducer,
   familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
   checkContact: checkContactReducer,

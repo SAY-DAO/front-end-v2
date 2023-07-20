@@ -518,5 +518,22 @@
     "address": "4th Floor, No 22, Azarshahr St, Iranshahr St, Karimkhan Zand St, Tehran, Iran",
     "phoneNumber": "Tel: <1>0 2 1 - 2 2 3 4 7 8 1 4</1>",
     "download": "Download Report"
+  },
+  "dao":{
+    "tabs":{
+      "signatures": "Sign",
+      "mintables": "Mint",
+      "proposals": "Propose",
+      "contributes": "Contribute",
+      "docs": "Documents"
+    },
+    "signaturesTab": {
+      "waiting":"Waiting",
+      "ready": "Ready to Sign",
+      "mined": "Mined",
+      "difficulty": "Need Difficulty",
+      "distance": "Distance",
+      "needRatio": "Need Ratio"
+    }
   }
 }

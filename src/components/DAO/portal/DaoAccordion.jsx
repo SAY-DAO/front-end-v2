@@ -10,13 +10,12 @@ import {
   Box,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import DaoChildCard from './DaoChildCard';
 import DaoDoneTable from './DaoDoneTable';
 
 export default function DaoAccardion({ childrenList }) {
-
   const [expanded, setExpanded] = useState(false);
   const [childId, setChildId] = useState();
 
@@ -30,7 +29,6 @@ export default function DaoAccardion({ childrenList }) {
     setExpanded(isExpanded ? id : false);
     setChildId(id);
   };
-
   return (
     <Grid container>
       <Box
@@ -76,11 +74,7 @@ export default function DaoAccardion({ childrenList }) {
                 color: 'text.custom',
               }}
             >
-              {updated ? (
-                <DaoDoneTable updated={updated} />
-              ) : (
-                <CircularProgress />
-              )}
+              {updated ? <DaoDoneTable updated={updated} /> : <CircularProgress />}
             </AccordionDetails>
           </Accordion>
         ))}

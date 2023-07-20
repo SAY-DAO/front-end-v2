@@ -3,6 +3,9 @@ import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
+  READY_TO_SIGN_NEEDS_REQUEST,
+  READY_TO_SIGN_NEEDS_SUCCESS,
+  READY_TO_SIGN_NEEDS_FAIL,
   SIGNATURE_REQUEST,
   SIGNATURE_SUCCESS,
   SIGNATURE_FAIL,
@@ -11,6 +14,37 @@ import {
   MINT_FAIL,
 } from '../../constants/daoConstants';
 // import GovernanceToken from '../../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
+
+export const fetchSignedNeeds = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: READY_TO_SIGN_NEEDS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+      // userDetails: { theUser },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
+    const { data } = await daoApi.get(`/needs/family/signatures/ready/9787`, config);
+    // const { data } = await daoApi.get(`/needs/family/signatures/ready/${theUser.id}`, config);
+
+    dispatch({
+      type: READY_TO_SIGN_NEEDS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: READY_TO_SIGN_NEEDS_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   try {

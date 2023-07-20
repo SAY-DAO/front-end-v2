@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Alert, Link } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from 'prop-types';
 import { ResponsiveNetwork } from '@nivo/network';
-import { fetchUserDetails } from '../../redux/actions/userAction';
-import { fetchFamilyNetworks } from '../../redux/actions/main/daoAction';
+import { fetchFamilyNetworks } from '../../../redux/actions/main/daoAction';
 
 const DaoDocs = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [data, setData] = useState();
   const [clicked, setClicked] = useState(false);
@@ -31,10 +28,6 @@ const DaoDocs = () => {
   useEffect(() => {
     if (!network) {
       dispatch(fetchFamilyNetworks());
-    }
-    dispatch(fetchUserDetails());
-    if (errorUserDetails) {
-      navigate('/auth/login?redirect=main/home');
     }
   }, [userInfo, successLogin, errorUserDetails]);
 

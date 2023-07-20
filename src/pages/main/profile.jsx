@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 import { fetchUserDetails } from '../../redux/actions/userAction';
-import WalletModal from '../../components/modals/WalletModal';
+import FiatWalletModal from '../../components/modals/FiatWalletModal';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -79,10 +79,7 @@ const Profile = () => {
                 </Grid>
               </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
-                <IconButton
-                  color="primary"
-                  onClick={() => navigate('/main/profile/settings')}
-                >
+                <IconButton color="primary" onClick={() => navigate('/main/profile/settings')}>
                   <Card
                     sx={{
                       bgcolor: 'white',
@@ -130,17 +127,13 @@ const Profile = () => {
           >
             <Grid container direction="row">
               <Grid item xs={6}>
-                <Typography variant="subtitle2">
-                  {t('profile.credit')}
-                </Typography>
+                <Typography variant="subtitle2">{t('profile.credit')}</Typography>
                 <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
                   {theUser.credit.toLocaleString() + t('currency.toman')}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="subtitle2">
-                  {t('profile.doneNeeds')}
-                </Typography>
+                <Typography variant="subtitle2">{t('profile.doneNeeds')}</Typography>
                 <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
                   {theUser.done_needs_count}
                 </Typography>
@@ -164,7 +157,7 @@ const Profile = () => {
             </Grid>
           </Box>
 
-          {modal && <WalletModal modal={modal} setModal={setModal} />}
+          {modal && <FiatWalletModal modal={modal} setModal={setModal} />}
         </>
       ) : (
         <CircularProgress />
