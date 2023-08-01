@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import CircularProgress from '@mui/material/CircularProgress';
-import fetchMyHome  from '../../redux/actions/main/homeAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 import {
   CHILD_BY_ID_RESET,
   CHILD_NEEDS_RESET,
@@ -17,7 +17,6 @@ import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../redux/constants/familyConstants';
-import { fetchUserDetails } from '../../redux/actions/userAction';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -72,7 +71,6 @@ const Home = () => {
   // login
   useEffect(() => {
     dispatch(fetchMyHome());
-    dispatch(fetchUserDetails());
     if (errorUserDetails) {
       navigate('/auth/login?redirect=main/home');
     }

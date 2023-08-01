@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { publicApi } from '../../../apis/sayBase';
 import {
   HOME_REQUEST,
@@ -5,7 +6,7 @@ import {
   HOME_FAIL,
 } from '../../constants/main/homeConstants';
 
-export default () => async (dispatch, getState) => {
+export const fetchMyHome = () => async (dispatch, getState) => {
   try {
     dispatch({ type: HOME_REQUEST });
     const {

@@ -14,6 +14,7 @@ import {
   ACCEPT_INVITATION_FAIL,
 } from '../constants/familyConstants';
 
+
 export const joinVirtualFamily =
   (role, familyId) => async (dispatch, getState) => {
     try {
@@ -25,7 +26,7 @@ export const joinVirtualFamily =
 
       const config = {
         headers: {
-          'Content-type': 'application/json',
+          "Content-Type": "application/x-www-form-urlencoded",
           Authorization: userInfo && userInfo.accessToken,
         },
       };

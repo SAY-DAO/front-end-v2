@@ -1,20 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { Grid, tabsClasses, TabScrollButton } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Grid, tabsClasses } from '@mui/material';
+import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import DaoDocs from './DaoDocs';
 import DaoSignature from './DaoSignature';
-import DaoMint from './DaoMint';
-import DaoMileStone from './DaoMileStone';
-import { fetchUserDetails } from '../../../redux/actions/userAction';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,25 +42,21 @@ function a11yProps(index) {
 }
 
 export default function DaoTabs({ tabSelected }) {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [value, setValue] = useState(0);
-  const [fixTabDirection, setFixTabDirection] = useState(false); // the arrow button
+  const [, setFixTabDirection] = useState(false); // the arrow button
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const { userInfo } = userLogin;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { theUser, success: successUserDetails } = userDetails;
+  const { theUser } = userDetails;
 
   useEffect(() => {
     if (!userInfo) {
       navigate('/auth/login?redirect=main/dao');
-    }
-    if (userInfo && !theUser) {
-      dispatch(fetchUserDetails());
     }
   }, [userInfo]);
 

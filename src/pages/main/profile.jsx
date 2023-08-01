@@ -7,7 +7,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
-import { fetchUserDetails } from '../../redux/actions/userAction';
 import FiatWalletModal from '../../components/modals/FiatWalletModal';
 
 const Profile = () => {
@@ -23,7 +22,6 @@ const Profile = () => {
   // login
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
-    dispatch(fetchUserDetails());
     if (errorUserDetails) {
       navigate('/auth/login?redirect=main/profile');
     }

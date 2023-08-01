@@ -1,10 +1,10 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, Box, Typography, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import GoneModal from '../modals/GoneModal';
 import ChildFamily from './ChildFamily';
 import ChildStats from './ChildStats';
@@ -12,8 +12,21 @@ import ChildNeeds from './ChildNeeds';
 import ChildStory from './ChildStory';
 import { fetchChildNeeds } from '../../redux/actions/childAction';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(0.5),
+      marginTop: theme.spacing(1),
+    },
+  },
+}));
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const classes = useStyles();
+
   return (
     <div
       role="tabpanel"
@@ -22,21 +35,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <div
-          className={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            '& > *': {
-              margin: (theme) => theme.spacing(0.5),
-              marginTop: (theme) => theme.spacing(1),
-            },
-          }}
-        >
-          {children}
-        </div>
-      )}
+      {value === index && <div className={classes.root}>{children}</div>}
     </div>
   );
 }
@@ -54,12 +53,11 @@ function a11yProps(index) {
   };
 }
 
-export default function MyChildTabs({ theChild }) {
+export default function MyChildTabs({ theChild, isGone, setIsGone }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
 
-  const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
   const [userRole, setUserRole] = useState();
   const [needsData, setNeedsData] = useState([]);

@@ -3,52 +3,77 @@ import { Link, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
 import Message from '../../components/Message';
 import VoiceBar from '../../components/searchResult/VoiceBar';
 import InfoTabs from '../../components/searchResult/InfoTabs';
 import Back from '../../components/Back';
 import LeaveModel from '../../components/modals/LeaveModal';
-import { CHILD_RANDOM_SEARCH_RESET } from '../../redux/constants/childConstants';
-import { fetchUserDetails } from '../../redux/actions/userAction';
+import {
+  CHILD_BY_TOKEN_RESET,
+  CHILD_RANDOM_SEARCH_RESET,
+} from '../../redux/constants/childConstants';
+import { fetchChildByToken } from '../../redux/actions/childAction';
 
 const SearchResult = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { search } = useLocation();
+
+  const qsValues = queryString.parse(search);
 
   const [readMore, setReadMore] = useState(false);
   const [readLess, setReadLess] = useState(true);
   const [imageHeight, setImageHeight] = useState('375px');
   const [backIsTrue, setBackIsTrue] = useState(false);
+  const [invitationToken, setInvitationToken] = useState(null);
+  const [searchedChild, setSearchedChild] = useState({});
+  const [fromLocalStorage, setFromLocalStorage] = useState(false);
+  const [isInvite, setIsInvite] = useState(false);
 
   const childRandomSearch = useSelector((state) => state.childRandomSearch);
-  const {
-    theChild,
-    error: errorRandomSearch,
-    success: successRandomSearch,
-  } = childRandomSearch;
+  const { theChild, error: errorRandomSearch, success: successRandomSearch } = childRandomSearch;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, success: successLogin } = userLogin;
+  const childByToken = useSelector((state) => state.childByToken);
+  const { child, error: errorChildByToken, success: successChildByToken } = childByToken;
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { error: errorUserDetails } = userDetails;
-
-  // login
+  // Set invitation token if the url contains it
   useEffect(() => {
-    dispatch(fetchUserDetails());
-    if (errorUserDetails) {
-      navigate(`/auth/login?redirect=search-result`);
+    if (qsValues.token) {
+      setInvitationToken(qsValues.token || localStorage.getItem('invitationToken'));
+      localStorage.setItem('invitationToken', qsValues.token);
     }
-  }, [userInfo, successLogin, errorUserDetails]);
+    if (!qsValues.token && localStorage.getItem('invitationToken')) {
+      setFromLocalStorage(true);
+    }
+  }, [qsValues]);
 
   useEffect(() => {
-    if (!successRandomSearch) {
+    if (invitationToken) {
+      dispatch(fetchChildByToken(invitationToken));
+      setIsInvite(true);
+    }
+  }, [invitationToken]);
+
+  useEffect(() => {
+    if (successRandomSearch) {
+      setSearchedChild(theChild);
+    } else if (successChildByToken) {
+      setSearchedChild(child);
+    }
+  }, [successRandomSearch, successChildByToken]);
+
+  useEffect(() => {
+    if (errorRandomSearch) {
       dispatch({ type: CHILD_RANDOM_SEARCH_RESET });
       navigate('/main/search');
+    } else if (errorChildByToken) {
+      dispatch({ type: CHILD_BY_TOKEN_RESET });
+      navigate('/main/search');
     }
-  }, [successRandomSearch]);
+  }, [qsValues, errorChildByToken, errorRandomSearch]);
 
   // child age
   const getAge = (DOB) => {
@@ -115,7 +140,7 @@ const SearchResult = () => {
                   backgroundColor: '#f9d6af',
                   boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
                 }}
-                alt={`${theChild.sayName}`}
+                alt={theChild.sayName}
                 src={theChild.avatarUrl}
               />
               <Typography
@@ -147,13 +172,9 @@ const SearchResult = () => {
                   sx={{
                     color: '#8c8c8c',
                     top: '40%',
-                    left: '50%',
                     position: 'absolute',
-                    transform: 'translate(-50%, 0%)',
                     textAlign: 'center',
                     width: '100%',
-                    marginLeft: 2,
-                    marginRight: 2,
                   }}
                 >
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
@@ -162,20 +183,22 @@ const SearchResult = () => {
                       {readMore && theChild.bio}
                       <br />
                       <Link href="#" onClick={handleMoreOrLess}>
-                        {readMore
-                          ? t('assets.readMore.less')
-                          : t('assets.readMore.more')}
+                        {readMore ? t('assets.readMore.less') : t('assets.readMore.more')}
                       </Link>
                     </Typography>
                   </Grid>
 
                   <Grid sx={{ marginLeft: 6, marginRight: 6 }}>
-                    {theChild && theChild.voiceUrl && (
-                      <VoiceBar url={theChild.voiceUrl} />
-                    )}
+                    {theChild && theChild.voiceUrl && <VoiceBar url={theChild.voiceUrl} />}
                   </Grid>
                   <Grid item xs={12} sx={{ marginTop: 4 }}>
-                    <InfoTabs />
+                    <InfoTabs
+                      theChild={searchedChild}
+                      isInvite={isInvite}
+                      setIsInvite={setIsInvite}
+                      invitationToken={invitationToken}
+                      fromLocalStorage={fromLocalStorage}
+                    />{' '}
                   </Grid>
                 </Grid>
               </Box>
@@ -187,11 +210,7 @@ const SearchResult = () => {
       </Grid>
       <Grid item xs={10} sx={{ textAlign: 'center' }}>
         {errorRandomSearch && (
-          <Message
-            backError={errorRandomSearch}
-            variant="standard"
-            severity="error"
-          />
+          <Message backError={errorRandomSearch} variant="standard" severity="error" />
         )}
       </Grid>
     </>

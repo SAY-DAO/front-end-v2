@@ -1,5 +1,5 @@
 import { CircularProgress, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
@@ -10,8 +10,6 @@ import CoverCard from '../CoverCard';
 
 export default function DaoSignature() {
   const dispatch = useDispatch();
-
-  const [skeleton, setSkeleton] = useState();
 
   const userDetails = useSelector((state) => state.userDetails);
   const { theUser } = userDetails;
@@ -31,7 +29,7 @@ export default function DaoSignature() {
         <CircularProgress sx={{ mt: 1 }} />
       ) : (
         <Grid container>
-          <CoverCard skeleton={skeleton} setSkeleton={setSkeleton} />
+          <CoverCard />
           <Box sx={{ p: 2, width: '100%', height: 450, overflowY: 'scroll' }}>
             <ImageList variant="masonry" cols={2} gap={8}>
               {readyNeeds &&

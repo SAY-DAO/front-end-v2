@@ -1,7 +1,7 @@
 import {
-  //   INVITE_TO_MY_FAMILY_REQUEST,
-  //   INVITE_TO_MY_FAMILY_SUCCESS,
-  //   INVITE_TO_MY_FAMILY_FAIL,
+  INVITE_TO_MY_FAMILY_REQUEST,
+  INVITE_TO_MY_FAMILY_SUCCESS,
+  INVITE_TO_MY_FAMILY_FAIL,
   JOIN_VIRTUAL_FAMILY_REQUEST,
   JOIN_VIRTUAL_FAMILY_SUCCESS,
   JOIN_VIRTUAL_FAMILY_FAIL,
@@ -10,9 +10,10 @@ import {
   LEAVE_VIRTUAL_FAMILY_REQUEST,
   LEAVE_VIRTUAL_FAMILY_RESET,
   JOIN_VIRTUAL_FAMILY_RESET,
-  INVITE_TO_MY_FAMILY_REQUEST,
-  INVITE_TO_MY_FAMILY_SUCCESS,
-  INVITE_TO_MY_FAMILY_FAIL,
+  ACCEPT_INVITATION_REQUEST,
+  ACCEPT_INVITATION_SUCCESS,
+  ACCEPT_INVITATION_FAIL,
+  ACCEPT_INVITATION_RESET,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamilyReducer = (state = {}, action) => {
@@ -58,3 +59,17 @@ export const invitationReducer = (state = {}, action) => {
   }
 };
 
+export const acceptInvitationReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ACCEPT_INVITATION_REQUEST:
+      return { loading: true, success: false };
+    case ACCEPT_INVITATION_SUCCESS:
+      return { loading: false, success: true };
+    case ACCEPT_INVITATION_FAIL:
+      return { loading: false, error: action.payload };
+    case ACCEPT_INVITATION_RESET:
+      return {};
+    default:
+      return state;
+  }
+};

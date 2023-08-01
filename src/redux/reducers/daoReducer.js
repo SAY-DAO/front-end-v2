@@ -20,10 +20,34 @@ import {
   USER_SIGNATURES_REQUEST,
   USER_SIGNATURES_SUCCESS,
   USER_SIGNATURES_FAIL,
+  FAMILY_ANALYTIC_REQUEST,
+  FAMILY_ANALYTIC_SUCCESS,
+  FAMILY_ANALYTIC_FAIL,
   READY_TO_SIGN_NEEDS_REQUEST,
   READY_TO_SIGN_NEEDS_SUCCESS,
   READY_TO_SIGN_NEEDS_FAIL,
 } from '../constants/daoConstants';
+
+export const familyAnalyticReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FAMILY_ANALYTIC_REQUEST:
+      return { loading: true, success: false };
+    case FAMILY_ANALYTIC_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        paidNeedsCount: action.payload.paidNeedsCount,
+        minedCount: action.payload.minedCount,
+        difficultyRatio: action.payload.difficultyRatio,
+        distanceRatio: action.payload.distanceRatio,
+        needRatio: action.payload.needRatio,
+      };
+    case FAMILY_ANALYTIC_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 export const readyToSignReducer = (state = {}, action) => {
   switch (action.type) {

@@ -6,6 +6,9 @@ import {
   READY_TO_SIGN_NEEDS_REQUEST,
   READY_TO_SIGN_NEEDS_SUCCESS,
   READY_TO_SIGN_NEEDS_FAIL,
+  FAMILY_ANALYTIC_REQUEST,
+  FAMILY_ANALYTIC_SUCCESS,
+  FAMILY_ANALYTIC_FAIL,
   SIGNATURE_REQUEST,
   SIGNATURE_SUCCESS,
   SIGNATURE_FAIL,
@@ -14,6 +17,34 @@ import {
   MINT_FAIL,
 } from '../../constants/daoConstants';
 // import GovernanceToken from '../../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
+
+export const fetchFamilyMemberAnalytic = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FAMILY_ANALYTIC_REQUEST });
+
+    const {
+      userDetails: { theUser },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const { data } = await daoApi.get(`/analytic/family/${theUser.id}`, config);
+
+    dispatch({
+      type: FAMILY_ANALYTIC_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: FAMILY_ANALYTIC_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const fetchSignedNeeds = () => async (dispatch, getState) => {
   try {

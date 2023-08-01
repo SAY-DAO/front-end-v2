@@ -8,12 +8,6 @@ import roles from '../../apis/roles.json';
 export default function ChildFamily({ theChild }) {
   const { t } = useTranslation();
 
-  // useEffect(() => {
-  //   if (!theChild.childFamilyMembers) {
-  //     history.push('/main/search');
-  //   }
-  // }, [theChild, history]);
-
   return (
     <div>
       <Stack direction="column" spacing={1} alignItems="center">

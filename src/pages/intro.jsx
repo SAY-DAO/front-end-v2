@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LangButton from '../components/LangButton';
-import { fetchUserDetails } from '../redux/actions/userAction';
 
 const Intro = () => {
   const { t } = useTranslation();
@@ -20,7 +19,6 @@ const Intro = () => {
 
   // redirect if logged in
   useEffect(() => {
-    dispatch(fetchUserDetails());
     if (userInfo || successLogin || successUserDetails) {
       navigate('/main/home');
     }

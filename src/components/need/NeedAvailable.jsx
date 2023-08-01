@@ -28,7 +28,6 @@ import { addToCart } from '../../redux/actions/main/cartAction';
 import { makePayment } from '../../redux/actions/paymentAction';
 import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../redux/actions/childAction';
-import { fetchUserDetails } from '../../redux/actions/userAction';
 import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 import NeedInfo from './NeedInfo';
 
@@ -133,13 +132,10 @@ export default function NeedAvailable({ childId }) {
   // login
   useEffect(() => {
     if (theChild && oneNeed) {
-      dispatch(fetchUserDetails());
       if (errorUserDetails) {
         navigate(`/login?redirect=child/${theChild.id}/needs/${oneNeed.id}`);
       } else if (oneNeed.isDone && oneNeed.paid === oneNeed.cost) {
         navigate(`/child/${theChild.id}`);
-      } else if (!successUserDetails) {
-        dispatch(fetchUserDetails());
       }
     }
   }, [errorUserDetails, oneNeed, theChild, successUserDetails, errorOneNeed]);
@@ -358,11 +354,7 @@ export default function NeedAvailable({ childId }) {
             <Back isOrange={false} to={`/child/${childId}`} state={{ childTab: 1 }} />
             <Grid item xs={12}>
               <div style={{ minHeight: '350px' }} />
-              <Avatar
-                className={classes.needAvatar}
-                alt={`${oneNeed.sayName}`}
-                src={oneNeed.imageUrl}
-              />
+              <Avatar className={classes.needAvatar} alt={oneNeed.sayName} src={oneNeed.imageUrl} />
               <Typography className={classes.needName} variant="subtitle1">
                 {oneNeed.name}
               </Typography>

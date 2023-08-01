@@ -24,16 +24,18 @@ import homeReducer from './homeReducer';
 import { checkCartPaymentReducer, paymentReducer } from './paymentReducder';
 import { cartAddReducer, cartUpdateReducer, cartBadgeReducer } from './cartReducer';
 import {
+  acceptInvitationReducer,
   invitationReducer,
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
-import { familyNetworksReducer, signatureReducer, readyToSignReducer } from './daoReducer';
+import { familyNetworksReducer, signatureReducer, readyToSignReducer, familyAnalyticReducer } from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
+  familyAnalytics:familyAnalyticReducer,
   signingNeeds: readyToSignReducer,
   familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
@@ -51,6 +53,7 @@ export default combineReducers({
   joinResult: joinVirtualFamilyReducer,
   leftFamily: LeaveVirtualFamilyReducer,
   invite: invitationReducer,
+  acceptInvite: acceptInvitationReducer,
   myHome: homeReducer,
   myChild: myChildReducer,
   allNeeds: allNeedsReducer,

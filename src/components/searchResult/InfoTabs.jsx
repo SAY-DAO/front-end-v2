@@ -245,8 +245,8 @@ export default function InfoTabs({
           takenRole={takenRole}
           setTakenRole={setTakenRole}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
-          roles={`${t(roles.roles[userRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
+          roles={t(roles.roles[userRole])}
         />
       )}
       {/* Cannot be member anymore popup */}
@@ -254,9 +254,9 @@ export default function InfoTabs({
         <CannotBeMemberModal
           cannotBeMember={cannotBeMember}
           setCannotBeMember={setCannotBeMember}
-          previousRole={`${t(roles.roles[previousRole])}`}
+          previousRole={t(roles.roles[previousRole])}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
           isInvite={isInvite}
         />
       )}
@@ -265,8 +265,8 @@ export default function InfoTabs({
         <GoneModal
           isGone={isGone}
           childSayName={theChild.sayName}
-          roles={`${t(roles.roles[userRole])}`}
-          rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+          roles={t(roles.roles[userRole])}
+          rolesRelative={t(roles.rolesRelative[userRole])}
         />
       )}
       {/* Back to Previous Role warn popup */}
@@ -274,9 +274,9 @@ export default function InfoTabs({
         <PrevRoleModal
           backToPrevRole={backToPrevRole}
           setBackToPrevRole={setBackToPrevRole}
-          previousRole={`${t(roles.roles[previousRole])}`}
+          previousRole={t(roles.roles[previousRole])}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
         />
       )}
       {/* Adoption popup */}
@@ -289,8 +289,8 @@ export default function InfoTabs({
           isInvite={isInvite}
           invitationToken={invitationToken}
           childSayName={theChild.sayName}
-          roles={`${t(roles.roles[selectedRole])}`}
-          rolesRelative={`${t(roles.rolesRelative[selectedRole])}`}
+          roles={t(roles.roles[selectedRole])}
+          rolesRelative={t(roles.rolesRelative[selectedRole])}
         />
       )}
     </>

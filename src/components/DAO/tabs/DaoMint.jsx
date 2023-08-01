@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { safeFamilyMint } from '../../../redux/actions/main/daoAction';
-import fetchMyHome from '../../../redux/actions/main/homeAction';
+import { fetchMyHome } from '../../../redux/actions/main/homeAction';
 
 const useStyles = makeStyles({
   root: {

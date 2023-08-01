@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, CircularProgress, Divider } from '@mui/material';
+import { Grid, Typography, CircularProgress, Divider, Avatar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@mui/material/Avatar';
-// import Weather from 'simple-react-weather';
 import { useNavigate, useParams } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+// import Weather from 'simple-react-weather';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,12 +12,48 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Message from '../../components/Message';
 import MyChildTabs from '../../components/child/MyChildTabs';
 import { fetchMyChildById } from '../../redux/actions/childAction';
-import fetchMyHome from '../../redux/actions/main/homeAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 import Back from '../../components/Back';
 import { CHILD_ONE_NEED_RESET } from '../../redux/constants/childConstants';
 import LeaveFamilyModal from '../../components/modals/LeaveFamilyModal';
-import { fetchUserDetails } from '../../redux/actions/userAction';
 import GrowFamilyModal from '../../components/modals/GrowFamilyModal';
+
+const useStyles = makeStyles({
+  root: {
+    top: 0,
+    left: 0,
+    right: 0,
+    minHeight: window.innerWidth < 350 ? '300px' : '350px',
+    backgroundRepeat: 'round',
+    backgroundImage: 'url("/images/child/background.png")',
+    margin: 0,
+    padding: 0,
+  },
+  childAvatar: {
+    width: 100,
+    height: 100,
+    top: '20%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f9d6af',
+    boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
+  },
+  childSayName: {
+    color: 'white',
+    top: '32%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+  },
+  childAge: {
+    color: 'white',
+    top: '35%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+  },
+});
 
 const ITEM_HEIGHT = 20;
 
@@ -58,18 +93,17 @@ const MyChildPage = () => {
 
   // login
   useEffect(() => {
-    dispatch(fetchUserDetails());
     if (errorUserDetails) {
-      navigate('/auth/login?redirect=main/home');
+      navigate('/login?redirect=main/home');
     }
-  }, [userInfo, successLogin, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, navigate, errorUserDetails]);
 
   // left the family
   useEffect(() => {
     if (successLeft && children && children[0]) {
       navigate('/main/home');
     }
-  }, [successLeft, dispatch, children]);
+  }, [successLeft, dispatch, children, navigate]);
 
   // we get the home date ahead to get our children's ids
   useEffect(() => {
@@ -82,6 +116,7 @@ const MyChildPage = () => {
     if (children) {
       for (let i = 0; i < children.length; i += 1) {
         myChildrenIdList.push(children[i].id);
+        setMyChildrenIdList(myChildrenIdList)
       }
     }
   });
@@ -94,7 +129,7 @@ const MyChildPage = () => {
     } else {
       dispatch(fetchMyChildById(childId));
     }
-  }, [childId, myChildrenIdList, dispatch]);
+  }, [childId, myChildrenIdList, navigate, dispatch]);
 
   // weather display
   useEffect(() => {
@@ -143,6 +178,7 @@ const MyChildPage = () => {
     setGrowOpen(true);
   };
 
+  const classes = useStyles();
   return (
     <>
       {loadingMyChild ? (
@@ -226,31 +262,13 @@ const MyChildPage = () => {
                       backgroundColor: '#f9d6af',
                       boxShadow: '4px 4px 10px rgba(0,0,0,.09)',
                     }}
-                    alt={`${theChild.sayName}`}
+                    alt={theChild.sayName}
                     src={theChild.avatarUrl}
                   />
-                  <Typography
-                    sx={{
-                      color: 'white',
-                      top: '32%',
-                      left: '50%',
-                      position: 'absolute',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                    variant="subtitle1"
-                  >
+                  <Typography className={classes.childSayName} variant="subtitle1">
                     {theChild.sayName}
                   </Typography>
-                  <Typography
-                    sx={{
-                      color: 'white',
-                      top: '35%',
-                      left: '50%',
-                      position: 'absolute',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                    variant="subtitle2"
-                  >
+                  <Typography className={classes.childAge} variant="subtitle2">
                     {getAge(theChild.birthDate) + t('assets.age')}
                   </Typography>
                   {/* <Box id="weather">
@@ -266,7 +284,7 @@ const MyChildPage = () => {
             </Grid>
           </Grid>
           <Grid sx={{ maxWidth: '100% !important' }}>
-            {theChild && <MyChildTabs theChild={theChild} />}
+            {theChild && <MyChildTabs theChild={theChild} isGone={isGone} setIsGone={setIsGone} />}
           </Grid>
         </Grid>
       )}

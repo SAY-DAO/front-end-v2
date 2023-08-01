@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { joinVirtualFamily, acceptInvitation } from '../../redux/actions/familyAction';
-import fetchMyHome from '../../redux/actions/main/homeAction';
+import { fetchMyHome } from '../../redux/actions/main/homeAction';
 
 const style = {
   position: 'absolute',

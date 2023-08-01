@@ -11,8 +11,9 @@ import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCartBadgeNumber } from '../redux/actions/main/cartAction';
 import { CART_BADGE_RESET, CART_UPDATE_BACK_RESET } from '../redux/constants/main/cartConstants';
-import fetchMyHome from '../redux/actions/main/homeAction';
+import { fetchMyHome } from '../redux/actions/main/homeAction';
 import { SHAPARAK_RESET } from '../redux/constants/paymentConstants';
+import { fetchUserDetails } from '../redux/actions/userAction';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -45,6 +46,10 @@ export default function AppBarBottom() {
   const themeOptions = useSelector((state) => state.themeOptions);
   const { activeMode } = themeOptions;
 
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+  }, [value])
+  
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
     if (!successHome && !loadingHome) {

@@ -36,11 +36,7 @@ const SearchChild = () => {
   } = childRandomSearch;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const {
-    theUser,
-    success: successUserDetails,
-    error: errorUserDetails,
-  } = userDetails;
+  const { theUser, success: successUserDetails, error: errorUserDetails } = userDetails;
 
   // login
   useEffect(() => {
@@ -49,30 +45,35 @@ const SearchChild = () => {
     }
   }, [theUser, successUserDetails, errorUserDetails, dispatch]);
 
-  // to check wether the child is already adopted by user
   useEffect(() => {
     if (successRandomSearch) {
-      const myList = [];
       setFamily(theChild.childFamilyMembers);
-      if (family && theUser) {
-        for (let f = 0; f < family.length; f += 1) {
-          const member = family[f];
-          if (!member.isDeleted) {
-            myList.push(member.member_id);
-          }
-        }
-        console.log(theChild.sayName);
-        console.log(family);
-        if (myList[0] && myList.includes(theUser.id)) {
-          setFamily(null);
-          dispatch(fetchRandomChild());
-        } else {
-          navigate(`/child/search-result?=${theToken}`);
-          setIsLoading(false);
+    }
+  }, [successRandomSearch]);
+
+  // to check wether the child is already adopted by user
+  useEffect(() => {
+    const myList = [];
+    console.log(theUser);
+    if (family && theUser) {
+      console.log(theChild.childFamilyMembers);
+      for (let f = 0; f < family.length; f += 1) {
+        const member = family[f];
+        if (!member.isDeleted) {
+          myList.push(member.member_id);
         }
       }
+      console.log(theChild.sayName);
+      console.log(family);
+      if (myList[0] && myList.includes(theUser.id)) {
+        setFamily(null);
+        dispatch(fetchRandomChild());
+      } else {
+        navigate(`/child/search-result?=${theToken}`);
+        setIsLoading(false);
+      }
     }
-  }, [family, theChild, successRandomSearch]);
+  }, [family, theChild, theUser]);
 
   const onClick = () => {
     setIsLoading(true);
@@ -116,11 +117,7 @@ const SearchChild = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography
-            align="center"
-            variant="body1"
-            sx={{ paddingLeft: 4, paddingRight: 4 }}
-          >
+          <Typography align="center" variant="body1" sx={{ paddingLeft: 4, paddingRight: 4 }}>
             {t('search.content')}
           </Typography>
         </Grid>
@@ -151,11 +148,7 @@ const SearchChild = () => {
         </Grid> */}
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           {errorRandomSearch && (
-            <Message
-              backError={errorRandomSearch}
-              variant="standard"
-              severity="error"
-            />
+            <Message backError={errorRandomSearch} variant="standard" severity="error" />
           )}
         </Grid>
       </Grid>

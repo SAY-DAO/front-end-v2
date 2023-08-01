@@ -2,15 +2,13 @@ import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { fetchUserDetails } from '../../redux/actions/userAction';
 import CartAccordion from '../../components/cart/CartAccordion';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -24,12 +22,10 @@ export default function Cart() {
 
   // login
   useEffect(() => {
-    dispatch(fetchUserDetails());
-
     if (errorUserDetails) {
       navigate('/auth/login?redirect=main/cart');
     }
-  }, [userInfo, successLogin, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails]);
 
   return (
     <Grid sx={{ width: '100%' }}>
