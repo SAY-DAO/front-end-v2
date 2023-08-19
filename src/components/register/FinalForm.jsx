@@ -1,7 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -183,19 +179,23 @@ const FinalForm = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect(async () => {
-    setValidateErr('');
-    setRepeatPasswordErr(true);
-    if (repeatPassword) {
-      const result = validateRepeatPassword(password, repeatPassword);
-      if (result && result.errorMessage) {
-        const timeout = setTimeout(() => {
-          setValidateErr(t(result.errorMessage));
-        }, 100);
-        return () => clearTimeout(timeout);
+  useEffect( () => {
+    async function passwordStuff(){
+      setValidateErr('');
+      setRepeatPasswordErr(true);
+      if (repeatPassword) {
+        const result = validateRepeatPassword(password, repeatPassword);
+        if (result && result.errorMessage) {
+          const timeout = setTimeout(() => {
+            setValidateErr(t(result.errorMessage));
+          }, 100);
+          return () => clearTimeout(timeout);
+        }
       }
+      setRepeatPasswordErr(false);
     }
-    setRepeatPasswordErr(false);
+    passwordStuff()
+ 
   }, [password, repeatPassword]);
 
   useEffect(() => {
