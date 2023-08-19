@@ -1,7 +1,4 @@
 import {
-  FAMILY_NETWORK_REQUEST,
-  FAMILY_NETWORK_SUCCESS,
-  FAMILY_NETWORK_FAIL,
   SIGNATURE_REQUEST,
   SIGNATURE_SUCCESS,
   SIGNATURE_FAIL,
@@ -20,36 +17,17 @@ import {
   USER_SIGNATURES_REQUEST,
   USER_SIGNATURES_SUCCESS,
   USER_SIGNATURES_FAIL,
-  FAMILY_ANALYTIC_REQUEST,
-  FAMILY_ANALYTIC_SUCCESS,
-  FAMILY_ANALYTIC_FAIL,
   READY_TO_SIGN_NEEDS_REQUEST,
   READY_TO_SIGN_NEEDS_SUCCESS,
   READY_TO_SIGN_NEEDS_FAIL,
+  READY_TO_SIGN_ONE_NEED_REQUEST,
+  READY_TO_SIGN_ONE_NEED_SUCCESS,
+  READY_TO_SIGN_ONE_NEED_FAIL,
+  READY_TO_SIGN_ONE_NEED_RESET,
 } from '../constants/daoConstants';
 
-export const familyAnalyticReducer = (state = {}, action) => {
-  switch (action.type) {
-    case FAMILY_ANALYTIC_REQUEST:
-      return { loading: true, success: false };
-    case FAMILY_ANALYTIC_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-        paidNeedsCount: action.payload.paidNeedsCount,
-        minedCount: action.payload.minedCount,
-        difficultyRatio: action.payload.difficultyRatio,
-        distanceRatio: action.payload.distanceRatio,
-        needRatio: action.payload.needRatio,
-      };
-    case FAMILY_ANALYTIC_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
 
-export const readyToSignReducer = (state = {}, action) => {
+export const readyToSignNeedsReducer = (state = {}, action) => {
   switch (action.type) {
     case READY_TO_SIGN_NEEDS_REQUEST:
       return { loading: true, success: false };
@@ -57,6 +35,21 @@ export const readyToSignReducer = (state = {}, action) => {
       return { loading: false, success: true, readyNeeds: action.payload };
     case READY_TO_SIGN_NEEDS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const readyToSignOneNeedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case READY_TO_SIGN_ONE_NEED_REQUEST:
+      return { loading: true, success: false };
+    case READY_TO_SIGN_ONE_NEED_SUCCESS:
+      return { loading: false, success: true, oneReadyNeed: action.payload };
+    case READY_TO_SIGN_ONE_NEED_FAIL:
+      return { loading: false, error: action.payload };
+    case READY_TO_SIGN_ONE_NEED_RESET:
+      return {};
     default:
       return state;
   }
@@ -99,19 +92,6 @@ export const WalletInformationReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case WALLET_INFORMATION_RESET:
       return {};
-    default:
-      return state;
-  }
-};
-
-export const familyNetworksReducer = (state = {}, action) => {
-  switch (action.type) {
-    case FAMILY_NETWORK_REQUEST:
-      return { loading: true, success: false };
-    case FAMILY_NETWORK_SUCCESS:
-      return { loading: false, success: true, network: action.payload };
-    case FAMILY_NETWORK_FAIL:
-      return { loading: false, error: action.payload };
     default:
       return state;
   }

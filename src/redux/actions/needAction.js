@@ -1,9 +1,6 @@
+/* eslint-disable import/prefer-default-export */
 import { publicApi } from '../../apis/sayBase';
-import {
-  ALL_NEEDS_FAIL,
-  ALL_NEEDS_REQUEST,
-  ALL_NEEDS_SUCCESS,
-} from '../redux/constants/needConstants';
+import { ALL_NEEDS_FAIL, ALL_NEEDS_REQUEST, ALL_NEEDS_SUCCESS } from '../constants/needConstants';
 
 export const fetchAlleeds = () => async (dispatch, getState) => {
   try {
@@ -18,10 +15,7 @@ export const fetchAlleeds = () => async (dispatch, getState) => {
         Authorization: userInfo && userInfo.accessToken,
       },
     };
-    const { data } = await publicApi.get(
-      `/needs?isChildConfirmed=true`,
-      config
-    );
+    const { data } = await publicApi.get(`/needs?isChildConfirmed=true`, config);
 
     dispatch({
       type: ALL_NEEDS_SUCCESS,

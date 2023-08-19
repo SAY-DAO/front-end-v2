@@ -24,7 +24,8 @@ const Home = Loadable(lazy(() => import('../pages/main/home')));
 const ProfileEdit = Loadable(lazy(() => import('../components/profile/ProfileEdit')));
 const ProfileUpload = Loadable(lazy(() => import('../components/profile/ProfileUpload')));
 const Report = Loadable(lazy(() => import('../pages/report')));
-const DAO = Loadable(lazy(() => import('../pages/main/dao')));
+const DAO = Loadable(lazy(() => import('../pages/main/dao/dao')));
+const DaoNeedSignature = Loadable(lazy(() => import('../pages/main/dao/daoNeedSignature')));
 
 const Router = [
   {
@@ -60,6 +61,11 @@ const Router = [
       { path: '/main/dao/tabs/docs', element: <DaoTabs tabSelected={4} /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
+  },
+  {
+    path: '/dao',
+    element: <BlankLayout />,
+    children: [{ path: '/dao/signatures/:needId', element: <DaoNeedSignature /> }],
   },
   {
     path: '/child',

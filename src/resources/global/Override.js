@@ -41,8 +41,9 @@ const components = {
     },
     styleOverrides: {
       tooltip: {
-        backgroundColor: '#6a8c30',
-        color: 'blue',
+        backgroundColor: '#737b74',
+        color: 'white',
+        fontWeight: 10,
       },
       arrow: {
         color: 'green',

@@ -41,11 +41,9 @@ export default function ChildFamily({ theChild }) {
                       alignItems="center"
                       sx={{ minWidth: 220 }}
                     >
-                      <Typography variant="subtitle2">
-                        {`${t(roles.roles[member.role])}`}
-                      </Typography>
+                      <Typography variant="subtitle2">{t(roles.roles[member.role])}</Typography>
                       <Typography variant="subtitle2" style={{ right: 0 }}>
-                        {`${member.username}`}
+                        {member.username}
                       </Typography>
                     </Grid>
                   }

@@ -58,6 +58,8 @@ export const AppContributors = {
   FRIEND: 6,
 };
 export const SAYPlatformRoles = {
+  NGO: -2,
+  CHILD: -1,
   NO_ROLE: 0,
   SOCIAL_WORKER: PanelContributors.SOCIAL_WORKER,
   NGO_SUPERVISOR: PanelContributors.NGO_SUPERVISOR,

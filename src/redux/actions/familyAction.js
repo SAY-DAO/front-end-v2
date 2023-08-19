@@ -12,43 +12,40 @@ import {
   ACCEPT_INVITATION_REQUEST,
   ACCEPT_INVITATION_SUCCESS,
   ACCEPT_INVITATION_FAIL,
+  FAMILY_NETWORK_REQUEST,
+  FAMILY_NETWORK_SUCCESS,
+  FAMILY_NETWORK_FAIL,
 } from '../constants/familyConstants';
 
+export const joinVirtualFamily = (role, familyId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: JOIN_VIRTUAL_FAMILY_REQUEST });
 
-export const joinVirtualFamily =
-  (role, familyId) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: JOIN_VIRTUAL_FAMILY_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
 
-      const config = {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: userInfo && userInfo.accessToken,
-        },
-      };
-
-      const formData = new FormData();
-      formData.append('role', role);
-      const { data } = await publicApi3.post(
-        `families/${familyId}/join`,
-        formData,
-        config
-      );
-      dispatch({
-        type: JOIN_VIRTUAL_FAMILY_SUCCESS,
-        payload: data,
-      });
-    } catch (e) {
-      dispatch({
-        type: JOIN_VIRTUAL_FAMILY_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
-    }
-  };
+    const formData = new FormData();
+    formData.append('role', role);
+    const { data } = await publicApi3.post(`families/${familyId}/join`, formData, config);
+    dispatch({
+      type: JOIN_VIRTUAL_FAMILY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: JOIN_VIRTUAL_FAMILY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const leaveFamily = (familyId) => async (dispatch, getState) => {
   try {
@@ -65,11 +62,7 @@ export const leaveFamily = (familyId) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi.patch(
-      `family/${familyId}/leave`,
-      {},
-      config
-    );
+    const { data } = await publicApi.patch(`family/${familyId}/leave`, {}, config);
     dispatch({
       type: LEAVE_VIRTUAL_FAMILY_SUCCESS,
       payload: data,
@@ -82,40 +75,39 @@ export const leaveFamily = (familyId) => async (dispatch, getState) => {
   }
 };
 
-export const inviteToMyFamily =
-  (familyId, selectedRole) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: INVITE_TO_MY_FAMILY_REQUEST });
+export const inviteToMyFamily = (familyId, selectedRole) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INVITE_TO_MY_FAMILY_REQUEST });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: userInfo && userInfo.accessToken,
-        },
-      };
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+      },
+    };
 
-      const formData = new FormData();
-      formData.append('familyId', familyId);
-      formData.append('role', selectedRole);
+    const formData = new FormData();
+    formData.append('familyId', familyId);
+    formData.append('role', selectedRole);
 
-      const { data } = await publicApi.post(`/invitations/`, formData, {
-        config,
-      });
-      dispatch({
-        type: INVITE_TO_MY_FAMILY_SUCCESS,
-        payload: data,
-      });
-    } catch (e) {
-      dispatch({
-        type: INVITE_TO_MY_FAMILY_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
-    }
-  };
+    const { data } = await publicApi.post(`/invitations/`, formData, {
+      config,
+    });
+    dispatch({
+      type: INVITE_TO_MY_FAMILY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: INVITE_TO_MY_FAMILY_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
 
 export const acceptInvitation = (token) => async (dispatch, getState) => {
   try {
@@ -132,11 +124,7 @@ export const acceptInvitation = (token) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi3.post(
-      `invitations/${token}/accept`,
-      {},
-      config
-    );
+    const { data } = await publicApi3.post(`invitations/${token}/accept`, {}, config);
     dispatch({
       type: ACCEPT_INVITATION_SUCCESS,
       payload: data,
@@ -145,6 +133,35 @@ export const acceptInvitation = (token) => async (dispatch, getState) => {
     dispatch({
       type: ACCEPT_INVITATION_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchFamilyNetworks = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FAMILY_NETWORK_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.access_token,
+      },
+    };
+    const { data } = await publicApi.get(`/public/children`, config);
+
+    dispatch({
+      type: FAMILY_NETWORK_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: FAMILY_NETWORK_FAIL,
+      payload: e.response && (e.response.status ? e.response : e.response.data.message),
     });
   }
 };

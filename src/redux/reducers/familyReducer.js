@@ -14,6 +14,12 @@ import {
   ACCEPT_INVITATION_SUCCESS,
   ACCEPT_INVITATION_FAIL,
   ACCEPT_INVITATION_RESET,
+  FAMILY_ANALYTIC_REQUEST,
+  FAMILY_ANALYTIC_SUCCESS,
+  FAMILY_ANALYTIC_FAIL,
+  FAMILY_NETWORK_REQUEST,
+  FAMILY_NETWORK_SUCCESS,
+  FAMILY_NETWORK_FAIL,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamilyReducer = (state = {}, action) => {
@@ -69,6 +75,36 @@ export const acceptInvitationReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case ACCEPT_INVITATION_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const familyAnalyticReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FAMILY_ANALYTIC_REQUEST:
+      return { loading: true, success: false };
+    case FAMILY_ANALYTIC_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        result: action.payload,
+      };
+    case FAMILY_ANALYTIC_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const familyNetworksReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FAMILY_NETWORK_REQUEST:
+      return { loading: true, success: false };
+    case FAMILY_NETWORK_SUCCESS:
+      return { loading: false, success: true, network: action.payload };
+    case FAMILY_NETWORK_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

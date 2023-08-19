@@ -1,37 +1,162 @@
 import { daoApi, publicApi } from '../../../apis/sayBase';
+import { SAY_DAPP_ID } from '../../../utils/configs';
 import {
-  FAMILY_NETWORK_REQUEST,
-  FAMILY_NETWORK_SUCCESS,
-  FAMILY_NETWORK_FAIL,
   READY_TO_SIGN_NEEDS_REQUEST,
   READY_TO_SIGN_NEEDS_SUCCESS,
   READY_TO_SIGN_NEEDS_FAIL,
-  FAMILY_ANALYTIC_REQUEST,
-  FAMILY_ANALYTIC_SUCCESS,
-  FAMILY_ANALYTIC_FAIL,
+  READY_TO_SIGN_ONE_NEED_REQUEST,
+  READY_TO_SIGN_ONE_NEED_SUCCESS,
+  READY_TO_SIGN_ONE_NEED_FAIL,
   SIGNATURE_REQUEST,
   SIGNATURE_SUCCESS,
   SIGNATURE_FAIL,
   MINT_REQUEST,
   MINT_SUCCESS,
   MINT_FAIL,
+  WALLET_NONCE_REQUEST,
+  WALLET_NONCE_SUCCESS,
+  WALLET_NONCE_FAIL,
+  WALLET_VERIFY_REQUEST,
+  WALLET_VERIFY_SUCCESS,
+  WALLET_VERIFY_FAIL,
+  WALLET_INFORMATION_REQUEST,
+  WALLET_INFORMATION_SUCCESS,
+  WALLET_INFORMATION_FAIL,
 } from '../../constants/daoConstants';
-// import GovernanceToken from '../../../build/contracts/tokens/ERC721/GovernanceToken.sol/GovernanceToken.json';
+import {
+  FAMILY_NETWORK_REQUEST,
+  FAMILY_NETWORK_SUCCESS,
+  FAMILY_NETWORK_FAIL,
+  FAMILY_ANALYTIC_REQUEST,
+  FAMILY_ANALYTIC_SUCCESS,
+  FAMILY_ANALYTIC_FAIL,
+} from '../../constants/familyConstants';
 
+const tempId = SAY_DAPP_ID;
+
+export const fetchNonce = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: WALLET_NONCE_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.access_token,
+      },
+      withCredentials: true,
+      crossDomain: true,
+    };
+    const response = await daoApi.get(`/wallet/nonce/${userInfo.user.id}`, config);
+    dispatch({
+      type: WALLET_NONCE_SUCCESS,
+      payload: response.data,
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch({
+      type: WALLET_NONCE_FAIL,
+      payload:
+        e.response && e.response.data && e.response.data.detail
+          ? e.response.data.detail
+          : e.response.data.message,
+    });
+  }
+};
+
+export const walletVerify = (message, signature) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: WALLET_VERIFY_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+      swDetails: { swInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.access_token,
+      },
+      withCredentials: true,
+    };
+
+    const { data } = await daoApi.post(
+      `/wallet/verify/${swInfo.id}/${swInfo.typeId}`,
+      {
+        message,
+        signature,
+      },
+      config,
+    );
+
+    dispatch({
+      type: WALLET_VERIFY_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    console.log('here');
+    console.log(e.response.statusText);
+    dispatch({
+      type: WALLET_VERIFY_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message
+          ? e.response.data.message
+          : e.response && e.response.statusText
+          ? e.response.statusText
+          : { reason: e.reason, code: e.code }, // metamask signature
+    });
+  }
+};
+
+export const fetchWalletInformation = () => async (dispatch) => {
+  try {
+    dispatch({ type: WALLET_INFORMATION_REQUEST });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+    const { data } = await daoApi.get(`/wallet/personal_information`, config);
+
+    dispatch({
+      type: WALLET_INFORMATION_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: WALLET_INFORMATION_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message
+          ? e.response.data.message
+          : { reason: e.reason, code: e.code }, // metamask signature
+    });
+  }
+};
 export const fetchFamilyMemberAnalytic = () => async (dispatch, getState) => {
   try {
     dispatch({ type: FAMILY_ANALYTIC_REQUEST });
 
     const {
-      userDetails: { theUser },
+      userLogin: { userInfo },
     } = getState();
 
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
     };
-    const { data } = await daoApi.get(`/analytic/family/${theUser.id}`, config);
+    const { data } = await daoApi.get(`/family/payments/${tempId}`, config);
+    // const { data } = await daoApi.get(`/analytic/family/${userInfo.user.id}`, config);
 
     dispatch({
       type: FAMILY_ANALYTIC_SUCCESS,
@@ -46,7 +171,7 @@ export const fetchFamilyMemberAnalytic = () => async (dispatch, getState) => {
   }
 };
 
-export const fetchSignedNeeds = () => async (dispatch, getState) => {
+export const fetchReadySignNeeds = () => async (dispatch, getState) => {
   try {
     dispatch({ type: READY_TO_SIGN_NEEDS_REQUEST });
 
@@ -57,12 +182,17 @@ export const fetchSignedNeeds = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
     };
-    const { data } = await daoApi.get(`/needs/family/signatures/ready/9787`, config);
-    // const { data } = await daoApi.get(`/needs/family/signatures/ready/${theUser.id}`, config);
+
+    const { data } = await daoApi.get(`/family/signatures/ready/${tempId}`, config);
+    // const { data } = await daoApi.get(
+    //   `/wallet/family/signatures/ready/${userInfo.user.id}`,
+    //   config,
+    // );
 
     dispatch({
       type: READY_TO_SIGN_NEEDS_SUCCESS,
@@ -72,6 +202,42 @@ export const fetchSignedNeeds = () => async (dispatch, getState) => {
     // check for generic and custom message to return using ternary statement
     dispatch({
       type: READY_TO_SIGN_NEEDS_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: READY_TO_SIGN_ONE_NEED_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+      // userDetails: { theUser },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+
+    const { data } = await daoApi.get(`/family/signature/ready/${nestNeedId}`, config);
+    // const { data } = await daoApi.get(
+    //   `/wallet/family/signatures/ready/${userInfo.user.id}`,
+    //   config,
+    // );
+
+    dispatch({
+      type: READY_TO_SIGN_ONE_NEED_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    // check for generic and custom message to return using ternary statement
+    dispatch({
+      type: READY_TO_SIGN_ONE_NEED_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
@@ -106,7 +272,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction = (need, userId) => async (dispatch, getState) => {
+export const signTransaction = (need, swSignature) => async (dispatch, getState) => {
   try {
     dispatch({ type: SIGNATURE_REQUEST });
     const {
@@ -114,7 +280,7 @@ export const signTransaction = (need, userId) => async (dispatch, getState) => {
       wallet: { signerAddress, chainId },
     } = getState();
 
-    const found = need.participants.find((n) => n.id_user === userInfo.user.id);
+    const found = need.verifiedPayments.find((p) => p.flaskUserId === userInfo.user.id);
     if (!found) {
       throw new Error('You did not pay for this need!');
     }
@@ -136,7 +302,8 @@ export const signTransaction = (need, userId) => async (dispatch, getState) => {
         isUrgent: need.isUrgent,
         icon: need.imageUrl,
       },
-      userId,
+      swSignature,
+      // userId,
     };
 
     const { data } = await daoApi.post(`/signature/vf/generate`, config, requestData);

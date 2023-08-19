@@ -120,7 +120,7 @@ export default function NeedDone({ childId }) {
 
                 <Avatar
                   className={classes.needAvatar}
-                  alt={`${oneNeed.sayName}`}
+                  alt={oneNeed.sayName}
                   src={oneNeed.imageUrl}
                 />
                 <Typography className={classes.needName} variant="subtitle1">

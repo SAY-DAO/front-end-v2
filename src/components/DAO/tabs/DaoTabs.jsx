@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -11,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import DaoDocs from './DaoDocs';
 import DaoSignature from './DaoSignature';
+import DaoMint from './DaoMint';
+import DaoContribution from './DaoContribution';
+import DaoProposals from './DaoProposals';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -127,13 +129,19 @@ export default function DaoTabs({ tabSelected }) {
             <DaoSignature />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Grid>{/* <DaoMileStone /> */}</Grid>
+            <Grid>
+              <DaoMint />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Grid>{/* <DaoMint /> */}</Grid>
+            <Grid>
+              <DaoProposals />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <Grid>{/* <DaoMint /> */}</Grid>
+            <Grid>
+              <DaoContribution />
+            </Grid>
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Grid>

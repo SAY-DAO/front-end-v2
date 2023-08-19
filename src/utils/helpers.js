@@ -8,6 +8,18 @@ import {
   NeedCategoryEnum,
 } from './types';
 import { PRODUCT_UNPAYABLE_PERIOD } from './configs';
+
+export function prepareUrl(imageUrl) {
+  let url;
+  if (imageUrl && imageUrl.startsWith('/')) {
+    url = `https://api.sayapp.company/${imageUrl.slice(1)}`;
+  } else {
+    url = `https://api.sayapp.company/${imageUrl}`;
+  }
+
+  return url;
+}
+
 // Age
 export function getAge(DOB) {
   const today = new Date();
@@ -107,6 +119,12 @@ export function getSAYRoleInteger(sayRole) {
 
 export function getSAYRoleString(sayRole) {
   let roleString;
+  if (sayRole === SAYPlatformRoles.CHILD) {
+    roleString = 'child';
+  }
+  if (sayRole === SAYPlatformRoles.NGO) {
+    roleString = 'ngo';
+  }
   if (sayRole === SAYPlatformRoles.AUDITOR) {
     roleString = 'auditor';
   } else if (sayRole === SAYPlatformRoles.SOCIAL_WORKER) {
@@ -207,17 +225,6 @@ export function timeDifference(time1, time2) {
   return { hh, mm, ss, diff };
 }
 
-export function prepareUrl(imageUrl) {
-  let url;
-  if (imageUrl && imageUrl.startsWith('/')) {
-    url = `https://api.sayapp.company/${imageUrl.slice(1)}`;
-  } else {
-    url = `https://api.sayapp.company/${imageUrl}`;
-  }
-
-  return url;
-}
-
 export function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -246,4 +253,16 @@ export function getCategoryString(categoryId, isUrgent) {
     return 'childData.needCategory.surroundings';
   }
   return 'N/A';
+}
+
+const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+const arabicNumbers = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g];
+export function changePersianNumbersToEnglish(str) {
+  if (typeof str === 'string') {
+    for (let i = 0; i < 10; i++) {
+      // eslint-disable-next-line no-param-reassign
+      str = str.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+    }
+  }
+  return str;
 }

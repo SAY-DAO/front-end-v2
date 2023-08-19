@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -48,8 +47,8 @@ export default function AppBarBottom() {
 
   useEffect(() => {
     dispatch(fetchUserDetails());
-  }, [value])
-  
+  }, [value]);
+
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
     if (!successHome && !loadingHome) {
@@ -247,7 +246,30 @@ export default function AppBarBottom() {
               />
             }
           />
-          {/* <BottomNavigationAction
+          {userInfo && userInfo.user && userInfo.user.id === 115 && (
+            <BottomNavigationAction
+              value="daoPortal"
+              label={path === '/main/dao' && t('userLayout.dao')}
+              sx={{
+                '& .Mui-selected': {
+                  position: 'absolute',
+                },
+                maxWidth: path === '/main/dao/portal' ? '180px' : '25px',
+                minWidth: '70px',
+                borderRadius: '25px',
+                backgroundColor: path === '/main/dao/portal' ? '#ffdfc1' : 'transparent',
+                '& .MuiBottomNavigationAction-label': {
+                  color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
+                },
+              }}
+              icon={
+                path !== '/main/dao/portal' && (
+                  <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
+                )
+              }
+            />
+          )}
+          <BottomNavigationAction
             value="daoPortal"
             label={path === '/main/dao' && t('userLayout.dao')}
             sx={{
@@ -267,7 +289,7 @@ export default function AppBarBottom() {
                 <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
               )
             }
-          /> */}
+          />
         </BottomNavigation>
       </Paper>
     </Box>

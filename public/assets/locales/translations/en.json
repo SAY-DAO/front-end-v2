@@ -35,13 +35,26 @@
     },
     "timeout": "Retry",
     "continue": "Accept",
-    "cancel": "Decline"
+    "cancel": "Decline",
+    "wallet": {
+      "wallets": "More wallets",
+      "learn": "Learn",
+      "ipfs": "IPFS",
+      "connect": "Connect Wallet",
+      "sign": "Sign"
+    }
   },
   "helperText": {
     "userName": "Alphabets, numbers and dot",
     "password": "At least 6 characters, special characters and Upper Case alphabets for more security"
   },
   "error": {
+    "wallet": {
+      "0": "Some thing went wrong.",
+      "32002": "Metamask is already open.",
+      "4001": "User denied message signature.",
+      "32603": "Please switch the to correct network!"
+    },
     "weak": "weak",
     "okay": "okay",
     "good": "good",
@@ -482,6 +495,16 @@
     "s2": "Service delivery receipt"
   },
   "report": {
+    "statusChange": {
+      "expectedDeliveryToNgo": "Expected date of NGO arrival",
+      "retailerPaid": "Price paid to Retailer",
+      "paid": "Price paid",
+      "retailerCode": "Retailer Code",
+      "deliveredToNgo": "Date of arrival to NGO",
+      "bankTrackId": "Bank Track Id",
+      "moneyToNgo": "Date of Money received",
+      "purchasedCost": "Price paid for service"
+    },
     "swId": "Social worker’s identification: SW-{{socialWorkerGeneratedCode}}",
     "dkc": "Order: DKC-{{dkc}}",
     "p2s2": {
@@ -519,8 +542,175 @@
     "phoneNumber": "Tel: <1>0 2 1 - 2 2 3 4 7 8 1 4</1>",
     "download": "Download Report"
   },
-  "dao":{
-    "tabs":{
+  "ngo": {
+    "title": "NGO",
+    "allNgos": "All NGOs",
+    "isActive": "Status",
+    "update": "Edit",
+    "titleEdit": "Edit Details",
+    "titleAdd": "Add Details",
+    "childrenCount": "Children Count",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "deliveryItems": "Number of Items",
+    "deliveryCode": "Shipment Code",
+    "arrivalCode": "Arrival Code",
+    "orderCode": "Order Code",
+    "arrivalDate": "Delivery Arrival Date",
+    "currentChildrenCount": "Current Children Count",
+    "socialWorkerCount": "SW Count",
+    "currentSocialWorkerCount": "Current SW Count",
+    "emailAddress": "Email",
+    "id": "Id",
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "postalAddress": "Address",
+    "registerDate": "Registered",
+    "created": "Created",
+    "updated": "Updated",
+    "website": "website",
+    "button": {
+      "update": "Update",
+      "add": "Add NGO"
+    },
+    "cities": {
+      "one": "Tehran"
+    },
+    "countries": {
+      "one": "Iran"
+    }
+  },
+  "need": {
+    "delivery": "Delivery",
+    "userShare": "Your share",
+    "sayShare": "SAY share",
+    "credit": "Credit",
+    "noDuplicates": "No duplicates :)",
+    "tooltip": {
+      "addIcon": "add Icon"
+    },
+    "title": "Needs",
+    "updatedNeed": "Successfully Updated!",
+    "autoCompleteType": "Service/Product",
+    "autoCompleteStatus": "Status",
+    "pie": {
+      "ok": "OK",
+      "unpayable": "Unpayable",
+      "unconfirmed": "Not Confirmed"
+    },
+    "id": "Need id",
+    "titleEdit": "Edit Need Details",
+    "titleAdd": "Add Need Details",
+    "titleStatus": "Need Title",
+    "payable": "Payable",
+    "unpayable": "Unpayable",
+    "fullyPaid": "Paid fully",
+    "update": "Edit",
+    "imageUrl": "Icon",
+    "childSayName": "SAY Name",
+    "name": {
+      "fa": "Need Name (fa)",
+      "en": "Need Name (en)"
+    },
+    "etitle": "E-commerce Title",
+    "cost": "Cost",
+    "paid": "Paid",
+    "expectedDeliveryToNgo": "Exp. date of arrival",
+    "progress": "Progress",
+    "status": "Status",
+    "link": "Link",
+    "affiliateLinkUrl": "Aff. Link",
+    "type_name": "Type",
+    "totalCount": "total Needs count",
+    "totalExplain": "Please be advised that this is the total of the needs for the child and the ones you have created could be less than this total",
+    "stats": "Needs Stats",
+    "display": "On Display",
+    "loadMore": " Load more needs",
+    "statsRatio": "Done / Total",
+    "newStatus": "New Status...",
+    "provider": "Provider Name",
+    "addProvider": "Add Provider",
+    "providerSelect": "Please select Provider",
+    "providers": {
+      "service": "service",
+      "product": "product"
+    },
+    "types": {
+      "service": "service",
+      "product": "product"
+    },
+    "isUrgent": "Urgent",
+    "informations": "Additional Info",
+    "details": "Social Worker Notes",
+    "category": "Category",
+    "categories": {
+      "growth": "growth",
+      "joy": "joy",
+      "health": "health",
+      "surroundings": "surroundings"
+    },
+    "description": "Description",
+    "descriptions": {
+      "fa": "Farsi Description (fa)",
+      "en": "English Description (en)"
+    },
+    "img": {
+      "service": "Image",
+      "product": "E-commerce image"
+    },
+    "created": "Created At",
+    "isConfirmed": "Confirm",
+    "confirmUser": "Confirmed By",
+    "socialWorker": "socialWorker",
+    "confirmDate": "Confirmed At",
+    "updated": " Last Edit",
+    "doneAt": "Done At",
+    "child_delivery_date": "Delivery To Child",
+    "preNeed": "Template",
+    "doing_duration": "Days to complete",
+    "payers": "Payer(s)",
+    "button": {
+      "update": "Update",
+      "add": "Add Need"
+    },
+    "today": "Today",
+    "needStatusTitle": "Change Need Status",
+    "needStatus": {
+      "-1": "Not Confirmed",
+      "0": "Not Paid",
+      "1": "Partial payment",
+      "2": "Complete payment",
+      "p3": "Purchased product",
+      "p4": "Delivered to NGO",
+      "p5": "Delivered to child",
+      "s3": "Money transferred to the NGO",
+      "s4": "Delivery to child",
+      "signature": "Signature",
+      "sign": "Sign",
+      "pending": "Not Delivered yet"
+    },
+    "needDialogue": {
+      "confirm": {
+        "dialogTitle": "The duplicate needs"
+      },
+      "service": {
+        "1": "Partial payment",
+        "2": "Complete payment",
+        "3": "Money transferred to the NGO",
+        "4": "Delivered to child"
+      },
+      "product": {
+        "1": "Partial payment",
+        "2": "Complete payment",
+        "3": "Purchased product",
+        "4": "Delivered to NGO",
+        "5": "Delivered to child"
+      }
+    }
+  },
+  "dao": {
+    "tabs": {
       "signatures": "Sign",
       "mintables": "Mint",
       "proposals": "Propose",
@@ -528,12 +718,65 @@
       "docs": "Documents"
     },
     "signaturesTab": {
-      "waiting":"Waiting",
+      "waiting": "Waiting",
+      "signed": "Signed",
       "ready": "Ready to Sign",
       "mined": "Mined",
       "difficulty": "Need Difficulty",
       "distance": "Distance",
-      "needRatio": "Need Ratio"
+      "needRatio": "Need Ratio",
+      "timeLine": {
+        "created": "Created at",
+        "durationEstimate": "Duration Estimate",
+        "duration": "Duration",
+        "updated": "Updated at",
+        "purchased": "Purchased",
+        "confirmed": "Confirmed",
+        "paid": "Paid",
+        "ngoDelivery": "Delivered to NGO",
+        "expNgoDelivery": "Exp. Delivery to NGO",
+        "childDelivery": "Delivered to Child",
+        "initialSignature": "Social Worker Signature",
+        "ipfs": "Decentralized storage",
+        "purchaserSignature": "Purchaser Signature",
+        "familySignature": "Family Signature",
+        "minted": "Mined",
+        "daysAgo": "days ago",
+        "hoursAgo": "hrs ago",
+        "days": "days",
+        "hours": "hrs"
+      }
     }
+  },
+  "wallet": {
+    "signature": {
+      "top": "When a need is paid by the virtual family and the service/product is delivered to the child, the family member who paid for the need and those who contributed to getting this need delivered to the child are awarded by SAY token.",
+      "1": "Social worker, Auditor, Purchaser and virtual family member",
+      "2": "Calculating the token distribution based on the time line of the need, the virtual family role and the receipts.",
+      "3": "Tokens are created by a different user"
+    },
+    "download": "Download...",
+    "dialog": {
+      "title": "Connect to a wallet",
+      "context": "A wallet is used to send, receive, store, and display digital assets. It’s also a new way to log in, without needing to create new accounts and passwords on every website",
+      "learn": "learn about wallets",
+      "popular": "Popular",
+      "more": "More"
+    },
+    "siwe": {
+      "statement": "Sign in with Ethereum to the app"
+    }
+  },
+  "roles": {
+    "ngo": "NGO",
+    "child": "Child",
+    "socialWorker": "Social Worker",
+    "auditor": "Auditor",
+    "purchaser": "Purchaser",
+    "ngoSupervisor": "NGO supervisor",
+    "noRole": "No Role",
+    "familyMember": "Family Member",
+    "friend": "Friend",
+    "all": "All roles"
   }
 }
