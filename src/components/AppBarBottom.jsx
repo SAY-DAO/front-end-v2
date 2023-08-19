@@ -269,27 +269,6 @@ export default function AppBarBottom() {
               }
             />
           )}
-          <BottomNavigationAction
-            value="daoPortal"
-            label={path === '/main/dao' && t('userLayout.dao')}
-            sx={{
-              '& .Mui-selected': {
-                position: 'absolute',
-              },
-              maxWidth: path === '/main/dao/portal' ? '180px' : '25px',
-              minWidth: '70px',
-              borderRadius: '25px',
-              backgroundColor: path === '/main/dao/portal' ? '#ffdfc1' : 'transparent',
-              '& .MuiBottomNavigationAction-label': {
-                color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
-              },
-            }}
-            icon={
-              path !== '/main/dao/portal' && (
-                <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
-              )
-            }
-          />
         </BottomNavigation>
       </Paper>
     </Box>
