@@ -11,15 +11,15 @@ let envApiDao = '';
 if (env === 'prod') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v3`;
-  envApiDao = `http://${process.env.REACT_APP_DOMAIN_PROD}/api/dao`;
+  envApiDao = `http://${process.env.REACT_APP_DAO_PROD}/api/dao`;
 } else if (env === 'stag') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v3`;
-  envApiDao = `http://${process.env.REACT_APP_DOMAIN_STAGING}/api/dao`;
+  envApiDao = `http://${process.env.REACT_APP_DAO_STAGING}/api/dao`;
 } else if (env === 'development') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_DEV}/api/v3`;
-  envApiDao = `http://${process.env.REACT_APP_DOMAIN_DEV}/api/dao`;
+  envApiDao = `http://${process.env.REACT_APP_DAO_LOCAL}/api/dao`;
 } else {
   envApiUrl = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v2`;
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
