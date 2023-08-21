@@ -256,7 +256,7 @@ export default function DaoNeedSignature() {
                 }}
               >
                 <Grid container sx={{ mb: 6 }}>
-                  <Grid item xs={7} container direction="column" spacing={2} alignItems="flex-end">
+                  <Grid item xs={6} container direction="column" spacing={2} alignItems="flex-end">
                     <Grid item sx={{ width: '100%' }}>
                       <Typography sx={{ pl: 3, fontWeight: 600 }}>{t('roles.all')}</Typography>
                     </Grid>
@@ -437,7 +437,7 @@ export default function DaoNeedSignature() {
                   </Grid>
                   <Grid
                     item
-                    xs={5}
+                    xs={6}
                     container
                     direction="column"
                     sx={{ borderLeft: '0.1rem solid lightGrey' }}
@@ -522,9 +522,9 @@ export default function DaoNeedSignature() {
                                 theNeed.cost) *
                                 100,
                               2,
-                            )}`}
+                            )}`}{' '}
+                          + {t('need.delivery')}
                         </Typography>
-                        <Typography variant="body1">{t('need.delivery')}</Typography>
                       </Grid>
                       <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                         <Divider sx={{ width: '60%', m: 'auto' }} />
