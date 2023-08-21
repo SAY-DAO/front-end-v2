@@ -1,9 +1,11 @@
 import { daoApi, publicApi } from '../../../apis/sayBase';
-import { SAY_DAPP_ID } from '../../../utils/configs';
 import {
   READY_TO_SIGN_NEEDS_REQUEST,
   READY_TO_SIGN_NEEDS_SUCCESS,
   READY_TO_SIGN_NEEDS_FAIL,
+  ONE_NEED_COEFFS_REQUEST,
+  ONE_NEED_COEFFS_SUCCESS,
+  ONE_NEED_COEFFS_FAIL,
   READY_TO_SIGN_ONE_NEED_REQUEST,
   READY_TO_SIGN_ONE_NEED_SUCCESS,
   READY_TO_SIGN_ONE_NEED_FAIL,
@@ -27,12 +29,13 @@ import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
-  FAMILY_ANALYTIC_REQUEST,
-  FAMILY_ANALYTIC_SUCCESS,
-  FAMILY_ANALYTIC_FAIL,
+  FAMILY_ECOSYSTEM_PAYS_REQUEST,
+  FAMILY_ECOSYSTEM_PAYS_SUCCESS,
+  FAMILY_ECOSYSTEM_PAYS_FAIL,
+  FAMILY_DISTANCE_RATIO_REQUEST,
+  FAMILY_DISTANCE_RATIO_SUCCESS,
+  FAMILY_DISTANCE_RATIO_FAIL,
 } from '../../constants/familyConstants';
-
-const tempId = SAY_DAPP_ID;
 
 export const fetchNonce = () => async (dispatch, getState) => {
   try {
@@ -140,9 +143,10 @@ export const fetchWalletInformation = () => async (dispatch) => {
     });
   }
 };
-export const fetchFamilyMemberAnalytic = () => async (dispatch, getState) => {
+
+export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: FAMILY_ANALYTIC_REQUEST });
+    dispatch({ type: FAMILY_DISTANCE_RATIO_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -155,17 +159,44 @@ export const fetchFamilyMemberAnalytic = () => async (dispatch, getState) => {
         flaskId: 'me',
       },
     };
-    const { data } = await daoApi.get(`/family/payments/${tempId}`, config);
-    // const { data } = await daoApi.get(`/analytic/family/${userInfo.user.id}`, config);
+    const { data } = await daoApi.get(`/family/distanceRatio`, config);
 
     dispatch({
-      type: FAMILY_ANALYTIC_SUCCESS,
+      type: FAMILY_DISTANCE_RATIO_SUCCESS,
       payload: data,
     });
   } catch (e) {
-    // check for generic and custom message to return using ternary statement
     dispatch({
-      type: FAMILY_ANALYTIC_FAIL,
+      type: FAMILY_DISTANCE_RATIO_FAIL,
+      payload: e.response && e.response.data ? e.response.data.message : e.message,
+    });
+  }
+};
+
+export const fetchFamilyRolesCompletePays = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+    const { data } = await daoApi.get(`/family/roles/ecosystem/payments`, config);
+
+    dispatch({
+      type: FAMILY_ECOSYSTEM_PAYS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: FAMILY_ECOSYSTEM_PAYS_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
@@ -177,7 +208,6 @@ export const fetchReadySignNeeds = () => async (dispatch, getState) => {
 
     const {
       userLogin: { userInfo },
-      // userDetails: { theUser },
     } = getState();
 
     const config = {
@@ -188,21 +218,16 @@ export const fetchReadySignNeeds = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.get(`/family/signatures/ready/${tempId}`, config);
-    // const { data } = await daoApi.get(
-    //   `/wallet/family/signatures/ready/${userInfo.user.id}`,
-    //   config,
-    // );
+    const { data } = await daoApi.get(`/family/signatures/ready`, config);
 
     dispatch({
       type: READY_TO_SIGN_NEEDS_SUCCESS,
       payload: data,
     });
   } catch (e) {
-    // check for generic and custom message to return using ternary statement
     dispatch({
       type: READY_TO_SIGN_NEEDS_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
+      payload: e.response && e.response.data ? e.response.data.message : e.message,
     });
   }
 };
@@ -225,20 +250,15 @@ export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) 
     };
 
     const { data } = await daoApi.get(`/family/signature/ready/${nestNeedId}`, config);
-    // const { data } = await daoApi.get(
-    //   `/wallet/family/signatures/ready/${userInfo.user.id}`,
-    //   config,
-    // );
 
     dispatch({
       type: READY_TO_SIGN_ONE_NEED_SUCCESS,
       payload: data,
     });
   } catch (e) {
-    // check for generic and custom message to return using ternary statement
     dispatch({
       type: READY_TO_SIGN_ONE_NEED_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
+      payload: e.response && e.response.data ? e.response.data.message : e.message,
     });
   }
 };
@@ -379,6 +399,36 @@ export const safeFamilyMint = (voucher) => async (dispatch) => {
     dispatch({
       type: MINT_FAIL,
       payload: e.response && e.response.data.detail ? e.response.data.detail : e.message,
+    });
+  }
+};
+
+export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ONE_NEED_COEFFS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+
+    const { data } = await daoApi.get(`/needs/coefficients/${needNestId}`, config);
+
+    dispatch({
+      type: ONE_NEED_COEFFS_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ONE_NEED_COEFFS_FAIL,
+      payload: e.response && e.response.data ? e.response.data.message : e.message,
     });
   }
 };

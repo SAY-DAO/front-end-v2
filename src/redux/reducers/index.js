@@ -37,7 +37,7 @@ import themeReducer from './themeReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
-  familyAnalytics: familyAnalyticReducer,
+  familyRolesEco: familyAnalyticReducer,
   walletNonce: walletNonceReducer,
   walletVerify: walletVerifyReducer,
   walletInformation: WalletInformationReducer,

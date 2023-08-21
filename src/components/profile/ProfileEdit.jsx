@@ -1,9 +1,12 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Grid, Avatar, Typography, IconButton, CircularProgress } from '@mui/material';
+import {
+  Grid,
+  Avatar,
+  Typography,
+  IconButton,
+  CircularProgress,
+  FormHelperText,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +41,7 @@ const ProfileEdit = () => {
 
   const [validateErr, setValidateErr] = useState('');
   const [userNameErr, setUserNameErr] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [messageInput, setMessageInput] = useState('');
   const [emailAuth, setEmailAuth] = useState(true);
@@ -48,16 +51,22 @@ const ProfileEdit = () => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('');
-  const [dialCode, setDialCode] = useState('');
+  // const [dialCode, setDialCode] = useState('');
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
-  const [uploadImage, setUploadImage] = useState();
+  const [uploadImage, setUploadImage] = useState('');
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
 
   const checkContact = useSelector((state) => state.checkContact);
   const { loading: loadingCheck, error: errorCheck, success: successCheck } = checkContact;
+
+  const checkUserName = useSelector((state) => state.checkUserName);
+  const {
+    loading: loadingCheckUSerName,
+    error: errorCheckUserName,
+  } = checkUserName;
 
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
@@ -77,7 +86,7 @@ const ProfileEdit = () => {
 
   // disable IconButton
   useEffect(() => {
-    if (!successCheck || (!userInfo && !successLogin)) {
+    if (errorCheck || (!userInfo && !successLogin)) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
@@ -111,7 +120,7 @@ const ProfileEdit = () => {
       setPhoneAuth(false);
     }
   }, [successLogin, userInfo]);
-
+  console.log(emailAuth);
   // set the back-end data
   useEffect(() => {
     if (userInfo) {
@@ -178,7 +187,7 @@ const ProfileEdit = () => {
         }, 1000);
         return () => clearTimeout(timeout);
       }
-      if (!result.errorMessage && userName) {
+      if (!result.errorMessage && userName && userName !== userInfo.user.userName) {
         const timeout = setTimeout(() => {
           setUserNameErr(false);
           dispatch(checkUserNameBeforeVerify(userName));
@@ -215,7 +224,7 @@ const ProfileEdit = () => {
   const handleChangePhoneNumber = (input, data, event, formattedValue) => {
     setPhoneNumber(formattedValue);
     setCountryCode(data.countryCode);
-    setDialCode(data.dialCode);
+    // setDialCode(data.dialCode);
   };
 
   // user name changes
@@ -248,7 +257,7 @@ const ProfileEdit = () => {
   };
   const onUploadImage = (e) => {
     // data for submit
-    // console.log(e);
+    console.log(e);
   };
 
   return (
@@ -296,7 +305,7 @@ const ProfileEdit = () => {
               >
                 {t('profile.editProfile.title')}
               </Typography>
-              <IconButton disabled={isDisabled} type="submit">
+              <IconButton disabled={isDisabled || !userName} type="submit">
                 {isLoading ? (
                   <CircularProgress
                     size={20}
@@ -402,7 +411,7 @@ const ProfileEdit = () => {
               <PhoneInput
                 style={{
                   direction: 'ltr',
-                  display: phoneAuth ? 'none' : null,
+                  display: phoneAuth ? 'none' : 'relative',
                 }}
                 specialLabel={t('placeholder.phoneNumber')}
                 country="ir"
@@ -419,10 +428,10 @@ const ProfileEdit = () => {
             <Grid item>
               <FormControl sx={{ m: 1, width: '25ch' }}>
                 <OutlinedInput
-                  disabled={emailAuth}
+                  disabled={!emailAuth}
                   id="outlined-adornment-email"
                   type="email"
-                  value={email}
+                  value={email || ''}
                   onChange={handleChangeEmail}
                   startAdornment={
                     <InputAdornment position="start">{t('placeholder.email')}</InputAdornment>
@@ -442,6 +451,17 @@ const ProfileEdit = () => {
                     <InputAdornment position="start">{t('placeholder.userName')}</InputAdornment>
                   }
                 />
+                {!loadingCheckUSerName && errorCheckUserName ? (
+                  <FormHelperText id="component-error-text">
+                    {errorCheckUserName.data.message}
+                  </FormHelperText>
+                ) : (
+                  loadingCheckUSerName && (
+                    <CircularProgress
+                      sx={{ width: '10px !important', height: '10px !important' }}
+                    />
+                  )
+                )}
               </FormControl>
             </Grid>
           </Grid>

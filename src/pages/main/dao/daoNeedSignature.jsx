@@ -1,17 +1,33 @@
-import { Avatar, Card, Divider, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Avatar,
+  Card,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { grey } from '@mui/material/colors';
 import { useAccount, useConnect, useNetwork, useSignMessage, useWalletClient } from 'wagmi';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import HardwareOutlinedIcon from '@mui/icons-material/HardwareOutlined';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
-import { fetchOneReadySignNeed, signTransaction } from '../../../redux/actions/main/daoAction';
+import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
+import { round } from 'lodash';
+import {
+  fetchFamilyMemberDistanceRatio,
+  fetchFamilyRolesCompletePays,
+  fetchNeedCoefficients,
+  fetchOneReadySignNeed,
+  signTransaction,
+} from '../../../redux/actions/main/daoAction';
 import { apiDao } from '../../../env';
 import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
@@ -26,8 +42,9 @@ import {
   WALLET_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
 import DaoSignatureMenu from '../../../components/DAO/signing/DaoSignatureMenu';
-import { SAYPlatformRoles } from '../../../utils/types';
+import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
 import { SAY_DAPP_ID } from '../../../utils/configs';
+import Message from '../../../components/Message';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -35,6 +52,7 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [userVRole, setUserVRole] = useState('');
   const [openWallets, setOpenWallets] = useState(false);
   const [theNeed, setTheNeed] = useState();
   const [images, setImages] = useState(false);
@@ -44,28 +62,50 @@ export default function DaoNeedSignature() {
   const { chain } = useNetwork();
   const { reset } = useSignMessage();
 
-  // const userLogin = useSelector((state) => state.userLogin);
-  // const { userInfo } = userLogin;
-
-  const readySigningNeeds = useSelector((state) => state.readySigningNeeds);
-  const { readyNeeds } = readySigningNeeds;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
-  const { oneReadyNeed } = readySigningOneNeed;
+  const { oneReadyNeed, error: errorReadyOne } = readySigningOneNeed;
+
+  const familyRolesEco = useSelector((state) => state.familyRolesEco);
+  const {
+    coeffsResult,
+    userResult,
+    success: successFamilyRoles,
+    error: errorFamilyRoles,
+  } = familyRolesEco;
 
   useEffect(() => {
-    if (readyNeeds) {
-      setTheNeed(readyNeeds.find((n) => n.id === needId));
-    } else {
-      dispatch(fetchOneReadySignNeed(needId));
+    if (!successFamilyRoles) {
+      dispatch(fetchFamilyRolesCompletePays());
     }
-  }, [readyNeeds]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchOneReadySignNeed(needId));
+  }, []);
 
   useEffect(() => {
     if (oneReadyNeed) {
       setTheNeed(oneReadyNeed);
     }
   }, [oneReadyNeed]);
+
+  useEffect(() => {
+    if (!userVRole) {
+      dispatch(fetchFamilyMemberDistanceRatio());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (theNeed) {
+      dispatch(fetchNeedCoefficients(theNeed.id));
+    }
+    if (theNeed && theNeed.members && theNeed.members.find((m) => m.id_user === userInfo.user.id)) {
+      setUserVRole(theNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole);
+    }
+  }, [theNeed]);
 
   const handleWalletButton = () => {
     setOpenWallets(true);
@@ -99,7 +139,7 @@ export default function DaoNeedSignature() {
   };
 
   return (
-    <Grid container direction="column" sx={{ bgcolor: 'white' }}>
+    <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
           <DaoSignatureMenu />
@@ -118,7 +158,7 @@ export default function DaoNeedSignature() {
           </IconButton>
         </Grid>
       </Grid>
-      {theNeed && (
+      {theNeed ? (
         <>
           <Grid
             item
@@ -184,6 +224,19 @@ export default function DaoNeedSignature() {
                 <Typography sx={{ fontWeight: 400 }} variant="h6">
                   {theNeed.nameTranslations.fa}
                 </Typography>
+                <Typography
+                  sx={{
+                    fontWeight: 200,
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    maxWidth: '200px',
+                    whiteSpace: 'nowrap',
+                    m: 'auto',
+                  }}
+                  variant="body1"
+                >
+                  {theNeed.title}
+                </Typography>
               </Grid>
               <Grid item>
                 <Card elevation={1} sx={{ width: 'max-content', m: 'auto', borderRadius: 3, p: 2 }}>
@@ -211,122 +264,137 @@ export default function DaoNeedSignature() {
                       <Divider sx={{ width: '80%', m: 'auto' }} />
                     </Grid>
                     {/*  Social worker */}
-                    <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
-                      <Grid item xs={2}>
-                        <Avatar
-                          alt="social worker"
-                          src={prepareUrl(theNeed.socialWorker.avatarUrl)}
-                          sx={{
-                            bgcolor: grey[300],
-                            width: '30px !important',
-                            height: '30px !important',
-                            borderRadius: 4,
-                          }}
-                        />
+                    {theNeed.socialWorker && (
+                      <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
+                        <Grid item xs={2}>
+                          <Avatar
+                            alt="social worker"
+                            src={prepareUrl(theNeed.socialWorker.avatarUrl)}
+                            sx={{
+                              bgcolor: grey[300],
+                              width: '30px !important',
+                              height: '30px !important',
+                              borderRadius: 4,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={10} sx={{ textAlign: 'center' }}>
+                          <Typography sx={{ fontWeight: 400 }}>
+                            {t(`roles.${getSAYRoleString(SAYPlatformRoles.SOCIAL_WORKER)}`)}
+                          </Typography>
+                          <Typography>
+                            {theNeed.socialWorker.firstName} {theNeed.socialWorker.lastName}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={10} sx={{ textAlign: 'center' }}>
-                        <Typography sx={{ fontWeight: 400 }}>
-                          {t(`roles.${getSAYRoleString(SAYPlatformRoles.SOCIAL_WORKER)}`)}
-                        </Typography>
-                        <Typography>
-                          {theNeed.socialWorker.firstName} {theNeed.socialWorker.lastName}
-                        </Typography>
-                      </Grid>
-                    </Grid>
+                    )}
+
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Auditor */}
-                    <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
-                      <Grid item xs={2}>
-                        <Avatar
-                          alt="auditor"
-                          src={prepareUrl(theNeed.auditor.avatarUrl)}
-                          sx={{
-                            bgcolor: grey[300],
-                            width: '30px !important',
-                            height: '30px !important',
-                            borderRadius: 4,
-                          }}
-                        />
+                    {theNeed.auditor && (
+                      <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
+                        <Grid item xs={2}>
+                          <Avatar
+                            alt="auditor"
+                            src={prepareUrl(theNeed.auditor.avatarUrl)}
+                            sx={{
+                              bgcolor: grey[300],
+                              width: '30px !important',
+                              height: '30px !important',
+                              borderRadius: 4,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={10} sx={{ textAlign: 'center' }}>
+                          <Typography sx={{ fontWeight: 400 }}>
+                            {t(`roles.${getSAYRoleString(SAYPlatformRoles.AUDITOR)}`)}
+                          </Typography>
+                          <Typography>
+                            {theNeed.auditor.firstName} {theNeed.auditor.lastName}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={10} sx={{ textAlign: 'center' }}>
-                        <Typography sx={{ fontWeight: 400 }}>
-                          {t(`roles.${getSAYRoleString(SAYPlatformRoles.AUDITOR)}`)}
-                        </Typography>
-                        <Typography>
-                          {theNeed.auditor.firstName} {theNeed.auditor.lastName}
-                        </Typography>
-                      </Grid>
-                    </Grid>
+                    )}
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Purchaser */}
-                    <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
-                      <Grid item xs={2}>
-                        <Avatar
-                          alt="purchaser"
-                          src={prepareUrl(theNeed.purchaser.avatarUrl)}
-                          sx={{
-                            bgcolor: grey[300],
-                            width: '30px !important',
-                            height: '30px !important',
-                            borderRadius: 4,
-                          }}
-                        />
+                    {theNeed.purchaser && (
+                      <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
+                        <Grid item xs={2}>
+                          <Avatar
+                            alt="purchaser"
+                            src={prepareUrl(theNeed.purchaser.avatarUrl)}
+                            sx={{
+                              bgcolor: grey[300],
+                              width: '30px !important',
+                              height: '30px !important',
+                              borderRadius: 4,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={10} sx={{ textAlign: 'center' }}>
+                          <Typography sx={{ fontWeight: 400 }}>
+                            {t(`roles.${getSAYRoleString(SAYPlatformRoles.PURCHASER)}`)}
+                          </Typography>
+                          <Typography>
+                            {theNeed.purchaser.firstName} {theNeed.purchaser.lastName}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={10} sx={{ textAlign: 'center' }}>
-                        <Typography sx={{ fontWeight: 400 }}>
-                          {t(`roles.${getSAYRoleString(SAYPlatformRoles.PURCHASER)}`)}
-                        </Typography>
-                        <Typography>
-                          {theNeed.purchaser.firstName} {theNeed.purchaser.lastName}
-                        </Typography>
-                      </Grid>
-                    </Grid>
+                    )}
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Family */}
-                    {theNeed.verifiedPayments.map(
-                      (p) =>
-                        p.needAmount > 0 && (
-                          <div key={p.flaskId} style={{ width: '100%', paddingRight: 16 }}>
-                            <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
-                              <Grid item xs={2}>
-                                <Avatar
-                                  alt="virtual family"
-                                  src={prepareUrl(p.familyMember.avatarUrl)}
-                                  sx={{
-                                    bgcolor: grey[300],
-                                    width: '30px !important',
-                                    height: '30px !important',
-                                    borderRadius: 4,
-                                  }}
-                                />
+                    {theNeed.verifiedPayments &&
+                      theNeed.verifiedPayments.map(
+                        (p) =>
+                          p.needAmount > 0 &&
+                          p.flaskUserId !== SAY_DAPP_ID && (
+                            <div key={p.flaskId} style={{ width: '100%', paddingRight: 16 }}>
+                              <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
+                                <Grid item xs={2}>
+                                  <Avatar
+                                    alt="virtual family"
+                                    src={p.familyMember && prepareUrl(p.familyMember.avatarUrl)}
+                                    sx={{
+                                      bgcolor: grey[300],
+                                      width: '30px !important',
+                                      height: '30px !important',
+                                      borderRadius: 4,
+                                    }}
+                                  />
+                                </Grid>
+                                <Grid item xs={10} sx={{ textAlign: 'center' }}>
+                                  <Typography sx={{ fontWeight: 400 }}>
+                                    {t(
+                                      `roles.vFamily.${
+                                        theNeed.members &&
+                                        theNeed.members.find((m) => m.id_user === p.flaskUserId)
+                                          .flaskFamilyRole
+                                      }`,
+                                    )}
+                                  </Typography>
+                                  <Typography>
+                                    {p.familyMember.firstName} {p.familyMember.lastName}
+                                  </Typography>
+                                </Grid>
                               </Grid>
-                              <Grid item xs={10} sx={{ textAlign: 'center' }}>
-                                <Typography sx={{ fontWeight: 400 }}>
-                                  {t(`roles.${getSAYRoleString(SAYPlatformRoles.FAMILY)}`)}
-                                </Typography>
-                                <Typography>
-                                  {p.familyMember.firstName} {p.familyMember.lastName}
-                                </Typography>
+                              <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                                <Divider sx={{ width: '65%', ml: 3 }} />
                               </Grid>
-                            </Grid>
-                            <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                              <Divider sx={{ width: '65%', ml: 3 }} />
-                            </Grid>
-                          </div>
-                        ),
-                    )}
+                            </div>
+                          ),
+                      )}
                     {/*  Child */}
                     <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
                       <Grid item xs={2}>
                         <Avatar
                           alt="purchaser"
-                          src={prepareUrl(theNeed.child.awakeAvatarUrl)}
+                          src={theNeed.child && prepareUrl(theNeed.child.awakeAvatarUrl)}
                           sx={{
                             bgcolor: grey[300],
                             width: '30px !important',
@@ -360,7 +428,7 @@ export default function DaoNeedSignature() {
                         <Typography sx={{ fontWeight: 400 }}>
                           {t(`roles.${getSAYRoleString(SAYPlatformRoles.NGO)}`)}
                         </Typography>
-                        <Typography>{theNeed.child.ngo.name}</Typography>
+                        <Typography>{theNeed.child && theNeed.child.ngo.name}</Typography>
                       </Grid>
                     </Grid>
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -386,9 +454,13 @@ export default function DaoNeedSignature() {
                           {t('need.paid')}
                         </Typography>
                         <Typography variant="body1">
-                          {theNeed.verifiedPayments
-                            .find((p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount > 0)
-                            .needAmount.toLocaleString()}
+                          {theNeed &&
+                            theNeed.verifiedPayments.find(
+                              (p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0,
+                            ) &&
+                            theNeed.verifiedPayments
+                              .find((p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0)
+                              .needAmount.toLocaleString()}
                           {t('currency.toman')}
                         </Typography>
                       </Grid>
@@ -399,10 +471,11 @@ export default function DaoNeedSignature() {
                         <Typography variant="body1">
                           {theNeed.verifiedPayments.find(
                             (p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount < 0,
-                          ) &&
-                            theNeed.verifiedPayments
-                              .find((p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount < 0)
-                              .creditAmount.toLocaleString()}
+                          )
+                            ? theNeed.verifiedPayments
+                                .find((p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount < 0)
+                                .creditAmount.toLocaleString()
+                            : 0}
                           {t('currency.toman')}
                         </Typography>
                       </Grid>
@@ -420,7 +493,18 @@ export default function DaoNeedSignature() {
                           {t('need.userShare')}
                         </Typography>
                         <Typography variant="body1">
-                          %{(theNeed.purchaseCost / theNeed.cost) * 100}
+                          %
+                          {theNeed.verifiedPayments.find(
+                            (p) => p.flaskUserId === userInfo.user.id,
+                          ) &&
+                            round(
+                              (theNeed.verifiedPayments.find(
+                                (p) => p.flaskUserId === userInfo.user.id,
+                              ).needAmount /
+                                theNeed.cost) *
+                                100,
+                              2,
+                            )}
                         </Typography>
                       </Grid>
                       <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -431,15 +515,16 @@ export default function DaoNeedSignature() {
                           {t('need.sayShare')}
                         </Typography>
                         <Typography variant="body1">
-                          {!theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
-                            ? t('need.delivery')
-                            : `%${
-                                (theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
-                                  .needAmount /
-                                  theNeed.cost) *
-                                100
-                              }`}
+                          {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
+                            `%${round(
+                              (theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
+                                .needAmount /
+                                theNeed.cost) *
+                                100,
+                              2,
+                            )}`}
                         </Typography>
+                        <Typography variant="body1">{t('need.delivery')}</Typography>
                       </Grid>
                       <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                         <Divider sx={{ width: '60%', m: 'auto' }} />
@@ -449,10 +534,11 @@ export default function DaoNeedSignature() {
                           {t('report.statusChange.bankTrackId')}
                         </Typography>
                         <Typography variant="body1">
-                          {
-                            theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
-                              .gatewayTrackId
-                          }
+                          {theNeed.verifiedPayments.find(
+                            (p) => p.flaskUserId === userInfo.user.id,
+                          ) &&
+                            theNeed.verifiedPayments.find((p) => p.flaskUserId === userInfo.user.id)
+                              .gatewayTrackId}
                         </Typography>
                       </Grid>
                       <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -501,28 +587,42 @@ export default function DaoNeedSignature() {
                     direction="row"
                     justifyContent="space-around"
                     alignItems="center"
-                    sx={{ height: 80 }}
+                    sx={{ height: 130 }}
+                    spacing={2}
                   >
-                    <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
                       <Card sx={{ p: 1 }}>
-                        <AccessTimeIcon
+                        <SocialDistanceIcon
                           sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
                         />
+                        {userResult && typeof userVRole === 'number' ? (
+                          <Typography
+                            variant="h4"
+                            fontWeight="600"
+                            sx={{
+                              lineHeight: '1.2',
+                              fontSize: 14,
+                            }}
+                          >
+                            {userVRole === VirtualFamilyRole.FATHER
+                              ? userResult.theUser.distanceRatio.fatherQGrant
+                              : userVRole === VirtualFamilyRole.MOTHER
+                              ? userResult.theUser.distanceRatio.motherQGrant
+                              : userVRole === VirtualFamilyRole.AMOO
+                              ? userResult.theUser.distanceRatio.amooQGrant
+                              : userVRole === VirtualFamilyRole.KHALEH
+                              ? userResult.theUser.distanceRatio.khalehQGrant
+                              : userVRole === VirtualFamilyRole.DAEI
+                              ? userResult.theUser.distanceRatio.daeiQGrant
+                              : userVRole === VirtualFamilyRole.AMME &&
+                                userResult.theUser.distanceRatio.ammeQGrant}
+                          </Typography>
+                        ) : (
+                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
+                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
+                          </Stack>
+                        )}
 
-                        <Typography
-                          variant="h4"
-                          fontWeight="600"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 14,
-                          }}
-                        >
-                          {moment(theNeed.childDeliveryDate).diff(
-                            moment(theNeed.created),
-                            'days',
-                          ) || '-'}{' '}
-                          {t('dao.signaturesTab.timeLine.days')}{' '}
-                        </Typography>
                         <Typography
                           color="textSecondary"
                           fontWeight="200"
@@ -532,25 +632,32 @@ export default function DaoNeedSignature() {
                             mt: 1,
                           }}
                         >
-                          {t('dao.signaturesTab.timeLine.duration')}
+                          {t('dao.signaturesTab.distance')}
                         </Typography>
                       </Card>
                     </Grid>
-                    <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
                       <Card sx={{ p: 1 }}>
                         <HardwareOutlinedIcon
                           sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
                         />
-                        <Typography
-                          variant="h4"
-                          fontWeight="600"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 14,
-                          }}
-                        >
-                          0
-                        </Typography>
+                        {coeffsResult ? (
+                          <Typography
+                            variant="h4"
+                            fontWeight="600"
+                            sx={{
+                              lineHeight: '1.2',
+                              fontSize: 14,
+                            }}
+                          >
+                            {coeffsResult.avgGrant}
+                          </Typography>
+                        ) : (
+                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
+                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
+                          </Stack>
+                        )}
+
                         <Typography
                           color="textSecondary"
                           fontWeight="200"
@@ -564,29 +671,27 @@ export default function DaoNeedSignature() {
                         </Typography>
                       </Card>
                     </Grid>
-                    <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
                       <Card sx={{ p: 1 }}>
                         <Diversity3Icon
                           sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
                         />
-                        <Typography
-                          variant="h4"
-                          fontWeight="600"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 14,
-                          }}
-                        >
-                          {theNeed.verifiedPayments.filter(
-                            (p) => p.flaskUserId !== SAY_DAPP_ID && p.needAmount > 0,
-                          ).length === 1
-                            ? 1
-                            : (theNeed.verifiedPayments.filter(
-                                (p) => p.flaskUserId !== SAY_DAPP_ID && p.needAmount > 0,
-                              ).length -
-                                1) *
-                              1.1}
-                        </Typography>
+                        {coeffsResult ? (
+                          <Typography
+                            variant="h4"
+                            fontWeight="600"
+                            sx={{
+                              lineHeight: '1.2',
+                              fontSize: 14,
+                            }}
+                          >
+                            {coeffsResult.contributionRatio}
+                          </Typography>
+                        ) : (
+                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
+                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
+                          </Stack>
+                        )}
                         <Typography
                           color="textSecondary"
                           fontWeight="200"
@@ -626,8 +731,15 @@ export default function DaoNeedSignature() {
             </Grid>
           </Card>
         </>
+      ) : (
+        <CircularProgress />
       )}
       <WalletDialog openWallets={openWallets} setOpenWallets={setOpenWallets} />
+      {(errorFamilyRoles || errorReadyOne) && (
+        <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
+          {errorFamilyRoles || errorReadyOne}
+        </Message>
+      )}
     </Grid>
   );
 }

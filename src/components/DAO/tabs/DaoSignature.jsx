@@ -45,7 +45,7 @@ export default function DaoSignature() {
             <Grid container>
               <ToggleButton alignment={alignment} setAlignment={setAlignment} />
             </Grid>
-            <Box sx={{ p: 2, width: '100%', height: 450, overflowY: 'scroll' }}>
+            <Box sx={{ p: 2, width: '100%', height: '100vh', overflowY: 'scroll', pb: 15 }}>
               {alignment === 'ready' && (
                 <ImageList variant="masonry" cols={2} gap={10}>
                   {readyNeeds &&

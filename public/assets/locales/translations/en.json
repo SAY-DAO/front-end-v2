@@ -776,6 +776,14 @@
     "ngoSupervisor": "NGO supervisor",
     "noRole": "No Role",
     "familyMember": "Family Member",
+    "vFamily": {
+      "0": "Father",
+      "1": "Mother",
+      "2": "Uncle",
+      "3": "Aunt",
+      "4": "Uncle",
+      "5": "Aunt"
+    },
     "friend": "Friend",
     "all": "All roles"
   }

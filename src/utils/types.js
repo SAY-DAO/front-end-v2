@@ -37,8 +37,6 @@ export const EducationEnum = {
   thirteenGrade: 13,
 };
 
-
-
 // 0:homeless | 1:Resident| 2:Care centers
 export const HousingStatusEnum = {
   homeless: 0,
@@ -67,6 +65,16 @@ export const SAYPlatformRoles = {
   AUDITOR: PanelContributors.AUDITOR,
   FAMILY: AppContributors.FAMILY,
   FRIEND: AppContributors.FRIEND,
+};
+
+export const VirtualFamilyRole = {
+  SAY: -2,
+  FATHER: 0,
+  MOTHER: 1,
+  AMOO: 2,
+  KHALEH: 3,
+  DAEI: 4,
+  AMME: 5,
 };
 
 export const RolesEnumDefine = {
@@ -129,7 +137,6 @@ export const ChildExistenceEnum = {
   ALIVE_GONE: 2,
   TEMP_GONE: 3,
 };
-
 
 export const NeedCategoryEnum = {
   GROWTH: 0,

@@ -1,4 +1,9 @@
 import {
+  ONE_NEED_COEFFS_FAIL,
+  ONE_NEED_COEFFS_REQUEST,
+  ONE_NEED_COEFFS_SUCCESS,
+} from '../constants/daoConstants';
+import {
   INVITE_TO_MY_FAMILY_REQUEST,
   INVITE_TO_MY_FAMILY_SUCCESS,
   INVITE_TO_MY_FAMILY_FAIL,
@@ -14,12 +19,15 @@ import {
   ACCEPT_INVITATION_SUCCESS,
   ACCEPT_INVITATION_FAIL,
   ACCEPT_INVITATION_RESET,
-  FAMILY_ANALYTIC_REQUEST,
-  FAMILY_ANALYTIC_SUCCESS,
-  FAMILY_ANALYTIC_FAIL,
+  FAMILY_ECOSYSTEM_PAYS_REQUEST,
+  FAMILY_ECOSYSTEM_PAYS_SUCCESS,
+  FAMILY_ECOSYSTEM_PAYS_FAIL,
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
+  FAMILY_DISTANCE_RATIO_REQUEST,
+  FAMILY_DISTANCE_RATIO_SUCCESS,
+  FAMILY_DISTANCE_RATIO_FAIL,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamilyReducer = (state = {}, action) => {
@@ -82,16 +90,24 @@ export const acceptInvitationReducer = (state = {}, action) => {
 
 export const familyAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
-    case FAMILY_ANALYTIC_REQUEST:
-      return { loading: true, success: false };
-    case FAMILY_ANALYTIC_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-        result: action.payload,
-      };
-    case FAMILY_ANALYTIC_FAIL:
-      return { loading: false, error: action.payload };
+    case ONE_NEED_COEFFS_REQUEST:
+      return { ...state, loading: true, success: false };
+    case ONE_NEED_COEFFS_SUCCESS:
+      return { ...state, loading: false, success: true, coeffsResult: action.payload };
+    case ONE_NEED_COEFFS_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case FAMILY_DISTANCE_RATIO_REQUEST:
+      return { ...state, loading: true, success: false };
+    case FAMILY_DISTANCE_RATIO_SUCCESS:
+      return { ...state, loading: false, success: true, userResult: action.payload };
+    case FAMILY_DISTANCE_RATIO_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case FAMILY_ECOSYSTEM_PAYS_REQUEST:
+      return { ...state, loading: true, success: false };
+    case FAMILY_ECOSYSTEM_PAYS_SUCCESS:
+      return { ...state, loading: false, success: true, ecoResult: action.payload };
+    case FAMILY_ECOSYSTEM_PAYS_FAIL:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

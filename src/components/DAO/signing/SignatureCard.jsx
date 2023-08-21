@@ -22,7 +22,7 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
           opacity: cardSelected === need.id || cardSelected === 0 ? 1 : 0.9,
           p: 0,
           borderRadius: 8,
-          height: 180,
+          height: 150,
           background: `url(${`${apiDao}/midjourney/images/${need.midjourneyImage}`})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
@@ -36,7 +36,7 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
           sx={{ zIndex: 10, position: 'absolute', bottom: 5 }}
         >
           <Grid item xs={4}>
-            <Avatar alt="my child" src={prepareUrl(need.child.awakeAvatarUrl)} />
+            <Avatar alt="my child" sx={{width:35, height:35, m:'auto'}}src={prepareUrl(need.child.awakeAvatarUrl)} />
           </Grid>
           <Grid item xs>
             <Typography sx={{ color: 'white', mt: 1, fontWeight: 800 }} fontSize="small">
