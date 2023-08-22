@@ -49,10 +49,10 @@ export default function DaoSignature() {
               {alignment === 'ready' && (
                 <ImageList variant="masonry" cols={2} gap={10}>
                   {readyNeeds &&
-                    readyNeeds.map((need) => (
-                      <ImageListItem key={need.id}>
+                    readyNeeds.map((payment) => (
+                      <ImageListItem key={payment.id}>
                         <SignatureCard
-                          need={need}
+                          need={payment.need}
                           setCardSelected={setCardSelected}
                           cardSelected={cardSelected}
                         />

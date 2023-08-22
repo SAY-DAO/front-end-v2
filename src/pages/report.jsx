@@ -89,7 +89,7 @@ export default function Report() {
     if (lang === 'fa') {
       return faDate(date);
     }
-    return false
+    return false;
   };
 
   useEffect(() => {
@@ -271,16 +271,12 @@ export default function Report() {
                     {showDkc && <Typography variant="body2">{dkcNumber}</Typography>}
                   </Grid>
                 </Grid>
+                <Grid container direction="column" justifyContent="center" alignItems="center">
+                  <a href="http://say.company" target="_blank" rel="noreferrer">
+                    <img src="/images/logo.png" alt="logo" style={{ maxWidth: '60px' }} />
+                  </a>
+                </Grid>
               </Paper>
-              <Grid container direction="column" justifyContent="center" alignItems="center">
-                <a href="http://say.company" target="_blank" rel="noreferrer">
-                  <img
-                    src="https://sayapp.company/public/resources/img/logo-white.png"
-                    alt="logo"
-                    style={{ maxWidth: '60px' }}
-                  />
-                </a>
-              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={10} sx={{ textAlign: 'center' }}>

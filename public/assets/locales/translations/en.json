@@ -508,32 +508,32 @@
     "swId": "Social worker’s identification: SW-{{socialWorkerGeneratedCode}}",
     "dkc": "Order: DKC-{{dkc}}",
     "p2s2": {
-      "img": "https://sayapp.company/public/resources/img/done.jpg",
+      "img": "/images/icons/doneNeeds/receipts/done.jpg",
       "title": "One of {{childSayName}}’s needs is completely done",
       "paragraph": "With your collaborations, all expenses for {{needName}} has been paid for on {{date}}."
     },
     "p3": {
-      "img": "https://sayapp.company/public/resources/img/purchased.jpg",
+      "img": "/images/icons/doneNeeds/receipts/purchased.jpg",
       "title": "Purchase receipt for {{childSayName}}’s needs",
       "paragraph": "On {{date}} {{needName}} has been ordered for {{childSayName}} from online retailer."
     },
     "p4": {
-      "img": "https://sayapp.company/public/resources/img/ngo_delivered.jpg",
+      "img": "/images/icons/doneNeeds/receipts/ngo_delivered.jpg",
       "title": "Product delivered to the NGO notification",
       "paragraph": "On {{date}} {{needName}} is delivered to the NGO."
     },
     "p5": {
-      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "img": "/images/icons/doneNeeds/receipts/child_delivered.jpg",
       "title": "Product delivered to {{childSayName}}",
       "paragraph": "{{needName}} is delivered to {{childSayName}} on {{date}}."
     },
     "s3": {
-      "img": "https://sayapp.company/public/resources/img/money.jpg",
+      "img": "/images/icons/doneNeeds/receipts/money.png",
       "title": "Money transfer to the NGO by SAY",
       "paragraph": "The amount of {{needCost}} Tomans for purchasing {{childSayName}}’s {{needName}}, has been transferred into the NGO’s bank account, on {{date}}."
     },
     "s4": {
-      "img": "https://sayapp.company/public/resources/img/child_delivered.jpg",
+      "img": "/images/icons/doneNeeds/receipts/child_delivered.jpg",
       "title": "{{childSayName}}’s {{needName}} has been paid for",
       "paragraph": "The amount of {{needCost}} Tomans for {{childSayName}}’s {{needName}}, has been paid by the NGO on {{date}}."
     },
