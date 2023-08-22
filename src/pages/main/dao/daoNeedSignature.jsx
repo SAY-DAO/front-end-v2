@@ -44,6 +44,7 @@ import DaoSignatureMenu from '../../../components/DAO/signing/DaoSignatureMenu';
 import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
 import { SAY_DAPP_ID } from '../../../utils/configs';
 import Message from '../../../components/Message';
+import MessageWallet from '../../../components/MessageWallet';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -51,13 +52,14 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [userVRole, setUserVRole] = useState('');
   const [openWallets, setOpenWallets] = useState(false);
   const [theNeed, setTheNeed] = useState();
   const [images, setImages] = useState(false);
   const { address, isConnected } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const { isLoading, pendingConnector } = useConnect();
+  const { isLoading, pendingConnector, error } = useConnect();
   const { chain } = useNetwork();
   const { reset } = useSignMessage();
 
@@ -135,6 +137,21 @@ export default function DaoNeedSignature() {
     } else {
       setImages(true);
     }
+  };
+
+  // toast
+  useEffect(() => {
+    if (error) {
+      setWalletToastOpen(true);
+    }
+  }, [error]);
+
+  // close toast
+  const handleCloseWalletToast = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setWalletToastOpen(false);
   };
 
   return (
@@ -734,10 +751,18 @@ export default function DaoNeedSignature() {
         <CircularProgress />
       )}
       <WalletDialog openWallets={openWallets} setOpenWallets={setOpenWallets} />
+
       {(errorFamilyRoles || errorReadyOne) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
           {errorFamilyRoles || errorReadyOne}
         </Message>
+      )}
+      {error && (
+        <MessageWallet
+          walletError={error}
+          walletToastOpen={walletToastOpen}
+          handleCloseWalletToast={handleCloseWalletToast}
+        />
       )}
     </Grid>
   );

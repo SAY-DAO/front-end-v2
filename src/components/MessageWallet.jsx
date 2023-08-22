@@ -12,13 +12,14 @@ export default function MessageWallet({
 }) {
   const { t } = useTranslation();
   const onRequestCheck = () => {
+    console.log(walletError);
     if (walletError.code === -32002) {
       return t('error.wallet.32002');
     }
     if (walletError.code === 4001) {
       return t('error.wallet.4001');
     }
-    if (walletError.code === "ACTION_REJECTED") {
+    if (walletError.code === 'ACTION_REJECTED') {
       return t('error.wallet.4001');
     }
     if (typeof walletError === 'string') {
@@ -27,7 +28,7 @@ export default function MessageWallet({
     if (walletError.code === -32603) {
       return t('error.wallet.32603');
     }
-    
+
     return t('error.wallet.0');
   };
 

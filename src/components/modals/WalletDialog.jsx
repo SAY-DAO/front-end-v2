@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,39 +9,24 @@ import { useAccount, useConnect } from 'wagmi';
 import { LoadingButton } from '@mui/lab';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { isBrowser } from 'react-device-detect';
 import metamask from '../../resources/images/wallet/metamask.png';
 import walletConnect from '../../resources/images/wallet/walletConnect.svg';
-import MessageWallet from '../MessageWallet';
 
 function TheDialog(props) {
   const { t } = useTranslation();
 
   const { onClose, open } = props;
-  const [walletToastOpen, setWalletToastOpen] = useState(false);
 
-  const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
+  const { connect, connectors, isLoading, pendingConnector } = useConnect();
 
-  // toast
-  useEffect(() => {
-    if (error) {
-      setWalletToastOpen(true);
-    }
-  }, [error]);
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  // close toast
-  const handleCloseWalletToast = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setWalletToastOpen(false);
+  const handleConnect = (connector) => {
+    onClose()
+    connect({ connector });
   };
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={onClose}
       open={open}
       sx={{
         '.MuiDialog-paper': {
@@ -71,7 +56,7 @@ function TheDialog(props) {
                     style={{ maxWidth: '25px', margin: 1 }}
                   />
                 </ListItemAvatar>
-                {t(`wallet.download`)}
+                {isBrowser && t(`wallet.download`)}
               </LoadingButton>
             ) : (
               <LoadingButton
@@ -79,7 +64,7 @@ function TheDialog(props) {
                 variant="outlined"
                 loading={isLoading && connector.id === pendingConnector?.id && true}
                 disabled={!connector.ready}
-                onClick={() => connect({ connector })}
+                onClick={() => handleConnect(connector)}
                 sx={{ justifyContent: 'flex-start', ml: 1, mr: 1, border: 0, p: 0 }}
               >
                 <ListItemAvatar>
@@ -127,13 +112,6 @@ function TheDialog(props) {
           </Button>
         </Grid>
       </Grid>
-      {error && (
-        <MessageWallet
-          walletError={error}
-          walletToastOpen={walletToastOpen}
-          handleCloseWalletToast={handleCloseWalletToast}
-        />
-      )}
     </Dialog>
   );
 }
@@ -146,20 +124,17 @@ TheDialog.propTypes = {
 export default function WalletDialog({ openWallets, setOpenWallets }) {
   const { isConnected } = useAccount();
 
-  const [selectedValue, setSelectedValue] = useState();
-
   useEffect(() => {
     if (isConnected) {
       setOpenWallets(false);
     }
   }, [isConnected]);
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpenWallets(false);
-    setSelectedValue(value);
   };
 
-  return <TheDialog selectedValue={selectedValue} open={openWallets} onClose={handleClose} />;
+  return <TheDialog open={openWallets} onClose={handleClose} />;
 }
 
 WalletDialog.propTypes = {
