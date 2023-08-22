@@ -28,7 +28,6 @@ import {
   fetchOneReadySignNeed,
   signTransaction,
 } from '../../../redux/actions/main/daoAction';
-import { apiDao } from '../../../env';
 import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
   changePersianNumbersToEnglish,
@@ -194,7 +193,7 @@ export default function DaoNeedSignature() {
                 <img
                   src={
                     images
-                      ? `${apiDao}/midjourney/images/${theNeed.midjourneyImage}`
+                      ? `${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${theNeed.midjourneyImage}`
                       : theNeed.needRetailerImg
                   }
                   alt="original"
