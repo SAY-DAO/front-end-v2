@@ -176,7 +176,7 @@ export default function DaoNeedSignature() {
                 width: '60%',
                 borderRadius: 10,
                 background: !images
-                  ? `url(${`${apiDao}/midjourney/images/${theNeed.midjourneyImage}`})`
+                  ? `url(${`${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${theNeed.midjourneyImage}`})`
                   : `url(${theNeed.needRetailerImg})`,
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',

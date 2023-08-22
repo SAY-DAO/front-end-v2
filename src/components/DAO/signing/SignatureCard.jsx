@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Avatar, Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
 import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router';
-import { apiDao } from '../../../env';
 import WalletDialog from '../../modals/WalletDialog';
 import { prepareUrl } from '../../../utils/helpers';
 
@@ -23,7 +22,7 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
           p: 0,
           borderRadius: 8,
           height: 150,
-          background: `url(${`${apiDao}/midjourney/images/${need.midjourneyImage}`})`,
+          background: `url(${`${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${need.midjourneyImage}`})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
           position: 'relative',
@@ -36,7 +35,11 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
           sx={{ zIndex: 10, position: 'absolute', bottom: 5 }}
         >
           <Grid item xs={4}>
-            <Avatar alt="my child" sx={{width:35, height:35, m:'auto'}}src={prepareUrl(need.child.awakeAvatarUrl)} />
+            <Avatar
+              alt="my child"
+              sx={{ width: 35, height: 35, m: 'auto' }}
+              src={prepareUrl(need.child.awakeAvatarUrl)}
+            />
           </Grid>
           <Grid item xs>
             <Typography sx={{ color: 'white', mt: 1, fontWeight: 800 }} fontSize="small">

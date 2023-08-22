@@ -262,11 +262,7 @@ export default function AppBarBottom() {
                   color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
                 },
               }}
-              icon={
-                path !== '/main/dao/portal' && (
-                  <Typography variant="subtitle2">{t('userLayout.dao')}</Typography>
-                )
-              }
+              icon={<Typography variant="subtitle2">{t('userLayout.dao')}</Typography>}
             />
           )}
         </BottomNavigation>
