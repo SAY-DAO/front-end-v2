@@ -4,10 +4,19 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PropTypes } from 'prop-types';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { isResolved } from '../../../utils/helpers';
 
-export default function DaoSignatureMenu({  handleScreenShotButton }) {
+export default function DaoSignatureMenu({ handleComment }) {
+  const { t } = useTranslation();
+
+  const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
+  const { oneReadyNeed } = readySigningOneNeed;
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,12 +44,16 @@ export default function DaoSignatureMenu({  handleScreenShotButton }) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleScreenShotButton}>Screen Shot</MenuItem>
+        <MenuItem disabled={oneReadyNeed && !isResolved(oneReadyNeed)} onClick={handleComment}>
+          {oneReadyNeed && isResolved(oneReadyNeed)
+            ? t('comment.report')
+            : t('comment.investigating')}
+        </MenuItem>
       </Menu>
     </div>
   );
 }
 
 DaoSignatureMenu.propTypes = {
-  handleScreenShotButton: PropTypes.func,
+  handleComment: PropTypes.func,
 };

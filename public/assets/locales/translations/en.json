@@ -718,6 +718,8 @@
       "docs": "Documents"
     },
     "signaturesTab": {
+      "noList": "We could not find any need which is signed by social workers",
+      "noListSigned": "You have not signed any of your paid needs.",
       "waiting": "Waiting",
       "signed": "Signed",
       "ready": "Ready to Sign",
@@ -746,6 +748,9 @@
         "days": "days",
         "hours": "hrs"
       }
+    },
+    "mintTab": {
+      "notAvailable": "زمانی که تعداد زیاد از نیازهابه امضای مددکار، میانچی، شاهد و خانوادخ مجازی رسیده باشند، امکان استخراج توکن/سهام از هر نیاز دارای حداقل ۳ امضا فراهم می‌شود. "
     }
   },
   "wallet": {
@@ -786,5 +791,12 @@
     },
     "friend": "Friend",
     "all": "All roles"
+  },
+  "comment": {
+    "report": "Report a problem",
+    "title": "Please report any mistakes related to this need from here",
+    "placeholder": "Report ...",
+    "disabledWallet": "This need is not available to be signed until the reported issue is resolved!",
+    "investigating": "Invetigating the issue"
   }
 }

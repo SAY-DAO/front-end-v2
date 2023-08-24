@@ -2169,7 +2169,7 @@
     "@motionone/dom" "^10.16.2"
     tslib "^2.3.1"
 
-"@mui/base@5.0.0-beta.11":
+"@mui/base@5.0.0-beta.11", "@mui/base@^5.0.0-beta.11":
   version "5.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-beta.11.tgz#0124d336f1931c6cd5f0008d015df5bd8fafd3a8"
   integrity sha512-FdKZGPd8qmC3ZNke7CNhzcEgToc02M6WYZc9hcBsNQ17bgAd3s9F//1bDDYgMVBYxDM71V0sv/hBHlOY4I1ZVA==

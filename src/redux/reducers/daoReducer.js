@@ -26,7 +26,6 @@ import {
   READY_TO_SIGN_ONE_NEED_RESET,
 } from '../constants/daoConstants';
 
-
 export const readyToSignNeedsReducer = (state = {}, action) => {
   switch (action.type) {
     case READY_TO_SIGN_NEEDS_REQUEST:

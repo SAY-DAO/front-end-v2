@@ -1,7 +1,9 @@
 import {
   Avatar,
+  Button,
   Card,
   CircularProgress,
+  Container,
   Divider,
   Grid,
   IconButton,
@@ -32,6 +34,7 @@ import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
   changePersianNumbersToEnglish,
   getSAYRoleString,
+  isResolved,
   prepareUrl,
 } from '../../../utils/helpers';
 import WalletButton from '../../../components/WalletButton';
@@ -45,6 +48,10 @@ import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
 import { SAY_DAPP_ID } from '../../../utils/configs';
 import Message from '../../../components/Message';
 import MessageWallet from '../../../components/MessageWallet';
+import CommentModal from '../../../components/modals/CommentModal';
+import CommentCard from '../../../components/DAO/comment/CommentCard';
+import CommentTextArea from '../../../components/DAO/comment/CommentTextArea';
+import { createComment } from '../../../redux/actions/commentAction';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -52,6 +59,8 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [message, setMessage] = useState('');
+  const [commentOpen, setCommentOpen] = useState(false);
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [userVRole, setUserVRole] = useState('');
   const [openWallets, setOpenWallets] = useState(false);
@@ -68,6 +77,9 @@ export default function DaoNeedSignature() {
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed, error: errorReadyOne } = readySigningOneNeed;
+
+  const commentResult = useSelector((state) => state.commentResult);
+  const { created } = commentResult;
 
   const familyRolesEco = useSelector((state) => state.familyRolesEco);
   const {
@@ -91,7 +103,7 @@ export default function DaoNeedSignature() {
     if (oneReadyNeed) {
       setTheNeed(oneReadyNeed);
     }
-  }, [oneReadyNeed]);
+  }, [oneReadyNeed, created]);
 
   useEffect(() => {
     if (!userVRole) {
@@ -154,11 +166,26 @@ export default function DaoNeedSignature() {
     setWalletToastOpen(false);
   };
 
+  const handleComment = () => {
+    setCommentOpen(true);
+  };
+
+  const submitComment = () => {
+    dispatch(
+      createComment(
+        oneReadyNeed.flaskId,
+        oneReadyNeed.id,
+        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
+        message,
+      ),
+    );
+  };
+
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <DaoSignatureMenu />
+          <DaoSignatureMenu handleComment={handleComment} />
         </Grid>
         <Grid item>
           <IconButton onClick={() => navigate('/main/dao/tabs/signature')}>
@@ -724,25 +751,42 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Button */}
-                <Grid container sx={{ width: '100px', m: 'auto', justifyContent: 'center' }}>
-                  {!isConnected ? (
-                    <WalletButton fullWidth variant="outlined" onClick={handleWalletButton}>
-                      {t('button.wallet.connect')}
-                    </WalletButton>
-                  ) : (
-                    isConnected && (
-                      <WalletButton
-                        fullWidth
-                        signbutton="true"
-                        variant="outlined"
-                        loading={isLoading || pendingConnector}
-                        onClick={handleSignature}
-                      >
-                        {t('button.wallet.sign')}
+                {isResolved(theNeed) && (
+                  <Grid container sx={{ width: '100px', m: 'auto', justifyContent: 'center' }}>
+                    {!isConnected ? (
+                      <WalletButton fullWidth variant="outlined" onClick={handleWalletButton}>
+                        {t('button.wallet.connect')}
                       </WalletButton>
-                    )
-                  )}
-                </Grid>
+                    ) : (
+                      isConnected && (
+                        <WalletButton
+                          fullWidth
+                          signbutton="true"
+                          variant="outlined"
+                          loading={isLoading || pendingConnector}
+                          onClick={handleSignature}
+                        >
+                          {t('button.wallet.sign')}
+                        </WalletButton>
+                      )
+                    )}
+                  </Grid>
+                )}
+                {!isResolved(theNeed) && (
+                  <Container>
+                    <Typography sx={{ p: 2 }}>{t('comment.disabledWallet')}</Typography>
+                    <Divider />
+                    {theNeed.comments.map((comment) => (
+                      <CommentCard key={comment.id} comment={comment} />
+                    ))}
+                    <form style={{ textAlign: 'center', marginTop: 30 }}>
+                      <CommentTextArea message={message} setMessage={setMessage} />
+                      <Button disabled={!message} onClick={submitComment} autoFocus>
+                        {t('button.submit')}
+                      </Button>
+                    </form>
+                  </Container>
+                )}
               </Card>
             </Grid>
           </Card>
@@ -751,7 +795,12 @@ export default function DaoNeedSignature() {
         <CircularProgress />
       )}
       <WalletDialog openWallets={openWallets} setOpenWallets={setOpenWallets} />
-
+      <CommentModal
+        open={commentOpen}
+        setOpen={setCommentOpen}
+        message={message}
+        setMessage={setMessage}
+      />
       {(errorFamilyRoles || errorReadyOne) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
           {errorFamilyRoles || errorReadyOne}

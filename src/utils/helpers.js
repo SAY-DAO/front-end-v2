@@ -9,6 +9,10 @@ import {
 } from './types';
 import { PRODUCT_UNPAYABLE_PERIOD } from './configs';
 
+export function isResolved(theNeed) {
+  return theNeed.isResolved === true || theNeed.isResolved === null;
+}
+
 export function prepareUrl(imageUrl) {
   let url;
   if (imageUrl && imageUrl.startsWith('/')) {

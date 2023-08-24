@@ -31,12 +31,21 @@ import {
   joinVirtualFamilyReducer,
   LeaveVirtualFamilyReducer,
 } from './familyReducer';
-import { signatureReducer, readyToSignNeedsReducer, readyToSignOneNeedReducer, WalletInformationReducer, walletVerifyReducer, walletNonceReducer } from './daoReducer';
+import {
+  signatureReducer,
+  readyToSignNeedsReducer,
+  readyToSignOneNeedReducer,
+  WalletInformationReducer,
+  walletVerifyReducer,
+  walletNonceReducer,
+} from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
+import { commentReducer } from './commentReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
+  commentResult: commentReducer,
   familyRolesEco: familyAnalyticReducer,
   walletNonce: walletNonceReducer,
   walletVerify: walletVerifyReducer,

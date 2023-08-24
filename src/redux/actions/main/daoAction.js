@@ -100,8 +100,6 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
       payload: data,
     });
   } catch (e) {
-    console.log('here');
-    console.log(e.response.statusText);
     dispatch({
       type: WALLET_VERIFY_FAIL,
       payload:
