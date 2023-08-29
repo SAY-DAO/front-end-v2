@@ -15,7 +15,7 @@ const StyledTextarea = styled(TextareaAutosize)(
   border-radius: 12px 12px 0 12px;
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
   box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
 
   &:hover {
@@ -34,11 +34,11 @@ const StyledTextarea = styled(TextareaAutosize)(
 `,
 );
 
-export default function CommentTextArea({ message, setMessage }) {
+export default function CommentTextArea({ comment, setComment }) {
   const { t } = useTranslation();
 
   const handleChange = (e) => {
-    setMessage(e.target.value);
+    setComment(e.target.value);
   };
 
   return (
@@ -48,13 +48,13 @@ export default function CommentTextArea({ message, setMessage }) {
       minRows={3}
       placeholder={t('comment.placeholder')}
       variant="outlined"
-      value={message}
+      value={comment}
       onChange={handleChange}
     />
   );
 }
 
 CommentTextArea.propTypes = {
-  message: PropTypes.string,
-  setMessage: PropTypes.func,
+  comment: PropTypes.string,
+  setComment: PropTypes.func,
 };

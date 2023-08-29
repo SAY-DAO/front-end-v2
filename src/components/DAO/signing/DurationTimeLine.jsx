@@ -13,20 +13,67 @@ import { PropTypes } from 'prop-types';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import { useState, useEffect } from 'react';
-import { NeedTypeEnum } from '../../../utils/types';
+import { NeedTypeEnum, SAYPlatformRoles } from '../../../utils/types';
 import { dateConvertor } from '../../../utils/persianToEnglish';
+import { getSAYFamilyRolePersian } from '../../../utils/helpers';
 
 export default function DurationTimeLine({ need }) {
   const { t } = useTranslation();
 
   const [initialSignature, setInitialSignature] = useState();
+  const [familySignatures, setFamilySignatures] = useState([]);
+
   useEffect(() => {
-    const signature = need.signatures.find((s) => s.flaskUserId === need.socialWorker.flaskUserId);
-    setInitialSignature(signature);
-  }, []);
+    const allSignatures = need.signatures;
+    const swSignature = need.signatures.find(
+      (s) => s.flaskUserId === need.socialWorker.flaskUserId,
+    );
+    const vFamilySignatures = allSignatures.filter((s) => s.role === SAYPlatformRoles.FAMILY);
+    setInitialSignature(swSignature);
+    setFamilySignatures(vFamilySignatures);
+  }, [need]);
 
   return (
     <Timeline position="alternate" sx={{ pt: 4, pl: 0, pr: 0 }}>
+      {familySignatures &&
+        familySignatures[0] &&
+        familySignatures.map((s) => (
+          <TimelineItem key={s.hash}>
+            <TimelineOppositeContent color="text.secondary" fontSize={12}>
+              {parseInt(moment(s.createdAt).diff(moment(initialSignature.createdAt), 'days'), 10) >
+              1
+                ? `${moment(s.createdAt).diff(moment(initialSignature.createdAt), 'days')} ${t(
+                    'dao.timeLine.days',
+                  )}`
+                : `${moment(s.createdAt).diff(moment(initialSignature.createdAt), 'hours')} ${t(
+                    'dao.timeLine.hours',
+                  )}`}
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <Tooltip
+                title={<Typography sx={{ fontSize: 12 }}>{dateConvertor(s.createdAt)}</Typography>}
+              >
+                <TimelineDot variant="outlined" sx={{ borderColor: 'transparent', p: 0, m: 1 }}>
+                  <Box
+                    sx={{
+                      height: '15px',
+                      width: '15px',
+                      border: (theme) => `2px solid ${theme.palette.primary.main}`,
+                    }}
+                  />
+                </TimelineDot>
+              </Tooltip>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent fontSize={12}>
+              {t('need.needStatus.signature')}{' '}
+              {getSAYFamilyRolePersian(
+                need.members &&
+                  need.members.find((m) => m.id_user === s.flaskUserId).flaskFamilyRole,
+              )}
+            </TimelineContent>
+          </TimelineItem>
+        ))}
       {initialSignature && (
         <TimelineItem>
           <TimelineOppositeContent color="text.secondary" fontSize={12}>
@@ -37,15 +84,19 @@ export default function DurationTimeLine({ need }) {
               ? `${moment(initialSignature.createdAt).diff(
                   moment(need.childDeliveryDate),
                   'days',
-                )} ${t('dao.signaturesTab.timeLine.days')}`
+                )} ${t('dao.timeLine.days')}`
               : `${moment(initialSignature.createdAt).diff(
                   moment(need.childDeliveryDate),
                   'hours',
-                )} ${t('dao.signaturesTab.timeLine.hours')}`}
+                )} ${t('dao.timeLine.hours')}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
             <Tooltip
-              title={<Typography sx={{ fontSize: 12 }}>{dateConvertor(initialSignature.createdAt)}</Typography>}
+              title={
+                <Typography sx={{ fontSize: 12 }}>
+                  {dateConvertor(initialSignature.createdAt)}
+                </Typography>
+              }
             >
               <TimelineDot variant="outlined" sx={{ borderColor: 'transparent', p: 0, m: 1 }}>
                 <Box
@@ -59,9 +110,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>
-            {t('dao.signaturesTab.timeLine.initialSignature')}
-          </TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.initialSignature')}</TimelineContent>
         </TimelineItem>
       )}
       {need.type === NeedTypeEnum.PRODUCT && need.childDeliveryDate && (
@@ -72,10 +121,10 @@ export default function DurationTimeLine({ need }) {
               10,
             ) > 1
               ? `${moment(need.childDeliveryDate).diff(moment(need.ngoDeliveryDate), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.childDeliveryDate).diff(moment(need.ngoDeliveryDate), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -96,9 +145,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>
-            {t('dao.signaturesTab.timeLine.childDelivery')}
-          </TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.childDelivery')}</TimelineContent>
         </TimelineItem>
       )}
       {need.type === NeedTypeEnum.PRODUCT &&
@@ -121,11 +168,11 @@ export default function DurationTimeLine({ need }) {
                 ? `${moment(need.ngoDeliveryDate || need.expectedDeliveryDate).diff(
                     moment(need.purchaseDate),
                     'days',
-                  )} ${t('dao.signaturesTab.timeLine.days')}`
+                  )} ${t('dao.timeLine.days')}`
                 : `${moment(need.ngoDeliveryDate || need.expectedDeliveryDate).diff(
                     moment(need.purchaseDate),
                     'hours',
-                  )} ${t('dao.signaturesTab.timeLine.hours')}`}
+                  )} ${t('dao.timeLine.hours')}`}
             </TimelineOppositeContent>
             <TimelineSeparator>
               <Tooltip
@@ -150,8 +197,8 @@ export default function DurationTimeLine({ need }) {
               }}
             >
               {need.ngoDeliveryDate
-                ? t('dao.signaturesTab.timeLine.ngoDelivery')
-                : t('dao.signaturesTab.timeLine.expNgoDelivery')}
+                ? t('dao.timeLine.ngoDelivery')
+                : t('dao.timeLine.expNgoDelivery')}
             </TimelineContent>
           </TimelineItem>
         )}
@@ -164,10 +211,10 @@ export default function DurationTimeLine({ need }) {
               10,
             ) > 1
               ? `${moment(need.childDeliveryDate).diff(moment(need.ngoDeliveryDate), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.childDeliveryDate).diff(moment(need.ngoDeliveryDate), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -182,9 +229,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>
-            {t('dao.signaturesTab.timeLine.childDelivery')}
-          </TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.childDelivery')}</TimelineContent>
         </TimelineItem>
       )}
       {need.type === NeedTypeEnum.PRODUCT && need.purchaseDate && (
@@ -192,10 +237,10 @@ export default function DurationTimeLine({ need }) {
           <TimelineOppositeContent color="text.secondary" fontSize={12}>
             {parseInt(moment(need.purchaseDate).diff(moment(need.doneAt), 'days'), 10) > 1
               ? `${moment(need.purchaseDate).diff(moment(need.doneAt), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.purchaseDate).diff(moment(need.doneAt), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -208,9 +253,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>
-            {t('dao.signaturesTab.timeLine.purchased')}
-          </TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.purchased')}</TimelineContent>
         </TimelineItem>
       )}
       {need.type === NeedTypeEnum.SERVICE && need.ngoDeliveryDate && (
@@ -218,10 +261,10 @@ export default function DurationTimeLine({ need }) {
           <TimelineOppositeContent color="text.secondary" fontSize={12}>
             {parseInt(moment(need.ngoDeliveryDate).diff(moment(need.doneAt), 'days'), 10) > 1
               ? `${moment(need.ngoDeliveryDate).diff(moment(need.doneAt), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.ngoDeliveryDate).diff(moment(need.doneAt), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -234,9 +277,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>
-            {t('dao.signaturesTab.timeLine.moneyToNgo')}
-          </TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.moneyToNgo')}</TimelineContent>
         </TimelineItem>
       )}
       {need.doneAt && (
@@ -244,10 +285,10 @@ export default function DurationTimeLine({ need }) {
           <TimelineOppositeContent color="text.secondary" fontSize={12}>
             {parseInt(moment(need.doneAt).diff(moment(need.confirmDate), 'days'), 10) > 1
               ? `${moment(need.doneAt).diff(moment(need.confirmDate), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.doneAt).diff(moment(need.confirmDate), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -258,7 +299,7 @@ export default function DurationTimeLine({ need }) {
             </Tooltip>
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent fontSize={12}>{t('dao.signaturesTab.timeLine.paid')}</TimelineContent>
+          <TimelineContent fontSize={12}>{t('dao.timeLine.paid')}</TimelineContent>
         </TimelineItem>
       )}
       {need.confirmDate && (
@@ -266,10 +307,10 @@ export default function DurationTimeLine({ need }) {
           <TimelineOppositeContent color="text.secondary" fontSize={12}>
             {parseInt(moment(need.confirmDate).diff(moment(need.created), 'days'), 10) > 1
               ? `${moment(need.confirmDate).diff(moment(need.created), 'days')} ${t(
-                  'dao.signaturesTab.timeLine.days',
+                  'dao.timeLine.days',
                 )}`
               : `${moment(need.confirmDate).diff(moment(need.created), 'hours')} ${t(
-                  'dao.signaturesTab.timeLine.hours',
+                  'dao.timeLine.hours',
                 )}`}
           </TimelineOppositeContent>
           <TimelineSeparator>
@@ -283,7 +324,7 @@ export default function DurationTimeLine({ need }) {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent fontSize={12}>
-            {need.confirmDate && t('dao.signaturesTab.timeLine.confirmed')}
+            {need.confirmDate && t('dao.timeLine.confirmed')}
           </TimelineContent>
         </TimelineItem>
       )}
@@ -313,7 +354,7 @@ export default function DurationTimeLine({ need }) {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent fontSize={12}>
-            {need.created && t('dao.signaturesTab.timeLine.created')}
+            {need.created && t('dao.timeLine.created')}
           </TimelineContent>
         </TimelineItem>
       )}

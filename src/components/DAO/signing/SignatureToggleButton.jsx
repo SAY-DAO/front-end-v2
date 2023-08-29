@@ -3,14 +3,24 @@ import ToggleButton from '@mui/material/ToggleButton';
 import { useTranslation } from 'react-i18next';
 import { ToggleButtonGroup } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 export default function SignatureToggleButton({ alignment, setAlignment }) {
+  const { state } = useLocation();
   const { t } = useTranslation();
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
+  useEffect(() => {
+    if (state) {
+      setAlignment(state.toggle);
+    }
+  }, [state]);
 
+  const handleChange = (event, newAlignment) => {
+    if (newAlignment) {
+      setAlignment(newAlignment);
+    }
+  };
   return (
     <ToggleButtonGroup
       color="primary"

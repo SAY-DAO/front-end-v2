@@ -26,7 +26,7 @@ export default function DaoStepper() {
           selectedValue === 'pending' ||
           selectedValue === 'socialWorker' ||
           selectedValue === 'family' ||
-          selectedValue === 'friend'
+          selectedValue === 'relative'
         }
         sx={{
           m: 0,
@@ -44,7 +44,7 @@ export default function DaoStepper() {
         checked={
           selectedValue === 'socialWorker' ||
           selectedValue === 'family' ||
-          selectedValue === 'friend'
+          selectedValue === 'relative'
         }
         sx={{
           m: 0,
@@ -59,7 +59,7 @@ export default function DaoStepper() {
       />
       <Radio
         {...controlProps('family')}
-        checked={selectedValue === 'family' || selectedValue === 'friend'}
+        checked={selectedValue === 'family' || selectedValue === 'relative'}
         sx={{
           m: 0,
           p: 0,
@@ -74,8 +74,8 @@ export default function DaoStepper() {
       />
 
       <Radio
-        {...controlProps('friend')}
-        checked={selectedValue === 'friend'}
+        {...controlProps('relative')}
+        checked={selectedValue === 'relative'}
         sx={{
           m: 0,
           p: 0,

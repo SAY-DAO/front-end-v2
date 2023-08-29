@@ -1,9 +1,7 @@
 import {
   Avatar,
-  Button,
   Card,
   CircularProgress,
-  Container,
   Divider,
   Grid,
   IconButton,
@@ -15,7 +13,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { grey } from '@mui/material/colors';
-import { useAccount, useConnect, useNetwork, useSignMessage, useWalletClient } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  useSignMessage,
+  useWalletClient,
+} from 'wagmi';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -23,23 +28,27 @@ import HardwareOutlinedIcon from '@mui/icons-material/HardwareOutlined';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import { round } from 'lodash';
+import { SiweMessage } from 'siwe';
 import {
   fetchFamilyMemberDistanceRatio,
-  fetchFamilyRolesCompletePays,
+  fetchEcoFamilyRolesCompletePays,
   fetchNeedCoefficients,
+  fetchNonce,
   fetchOneReadySignNeed,
+  fetchWalletInformation,
   signTransaction,
+  walletVerify,
 } from '../../../redux/actions/main/daoAction';
 import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
   changePersianNumbersToEnglish,
   getSAYRoleString,
-  isResolved,
   prepareUrl,
 } from '../../../utils/helpers';
 import WalletButton from '../../../components/WalletButton';
 import WalletDialog from '../../../components/modals/WalletDialog';
 import {
+  SIGNATURE_RESET,
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
@@ -49,9 +58,7 @@ import { SAY_DAPP_ID } from '../../../utils/configs';
 import Message from '../../../components/Message';
 import MessageWallet from '../../../components/MessageWallet';
 import CommentModal from '../../../components/modals/CommentModal';
-import CommentCard from '../../../components/DAO/comment/CommentCard';
-import CommentTextArea from '../../../components/DAO/comment/CommentTextArea';
-import { createComment } from '../../../redux/actions/commentAction';
+import CommentDrawer from '../../../components/DAO/signing/CommentDrawer';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -59,18 +66,33 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
-  const [message, setMessage] = useState('');
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [loadingEthereumSignature, setLoadingEthereumSignature] = useState(false);
+  const [comment, setComment] = useState();
   const [commentOpen, setCommentOpen] = useState(false);
-  const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [userVRole, setUserVRole] = useState('');
   const [openWallets, setOpenWallets] = useState(false);
   const [theNeed, setTheNeed] = useState();
   const [images, setImages] = useState(false);
+  const [values, setValues] = useState();
+  const [signatureError, setSignatureError] = useState('');
+  const [walletToastOpen, setWalletToastOpen] = useState(false);
+
+  const {
+    status,
+    isLoading: isLoadingSignIn,
+    error: errorSignIn,
+    isSuccess,
+    signMessageAsync,
+    reset,
+  } = useSignMessage();
+
   const { address, isConnected } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const { isLoading, pendingConnector, error } = useConnect();
+  const { isLoading, pendingConnector } = useConnect();
+
   const { chain } = useNetwork();
-  const { reset } = useSignMessage();
+  const { disconnect } = useDisconnect();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -81,23 +103,142 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
-  const familyRolesEco = useSelector((state) => state.familyRolesEco);
+  const ecosystemData = useSelector((state) => state.ecosystemData);
   const {
     coeffsResult,
     userResult,
-    success: successFamilyRoles,
-    error: errorFamilyRoles,
-  } = familyRolesEco;
+    success: successEcosystem,
+    error: errorEcosystem,
+  } = ecosystemData;
+
+  const { nonceData, error: errorWalletNonce } = useSelector((state) => state.walletNonce);
+  const { information, loading: loadingInformation } = useSelector(
+    (state) => state.walletInformation,
+  );
+
+  const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
+  const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
+  const { error: errorSignature, loading: loadingSignature } = useSelector(
+    (state) => state.signature,
+  );
+  // fetch nonce for the wallet siwe
+  useEffect(() => {
+    if (userInfo && userInfo.user.id) {
+      dispatch(fetchNonce());
+    }
+  }, [userInfo]);
+
+  // after sign in get sign-in information
+  useEffect(() => {
+    // Check client and server nonce
+    const localData = JSON.parse(localStorage.getItem('say-siwe'));
+    if (nonceData && nonceData.nonce === (localData && localData.nonce)) {
+      dispatch(fetchWalletInformation());
+    }
+  }, [verifiedNonce]);
+
+  // keep the button loading going when has not sign in and wallet is open
+  useEffect(() => {
+    if (information) {
+      setLoadingEthereumSignature(false);
+    }
+  }, [information]);
 
   useEffect(() => {
-    if (!successFamilyRoles) {
-      dispatch(fetchFamilyRolesCompletePays());
+    if (!errorSignIn && isConnected && nonceData && nonceData.nonce) {
+      setOpenWallets(false);
+    }
+  }, [nonceData, errorSignIn]);
+
+  // siwe
+  useEffect(() => {
+    if (!errorSignIn && isConnected && nonceData && nonceData.nonce) {
+      setOpenWallets(false);
+      setLoadingEthereumSignature(false);
+      const chainId = chain?.id;
+
+      if (status === 'loading' || !address || !chainId) return;
+      // Check client and server nonce
+      const localData = JSON.parse(localStorage.getItem('say-siwe'));
+      console.log(nonceData.nonce);
+      console.log(localData);
+      if (nonceData.nonce === (localData && localData.nonce)) {
+        return;
+      }
+      // Create SIWE message with pre-fetched nonce and sign with wallet
+      const message = new SiweMessage({
+        domain: window.location.host,
+        address,
+        statement: 'Sign in Ethereum Wallet',
+        uri: window.location.origin,
+        version: '1',
+        chainId,
+        nonce: nonceData.nonce,
+      });
+      const myAsync = async () => {
+        try {
+          const preparedMessage = message.prepareMessage();
+          const result = await signMessageAsync({
+            message: preparedMessage,
+          });
+
+          localStorage.setItem(
+            'say-siwe',
+            JSON.stringify({
+              'siwe-signature': result,
+              nonce: nonceData.nonce,
+            }),
+          );
+
+          setValues({
+            signature: result,
+            message,
+          });
+        } catch (e) {
+          console.log({
+            message: e.details,
+            code: e.code,
+          });
+          setSignatureError({
+            message: e.details,
+            code: e.code,
+          });
+          dispatch(fetchNonce());
+        }
+      };
+      myAsync();
+    }
+  }, [isConnected, nonceData, errorSignIn]);
+
+  // Verify signature
+  useEffect(() => {
+    if (!isSuccess) return;
+    dispatch(walletVerify(values.message, values.signature));
+  }, [values]);
+
+  // Disconnect if did not sign in
+  useEffect(() => {
+    if (
+      errorSignIn ||
+      errorVerify ||
+      errorSignature ||
+      errorWalletInformation ||
+      errorWalletNonce
+    ) {
+      disconnect();
+      localStorage.removeItem('say-siwe');
+    }
+  }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
+
+  useEffect(() => {
+    if (!successEcosystem) {
+      dispatch(fetchEcoFamilyRolesCompletePays());
     }
   }, []);
 
   useEffect(() => {
     dispatch(fetchOneReadySignNeed(needId));
-  }, []);
+  }, [created]);
 
   useEffect(() => {
     if (oneReadyNeed) {
@@ -122,9 +263,12 @@ export default function DaoNeedSignature() {
 
   const handleWalletButton = () => {
     setOpenWallets(true);
+    console.log('disc1');
+    disconnect();
     reset();
     dispatch({ type: WALLET_VERIFY_RESET });
     dispatch({ type: WALLET_INFORMATION_RESET });
+    dispatch({ type: SIGNATURE_RESET });
   };
 
   const handleSignature = async () => {
@@ -132,10 +276,8 @@ export default function DaoNeedSignature() {
       signTransaction(
         {
           address,
-          flaskNeedId: oneReadyNeed.id,
-          statuses: oneReadyNeed.status_updates,
-          receipts: oneReadyNeed.receipts_,
-          payments: oneReadyNeed.payments,
+          needId: oneReadyNeed.id,
+          flaskNeedId: oneReadyNeed.flaskId,
         },
         walletClient,
         chain.id,
@@ -143,20 +285,20 @@ export default function DaoNeedSignature() {
     );
   };
 
-  const handleImageSwipe = () => {
-    if (images === true) {
-      setImages(false);
-    } else {
-      setImages(true);
-    }
-  };
+    const handleImageSwipe = () => {
+      if (images === true) {
+        setImages(false);
+      } else {
+        setImages(true);
+      }
+    };
 
   // toast
   useEffect(() => {
-    if (error) {
+    if (errorSignIn || errorSignature || errorVerify) {
       setWalletToastOpen(true);
     }
-  }, [error]);
+  }, [errorSignIn, errorSignature, errorVerify]);
 
   // close toast
   const handleCloseWalletToast = (event, reason) => {
@@ -170,25 +312,26 @@ export default function DaoNeedSignature() {
     setCommentOpen(true);
   };
 
-  const submitComment = () => {
-    dispatch(
-      createComment(
-        oneReadyNeed.flaskId,
-        oneReadyNeed.id,
-        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-        message,
-      ),
-    );
-  };
-
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <DaoSignatureMenu handleComment={handleComment} />
+          <DaoSignatureMenu setOpenDrawer={setOpenDrawer} handleComment={handleComment} />
         </Grid>
         <Grid item>
-          <IconButton onClick={() => navigate('/main/dao/tabs/signature')}>
+          <IconButton
+            onClick={() =>
+              navigate('/main/dao/tabs/signature', {
+                state: {
+                  toggle:
+                    oneReadyNeed &&
+                    oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id)
+                      ? 'signed'
+                      : 'ready',
+                },
+              })
+            }
+          >
             <img
               src="/images/back_orange.svg"
               alt="back"
@@ -565,8 +708,8 @@ export default function DaoNeedSignature() {
                                 theNeed.cost) *
                                 100,
                               2,
-                            )}`}{' '}
-                          + {t('need.delivery')}
+                            )}  + `}{' '}
+                          {t('need.delivery')}
                         </Typography>
                       </Grid>
                       <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -751,42 +894,51 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Button */}
-                {isResolved(theNeed) && (
-                  <Grid container sx={{ width: '100px', m: 'auto', justifyContent: 'center' }}>
-                    {!isConnected ? (
-                      <WalletButton fullWidth variant="outlined" onClick={handleWalletButton}>
-                        {t('button.wallet.connect')}
-                      </WalletButton>
-                    ) : (
-                      isConnected && (
-                        <WalletButton
-                          fullWidth
-                          signbutton="true"
-                          variant="outlined"
-                          loading={isLoading || pendingConnector}
-                          onClick={handleSignature}
-                        >
-                          {t('button.wallet.sign')}
+                {theNeed.members &&
+                  !theNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+                  theNeed.isResolved && (
+                    <Grid container sx={{ width: '100px', m: 'auto', justifyContent: 'center' }}>
+                      {!isConnected ? (
+                        <WalletButton fullWidth variant="outlined" onClick={handleWalletButton}>
+                          {t('button.wallet.connect')}
                         </WalletButton>
-                      )
+                      ) : (
+                        isConnected && (
+                          <WalletButton
+                            fullWidth
+                            signbutton="true"
+                            variant="outlined"
+                            loading={
+                              isLoadingSignIn ||
+                              loadingSignature ||
+                              loadingInformation ||
+                              isLoading ||
+                              pendingConnector ||
+                              loadingEthereumSignature
+                            }
+                            onClick={handleSignature}
+                          >
+                            {t('button.wallet.sign')}
+                          </WalletButton>
+                        )
+                      )}
+                    </Grid>
+                  )}
+                {
+                  <>
+                    <CommentDrawer
+                      open={openDrawer}
+                      setOpen={setOpenDrawer}
+                      comment={comment}
+                      setComment={setComment}
+                    />
+                    {!theNeed.isResolved && (
+                      <Typography sx={{ p: 2, textAlign: 'center' }}>
+                        {t('comment.disabledWallet')}
+                      </Typography>
                     )}
-                  </Grid>
-                )}
-                {!isResolved(theNeed) && (
-                  <Container>
-                    <Typography sx={{ p: 2 }}>{t('comment.disabledWallet')}</Typography>
-                    <Divider />
-                    {theNeed.comments.map((comment) => (
-                      <CommentCard key={comment.id} comment={comment} />
-                    ))}
-                    <form style={{ textAlign: 'center', marginTop: 30 }}>
-                      <CommentTextArea message={message} setMessage={setMessage} />
-                      <Button disabled={!message} onClick={submitComment} autoFocus>
-                        {t('button.submit')}
-                      </Button>
-                    </form>
-                  </Container>
-                )}
+                  </>
+                }
               </Card>
             </Grid>
           </Card>
@@ -798,19 +950,27 @@ export default function DaoNeedSignature() {
       <CommentModal
         open={commentOpen}
         setOpen={setCommentOpen}
-        message={message}
-        setMessage={setMessage}
+        comment={comment}
+        setComment={setComment}
       />
-      {(errorFamilyRoles || errorReadyOne) && (
+      {(errorEcosystem || errorReadyOne) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
-          {errorFamilyRoles || errorReadyOne}
+          {errorEcosystem || errorReadyOne}
         </Message>
       )}
-      {error && (
+
+      {(signatureError ||
+        errorVerify ||
+        errorWalletInformation ||
+        errorSignature ||
+        errorSignIn) && (
         <MessageWallet
-          walletError={error}
+          walletError={
+            signatureError || errorVerify || errorWalletInformation || errorSignature || errorSignIn
+          }
           walletToastOpen={walletToastOpen}
           handleCloseWalletToast={handleCloseWalletToast}
+          severity={errorSignIn || errorSignature ? 'warning' : 'error'}
         />
       )}
     </Grid>

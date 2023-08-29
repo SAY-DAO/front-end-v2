@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,18 +12,35 @@ import { useTranslation } from 'react-i18next';
 import { isBrowser } from 'react-device-detect';
 import metamask from '../../resources/images/wallet/metamask.png';
 import walletConnect from '../../resources/images/wallet/walletConnect.svg';
+import MessageWallet from '../MessageWallet';
 
 function TheDialog(props) {
   const { t } = useTranslation();
-
   const { onClose, open } = props;
 
-  const { connect, connectors, isLoading, pendingConnector } = useConnect();
+  const [walletToastOpen, setWalletToastOpen] = useState(false);
+
+  const { connect, connectors, isLoading, pendingConnector, error } = useConnect();
+
+  // toast
+  useEffect(() => {
+    if (error) {
+      setWalletToastOpen(true);
+    }
+  }, [error && error.code]);
 
   const handleConnect = (connector) => {
-    onClose()
     connect({ connector });
   };
+
+  // close toast
+  const handleCloseWalletToast = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setWalletToastOpen(false);
+  };
+
   return (
     <Dialog
       onClose={onClose}
@@ -40,45 +57,48 @@ function TheDialog(props) {
     >
       <DialogTitle>{t('wallet.dialog.title')}</DialogTitle>
       <List>
-        {connectors.map((connector) => (
-          <ListItem disableGutters key={connector.id}>
-            {!connector.ready ? (
-              <LoadingButton
-                fullWidth
-                variant="outlined"
-                onClick={() => window.open('https://metamask.io/download', connector.name)}
-                sx={{ justifyContent: 'flex-start', ml: 1, mr: 1, border: 0, p: 0 }}
-              >
-                <ListItemAvatar>
-                  <img
-                    src={connector.name === 'MetaMask' ? metamask : walletConnect}
-                    alt={connector.name}
-                    style={{ maxWidth: '25px', margin: 1 }}
-                  />
-                </ListItemAvatar>
-                {isBrowser && t(`wallet.download`)}
-              </LoadingButton>
-            ) : (
-              <LoadingButton
-                fullWidth
-                variant="outlined"
-                loading={isLoading && connector.id === pendingConnector?.id && true}
-                disabled={!connector.ready}
-                onClick={() => handleConnect(connector)}
-                sx={{ justifyContent: 'flex-start', ml: 1, mr: 1, border: 0, p: 0 }}
-              >
-                <ListItemAvatar>
-                  <img
-                    src={connector.name === 'MetaMask' ? metamask : walletConnect}
-                    alt={connector.name}
-                    style={{ maxWidth: '25px', margin: 1 }}
-                  />
-                </ListItemAvatar>
-                {connector.ready && connector.name}
-              </LoadingButton>
-            )}
-          </ListItem>
-        ))}
+        {connectors &&
+          (!isBrowser ? connectors.filter((c) => c.name !== 'MetaMask') : connectors).map(
+            (connector) => (
+              <ListItem disableGutters key={connector.id}>
+                {!connector.ready ? (
+                  <LoadingButton
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => window.open('https://metamask.io/download', connector.name)}
+                    sx={{ justifyContent: 'flex-start', ml: 1, mr: 1, border: 0, p: 0 }}
+                  >
+                    <ListItemAvatar>
+                      <img
+                        src={isBrowser && connector.name === 'MetaMask' ? metamask : walletConnect}
+                        alt={connector.name}
+                        style={{ maxWidth: '25px', margin: 1 }}
+                      />
+                    </ListItemAvatar>
+                    {isBrowser && t(`wallet.download`)}
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    fullWidth
+                    variant="outlined"
+                    loading={isLoading && connector.id === pendingConnector?.id && true}
+                    disabled={!connector.ready}
+                    onClick={() => handleConnect(connector)}
+                    sx={{ justifyContent: 'flex-start', ml: 1, mr: 1, border: 0, p: 0 }}
+                  >
+                    <ListItemAvatar>
+                      <img
+                        src={isBrowser && connector.name === 'MetaMask' ? metamask : walletConnect}
+                        alt={connector.name}
+                        style={{ maxWidth: '25px', margin: 1 }}
+                      />
+                    </ListItemAvatar>
+                    {connector.ready && connector.name}
+                  </LoadingButton>
+                )}
+              </ListItem>
+            ),
+          )}
       </List>
       <Divider variant="middle" sx={{ m: 2 }} />
       <Typography sx={{ fontWeight: 600 }}>{t('wallet.dialog.learn')}</Typography>
@@ -112,6 +132,13 @@ function TheDialog(props) {
           </Button>
         </Grid>
       </Grid>
+      {error && (
+        <MessageWallet
+          walletError={error}
+          walletToastOpen={walletToastOpen}
+          handleCloseWalletToast={handleCloseWalletToast}
+        />
+      )}
     </Dialog>
   );
 }

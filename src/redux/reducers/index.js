@@ -25,7 +25,6 @@ import { checkCartPaymentReducer, paymentReducer } from './paymentReducder';
 import { cartAddReducer, cartUpdateReducer, cartBadgeReducer } from './cartReducer';
 import {
   acceptInvitationReducer,
-  familyAnalyticReducer,
   familyNetworksReducer,
   invitationReducer,
   joinVirtualFamilyReducer,
@@ -35,9 +34,11 @@ import {
   signatureReducer,
   readyToSignNeedsReducer,
   readyToSignOneNeedReducer,
-  WalletInformationReducer,
+  walletInformationReducer,
   walletVerifyReducer,
   walletNonceReducer,
+  ecosystemAnalyticReducer,
+  contributionReducer,
 } from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
@@ -46,12 +47,12 @@ import { commentReducer } from './commentReducer';
 export default combineReducers({
   themeOptions: themeReducer,
   commentResult: commentReducer,
-  familyRolesEco: familyAnalyticReducer,
+  ecosystemData: ecosystemAnalyticReducer,
   walletNonce: walletNonceReducer,
   walletVerify: walletVerifyReducer,
-  walletInformation: WalletInformationReducer,
+  walletInformation: walletInformationReducer,
   signature: signatureReducer,
-  readySigningNeeds: readyToSignNeedsReducer,
+  paidNeeds: readyToSignNeedsReducer,
   readySigningOneNeed: readyToSignOneNeedReducer,
   familyNetwork: familyNetworksReducer,
   verifyStep: userStepReducer,
@@ -81,4 +82,5 @@ export default combineReducers({
   shaparakGate: paymentReducer,
   cartUpdate: cartUpdateReducer,
   cartPayCheck: checkCartPaymentReducer,
+  ecoContribution: contributionReducer,
 });

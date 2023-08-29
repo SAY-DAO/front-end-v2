@@ -44,6 +44,18 @@ export const HousingStatusEnum = {
   CareCenters: 2,
 };
 
+export const FlaskUserTypesEnum = {
+  NO_ROLE: 0,
+  SUPER_ADMIN: 1,
+  SOCIAL_WORKER: 2,
+  COORDINATOR: 3,
+  NGO_SUPERVISOR: 4,
+  SAY_SUPERVISOR: 5,
+  ADMIN: 6,
+  FAMILY: 7,
+  RELATIVE: 8,
+};
+
 export const PanelContributors = {
   SOCIAL_WORKER: 1,
   NGO_SUPERVISOR: 2,
@@ -52,9 +64,10 @@ export const PanelContributors = {
 };
 
 export const AppContributors = {
-  FAMILY: 5,
-  FRIEND: 6,
+  FAMILY: 7,
+  RELATIVE: 8,
 };
+
 export const SAYPlatformRoles = {
   NGO: -2,
   CHILD: -1,
@@ -64,7 +77,7 @@ export const SAYPlatformRoles = {
   PURCHASER: PanelContributors.PURCHASER,
   AUDITOR: PanelContributors.AUDITOR,
   FAMILY: AppContributors.FAMILY,
-  FRIEND: AppContributors.FRIEND,
+  RELATIVE: AppContributors.RELATIVE,
 };
 
 export const VirtualFamilyRole = {
@@ -86,16 +99,6 @@ export const RolesEnumDefine = {
   SAY_SUPERVISOR: 'SAY supervisor',
   ADMIN: 'admin',
   USER: 'user',
-};
-
-export const FlaskUserTypesEnum = {
-  NO_ROLE: 0,
-  SUPER_ADMIN: 1,
-  SOCIAL_WORKER: 2,
-  COORDINATOR: 3,
-  NGO_SUPERVISOR: 4,
-  SAY_SUPERVISOR: 5,
-  ADMIN: 6,
 };
 
 export const NeedTypeEnum = {

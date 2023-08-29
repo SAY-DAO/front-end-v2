@@ -6,12 +6,9 @@ import {
   SAYPlatformRoles,
   ServiceStatusEnum,
   NeedCategoryEnum,
+  VirtualFamilyRole,
 } from './types';
 import { PRODUCT_UNPAYABLE_PERIOD } from './configs';
-
-export function isResolved(theNeed) {
-  return theNeed.isResolved === true || theNeed.isResolved === null;
-}
 
 export function prepareUrl(imageUrl) {
   let url;
@@ -20,8 +17,12 @@ export function prepareUrl(imageUrl) {
   } else {
     url = `https://api.sayapp.company/${imageUrl}`;
   }
-
   return url;
+}
+
+export function isOdd(num) {
+  const number = num % 2;
+  return number === 1;
 }
 
 // Age
@@ -36,6 +37,43 @@ export function getAge(DOB) {
   return age;
 }
 
+export function getSAYRolePersian(sayRole) {
+  let roleString;
+  if (sayRole === SAYPlatformRoles.AUDITOR) {
+    roleString = 'شاهد';
+  } else if (sayRole === SAYPlatformRoles.SOCIAL_WORKER) {
+    roleString = 'مددکار';
+  } else if (sayRole === SAYPlatformRoles.PURCHASER) {
+    roleString = 'میانجی';
+  } else if (sayRole === SAYPlatformRoles.NGO_SUPERVISOR) {
+    roleString = 'نماینده انجمن';
+  } else if (sayRole === SAYPlatformRoles.FAMILY) {
+    roleString = 'خانواده';
+  } else if (sayRole === SAYPlatformRoles.RELATIVE) {
+    roleString = 'خویش‌آوند';
+  } else if (sayRole === SAYPlatformRoles.NO_ROLE) {
+    roleString = 'noRole';
+  }
+  return roleString;
+}
+
+export function getSAYFamilyRolePersian(sayRole) {
+  let roleString;
+  if (sayRole === VirtualFamilyRole.FATHER) {
+    roleString = 'پدر';
+  } else if (sayRole === VirtualFamilyRole.MOTHER) {
+    roleString = 'مادر';
+  } else if (sayRole === VirtualFamilyRole.AMOO) {
+    roleString = 'عمو';
+  } else if (sayRole === VirtualFamilyRole.KHALEH) {
+    roleString = 'خاله';
+  } else if (sayRole === VirtualFamilyRole.DAEI) {
+    roleString = 'دایی';
+  } else if (sayRole === VirtualFamilyRole.AMME) {
+    roleString = 'عمه';
+  }
+  return roleString;
+}
 // "-1": "تائید نشده",
 // "0": "پرداخت نشده,
 // "1": "نیم‌پرداخت",
@@ -113,8 +151,8 @@ export function getSAYRoleInteger(sayRole) {
     roleInteger = SAYPlatformRoles.NGO_SUPERVISOR;
   } else if (sayRole === SAYPlatformRoles.FAMILY) {
     roleInteger = SAYPlatformRoles.FAMILY;
-  } else if (sayRole === SAYPlatformRoles.FRIEND) {
-    roleInteger = SAYPlatformRoles.FRIEND;
+  } else if (sayRole === SAYPlatformRoles.RELATIVE) {
+    roleInteger = SAYPlatformRoles.RELATIVE;
   } else if (sayRole === SAYPlatformRoles.NO_ROLE) {
     roleInteger = SAYPlatformRoles.NO_ROLE;
   }
@@ -139,8 +177,8 @@ export function getSAYRoleString(sayRole) {
     roleString = 'ngoSupervisor';
   } else if (sayRole === SAYPlatformRoles.FAMILY) {
     roleString = 'familyMember';
-  } else if (sayRole === SAYPlatformRoles.FRIEND) {
-    roleString = 'friend';
+  } else if (sayRole === SAYPlatformRoles.RELATIVE) {
+    roleString = 'relative';
   } else if (sayRole === SAYPlatformRoles.NO_ROLE) {
     roleString = 'noRole';
   }

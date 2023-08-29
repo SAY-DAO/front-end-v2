@@ -6,10 +6,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PropTypes } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { isResolved } from '../../../utils/helpers';
 
-export default function DaoSignatureMenu({ handleComment }) {
+export default function DaoSignatureMenu({ handleComment, setOpenDrawer }) {
   const { t } = useTranslation();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed } = readySigningOneNeed;
@@ -24,6 +26,10 @@ export default function DaoSignatureMenu({ handleComment }) {
     setAnchorEl(null);
   };
 
+  const handleDrawer = () => {
+    handleClose();
+    setOpenDrawer(true);
+  };
   return (
     <div>
       <Button
@@ -44,11 +50,34 @@ export default function DaoSignatureMenu({ handleComment }) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem disabled={oneReadyNeed && !isResolved(oneReadyNeed)} onClick={handleComment}>
-          {oneReadyNeed && isResolved(oneReadyNeed)
+        <MenuItem
+          disabled={
+            !oneReadyNeed ||
+            (oneReadyNeed && !oneReadyNeed.isResolved) ||
+            (oneReadyNeed &&
+              oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) != null)
+          }
+          onClick={handleComment}
+        >
+          {oneReadyNeed &&
+          oneReadyNeed.isResolved &&
+          !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id)
             ? t('comment.report')
+            : oneReadyNeed &&
+              oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id)
+            ? t('comment.waitingAuditor')
             : t('comment.investigating')}
         </MenuItem>
+        {oneReadyNeed && oneReadyNeed.comments && oneReadyNeed.comments[0] && (
+          <MenuItem
+            disabled={
+              !oneReadyNeed || (oneReadyNeed && oneReadyNeed.comments && !oneReadyNeed.comments[0])
+            }
+            onClick={handleDrawer}
+          >
+            {t('comment.signed.history')}
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );
@@ -56,4 +85,5 @@ export default function DaoSignatureMenu({ handleComment }) {
 
 DaoSignatureMenu.propTypes = {
   handleComment: PropTypes.func,
+  setOpenDrawer: PropTypes.func,
 };

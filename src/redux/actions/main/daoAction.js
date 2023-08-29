@@ -1,20 +1,21 @@
-import { daoApi, publicApi } from '../../../apis/sayBase';
+import { daoApi } from '../../../apis/sayBase';
+import { SAYPlatformRoles } from '../../../utils/types';
 import {
-  READY_TO_SIGN_NEEDS_REQUEST,
-  READY_TO_SIGN_NEEDS_SUCCESS,
-  READY_TO_SIGN_NEEDS_FAIL,
+  MY_PAID_NEEDS_REQUEST,
+  MY_PAID_NEEDS_SUCCESS,
+  MY_PAID_NEEDS_FAIL,
   ONE_NEED_COEFFS_REQUEST,
   ONE_NEED_COEFFS_SUCCESS,
   ONE_NEED_COEFFS_FAIL,
+  CONTRIBUTION_LIST_REQUEST,
+  CONTRIBUTION_LIST_SUCCESS,
+  CONTRIBUTION_LIST_FAIL,
   READY_TO_SIGN_ONE_NEED_REQUEST,
   READY_TO_SIGN_ONE_NEED_SUCCESS,
   READY_TO_SIGN_ONE_NEED_FAIL,
   SIGNATURE_REQUEST,
   SIGNATURE_SUCCESS,
   SIGNATURE_FAIL,
-  MINT_REQUEST,
-  MINT_SUCCESS,
-  MINT_FAIL,
   WALLET_NONCE_REQUEST,
   WALLET_NONCE_SUCCESS,
   WALLET_NONCE_FAIL,
@@ -24,17 +25,20 @@ import {
   WALLET_INFORMATION_REQUEST,
   WALLET_INFORMATION_SUCCESS,
   WALLET_INFORMATION_FAIL,
+  FAMILY_ECOSYSTEM_PAYS_REQUEST,
+  FAMILY_ECOSYSTEM_PAYS_SUCCESS,
+  FAMILY_ECOSYSTEM_PAYS_FAIL,
+  ECOSYSTEM_MINT_REQUEST,
+  ECOSYSTEM_MINT_SUCCESS,
+  ECOSYSTEM_MINT_FAIL,
+  FAMILY_DISTANCE_RATIO_REQUEST,
+  FAMILY_DISTANCE_RATIO_SUCCESS,
+  FAMILY_DISTANCE_RATIO_FAIL,
 } from '../../constants/daoConstants';
 import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
-  FAMILY_ECOSYSTEM_PAYS_REQUEST,
-  FAMILY_ECOSYSTEM_PAYS_SUCCESS,
-  FAMILY_ECOSYSTEM_PAYS_FAIL,
-  FAMILY_DISTANCE_RATIO_REQUEST,
-  FAMILY_DISTANCE_RATIO_SUCCESS,
-  FAMILY_DISTANCE_RATIO_FAIL,
 } from '../../constants/familyConstants';
 
 export const fetchNonce = () => async (dispatch, getState) => {
@@ -47,22 +51,25 @@ export const fetchNonce = () => async (dispatch, getState) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userInfo && userInfo.access_token,
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
       withCredentials: true,
       crossDomain: true,
     };
-    const response = await daoApi.get(`/wallet/nonce/${userInfo.user.id}`, config);
+    const response = await daoApi.get(
+      `/wallet/nonce/${userInfo.user.id}/${SAYPlatformRoles.FAMILY}`,
+      config,
+    );
     dispatch({
       type: WALLET_NONCE_SUCCESS,
       payload: response.data,
     });
   } catch (e) {
-    console.log(e);
     dispatch({
       type: WALLET_NONCE_FAIL,
       payload:
-        e.response && e.response.data && e.response.data.detail
+        e && e.response && e.response.data && e.response.data.detail
           ? e.response.data.detail
           : e.response.data.message,
     });
@@ -75,19 +82,19 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
 
     const {
       userLogin: { userInfo },
-      swDetails: { swInfo },
     } = getState();
 
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userInfo && userInfo.access_token,
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
       withCredentials: true,
     };
 
     const { data } = await daoApi.post(
-      `/wallet/verify/${swInfo.id}/${swInfo.typeId}`,
+      `/wallet/verify/${userInfo.user.id}/${SAYPlatformRoles.FAMILY}`,
       {
         message,
         signature,
@@ -114,12 +121,18 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
   }
 };
 
-export const fetchWalletInformation = () => async (dispatch) => {
+export const fetchWalletInformation = () => async (dispatch, getState) => {
   try {
     dispatch({ type: WALLET_INFORMATION_REQUEST });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
       withCredentials: true,
     };
@@ -171,7 +184,7 @@ export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) =
   }
 };
 
-export const fetchFamilyRolesCompletePays = () => async (dispatch, getState) => {
+export const fetchEcoFamilyRolesCompletePays = () => async (dispatch, getState) => {
   try {
     dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REQUEST });
 
@@ -200,9 +213,38 @@ export const fetchFamilyRolesCompletePays = () => async (dispatch, getState) => 
   }
 };
 
-export const fetchReadySignNeeds = () => async (dispatch, getState) => {
+export const fetchEcoMintData = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: READY_TO_SIGN_NEEDS_REQUEST });
+    dispatch({ type: ECOSYSTEM_MINT_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+    const { data } = await daoApi.get(`/mine/ecosystem/mineables`, config);
+
+    dispatch({
+      type: ECOSYSTEM_MINT_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ECOSYSTEM_MINT_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const fetchPaidNeeds = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: MY_PAID_NEEDS_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -216,15 +258,15 @@ export const fetchReadySignNeeds = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.get(`/family/signatures/ready`, config);
+    const { data } = await daoApi.get(`/mine/needs/paid`, config);
 
     dispatch({
-      type: READY_TO_SIGN_NEEDS_SUCCESS,
+      type: MY_PAID_NEEDS_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: READY_TO_SIGN_NEEDS_FAIL,
+      type: MY_PAID_NEEDS_FAIL,
       payload: e.response && e.response.data ? e.response.data.message : e.message,
     });
   }
@@ -247,7 +289,7 @@ export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) 
       },
     };
 
-    const { data } = await daoApi.get(`/family/signature/ready/${nestNeedId}`, config);
+    const { data } = await daoApi.get(`/mine/signature/ready/${nestNeedId}`, config);
 
     dispatch({
       type: READY_TO_SIGN_ONE_NEED_SUCCESS,
@@ -273,9 +315,10 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
     };
-    const { data } = await publicApi.get(`/public/children`, config);
+    const { data } = await daoApi.get(`/children/network`, config);
 
     dispatch({
       type: FAMILY_NETWORK_SUCCESS,
@@ -290,116 +333,128 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction = (need, swSignature) => async (dispatch, getState) => {
+export const signTransaction = (values, signer, chainId) => async (dispatch, getState) => {
   try {
     dispatch({ type: SIGNATURE_REQUEST });
+
     const {
       userLogin: { userInfo },
-      wallet: { signerAddress, chainId },
     } = getState();
-
-    const found = need.verifiedPayments.find((p) => p.flaskUserId === userInfo.user.id);
-    if (!found) {
-      throw new Error('You did not pay for this need!');
-    }
-    if (!need.IsDone) {
-      throw new Error('Need is not fully paid!');
-    }
 
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
       },
+      withCredentials: true,
     };
-    const requestData = {
+
+    const request = {
+      needId: values.needId,
+      signerAddress: values.address,
       chainId,
-      signerAddress,
-      need: {
-        needID: need.id,
-        title: need.name,
-        isUrgent: need.isUrgent,
-        icon: need.imageUrl,
-      },
-      swSignature,
-      // userId,
     };
 
-    const { data } = await daoApi.post(`/signature/vf/generate`, config, requestData);
+    const result1 = await daoApi.post(`/wallet/signature/dapp/prepare`, request, config);
+    const transaction = result1.data;
+    // The named list of all type definitions
+    const types = {
+      ...transaction.types,
+    };
 
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const signer = provider.getSigner();
-    // const signature = await signer._signTypedData(
-    //   data.domain,
-    //   data.types,
-    //   data.FamilyVoucher
-    // );
+    const signatureHash = await signer.signTypedData({
+      domain: transaction.domain,
+      types,
+      primaryType: 'Voucher',
+      message: {
+        ...transaction.message,
+      },
+    });
+    console.log(transaction);
+    const request2 = {
+      flaskNeedId: values.flaskNeedId,
+      sayRoles: transaction.sayRoles,
+      verifyVoucherAddress: transaction.domain.verifyingContract,
+    };
 
+    const result2 = await daoApi.post(
+      `/wallet/signature/create/${signatureHash}`,
+      request2,
+      config,
+    );
+    const { ipfs, signature } = result2.data;
     dispatch({
       type: SIGNATURE_SUCCESS,
-      payload: { data },
+      payload: { transaction, ipfs, signature },
     });
   } catch (e) {
-    // check for generic and custom message to return using ternary statement
+    console.log(e);
     dispatch({
       type: SIGNATURE_FAIL,
-      payload: e.response && e.response.status ? e.response : e.message,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message
+          ? { message: e.response.data.message, status: e.response.data.status }
+          : { reason: e.reason, code: e.code }, // metamask signature
     });
   }
 };
 
-export const safeFamilyMint = (voucher) => async (dispatch) => {
-  try {
-    dispatch({ type: MINT_REQUEST });
-    // await dispatch(connectWallet()); // connect wallet to get the address
+// export const safeFamilyMint = (voucher) => async (dispatch) => {
+//   try {
+//     dispatch({ type: MINT_REQUEST });
+//     // await dispatch(connectWallet()); // connect wallet to get the address
 
-    // eslint-disable-next-line no-undef
-    await window.ethereum.enable();
-    // eslint-disable-next-line no-undef
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const redeemer = provider.getSigner();
+//     // eslint-disable-next-line no-undef
+//     await window.ethereum.enable();
+//     // eslint-disable-next-line no-undef
+//     // const provider = new ethers.providers.Web3Provider(window.ethereum);
+//     // const redeemer = provider.getSigner();
 
-    // Returns a new instance of the ContractFactory with the same interface and bytecode, but with a different signer.
-    // const redeemerFactory = signerFactory.connect(redeemer);
-    // const redeemerFactory = new ethers.ContractFactory(
-    //   GovernanceToken.abi,
-    //   GovernanceToken.bytecode,
-    //   redeemer,
-    // );
+//     // Returns a new instance of the ContractFactory with the same interface and bytecode, but with a different signer.
+//     // const redeemerFactory = signerFactory.connect(redeemer);
+//     // const redeemerFactory = new ethers.ContractFactory(
+//     //   GovernanceToken.abi,
+//     //   GovernanceToken.bytecode,
+//     //   redeemer,
+//     // );
 
-    // Return an instance of a Contract attached to address. This is the same as using the Contract constructor
-    // with address and this the interface and signerOrProvider passed in when creating the ContractFactory.
-    // const redeemerContract = redeemerFactory.attach('0x004a0304523554961578f2b7050BDFdE57625228');
+//     // Return an instance of a Contract attached to address. This is the same as using the Contract constructor
+//     // with address and this the interface and signerOrProvider passed in when creating the ContractFactory.
+//     // const redeemerContract = redeemerFactory.attach('0x004a0304523554961578f2b7050BDFdE57625228');
 
-    const theVoucher = {
-      needId: voucher.needId,
-      userId: voucher.userId,
-      needTitle: voucher.needTitle,
-      needImage: voucher.needImage,
-      content: voucher.content,
-      signature: voucher.signature,
-    };
+//     const theVoucher = {
+//       needId: voucher.needId,
+//       userId: voucher.userId,
+//       needTitle: voucher.needTitle,
+//       needImage: voucher.needImage,
+//       content: voucher.content,
+//       signature: voucher.signature,
+//     };
 
-    console.log(voucher.needId, '0x004a0304523554961578f2b7050BDFdE57625228', theVoucher);
+//     console.log(voucher.needId, '0x004a0304523554961578f2b7050BDFdE57625228', theVoucher);
 
-    // await redeemerContract.safeFamilyMint(
-    //   voucher.needId,
-    //   '0x004a0304523554961578f2b7050BDFdE57625228',
-    //   theVoucher,
-    // );
+//     // await redeemerContract.safeFamilyMint(
+//     //   voucher.needId,
+//     //   '0x004a0304523554961578f2b7050BDFdE57625228',
+//     //   theVoucher,
+//     // );
 
-    dispatch({
-      type: MINT_SUCCESS,
-      payload: voucher,
-    });
-  } catch (e) {
-    console.log('problem buying: ');
-    console.log({ e });
-    dispatch({
-      type: MINT_FAIL,
-      payload: e.response && e.response.data.detail ? e.response.data.detail : e.message,
-    });
-  }
-};
+//     dispatch({
+//       type: MINT_SUCCESS,
+//       payload: voucher,
+//     });
+//   } catch (e) {
+//     console.log('problem buying: ');
+//     console.log({ e });
+//     dispatch({
+//       type: MINT_FAIL,
+//       payload: e.response && e.response.data.detail ? e.response.data.detail : e.message,
+//     });
+//   }
+// };
 
 export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) => {
   try {
@@ -426,6 +481,36 @@ export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) 
   } catch (e) {
     dispatch({
       type: ONE_NEED_COEFFS_FAIL,
+      payload: e.response && e.response.data ? e.response.data.message : e.message,
+    });
+  }
+};
+
+export const fetchAvailableContribution = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CONTRIBUTION_LIST_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+
+    const { data } = await daoApi.get(`/contribution/all`, config);
+
+    dispatch({
+      type: CONTRIBUTION_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CONTRIBUTION_LIST_FAIL,
       payload: e.response && e.response.data ? e.response.data.message : e.message,
     });
   }
