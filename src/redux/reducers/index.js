@@ -39,6 +39,7 @@ import {
   walletNonceReducer,
   ecosystemAnalyticReducer,
   contributionReducer,
+  signatureVerificationReducer,
 } from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
@@ -52,6 +53,7 @@ export default combineReducers({
   walletVerify: walletVerifyReducer,
   walletInformation: walletInformationReducer,
   signature: signatureReducer,
+  signatureVerification: signatureVerificationReducer,
   paidNeeds: readyToSignNeedsReducer,
   readySigningOneNeed: readyToSignOneNeedReducer,
   familyNetwork: familyNetworksReducer,

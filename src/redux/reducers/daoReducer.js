@@ -39,6 +39,13 @@ import {
   ECOSYSTEM_MINT_REQUEST,
   ECOSYSTEM_MINT_SUCCESS,
   ECOSYSTEM_MINT_FAIL,
+  SIGNATURE_VERIFICATION_REQUEST,
+  SIGNATURE_VERIFICATION_SUCCESS,
+  SIGNATURE_VERIFICATION_FAIL,
+  SIGNATURE_VERIFICATION_RESET,
+  FAMILY_ECOSYSTEM_PAYS_REST,
+  ONE_NEED_COEFFS_RESET,
+  FAMILY_DISTANCE_RATIO_REST,
 } from '../constants/daoConstants';
 
 export const ecosystemAnalyticReducer = (state = {}, action) => {
@@ -49,12 +56,16 @@ export const ecosystemAnalyticReducer = (state = {}, action) => {
       return { ...state, loading: false, success: true, coeffsResult: action.payload };
     case ONE_NEED_COEFFS_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case ONE_NEED_COEFFS_RESET:
+      return {};
     case FAMILY_DISTANCE_RATIO_REQUEST:
       return { ...state, loading: true, success: false };
     case FAMILY_DISTANCE_RATIO_SUCCESS:
       return { ...state, loading: false, success: true, userResult: action.payload };
     case FAMILY_DISTANCE_RATIO_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case FAMILY_DISTANCE_RATIO_REST:
+      return {};
     case ECOSYSTEM_MINT_REQUEST:
       return { ...state, loading: true, success: false };
     case ECOSYSTEM_MINT_SUCCESS:
@@ -67,6 +78,8 @@ export const ecosystemAnalyticReducer = (state = {}, action) => {
       return { ...state, loading: false, success: true, ecoResult: action.payload };
     case FAMILY_ECOSYSTEM_PAYS_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case FAMILY_ECOSYSTEM_PAYS_REST:
+      return {};
     default:
       return state;
   }
@@ -142,16 +155,35 @@ export const walletInformationReducer = (state = {}, action) => {
   }
 };
 
+export const signatureVerificationReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SIGNATURE_VERIFICATION_REQUEST:
+      return { ...state, loading: true, success: false };
+    case SIGNATURE_VERIFICATION_SUCCESS:
+      return { ...state, loading: false, success: true, verifiedSwAddress: action.payload };
+    case SIGNATURE_VERIFICATION_FAIL:
+      return { loading: false, error: action.payload };
+    case SIGNATURE_VERIFICATION_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
 export const signatureReducer = (state = {}, action) => {
   switch (action.type) {
+    case SIGNATURE_VERIFICATION_REQUEST:
+      return { ...state, loading: true, success: false };
+    case SIGNATURE_VERIFICATION_SUCCESS:
+      return { ...state, loading: false, success: true, verifiedAddress: action.payload };
     case SIGNATURE_REQUEST:
-      return { loading: true, success: false };
+      return { ...state, loading: true, success: false };
     case SIGNATURE_SUCCESS:
       return {
+        ...state,
         loading: false,
         success: true,
         signature: action.payload.signature,
-        ipfs: action.payload.ipfs,
         transaction: action.payload.transaction,
       };
     case SIGNATURE_FAIL:

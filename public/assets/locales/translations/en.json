@@ -585,10 +585,11 @@
     "delivery": "Delivery",
     "userShare": "Your share",
     "sayShare": "SAY share",
-    "credit": "Credit",
+    "refund": "Refund",
     "noDuplicates": "No duplicates :)",
     "tooltip": {
-      "addIcon": "add Icon"
+      "addIcon": "add Icon",
+      "payments": ""
     },
     "title": "Needs",
     "updatedNeed": "Successfully Updated!",
@@ -615,6 +616,7 @@
     },
     "etitle": "E-commerce Title",
     "cost": "Cost",
+    "creditPay": "From Credit",
     "paid": "Paid",
     "expectedDeliveryToNgo": "Exp. date of arrival",
     "progress": "Progress",

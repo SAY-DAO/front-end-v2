@@ -24,6 +24,7 @@ const WalletButton = styled((props) => (
   position: 'relative',
   padding: '8px 14px',
   height: 40,
+  maxWidth: 150,
   WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
   // textShadow: '0px 1px 1px #000',
   filter: 'dropshadow(color=#000, offx=0px, offy=1px)',

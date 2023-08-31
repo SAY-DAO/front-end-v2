@@ -1,4 +1,4 @@
-const staticCacheName = 'SAY-DAPP-v2.0.10';
+const staticCacheName = 'SAY-DAPP-v2.1.0';
 const urlsToCache = [
   'static/js/439.773fe221.chunk.js',
   'images/back_gray.svg',

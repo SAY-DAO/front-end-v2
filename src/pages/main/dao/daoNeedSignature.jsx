@@ -2,11 +2,13 @@ import {
   Avatar,
   Card,
   CircularProgress,
+  ClickAwayListener,
   Divider,
   Grid,
   IconButton,
   LinearProgress,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -29,6 +31,7 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 import { round } from 'lodash';
 import { SiweMessage } from 'siwe';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import {
   fetchFamilyMemberDistanceRatio,
   fetchEcoFamilyRolesCompletePays,
@@ -48,6 +51,10 @@ import {
 import WalletButton from '../../../components/WalletButton';
 import WalletDialog from '../../../components/modals/WalletDialog';
 import {
+  FAMILY_DISTANCE_RATIO_REST,
+  FAMILY_ECOSYSTEM_PAYS_REST,
+  ONE_NEED_COEFFS_RESET,
+  READY_TO_SIGN_ONE_NEED_RESET,
   SIGNATURE_RESET,
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
@@ -66,6 +73,7 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [open, setOpen] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [loadingEthereumSignature, setLoadingEthereumSignature] = useState(false);
   const [comment, setComment] = useState();
@@ -77,6 +85,7 @@ export default function DaoNeedSignature() {
   const [values, setValues] = useState();
   const [signatureError, setSignatureError] = useState('');
   const [walletToastOpen, setWalletToastOpen] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState();
 
   const {
     status,
@@ -116,11 +125,15 @@ export default function DaoNeedSignature() {
     (state) => state.walletInformation,
   );
 
+  const { loading: loadingVerifiedSwAddress } = useSelector((state) => state.signatureVerification);
   const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
   const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
-  const { error: errorSignature, loading: loadingSignature } = useSelector(
-    (state) => state.signature,
-  );
+  const {
+    signature,
+    loading: loadingSignature,
+    error: errorSignature,
+  } = useSelector((state) => state.signature);
+
   // fetch nonce for the wallet siwe
   useEffect(() => {
     if (userInfo && userInfo.user.id) {
@@ -238,7 +251,13 @@ export default function DaoNeedSignature() {
 
   useEffect(() => {
     dispatch(fetchOneReadySignNeed(needId));
-  }, [created]);
+    return () => {
+      dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
+      dispatch({ type: ONE_NEED_COEFFS_RESET });
+      dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
+      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+    };
+  }, [created, signature]);
 
   useEffect(() => {
     if (oneReadyNeed) {
@@ -261,9 +280,32 @@ export default function DaoNeedSignature() {
     }
   }, [theNeed]);
 
+  useEffect(() => {
+    if (theNeed) {
+      const userPayment = theNeed.verifiedPayments.find(
+        (p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0,
+      );
+      const creditRefund = theNeed.verifiedPayments.find(
+        (p) => p.flaskUserId === userInfo.user.id && p.creditAmount < 0,
+      );    
+      setPaymentDetails({
+        totalAmount: (userPayment.needAmount + userPayment.donationAmount).toLocaleString(),
+        creditRefund: creditRefund ? creditRefund.creditAmount : 0,
+        userShare:
+          userPayment && round((userPayment.needAmount / theNeed.cost) * 100, 2) > 100
+            ? 100
+            : round((userPayment.needAmount / theNeed.cost) * 100, 2),
+        donationAmount: userPayment.donationAmount,
+        needAmount: userPayment && userPayment.needAmount.toLocaleString(),
+        bankAmount:
+          userPayment.needAmount + userPayment.donationAmount + creditRefund &&
+          creditRefund.creditAmount,
+        bankTrackId: userPayment && userPayment.gatewayTrackId,
+      });
+    }
+  }, [theNeed]);
   const handleWalletButton = () => {
     setOpenWallets(true);
-    console.log('disc1');
     disconnect();
     reset();
     dispatch({ type: WALLET_VERIFY_RESET });
@@ -285,13 +327,13 @@ export default function DaoNeedSignature() {
     );
   };
 
-    const handleImageSwipe = () => {
-      if (images === true) {
-        setImages(false);
-      } else {
-        setImages(true);
-      }
-    };
+  const handleImageSwipe = () => {
+    if (images === true) {
+      setImages(false);
+    } else {
+      setImages(true);
+    }
+  };
 
   // toast
   useEffect(() => {
@@ -312,6 +354,13 @@ export default function DaoNeedSignature() {
     setCommentOpen(true);
   };
 
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  };
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -402,6 +451,7 @@ export default function DaoNeedSignature() {
               borderTopLeftRadius: 75,
               borderTopRightRadius: 75,
               mt: 4,
+              mb: 3,
               bgcolor: '#f7f7f7',
             }}
           >
@@ -628,142 +678,141 @@ export default function DaoNeedSignature() {
                     direction="column"
                     sx={{ borderLeft: '0.1rem solid lightGrey' }}
                   >
-                    <Grid
-                      container
-                      direction="column"
-                      alignItems="center"
-                      sx={{ textAlign: 'center', mt: 1 }}
-                      spacing={2}
-                    >
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.paid')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {theNeed &&
-                            theNeed.verifiedPayments.find(
-                              (p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0,
-                            ) &&
-                            theNeed.verifiedPayments
-                              .find((p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0)
-                              .needAmount.toLocaleString()}
-                          {t('currency.toman')}
-                        </Typography>
+                    {paymentDetails && (
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        sx={{ textAlign: 'center', mt: 0 }}
+                        spacing={1}
+                      >
+                        <Grid item>
+                          <ClickAwayListener onClickAway={handleTooltipClose}>
+                            <div>
+                              <Tooltip
+                                title={<Typography>{t('need.tooltip.payments')}</Typography>}
+                                PopperProps={{
+                                  disablePortal: true,
+                                }}
+                                open={open}
+                                disableFocusListener
+                                disableHoverListener
+                                disableTouchListener
+                              >
+                                <IconButton onClick={handleTooltipOpen}>
+                                  <HelpOutlineIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </div>
+                          </ClickAwayListener>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.paid')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {paymentDetails.totalAmount}
+                            {t('currency.toman')}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.refund')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {paymentDetails.creditRefund}
+                            {t('currency.toman')}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.cost')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {theNeed.purchaseCost.toLocaleString()}
+                            {t('currency.toman')}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.userShare')}
+                          </Typography>
+                          <Typography variant="body1">%{paymentDetails.userShare}</Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.sayShare')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
+                              theNeed.verifiedPayments
+                                .find((p) => p.flaskUserId === SAY_DAPP_ID)
+                                .needAmount.toLocaleString()}
+                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
+                              t('currency.toman')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
+                              `%${round(
+                                (theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
+                                  .needAmount /
+                                  theNeed.cost) *
+                                  100,
+                                2,
+                              )}  + `}{' '}
+                            {t('need.delivery')}
+                          </Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('report.statusChange.bankTrackId')}
+                          </Typography>
+                          <Typography variant="body1">{paymentDetails.bankTrackId}</Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('ngo.deliveryCode')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {changePersianNumbersToEnglish(theNeed.deliveryCode)}
+                          </Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.link')}
+                          </Typography>
+                          <Typography variant="body1">
+                            <Link to={theNeed.link} target="_blank">
+                              {t('dao.link')}
+                            </Link>
+                          </Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
+                            {t('need.isUrgent')}
+                          </Typography>
+                          <Typography variant="body1">{theNeed.isUrgent ? 'Yes' : 'No'}</Typography>
+                        </Grid>
+                        <Grid item sx={{ width: '100%', pt: '5px !important' }}>
+                          <Divider sx={{ width: '60%', m: 'auto' }} />
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.credit')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {theNeed.verifiedPayments.find(
-                            (p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount < 0,
-                          )
-                            ? theNeed.verifiedPayments
-                                .find((p) => p.flaskUserId === SAY_DAPP_ID && p.needAmount < 0)
-                                .creditAmount.toLocaleString()
-                            : 0}
-                          {t('currency.toman')}
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.cost')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {theNeed.purchaseCost.toLocaleString()}
-                          {t('currency.toman')}
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.userShare')}
-                        </Typography>
-                        <Typography variant="body1">
-                          %
-                          {theNeed.verifiedPayments.find(
-                            (p) => p.flaskUserId === userInfo.user.id,
-                          ) &&
-                            round(
-                              (theNeed.verifiedPayments.find(
-                                (p) => p.flaskUserId === userInfo.user.id,
-                              ).needAmount /
-                                theNeed.cost) *
-                                100,
-                              2,
-                            )}
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.sayShare')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
-                            `%${round(
-                              (theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
-                                .needAmount /
-                                theNeed.cost) *
-                                100,
-                              2,
-                            )}  + `}{' '}
-                          {t('need.delivery')}
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('report.statusChange.bankTrackId')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {theNeed.verifiedPayments.find(
-                            (p) => p.flaskUserId === userInfo.user.id,
-                          ) &&
-                            theNeed.verifiedPayments.find((p) => p.flaskUserId === userInfo.user.id)
-                              .gatewayTrackId}
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('ngo.deliveryCode')}
-                        </Typography>
-                        <Typography variant="body1">
-                          {changePersianNumbersToEnglish(theNeed.deliveryCode)}
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.link')}
-                        </Typography>
-                        <Typography variant="body1">
-                          <Link to={theNeed.link} target="_blank">
-                            Link
-                          </Link>
-                        </Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
-                          {t('need.isUrgent')}
-                        </Typography>
-                        <Typography variant="body1">{theNeed.isUrgent ? 'Yes' : 'No'}</Typography>
-                      </Grid>
-                      <Grid item sx={{ width: '100%', pt: '5px !important' }}>
-                        <Divider sx={{ width: '60%', m: 'auto' }} />
-                      </Grid>
-                    </Grid>
+                    )}
                   </Grid>
                 </Grid>
 
@@ -897,9 +946,22 @@ export default function DaoNeedSignature() {
                 {theNeed.members &&
                   !theNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
                   theNeed.isResolved && (
-                    <Grid container sx={{ width: '100px', m: 'auto', justifyContent: 'center' }}>
+                    <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
                       {!isConnected ? (
-                        <WalletButton fullWidth variant="outlined" onClick={handleWalletButton}>
+                        <WalletButton
+                          fullWidth
+                          variant="outlined"
+                          disabled={
+                            signatureError ||
+                            errorVerify ||
+                            errorWalletInformation ||
+                            errorSignature ||
+                            errorSignIn ||
+                            errorEcosystem ||
+                            errorReadyOne
+                          }
+                          onClick={handleWalletButton}
+                        >
                           {t('button.wallet.connect')}
                         </WalletButton>
                       ) : (
@@ -908,6 +970,15 @@ export default function DaoNeedSignature() {
                             fullWidth
                             signbutton="true"
                             variant="outlined"
+                            disabled={
+                              signatureError ||
+                              errorVerify ||
+                              errorWalletInformation ||
+                              errorSignature ||
+                              errorSignIn ||
+                              errorEcosystem ||
+                              errorReadyOne
+                            }
                             loading={
                               isLoadingSignIn ||
                               loadingSignature ||
@@ -922,6 +993,9 @@ export default function DaoNeedSignature() {
                           </WalletButton>
                         )
                       )}
+                      <Typography sx={{ mb: 4, mt: 1 }}>
+                        {loadingVerifiedSwAddress && 'Verifying the signature...'}
+                      </Typography>
                     </Grid>
                   )}
                 {

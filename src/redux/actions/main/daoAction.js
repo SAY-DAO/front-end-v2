@@ -34,6 +34,8 @@ import {
   FAMILY_DISTANCE_RATIO_REQUEST,
   FAMILY_DISTANCE_RATIO_SUCCESS,
   FAMILY_DISTANCE_RATIO_FAIL,
+  SIGNATURE_VERIFICATION_REQUEST,
+  SIGNATURE_VERIFICATION_SUCCESS,
 } from '../../constants/daoConstants';
 import {
   FAMILY_NETWORK_REQUEST,
@@ -350,6 +352,7 @@ export const signTransaction = (values, signer, chainId) => async (dispatch, get
       withCredentials: true,
     };
 
+    // 1- --------------------- First Prepare signature and get the hash -----------------------
     const request = {
       needId: values.needId,
       signerAddress: values.address,
@@ -371,19 +374,37 @@ export const signTransaction = (values, signer, chainId) => async (dispatch, get
         ...transaction.message,
       },
     });
-    console.log(transaction);
+
+    // 2- --------------------- Second Verify social worker signature -----------------------
     const request2 = {
+      chainId,
+      flaskNeedId: values.flaskNeedId,
+      signerAddress: signer,
+    };
+
+    dispatch({
+      type: SIGNATURE_VERIFICATION_REQUEST,
+    });
+
+    const verifiedAddress = await daoApi.post(`/wallet/signature/verify`, request2, config);
+
+    dispatch({
+      type: SIGNATURE_VERIFICATION_SUCCESS,
+      payload: verifiedAddress,
+    });
+
+    const request3 = {
       flaskNeedId: values.flaskNeedId,
       sayRoles: transaction.sayRoles,
       verifyVoucherAddress: transaction.domain.verifyingContract,
     };
 
-    const result2 = await daoApi.post(
+    const result3 = await daoApi.post(
       `/wallet/signature/create/${signatureHash}`,
-      request2,
+      request3,
       config,
     );
-    const { ipfs, signature } = result2.data;
+    const { ipfs, signature } = result3.data;
     dispatch({
       type: SIGNATURE_SUCCESS,
       payload: { transaction, ipfs, signature },
