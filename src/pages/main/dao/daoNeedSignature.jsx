@@ -1045,15 +1045,9 @@ export default function DaoNeedSignature() {
         comment={comment}
         setComment={setComment}
       />
-      { (
+      {(errorEcosystem || errorReadyOne) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
-          {errorEcosystem ||
-            errorReadyOne ||
-            signatureError ||
-            errorVerify ||
-            errorWalletInformation ||
-            errorSignature ||
-            errorSignIn}
+          {errorEcosystem || errorReadyOne}
         </Message>
       )}
 
