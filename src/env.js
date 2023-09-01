@@ -28,7 +28,7 @@ console.log('initiating Log Rocket ...');
 const theUser = localStorage.getItem('userInfo');
 LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
   id: theUser && JSON.parse(theUser).user.id,
-  name: theUser && JSON.parse(theUser).user.firstName,
+  firstName: theUser && JSON.parse(theUser).user.firstName,
   lastName: theUser && JSON.parse(theUser).user.lastName,
   userName: theUser && JSON.parse(theUser).user.userName,
   // Add your own custom user variables here, ie:
