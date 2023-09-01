@@ -1065,6 +1065,13 @@ export default function DaoNeedSignature() {
           severity={errorSignIn || errorSignature ? 'warning' : 'error'}
         />
       )}
+      <Typography>signatureError:{signatureError}</Typography>
+      <Typography>errorVerify:{errorVerify}</Typography>
+      <Typography>errorWalletInformation:{errorWalletInformation}</Typography>
+      <Typography>errorSignature:{errorSignature}</Typography>
+      <Typography>errorSignIn:{errorSignIn}</Typography>
+      <Typography>errorEcosystem:{errorEcosystem}</Typography>
+      <Typography>errorReadyOne:{errorReadyOne}</Typography>
     </Grid>
   );
 }
