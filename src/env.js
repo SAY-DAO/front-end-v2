@@ -1,5 +1,5 @@
-import LogRocket from 'logrocket';
-import setupLogRocketReact from 'logrocket-react';
+// import LogRocket from 'logrocket';
+// import setupLogRocketReact from 'logrocket-react';
 
 const env = process.env.REACT_APP_NODE_ENV || 'development';
 
@@ -24,19 +24,19 @@ if (env === 'production') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
-console.log('initiating Log Rocket ...');
-const theUser = localStorage.getItem('userInfo');
-LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-  id: theUser && JSON.parse(theUser).user.id,
-  firstName: theUser && JSON.parse(theUser).user.firstName,
-  lastName: theUser && JSON.parse(theUser).user.lastName,
-  userName: theUser && JSON.parse(theUser).user.userName,
-  // Add your own custom user variables here, ie:
-  subscriptionType: 'Virtual Family',
-});
-console.log('Log Rocket initiated.');
+// console.log('initiating Log Rocket ...');
+// const theUser = localStorage.getItem('userInfo');
+// LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
+//   id: theUser && JSON.parse(theUser).user.id,
+//   firstName: theUser && JSON.parse(theUser).user.firstName,
+//   lastName: theUser && JSON.parse(theUser).user.lastName,
+//   userName: theUser && JSON.parse(theUser).user.userName,
+//   // Add your own custom user variables here, ie:
+//   subscriptionType: 'Virtual Family',
+// });
+// console.log('Log Rocket initiated.');
 
-setupLogRocketReact(LogRocket);
+// setupLogRocketReact(LogRocket);
 
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;
