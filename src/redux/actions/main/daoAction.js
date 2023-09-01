@@ -377,7 +377,7 @@ export const signTransaction = (values, signer, chainId, settest) => async (disp
         },
       });
     } catch (e) {
-      settest(e);
+      settest(JSON.parse(e));
       throw new Error(e);
     }
     console.log({
