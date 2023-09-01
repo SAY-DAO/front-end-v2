@@ -1,40 +1,5 @@
-const staticCacheName = 'SAY-DAPP-v2.2.0';
-const urlsToCache = [
-  'images/back_gray.svg',
-  'images/back_orange.svg',
-  'images/logo.png',
-  'images/icons/changePassword.svg',
-  'images/icons/email.svg',
-  'images/icons/exit.svg',
-  'images/icons/info.svg',
-  'images/icons/language.svg',
-  'images/icons/Money.svg',
-  'images/icons/settings.svg',
-  'images/icons/Task.svg',
-  'images/icons/un.svg',
-  'images/icons/upload.svg',
-  'images/icons/wallet.svg',
-  'images/icons/family.svg',
-  'images/icons/doneNeeds/child.svg',
-  'images/icons/doneNeeds/hand.svg',
-  'images/icons/doneNeeds/ngo.svg',
-  'images/icons/doneNeeds/package.svg',
-  'images/icons/doneNeeds/receipts/ngo_delivered.jpg',
-  'images/icons/doneNeeds/receipts/done.jpg',
-  'images/cartWhite.svg',
-  'images/favicon.png',
-  'images/finalForm.svg',
-  'images/say_donation.svg',
-  'images/back.svg',
-  'images/intro.png',
-  'images/otp.svg',
-  'images/child/background.png',
-  'images/child/searchChild.png',
-  'images/register.svg',
-  'assets/locales/translations/fa.json',
-  'assets/locales/translations/en.json',
-  'offline.html',
-];
+const staticCacheName = 'SAY-DAPP-v2';
+const urlsToCache = [];
 
 const self = this;
 
