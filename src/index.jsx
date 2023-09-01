@@ -30,5 +30,7 @@ root.render(
 
 // If you want to enable client cache, register instead.
 // if (process.env.REACT_APP_NODE_ENV === 'production') {
-  serviceWorker.register();
+serviceWorker.register();
 // }
+
+

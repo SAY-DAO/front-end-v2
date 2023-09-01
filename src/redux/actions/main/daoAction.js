@@ -336,7 +336,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction = (values, signer, chainId) => async (dispatch, getState) => {
+export const signTransaction = (values, signer, chainId, settest) => async (dispatch, getState) => {
   try {
     dispatch({ type: SIGNATURE_REQUEST });
 
@@ -366,15 +366,20 @@ export const signTransaction = (values, signer, chainId) => async (dispatch, get
     const types = {
       ...transaction.types,
     };
-
-    const signatureHash = await signer.signTypedData({
-      domain: transaction.domain,
-      types,
-      primaryType: 'Voucher',
-      message: {
-        ...transaction.message,
-      },
-    });
+    let signatureHash;
+    try {
+      signatureHash = await signer.signTypedData({
+        domain: transaction.domain,
+        types,
+        primaryType: 'Vouchedr',
+        message: {
+          ...transaction.message,
+        },
+      });
+    } catch (e) {
+      settest(e);
+      throw new Error(e);
+    }
 
     // 2- --------------------- Second Verify social worker signature -----------------------
     const request2 = {

@@ -87,7 +87,7 @@ export default function DaoNeedSignature() {
   const [signatureError, setSignatureError] = useState('');
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState();
-
+  const [test, settest] = useState();
   const {
     status,
     isLoading: isLoadingSignIn,
@@ -339,6 +339,7 @@ export default function DaoNeedSignature() {
         },
         walletClient,
         chain.id,
+        settest,
       ),
     );
   };
@@ -968,13 +969,13 @@ export default function DaoNeedSignature() {
                           fullWidth
                           variant="outlined"
                           disabled={
-                            signatureError ||
-                            errorVerify ||
-                            errorWalletInformation ||
-                            errorSignature ||
-                            errorSignIn ||
-                            errorEcosystem ||
-                            errorReadyOne
+                            (signatureError && true) ||
+                            (errorVerify && true) ||
+                            (errorWalletInformation && true) ||
+                            (errorSignature && true) ||
+                            (errorSignIn && true) ||
+                            (errorEcosystem && true) ||
+                            (errorReadyOne && true)
                           }
                           onClick={handleWalletButton}
                         >
@@ -987,13 +988,13 @@ export default function DaoNeedSignature() {
                             signbutton="true"
                             variant="outlined"
                             disabled={
-                              signatureError ||
-                              errorVerify ||
-                              errorWalletInformation ||
-                              errorSignature ||
-                              errorSignIn ||
-                              errorEcosystem ||
-                              errorReadyOne
+                              (signatureError && true) ||
+                              (errorVerify && true) ||
+                              (errorWalletInformation && true) ||
+                              (errorSignature && true) ||
+                              (errorSignIn && true) ||
+                              (errorEcosystem && true) ||
+                              (errorReadyOne && true)
                             }
                             loading={
                               successVerifiedSwAddress ||
@@ -1062,16 +1063,10 @@ export default function DaoNeedSignature() {
           }
           walletToastOpen={walletToastOpen}
           handleCloseWalletToast={handleCloseWalletToast}
-          severity={errorSignIn || errorSignature ? 'warning' : 'error'}
+          severity="error"
         />
       )}
-      <Typography>signatureError:{signatureError}</Typography>
-      <Typography>errorVerify:{errorVerify}</Typography>
-      <Typography>errorWalletInformation:{errorWalletInformation}</Typography>
-      <Typography>errorSignature:{errorSignature}</Typography>
-      <Typography>errorSignIn:{errorSignIn}</Typography>
-      <Typography>errorEcosystem:{errorEcosystem}</Typography>
-      <Typography>errorReadyOne:{errorReadyOne}</Typography>
+      <Typography>signatureError:{test && test.message}</Typography>
     </Grid>
   );
 }
