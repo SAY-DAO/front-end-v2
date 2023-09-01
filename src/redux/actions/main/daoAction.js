@@ -380,7 +380,14 @@ export const signTransaction = (values, signer, chainId, settest) => async (disp
       settest(e);
       throw new Error(e);
     }
-
+    console.log({
+      domain: transaction.domain,
+      types,
+      primaryType: 'Voucher',
+      message: {
+        ...transaction.message,
+      },
+    });
     // 2- --------------------- Second Verify social worker signature -----------------------
     const request2 = {
       chainId,

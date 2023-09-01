@@ -1066,7 +1066,7 @@ export default function DaoNeedSignature() {
           severity="error"
         />
       )}
-      <Typography>signatureError:{test && test.message}</Typography>
+      <Typography>{test && test.message}</Typography>
     </Grid>
   );
 }
