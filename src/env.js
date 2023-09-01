@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 
@@ -25,27 +24,13 @@ if (env === 'production') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
-if (env !== 'development') {
-  Sentry.init({
-    // dsn: process.env.REACT_APP_SENTRY_DSN,
-    // normalizeDepth: 10, // Or however deep you want your state context to be.
-    // environment: process.env.REACT_APP_NODE_ENV,
-    // integrations: [new Integrations.BrowserTracing()],
-    // // Can also use reactRouterV3Instrumentation or reactRouterV4Instrumentation
-    // routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
-    // tracesSampleRate: 1.0,
-  });
-
-  // Sentry.configureScope((scope) => {
-  //   scope.setUser({ id: JSON.parse(localStorage.getItem('userInfo')).user.id });
-  // });
-}
 console.log('initiating Log Rocket ...');
+const theUser = localStorage.getItem('userInfo');
 LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-  id: JSON.parse(localStorage.getItem('userInfo')).user.id,
-  name: JSON.parse(localStorage.getItem('userInfo')).user.firstName,
-  lastName: JSON.parse(localStorage.getItem('userInfo')).user.lastName,
-  userName: JSON.parse(localStorage.getItem('userInfo')).user.userName,
+  id: theUser && JSON.parse(theUser).user.id,
+  name: theUser && JSON.parse(theUser).user.firstName,
+  lastName: theUser && JSON.parse(theUser).user.lastName,
+  userName: theUser && JSON.parse(theUser).user.userName,
   // Add your own custom user variables here, ie:
   subscriptionType: 'Virtual Family',
   console: {
@@ -70,12 +55,6 @@ LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
 console.log('Log Rocket initiated.');
 
 setupLogRocketReact(LogRocket);
-
-LogRocket.getSessionURL((sessionURL) => {
-  Sentry.configureScope((scope) => {
-    scope.setExtra('sessionURL', sessionURL);
-  });
-});
 
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;

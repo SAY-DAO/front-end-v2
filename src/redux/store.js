@@ -1,4 +1,5 @@
-import { applyMiddleware, compose, configureStore } from '@reduxjs/toolkit';
+/* eslint-disable camelcase */
+import { applyMiddleware, compose, legacy_createStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import LogRocket from 'logrocket';
 import reducers from './reducers';
@@ -38,8 +39,8 @@ const initialState = {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [thunk];
 
-const store = configureStore(
-  { reducer: reducers },
+const store = legacy_createStore(
+  reducers,
   initialState,
   composeEnhancers(applyMiddleware(...middleware), applyMiddleware(LogRocket.reduxMiddleware())),
 );
