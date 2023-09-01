@@ -256,7 +256,15 @@ export default function DaoNeedSignature() {
     dispatch(fetchOneReadySignNeed(needId));
     return () => {
       dispatch({ type: ONE_NEED_COEFFS_RESET });
-      if (errorEcosystem || errorReadyOne) {
+      if (
+        errorEcosystem ||
+        errorReadyOne ||
+        errorSignIn ||
+        errorVerify ||
+        errorSignature ||
+        errorWalletInformation ||
+        errorWalletNonce
+      ) {
         dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
         dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
         dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
