@@ -2,17 +2,17 @@ import * as Sentry from '@sentry/react';
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 
-const env = process.env.REACT_APP_NODE_ENV || 'local';
+const env = process.env.REACT_APP_NODE_ENV || 'development';
 
 let envApiUrl = '';
 let envApiUrl3 = '';
 let envApiDao = '';
 
-if (env === 'prod') {
+if (env === 'production') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_PROD}/api/v3`;
   envApiDao = `https://${process.env.REACT_APP_DAO_PROD}/api/dao`;
-} else if (env === 'stag') {
+} else if (env === 'staging') {
   envApiUrl = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v2`;
   envApiUrl3 = `https://${process.env.REACT_APP_DOMAIN_STAGING}/api/v3`;
   envApiDao = `https://${process.env.REACT_APP_DAO_STAGING}/api/dao`;
@@ -25,7 +25,7 @@ if (env === 'prod') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
-if (env !== 'local') {
+if (env !== 'development') {
   Sentry.init({
     // dsn: process.env.REACT_APP_SENTRY_DSN,
     // normalizeDepth: 10, // Or however deep you want your state context to be.
@@ -39,39 +39,41 @@ if (env !== 'local') {
   // Sentry.configureScope((scope) => {
   //   scope.setUser({ id: JSON.parse(localStorage.getItem('userInfo')).user.id });
   // });
-
-  if (env === 'prod') {
-    LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-      release: '2.0.0',
-      console: {
-        isEnabled: {
-          log: false,
-          debug: false,
-        },
-      },
-      dom: {
-        inputSanitizer: true,
-      },
-      network: {
-        requestSanitizer: (request) => {
-          // scrub header value from request
-          if (request.headers.Authorization) {
-            request.headers.Authorization = '';
-          }
-          return request;
-        },
-      },
-    });
-
-    LogRocket.getSessionURL((sessionURL) => {
-      Sentry.configureScope((scope) => {
-        scope.setExtra('sessionURL', sessionURL);
-      });
-    });
-
-    setupLogRocketReact(LogRocket);
-  }
 }
+console.log(env === 'development');
+if (env === 'development') {
+  console.log('initiating Log Rocket ...');
+  LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
+    console: {
+      isEnabled: {
+        log: true,
+        debug: true,
+      },
+    },
+    dom: {
+      inputSanitizer: true,
+    },
+    network: {
+      requestSanitizer: (request) => {
+        // scrub header value from request
+        if (request.headers.Authorization) {
+          request.headers.Authorization = '';
+        }
+        return request;
+      },
+    },
+  });
+  console.log('Log Rocket initiated.');
+
+  setupLogRocketReact(LogRocket);
+
+  LogRocket.getSessionURL((sessionURL) => {
+    Sentry.configureScope((scope) => {
+      scope.setExtra('sessionURL', sessionURL);
+    });
+  });
+}
+
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;
 const apiDao = envApiDao;
