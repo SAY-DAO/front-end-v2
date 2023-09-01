@@ -40,39 +40,42 @@ if (env !== 'development') {
   //   scope.setUser({ id: JSON.parse(localStorage.getItem('userInfo')).user.id });
   // });
 }
-console.log(env === 'development');
-if (env === 'development') {
-  console.log('initiating Log Rocket ...');
-  LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-    console: {
-      isEnabled: {
-        log: true,
-        debug: true,
-      },
+console.log('initiating Log Rocket ...');
+LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
+  id: JSON.parse(localStorage.getItem('userInfo')).user.id,
+  name: JSON.parse(localStorage.getItem('userInfo')).user.firstName,
+  lastName: JSON.parse(localStorage.getItem('userInfo')).user.lastName,
+  userName: JSON.parse(localStorage.getItem('userInfo')).user.userName,
+  // Add your own custom user variables here, ie:
+  subscriptionType: 'Virtual Family',
+  console: {
+    isEnabled: {
+      log: true,
+      debug: true,
     },
-    dom: {
-      inputSanitizer: true,
+  },
+  dom: {
+    inputSanitizer: true,
+  },
+  network: {
+    requestSanitizer: (request) => {
+      // scrub header value from request
+      if (request.headers.Authorization) {
+        request.headers.Authorization = '';
+      }
+      return request;
     },
-    network: {
-      requestSanitizer: (request) => {
-        // scrub header value from request
-        if (request.headers.Authorization) {
-          request.headers.Authorization = '';
-        }
-        return request;
-      },
-    },
-  });
-  console.log('Log Rocket initiated.');
+  },
+});
+console.log('Log Rocket initiated.');
 
-  setupLogRocketReact(LogRocket);
+setupLogRocketReact(LogRocket);
 
-  LogRocket.getSessionURL((sessionURL) => {
-    Sentry.configureScope((scope) => {
-      scope.setExtra('sessionURL', sessionURL);
-    });
+LogRocket.getSessionURL((sessionURL) => {
+  Sentry.configureScope((scope) => {
+    scope.setExtra('sessionURL', sessionURL);
   });
-}
+});
 
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;
