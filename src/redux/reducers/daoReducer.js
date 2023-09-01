@@ -59,7 +59,7 @@ export const ecosystemAnalyticReducer = (state = {}, action) => {
     case ONE_NEED_COEFFS_RESET:
       return {};
     case FAMILY_DISTANCE_RATIO_REQUEST:
-      return { ...state, loading: true, success: false };
+      return {  loading: true, success: false };
     case FAMILY_DISTANCE_RATIO_SUCCESS:
       return { ...state, loading: false, success: true, userResult: action.payload };
     case FAMILY_DISTANCE_RATIO_FAIL:

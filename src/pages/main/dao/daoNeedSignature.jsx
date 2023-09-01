@@ -56,6 +56,7 @@ import {
   ONE_NEED_COEFFS_RESET,
   READY_TO_SIGN_ONE_NEED_RESET,
   SIGNATURE_RESET,
+  SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
@@ -125,7 +126,9 @@ export default function DaoNeedSignature() {
     (state) => state.walletInformation,
   );
 
-  const { loading: loadingVerifiedSwAddress } = useSelector((state) => state.signatureVerification);
+  const { loading: loadingVerifiedSwAddress, success: successVerifiedSwAddress } = useSelector(
+    (state) => state.signatureVerification,
+  );
   const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
   const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
   const {
@@ -252,10 +255,14 @@ export default function DaoNeedSignature() {
   useEffect(() => {
     dispatch(fetchOneReadySignNeed(needId));
     return () => {
-      dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
       dispatch({ type: ONE_NEED_COEFFS_RESET });
-      dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
-      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+      if (errorEcosystem || errorReadyOne) {
+        dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+        dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
+        dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
+        dispatch({ type: SIGNATURE_VERIFICATION_RESET });
+      }
+      dispatch({ type: SIGNATURE_RESET });
     };
   }, [created, signature]);
 
@@ -287,7 +294,7 @@ export default function DaoNeedSignature() {
       );
       const creditRefund = theNeed.verifiedPayments.find(
         (p) => p.flaskUserId === userInfo.user.id && p.creditAmount < 0,
-      );    
+      );
       setPaymentDetails({
         totalAmount: (userPayment.needAmount + userPayment.donationAmount).toLocaleString(),
         creditRefund: creditRefund ? creditRefund.creditAmount : 0,
@@ -304,6 +311,7 @@ export default function DaoNeedSignature() {
       });
     }
   }, [theNeed]);
+
   const handleWalletButton = () => {
     setOpenWallets(true);
     disconnect();
@@ -980,6 +988,8 @@ export default function DaoNeedSignature() {
                               errorReadyOne
                             }
                             loading={
+                              successVerifiedSwAddress ||
+                              loadingVerifiedSwAddress ||
                               isLoadingSignIn ||
                               loadingSignature ||
                               loadingInformation ||

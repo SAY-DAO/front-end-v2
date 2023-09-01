@@ -36,6 +36,7 @@ import {
   FAMILY_DISTANCE_RATIO_FAIL,
   SIGNATURE_VERIFICATION_REQUEST,
   SIGNATURE_VERIFICATION_SUCCESS,
+  SIGNATURE_VERIFICATION_FAIL,
 } from '../../constants/daoConstants';
 import {
   FAMILY_NETWORK_REQUEST,
@@ -411,6 +412,9 @@ export const signTransaction = (values, signer, chainId) => async (dispatch, get
     });
   } catch (e) {
     console.log(e);
+    dispatch({
+      type: SIGNATURE_VERIFICATION_FAIL,
+    });
     dispatch({
       type: SIGNATURE_FAIL,
       payload:
