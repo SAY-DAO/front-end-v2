@@ -33,24 +33,6 @@ LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
   userName: theUser && JSON.parse(theUser).user.userName,
   // Add your own custom user variables here, ie:
   subscriptionType: 'Virtual Family',
-  console: {
-    isEnabled: {
-      log: true,
-      debug: true,
-    },
-  },
-  dom: {
-    inputSanitizer: true,
-  },
-  network: {
-    requestSanitizer: (request) => {
-      // scrub header value from request
-      if (request.headers.Authorization) {
-        request.headers.Authorization = '';
-      }
-      return request;
-    },
-  },
 });
 console.log('Log Rocket initiated.');
 
