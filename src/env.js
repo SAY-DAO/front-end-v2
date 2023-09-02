@@ -48,7 +48,7 @@ Sentry.init({
         createRoutesFromChildren,
         matchRoutes,
       ),
-      tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+      tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
     }),
     new Sentry.Replay(),
   ],
@@ -70,12 +70,12 @@ console.log('Sentry initiated.');
 console.log('initiating Log Rocket ...');
 
 const theUser = localStorage.getItem('userInfo');
-LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-  id: theUser && JSON.parse(theUser).user.id,
+LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID);
+
+LogRocket.identify(theUser && JSON.parse(theUser).user.id, {
   firstName: theUser && JSON.parse(theUser).user.firstName,
   lastName: theUser && JSON.parse(theUser).user.lastName,
   userName: theUser && JSON.parse(theUser).user.userName,
-  // Add your own custom user variables here, ie:
   subscriptionType: 'Virtual Family',
 });
 
