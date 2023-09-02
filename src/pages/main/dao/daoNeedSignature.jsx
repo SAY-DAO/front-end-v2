@@ -250,10 +250,10 @@ export default function DaoNeedSignature() {
   useEffect(() => {
     if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
-      dispatch(fetchNeedCoefficients(needId));
     }
     if (!oneReadyNeed || needId !== oneReadyNeed.id) {
       dispatch(fetchOneReadySignNeed(needId));
+      dispatch(fetchNeedCoefficients(needId));
     }
   }, [needId]);
 
