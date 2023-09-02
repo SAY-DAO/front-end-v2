@@ -113,7 +113,7 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
-  const { error: ecoResultError } = useSelector((state) => state.walletNecosystemDataonce);
+  const { error: ecoResultError } = useSelector((state) => state.ecosystemData);
 
   const oneNeedData = useSelector((state) => state.oneNeedData);
   const {
