@@ -34,69 +34,71 @@ if (env === 'production') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
-console.log('initiating Sentry ...');
-Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
-  integrations: [
-    new Sentry.BrowserTracing({
-      // See docs for support of different versions of variation of react router
-      // https://docs.sentry.io/platforms/javascript/guides/react/configuration/integrations/react-router/
-      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-        useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes,
-      ),
-      tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
-    }),
-    new Sentry.Replay(),
-  ],
+if (env === 'production') {
+  console.log('initiating Sentry ...');
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    integrations: [
+      new Sentry.BrowserTracing({
+        // See docs for support of different versions of variation of react router
+        // https://docs.sentry.io/platforms/javascript/guides/react/configuration/integrations/react-router/
+        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+          useEffect,
+          useLocation,
+          useNavigationType,
+          createRoutesFromChildren,
+          matchRoutes,
+        ),
+        tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
+      }),
+      new Sentry.Replay(),
+    ],
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  tracesSampleRate: 1.0,
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    tracesSampleRate: 1.0,
 
-  // Capture Replay for 10% of all sessions,
-  // plus for 100% of sessions with an error
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
-});
+    // Capture Replay for 10% of all sessions,
+    // plus for 100% of sessions with an error
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
 
-export const useSentryRoutes = Sentry.wrapUseRoutes(useRoutes);
+  const useSentryRoutes = Sentry.wrapUseRoutes(useRoutes);
 
-console.log('Sentry initiated.');
+  console.log('Sentry initiated.');
 
-console.log('initiating Log Rocket ...');
+  console.log('initiating Log Rocket ...');
 
-const theUser = localStorage.getItem('userInfo');
-LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
-  network: {
-    requestSanitizer: (request) => {
-      if (request.headers.Authorization) {
-        request.headers.Authorization = '';
-      }
-      // if the url contains 'ignore'
-      if (request.url.toLowerCase().indexOf('ignore') !== -1) {
-        // ignore the request response pair
-        return null;
-      }
+  const theUser = localStorage.getItem('userInfo');
+  LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
+    network: {
+      requestSanitizer: (request) => {
+        if (request.headers.Authorization) {
+          request.headers.Authorization = '';
+        }
+        // if the url contains 'ignore'
+        if (request.url.toLowerCase().indexOf('ignore') !== -1) {
+          // ignore the request response pair
+          return null;
+        }
 
-      // otherwise log the request normally
-      return request;
+        // otherwise log the request normally
+        return request;
+      },
     },
-  },
-});
+  });
 
-LogRocket.identify(theUser && JSON.parse(theUser).user.id, {
-  name: theUser && JSON.parse(theUser).user.firstName,
-  lastName: theUser && JSON.parse(theUser).user.lastName,
-  userName: theUser && JSON.parse(theUser).user.userName,
-  subscriptionType: 'Virtual Family',
-});
+  LogRocket.identify(theUser && JSON.parse(theUser).user.id, {
+    name: theUser && JSON.parse(theUser).user.firstName,
+    lastName: theUser && JSON.parse(theUser).user.lastName,
+    userName: theUser && JSON.parse(theUser).user.userName,
+    subscriptionType: 'Virtual Family',
+  });
 
-setupLogRocketReact(LogRocket);
-console.log('Log Rocket initiated.');
+  setupLogRocketReact(LogRocket);
+  console.log('Log Rocket initiated.');
+}
 
 const apiUrl = envApiUrl;
 const apiUrl3 = envApiUrl3;

@@ -113,6 +113,8 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
+  const { error: ecoResultError } = useSelector((state) => state.walletNecosystemDataonce);
+
   const oneNeedData = useSelector((state) => state.oneNeedData);
   const {
     coeffsResult,
@@ -1067,8 +1069,9 @@ export default function DaoNeedSignature() {
           severity="error"
         />
       )}
-      <Typography>{test && test.stringify()}</Typography>;
-      <Typography>{errorOneNeedData}</Typography>
+      <Typography>test:{test && test.stringify()}</Typography>;
+      <Typography>errorOneNeedData:{errorOneNeedData}</Typography>
+      <Typography>ecoResultError:{ecoResultError}</Typography>
     </Grid>
   );
 }
