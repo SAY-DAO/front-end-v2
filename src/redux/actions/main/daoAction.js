@@ -349,7 +349,7 @@ export const signTransaction =
           },
         });
       } catch (e) {
-        settest(e);
+        settest({ e });
         settest2(
           await signer.signTypedData({
             domain: transaction.domain,
