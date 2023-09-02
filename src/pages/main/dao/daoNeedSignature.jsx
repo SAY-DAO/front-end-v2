@@ -1066,11 +1066,7 @@ export default function DaoNeedSignature() {
           severity="error"
         />
       )}
-      <Typography>{test && test.stringify()}</Typography>
-      <button type="submit" onClick={() => methodDoesNotExist()}>
-        Break the world
-      </button>
-      ;
+      <Typography>{test && test.stringify()}</Typography>;
     </Grid>
   );
 }

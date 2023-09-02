@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import { useEffect } from 'react';
@@ -47,7 +48,7 @@ Sentry.init({
         createRoutesFromChildren,
         matchRoutes,
       ),
-      tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
+      tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
     }),
     new Sentry.Replay(),
   ],

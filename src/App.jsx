@@ -16,6 +16,7 @@ import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
+
 function App() {
   const routing = useRoutes(Router);
   const themOptions = useSelector((state) => state.themOptions);
