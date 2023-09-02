@@ -307,7 +307,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction = (values, signer, chainId, settest) => async (dispatch, getState) => {
+export const signTransaction = (values, signer, chainId, settest,settest2) => async (dispatch, getState) => {
   try {
     dispatch({ type: SIGNATURE_REQUEST });
 
@@ -349,6 +349,7 @@ export const signTransaction = (values, signer, chainId, settest) => async (disp
       });
     } catch (e) {
       settest(e);
+      settest2(transaction);
       throw new Error(e);
     }
     console.log({

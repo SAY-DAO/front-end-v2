@@ -87,6 +87,7 @@ export default function DaoNeedSignature() {
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState();
   const [test, settest] = useState();
+  const [test2, settest2] = useState();
   const {
     status,
     isLoading: isLoadingSignIn,
@@ -344,6 +345,7 @@ export default function DaoNeedSignature() {
         walletClient,
         chain.id,
         settest,
+        settest2,
       ),
     );
   };
@@ -1083,6 +1085,7 @@ export default function DaoNeedSignature() {
         />
       )}
       <Typography>test:{test && JSON.stringify(test)}</Typography>;
+      <Typography>test:{test2 && JSON.stringify(test2)}</Typography>;
       <Typography>errorOneNeedData:{errorOneNeedData}</Typography>
       <Typography>ecoResultError:{ecoResultError}</Typography>
     </Grid>
