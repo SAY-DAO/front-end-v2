@@ -1082,7 +1082,7 @@ export default function DaoNeedSignature() {
           severity="error"
         />
       )}
-      <Typography>test:{test && test.stringify()}</Typography>;
+      <Typography>test:{test && JSON.stringify(test)}</Typography>;
       <Typography>errorOneNeedData:{errorOneNeedData}</Typography>
       <Typography>ecoResultError:{ecoResultError}</Typography>
     </Grid>
