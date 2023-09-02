@@ -40,6 +40,8 @@ import {
   ecosystemAnalyticReducer,
   contributionReducer,
   signatureVerificationReducer,
+  ecosystemMintAnalyticReducer,
+  oneNeedAnalyticReducer,
 } from './daoReducer';
 import allNeedsReducer from './needReducer';
 import themeReducer from './themeReducer';
@@ -49,6 +51,8 @@ export default combineReducers({
   themeOptions: themeReducer,
   commentResult: commentReducer,
   ecosystemData: ecosystemAnalyticReducer,
+  ecosystemMintData: ecosystemMintAnalyticReducer,
+  oneNeedData: oneNeedAnalyticReducer,
   walletNonce: walletNonceReducer,
   walletVerify: walletVerifyReducer,
   walletInformation: walletInformationReducer,

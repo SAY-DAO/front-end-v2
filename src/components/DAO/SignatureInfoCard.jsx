@@ -21,14 +21,14 @@ const SignatureInfoCard = () => {
 
   const dispatch = useDispatch();
 
-  const ecosystemData = useSelector((state) => state.ecosystemData);
-  const { userResult, success: successEcosystem, error: errorEcosystem } = ecosystemData;
+  const oneNeedData = useSelector((state) => state.oneNeedData);
+  const { userResult, success: successOneNeedData, error: errorOneNeedData } = oneNeedData;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
   const { paidNeedsData } = paidNeeds;
 
   useEffect(() => {
-    if (!successEcosystem) {
+    if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
   }, []);
@@ -39,10 +39,10 @@ const SignatureInfoCard = () => {
 
   // toast
   useEffect(() => {
-    if (errorEcosystem) {
+    if (errorOneNeedData) {
       setWalletToastOpen(true);
     }
-  }, [errorEcosystem]);
+  }, [errorOneNeedData]);
 
   // close toast
   const handleCloseWalletToast = (event, reason) => {
@@ -178,9 +178,9 @@ const SignatureInfoCard = () => {
           </Grid>
         </CardContent>
       </div>
-      {errorEcosystem && (
+      {errorOneNeedData && (
         <MessageWallet
-          walletError={errorEcosystem}
+          walletError={errorOneNeedData}
           walletToastOpen={walletToastOpen}
           handleCloseWalletToast={handleCloseWalletToast}
           severity="error"

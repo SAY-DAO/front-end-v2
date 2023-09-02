@@ -19,8 +19,11 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const ecosystemData = useSelector((state) => state.ecosystemData);
-  const { userResult, mintEcoResult } = ecosystemData;
+  const oneNeedData = useSelector((state) => state.oneNeedData);
+  const { userResult } = oneNeedData;
+
+  const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
+  const { mintEcoResult } = ecosystemMintData;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
   const { paidNeedsData } = paidNeeds;
@@ -36,7 +39,7 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       );
     }
   }, [paidNeedsData]);
-  
+
   useEffect(() => {
     if (mintEcoResult && which === 'mintWaiting') {
       setCount(mintEcoResult.theUser.waiting);

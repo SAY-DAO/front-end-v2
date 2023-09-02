@@ -22,11 +22,15 @@ const MintInfoCard = () => {
 
   const dispatch = useDispatch();
 
-  const ecosystemData = useSelector((state) => state.ecosystemData);
-  const { mintEcoResult, success: successEcosystem, error: errorEcosystem } = ecosystemData;
+  const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
+  const {
+    mintEcoResult,
+    success: successMintEcosystem,
+    error: errorMintEcosystem,
+  } = ecosystemMintData;
 
   useEffect(() => {
-    if (!successEcosystem) {
+    if (!successMintEcosystem) {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
     dispatch(fetchEcoMintData());
@@ -38,10 +42,10 @@ const MintInfoCard = () => {
 
   // toast
   useEffect(() => {
-    if (errorEcosystem) {
+    if (errorMintEcosystem) {
       setWalletToastOpen(true);
     }
-  }, [errorEcosystem]);
+  }, [errorMintEcosystem]);
 
   // close toast
   const handleCloseWalletToast = (event, reason) => {
@@ -197,9 +201,9 @@ const MintInfoCard = () => {
           </Grid>
         </CardContent>
       </div>
-      {errorEcosystem && (
+      {errorMintEcosystem && (
         <MessageWallet
-          walletError={errorEcosystem}
+          walletError={errorMintEcosystem}
           walletToastOpen={walletToastOpen}
           handleCloseWalletToast={handleCloseWalletToast}
           severity="error"

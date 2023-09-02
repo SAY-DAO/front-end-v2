@@ -113,13 +113,13 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
-  const ecosystemData = useSelector((state) => state.ecosystemData);
+  const oneNeedData = useSelector((state) => state.oneNeedData);
   const {
     coeffsResult,
     userResult,
-    success: successEcosystem,
-    error: errorEcosystem,
-  } = ecosystemData;
+    success: successOneNeedData,
+    error: errorOneNeedData,
+  } = oneNeedData;
 
   const { nonceData, error: errorWalletNonce } = useSelector((state) => state.walletNonce);
   const { information, loading: loadingInformation } = useSelector(
@@ -247,7 +247,7 @@ export default function DaoNeedSignature() {
   }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
 
   useEffect(() => {
-    if (!successEcosystem) {
+    if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
   }, []);
@@ -257,7 +257,7 @@ export default function DaoNeedSignature() {
     return () => {
       dispatch({ type: ONE_NEED_COEFFS_RESET });
       if (
-        errorEcosystem ||
+        errorOneNeedData ||
         errorReadyOne ||
         errorSignIn ||
         errorVerify ||
@@ -975,7 +975,7 @@ export default function DaoNeedSignature() {
                             (errorWalletInformation && true) ||
                             (errorSignature && true) ||
                             (errorSignIn && true) ||
-                            (errorEcosystem && true) ||
+                            (errorOneNeedData && true) ||
                             (errorReadyOne && true)
                           }
                           onClick={handleWalletButton}
@@ -994,7 +994,7 @@ export default function DaoNeedSignature() {
                               (errorWalletInformation && true) ||
                               (errorSignature && true) ||
                               (errorSignIn && true) ||
-                              (errorEcosystem && true) ||
+                              (errorOneNeedData && true) ||
                               (errorReadyOne && true)
                             }
                             loading={
@@ -1047,9 +1047,9 @@ export default function DaoNeedSignature() {
         comment={comment}
         setComment={setComment}
       />
-      {(errorEcosystem || errorReadyOne) && (
+      {(errorOneNeedData || errorReadyOne) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
-          {errorEcosystem || errorReadyOne}
+          {errorOneNeedData || errorReadyOne}
         </Message>
       )}
       {(signatureError ||

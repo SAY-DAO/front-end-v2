@@ -46,39 +46,56 @@ import {
   FAMILY_ECOSYSTEM_PAYS_REST,
   ONE_NEED_COEFFS_RESET,
   FAMILY_DISTANCE_RATIO_REST,
+  ECOSYSTEM_MINT_RESET,
 } from '../constants/daoConstants';
 
 export const ecosystemAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
-    case ONE_NEED_COEFFS_REQUEST:
-      return { ...state, loading: true, success: false };
-    case ONE_NEED_COEFFS_SUCCESS:
-      return { ...state, loading: false, success: true, coeffsResult: action.payload };
-    case ONE_NEED_COEFFS_FAIL:
-      return { loading: false, error: action.payload };
-    case ONE_NEED_COEFFS_RESET:
-      return {};
-    case FAMILY_DISTANCE_RATIO_REQUEST:
-      return { ...state, loading: true, success: false };
-    case FAMILY_DISTANCE_RATIO_SUCCESS:
-      return { ...state, loading: false, success: true, userResult: action.payload };
-    case FAMILY_DISTANCE_RATIO_FAIL:
-      return { loading: false, error: action.payload };
-    case FAMILY_DISTANCE_RATIO_REST:
-      return {};
-    case ECOSYSTEM_MINT_REQUEST:
-      return { ...state, loading: true, success: false };
-    case ECOSYSTEM_MINT_SUCCESS:
-      return { ...state, loading: false, success: true, mintEcoResult: action.payload };
-    case ECOSYSTEM_MINT_FAIL:
-      return { loading: false, error: action.payload };
     case FAMILY_ECOSYSTEM_PAYS_REQUEST:
-      return { ...state, loading: true, success: false };
+      return { loading: true, success: false };
     case FAMILY_ECOSYSTEM_PAYS_SUCCESS:
       return { ...state, loading: false, success: true, ecoResult: action.payload };
     case FAMILY_ECOSYSTEM_PAYS_FAIL:
-      return { loading: false, error: action.payload };
+      return { success: false, loading: false, error: action.payload };
     case FAMILY_ECOSYSTEM_PAYS_REST:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const ecosystemMintAnalyticReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ECOSYSTEM_MINT_REQUEST:
+      return { loading: true, success: false };
+    case ECOSYSTEM_MINT_SUCCESS:
+      return { ...state, loading: false, success: true, mintEcoResult: action.payload };
+    case ECOSYSTEM_MINT_FAIL:
+      return { success: false, loading: false, error: action.payload };
+    case ECOSYSTEM_MINT_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const oneNeedAnalyticReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ONE_NEED_COEFFS_REQUEST:
+      return { loading: true, success: false };
+    case ONE_NEED_COEFFS_SUCCESS:
+      return { ...state, loading: false, success: true, coeffsResult: action.payload };
+    case ONE_NEED_COEFFS_FAIL:
+      return { success: false, loading: false, error: action.payload };
+    case ONE_NEED_COEFFS_RESET:
+      return {};
+    case FAMILY_DISTANCE_RATIO_REQUEST:
+      return { loading: true, success: false };
+    case FAMILY_DISTANCE_RATIO_SUCCESS:
+      return { ...state, loading: false, success: true, userResult: action.payload };
+    case FAMILY_DISTANCE_RATIO_FAIL:
+      return { success: false, loading: false, error: action.payload };
+    case FAMILY_DISTANCE_RATIO_REST:
       return {};
     default:
       return state;
