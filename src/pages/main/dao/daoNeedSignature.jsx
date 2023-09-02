@@ -81,7 +81,6 @@ export default function DaoNeedSignature() {
   const [commentOpen, setCommentOpen] = useState(false);
   const [userVRole, setUserVRole] = useState('');
   const [openWallets, setOpenWallets] = useState(false);
-  const [theNeed, setTheNeed] = useState();
   const [images, setImages] = useState(false);
   const [values, setValues] = useState();
   const [signatureError, setSignatureError] = useState('');
@@ -251,11 +250,14 @@ export default function DaoNeedSignature() {
   useEffect(() => {
     if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
+      dispatch(fetchNeedCoefficients(needId));
     }
-  }, []);
+    if (!oneReadyNeed || needId !== oneReadyNeed.id) {
+      dispatch(fetchOneReadySignNeed(needId));
+    }
+  }, [needId]);
 
   useEffect(() => {
-    dispatch(fetchOneReadySignNeed(needId));
     return () => {
       if (
         errorOneNeedData ||
@@ -278,41 +280,38 @@ export default function DaoNeedSignature() {
   }, [created, signature]);
 
   useEffect(() => {
-    if (oneReadyNeed) {
-      setTheNeed(oneReadyNeed);
-    }
-  }, [oneReadyNeed, created]);
-
-  useEffect(() => {
     if (!userVRole) {
       dispatch(fetchFamilyMemberDistanceRatio());
     }
   }, []);
 
   useEffect(() => {
-    if (theNeed) {
-      dispatch(fetchNeedCoefficients(theNeed.id));
+    if (
+      oneReadyNeed &&
+      oneReadyNeed.members &&
+      oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id)
+    ) {
+      setUserVRole(
+        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
+      );
     }
-    if (theNeed && theNeed.members && theNeed.members.find((m) => m.id_user === userInfo.user.id)) {
-      setUserVRole(theNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole);
-    }
-  }, [theNeed]);
+  }, [oneReadyNeed]);
 
   useEffect(() => {
-    if (theNeed) {
-      const userPayment = theNeed.verifiedPayments.find(
+    if (oneReadyNeed) {
+      const userPayment = oneReadyNeed.verifiedPayments.find(
         (p) => p.flaskUserId === userInfo.user.id && p.needAmount > 0,
       );
-      const creditRefund = theNeed.verifiedPayments.find(
+      const creditRefund = oneReadyNeed.verifiedPayments.find(
         (p) => p.flaskUserId === userInfo.user.id && p.creditAmount < 0,
       );
       setPaymentDetails({
         totalAmount: (userPayment.needAmount + userPayment.donationAmount).toLocaleString(),
         creditRefund: creditRefund ? creditRefund.creditAmount : 0,
         userShare:
-          userPayment && round((userPayment.needAmount / theNeed.cost) * 100, 2) > 100
+          userPayment && round((userPayment.needAmount / oneReadyNeed.cost) * 100, 2) > 100
             ? 100
-            : round((userPayment.needAmount / theNeed.cost) * 100, 2),
+            : round((userPayment.needAmount / oneReadyNeed.cost) * 100, 2),
         donationAmount: userPayment.donationAmount,
         needAmount: userPayment && userPayment.needAmount.toLocaleString(),
         bankAmount:
@@ -321,7 +320,7 @@ export default function DaoNeedSignature() {
         bankTrackId: userPayment && userPayment.gatewayTrackId,
       });
     }
-  }, [theNeed]);
+  }, [oneReadyNeed]);
 
   const handleWalletButton = () => {
     setOpenWallets(true);
@@ -414,7 +413,7 @@ export default function DaoNeedSignature() {
           </IconButton>
         </Grid>
       </Grid>
-      {theNeed ? (
+      {oneReadyNeed ? (
         <>
           <Grid
             item
@@ -432,8 +431,8 @@ export default function DaoNeedSignature() {
                 width: '60%',
                 borderRadius: 10,
                 background: !images
-                  ? `url(${`${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${theNeed.midjourneyImage}`})`
-                  : `url(${theNeed.needRetailerImg})`,
+                  ? `url(${`${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${oneReadyNeed.midjourneyImage}`})`
+                  : `url(${oneReadyNeed.needRetailerImg})`,
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
               }}
@@ -450,8 +449,8 @@ export default function DaoNeedSignature() {
                 <img
                   src={
                     images
-                      ? `${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${theNeed.midjourneyImage}`
-                      : theNeed.needRetailerImg
+                      ? `${process.env.REACT_APP_GITHUB_IMAGE_SERVE}/${oneReadyNeed.midjourneyImage}`
+                      : oneReadyNeed.needRetailerImg
                   }
                   alt="original"
                   style={{
@@ -479,7 +478,7 @@ export default function DaoNeedSignature() {
             <Grid container direction="column" justifyContent="center" sx={{ mt: 3 }}>
               <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
                 <Typography sx={{ fontWeight: 400 }} variant="h6">
-                  {theNeed.nameTranslations.fa}
+                  {oneReadyNeed.nameTranslations.fa}
                 </Typography>
                 <Typography
                   sx={{
@@ -492,12 +491,12 @@ export default function DaoNeedSignature() {
                   }}
                   variant="body1"
                 >
-                  {theNeed.title}
+                  {oneReadyNeed.title}
                 </Typography>
               </Grid>
               <Grid item>
                 <Card elevation={1} sx={{ width: 'max-content', m: 'auto', borderRadius: 3, p: 2 }}>
-                  <DurationTimeLine need={theNeed} />
+                  <DurationTimeLine need={oneReadyNeed} />
                 </Card>
               </Grid>
               <Card
@@ -521,12 +520,12 @@ export default function DaoNeedSignature() {
                       <Divider sx={{ width: '80%', m: 'auto' }} />
                     </Grid>
                     {/*  Social worker */}
-                    {theNeed.socialWorker && (
+                    {oneReadyNeed.socialWorker && (
                       <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
                         <Grid item xs={2}>
                           <Avatar
                             alt="social worker"
-                            src={prepareUrl(theNeed.socialWorker.avatarUrl)}
+                            src={prepareUrl(oneReadyNeed.socialWorker.avatarUrl)}
                             sx={{
                               bgcolor: grey[300],
                               width: '30px !important',
@@ -540,7 +539,8 @@ export default function DaoNeedSignature() {
                             {t(`roles.${getSAYRoleString(SAYPlatformRoles.SOCIAL_WORKER)}`)}
                           </Typography>
                           <Typography>
-                            {theNeed.socialWorker.firstName} {theNeed.socialWorker.lastName}
+                            {oneReadyNeed.socialWorker.firstName}{' '}
+                            {oneReadyNeed.socialWorker.lastName}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -550,12 +550,12 @@ export default function DaoNeedSignature() {
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Auditor */}
-                    {theNeed.auditor && (
+                    {oneReadyNeed.auditor && (
                       <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
                         <Grid item xs={2}>
                           <Avatar
                             alt="auditor"
-                            src={prepareUrl(theNeed.auditor.avatarUrl)}
+                            src={prepareUrl(oneReadyNeed.auditor.avatarUrl)}
                             sx={{
                               bgcolor: grey[300],
                               width: '30px !important',
@@ -569,7 +569,7 @@ export default function DaoNeedSignature() {
                             {t(`roles.${getSAYRoleString(SAYPlatformRoles.AUDITOR)}`)}
                           </Typography>
                           <Typography>
-                            {theNeed.auditor.firstName} {theNeed.auditor.lastName}
+                            {oneReadyNeed.auditor.firstName} {oneReadyNeed.auditor.lastName}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -578,12 +578,12 @@ export default function DaoNeedSignature() {
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Purchaser */}
-                    {theNeed.purchaser && (
+                    {oneReadyNeed.purchaser && (
                       <Grid item container sx={{ pt: '10px !important', mt: 1, mb: 1 }}>
                         <Grid item xs={2}>
                           <Avatar
                             alt="purchaser"
-                            src={prepareUrl(theNeed.purchaser.avatarUrl)}
+                            src={prepareUrl(oneReadyNeed.purchaser.avatarUrl)}
                             sx={{
                               bgcolor: grey[300],
                               width: '30px !important',
@@ -597,7 +597,7 @@ export default function DaoNeedSignature() {
                             {t(`roles.${getSAYRoleString(SAYPlatformRoles.PURCHASER)}`)}
                           </Typography>
                           <Typography>
-                            {theNeed.purchaser.firstName} {theNeed.purchaser.lastName}
+                            {oneReadyNeed.purchaser.firstName} {oneReadyNeed.purchaser.lastName}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -606,8 +606,8 @@ export default function DaoNeedSignature() {
                       <Divider sx={{ width: '65%', ml: 3 }} />
                     </Grid>
                     {/*  Family */}
-                    {theNeed.verifiedPayments &&
-                      theNeed.verifiedPayments.map(
+                    {oneReadyNeed.verifiedPayments &&
+                      oneReadyNeed.verifiedPayments.map(
                         (p) =>
                           p.needAmount > 0 &&
                           p.flaskUserId !== SAY_DAPP_ID && (
@@ -629,9 +629,10 @@ export default function DaoNeedSignature() {
                                   <Typography sx={{ fontWeight: 400 }}>
                                     {t(
                                       `roles.vFamily.${
-                                        theNeed.members &&
-                                        theNeed.members.find((m) => m.id_user === p.flaskUserId)
-                                          .flaskFamilyRole
+                                        oneReadyNeed.members &&
+                                        oneReadyNeed.members.find(
+                                          (m) => m.id_user === p.flaskUserId,
+                                        ).flaskFamilyRole
                                       }`,
                                     )}
                                   </Typography>
@@ -651,7 +652,7 @@ export default function DaoNeedSignature() {
                       <Grid item xs={2}>
                         <Avatar
                           alt="purchaser"
-                          src={theNeed.child && prepareUrl(theNeed.child.awakeAvatarUrl)}
+                          src={oneReadyNeed.child && prepareUrl(oneReadyNeed.child.awakeAvatarUrl)}
                           sx={{
                             bgcolor: grey[300],
                             width: '30px !important',
@@ -664,7 +665,7 @@ export default function DaoNeedSignature() {
                         <Typography sx={{ fontWeight: 400 }}>
                           {t(`roles.${getSAYRoleString(SAYPlatformRoles.CHILD)}`)}
                         </Typography>
-                        <Typography>{theNeed.child.sayNameTranslations.fa}</Typography>
+                        <Typography>{oneReadyNeed.child.sayNameTranslations.fa}</Typography>
                       </Grid>
                     </Grid>
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -685,7 +686,7 @@ export default function DaoNeedSignature() {
                         <Typography sx={{ fontWeight: 400 }}>
                           {t(`roles.${getSAYRoleString(SAYPlatformRoles.NGO)}`)}
                         </Typography>
-                        <Typography>{theNeed.child && theNeed.child.ngo.name}</Typography>
+                        <Typography>{oneReadyNeed.child && oneReadyNeed.child.ngo.name}</Typography>
                       </Grid>
                     </Grid>
                     <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -750,7 +751,7 @@ export default function DaoNeedSignature() {
                             {t('need.cost')}
                           </Typography>
                           <Typography variant="body1">
-                            {theNeed.purchaseCost.toLocaleString()}
+                            {oneReadyNeed.purchaseCost.toLocaleString()}
                             {t('currency.toman')}
                           </Typography>
                         </Grid>
@@ -768,19 +769,25 @@ export default function DaoNeedSignature() {
                             {t('need.sayShare')}
                           </Typography>
                           <Typography variant="body1">
-                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
-                              theNeed.verifiedPayments
+                            {oneReadyNeed.verifiedPayments.find(
+                              (p) => p.flaskUserId === SAY_DAPP_ID,
+                            ) &&
+                              oneReadyNeed.verifiedPayments
                                 .find((p) => p.flaskUserId === SAY_DAPP_ID)
                                 .needAmount.toLocaleString()}
-                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
-                              t('currency.toman')}
+                            {oneReadyNeed.verifiedPayments.find(
+                              (p) => p.flaskUserId === SAY_DAPP_ID,
+                            ) && t('currency.toman')}
                           </Typography>
                           <Typography variant="body1">
-                            {theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID) &&
+                            {oneReadyNeed.verifiedPayments.find(
+                              (p) => p.flaskUserId === SAY_DAPP_ID,
+                            ) &&
                               `%${round(
-                                (theNeed.verifiedPayments.find((p) => p.flaskUserId === SAY_DAPP_ID)
-                                  .needAmount /
-                                  theNeed.cost) *
+                                (oneReadyNeed.verifiedPayments.find(
+                                  (p) => p.flaskUserId === SAY_DAPP_ID,
+                                ).needAmount /
+                                  oneReadyNeed.cost) *
                                   100,
                                 2,
                               )}  + `}{' '}
@@ -804,7 +811,7 @@ export default function DaoNeedSignature() {
                             {t('ngo.deliveryCode')}
                           </Typography>
                           <Typography variant="body1">
-                            {changePersianNumbersToEnglish(theNeed.deliveryCode)}
+                            {changePersianNumbersToEnglish(oneReadyNeed.deliveryCode)}
                           </Typography>
                         </Grid>
                         <Grid item sx={{ width: '100%', pt: '5px !important' }}>
@@ -815,7 +822,7 @@ export default function DaoNeedSignature() {
                             {t('need.link')}
                           </Typography>
                           <Typography variant="body1">
-                            <Link to={theNeed.link} target="_blank">
+                            <Link to={oneReadyNeed.link} target="_blank">
                               {t('dao.link')}
                             </Link>
                           </Typography>
@@ -827,7 +834,9 @@ export default function DaoNeedSignature() {
                           <Typography variant="subtitle1" sx={{ fontSize: 10 }}>
                             {t('need.isUrgent')}
                           </Typography>
-                          <Typography variant="body1">{theNeed.isUrgent ? 'Yes' : 'No'}</Typography>
+                          <Typography variant="body1">
+                            {oneReadyNeed.isUrgent ? 'Yes' : 'No'}
+                          </Typography>
                         </Grid>
                         <Grid item sx={{ width: '100%', pt: '5px !important' }}>
                           <Divider sx={{ width: '60%', m: 'auto' }} />
@@ -964,9 +973,9 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Button */}
-                {theNeed.members &&
-                  !theNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
-                  theNeed.isResolved && (
+                {oneReadyNeed.members &&
+                  !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+                  oneReadyNeed.isResolved && (
                     <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
                       {!isConnected ? (
                         <WalletButton
@@ -1029,7 +1038,7 @@ export default function DaoNeedSignature() {
                       comment={comment}
                       setComment={setComment}
                     />
-                    {!theNeed.isResolved && (
+                    {!oneReadyNeed.isResolved && (
                       <Typography sx={{ p: 2, textAlign: 'center' }}>
                         {t('comment.disabledWallet')}
                       </Typography>

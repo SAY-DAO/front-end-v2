@@ -64,6 +64,7 @@ if (env === 'production') {
     replaysOnErrorSampleRate: 1.0,
   });
 
+  
   const useSentryRoutes = Sentry.wrapUseRoutes(useRoutes);
 
   console.log('Sentry initiated.');
