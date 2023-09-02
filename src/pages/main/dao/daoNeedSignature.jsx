@@ -249,7 +249,7 @@ export default function DaoNeedSignature() {
 
   useEffect(() => {
     dispatch(fetchNeedCoefficients(needId));
-  }, [userResult]);
+  }, []);
 
   useEffect(() => {
     if (!successOneNeedData) {
