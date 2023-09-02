@@ -347,10 +347,10 @@ export const verifySocialWorkerSignature =
         functionName: '_verify',
         args: [
           {
-            needId: data.message.needId,
+            needId: Number(data.message.needId),
             title: data.message.title,
             category: data.message.category,
-            paid: data.message.paid,
+            paid: Number(data.message.paid),
             deliveryCode: data.message.deliveryCode,
             child: data.message.child,
             signer: data.message.signer,
