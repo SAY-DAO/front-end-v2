@@ -83,7 +83,7 @@ export default function DaoSignature() {
               >
                 {alignment !== 'ready' ? (
                   paidNeedsData && paidNeedsData.readyNeedsList.length > 0 ? (
-                    <ImageList variant="masonry" cols={2} gap={10}>
+                    <ImageList variant="Standard" cols={2} gap={10}>
                       {paidNeedsData.readyNeedsList
                         .filter((need) => signedIds.includes(need.id))
                         .map((need) => (
@@ -102,9 +102,9 @@ export default function DaoSignature() {
                     </Container>
                   )
                 ) : paidNeedsData &&
-                  paidNeedsData.readyNeedsList.filter((need) => !signedIds.includes(need.id))
+                  paidNeedsData.readyNeedsList.filter((need) => signedIds.includes(need.id))
                     .length > 0 ? (
-                  <ImageList variant="masonry" cols={2} gap={10}>
+                  <ImageList variant="Standard" cols={2} gap={10}>
                     {paidNeedsData.readyNeedsList
                       .filter((need) => !signedIds.includes(need.id))
                       .map((need) => (
