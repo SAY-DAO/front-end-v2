@@ -23,12 +23,15 @@ export default function DaoSignature() {
   const { userInfo } = userLogin;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
-  const { paidNeedsData, success: successPaidNeeds } = paidNeeds;
+  const { loading: loadingPaidNeeds, paidNeedsData, success: successPaidNeeds } = paidNeeds;
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed } = readySigningOneNeed;
 
   useEffect(() => {
+    if (!successPaidNeeds || !loadingPaidNeeds) {
+      dispatch(fetchPaidNeeds());
+    }
     if (oneReadyNeed) {
       dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
     }
@@ -79,8 +82,7 @@ export default function DaoSignature() {
                 sx={{ p: 2, width: '100%', height: '100vh', overflowY: 'scroll', pb: 15, mt: 1 }}
               >
                 {alignment !== 'ready' ? (
-                  paidNeedsData &&
-                  paidNeedsData.readyNeedsList.length - paidNeedsData.signed > 0 ? (
+                  paidNeedsData && paidNeedsData.signed > 0 ? (
                     <ImageList variant="Standard" cols={2} gap={10}>
                       {paidNeedsData.readyNeedsList
                         .filter((need) => signedIds.includes(need.id))

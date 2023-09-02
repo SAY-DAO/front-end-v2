@@ -41,6 +41,9 @@ import {
   fetchWalletInformation,
   signTransaction,
   walletVerify,
+  prepareSignature,
+  verifySocialWorkerSignature,
+  createSignature,
 } from '../../../redux/actions/main/daoAction';
 import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
@@ -54,8 +57,7 @@ import {
   FAMILY_DISTANCE_RATIO_REST,
   FAMILY_ECOSYSTEM_PAYS_REST,
   ONE_NEED_COEFFS_RESET,
-  READY_TO_SIGN_ONE_NEED_RESET,
-  SIGNATURE_RESET,
+  SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
@@ -86,8 +88,6 @@ export default function DaoNeedSignature() {
   const [signatureError, setSignatureError] = useState('');
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState();
-  const [test, settest] = useState();
-  const [test2, settest2] = useState();
   const {
     status,
     isLoading: isLoadingSignIn,
@@ -113,8 +113,6 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
-  const { error: ecoResultError } = useSelector((state) => state.ecosystemData);
-
   const oneNeedData = useSelector((state) => state.oneNeedData);
   const {
     coeffsResult,
@@ -127,17 +125,41 @@ export default function DaoNeedSignature() {
   const { information, loading: loadingInformation } = useSelector(
     (state) => state.walletInformation,
   );
-
-  const { loading: loadingVerifiedSwAddress, success: successVerifiedSwAddress } = useSelector(
-    (state) => state.signatureVerification,
-  );
   const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
   const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
   const {
-    signature,
+    swVerifiedAddress,
+    loading: loadingVerifiedSwAddress,
+    success: successVerifiedSwAddress,
+  } = useSelector((state) => state.signatureVerification);
+
+  const {
+    prepared,
+    signatureHash,
+    createdSignature,
     loading: loadingSignature,
-    error: errorSignature,
+    error: errorPSignature,
   } = useSelector((state) => state.signature);
+
+  useEffect(() => {
+    if (oneReadyNeed && chain && !errorPSignature) {
+      if (swVerifiedAddress && !prepared) {
+        dispatch(prepareSignature(oneReadyNeed.id, address, chain.id));
+      }
+      if (swVerifiedAddress && prepared && !signatureHash) {
+        dispatch(signTransaction(walletClient, prepared));
+      }
+      if (signatureHash && prepared) {
+        dispatch(createSignature(oneReadyNeed.flaskId, signatureHash, prepared));
+      }
+    }
+  }, [prepared, signatureHash, swVerifiedAddress]);
+
+  useEffect(() => {
+    if (createdSignature) {
+      dispatch(fetchOneReadySignNeed(needId));
+    }
+  }, [createdSignature]);
 
   // fetch nonce for the wallet siwe
   useEffect(() => {
@@ -239,14 +261,14 @@ export default function DaoNeedSignature() {
     if (
       errorSignIn ||
       errorVerify ||
-      errorSignature ||
+      errorPSignature ||
       errorWalletInformation ||
       errorWalletNonce
     ) {
       disconnect();
       localStorage.removeItem('say-siwe');
     }
-  }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
+  }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorPSignature]);
 
   useEffect(() => {
     if (!coeffsResult) {
@@ -273,20 +295,17 @@ export default function DaoNeedSignature() {
         errorReadyOne ||
         errorSignIn ||
         errorVerify ||
-        errorSignature ||
+        errorPSignature ||
         errorWalletInformation ||
         errorWalletNonce
       ) {
         dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
         dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
-        dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
         dispatch({ type: ONE_NEED_COEFFS_RESET });
       }
-
-      dispatch({ type: SIGNATURE_RESET });
     };
-  }, [created, signature]);
+  }, [created, createdSignature]);
 
   useEffect(() => {
     if (
@@ -331,21 +350,19 @@ export default function DaoNeedSignature() {
     reset();
     dispatch({ type: WALLET_VERIFY_RESET });
     dispatch({ type: WALLET_INFORMATION_RESET });
-    dispatch({ type: SIGNATURE_RESET });
+    dispatch({ type: SIGNATURE_CREATE_RESET });
   };
 
   const handleSignature = async () => {
+    const swSignatureEntity = oneReadyNeed.signatures.find(
+      (s) => s.role === SAYPlatformRoles.SOCIAL_WORKER,
+    );
     dispatch(
-      signTransaction(
-        {
-          address,
-          needId: oneReadyNeed.id,
-          flaskNeedId: oneReadyNeed.flaskId,
-        },
-        walletClient,
+      verifySocialWorkerSignature(
+        swSignatureEntity.hash,
+        swSignatureEntity.signerAddress,
+        oneReadyNeed.flaskId,
         chain.id,
-        settest,
-        settest2,
       ),
     );
   };
@@ -360,10 +377,10 @@ export default function DaoNeedSignature() {
 
   // toast
   useEffect(() => {
-    if (errorSignIn || errorSignature || errorVerify) {
+    if (errorSignIn || errorPSignature || errorVerify) {
       setWalletToastOpen(true);
     }
-  }, [errorSignIn, errorSignature, errorVerify]);
+  }, [errorSignIn, errorPSignature, errorVerify]);
 
   // close toast
   const handleCloseWalletToast = (event, reason) => {
@@ -989,7 +1006,7 @@ export default function DaoNeedSignature() {
                             (signatureError && true) ||
                             (errorVerify && true) ||
                             (errorWalletInformation && true) ||
-                            (errorSignature && true) ||
+                            (errorPSignature && true) ||
                             (errorSignIn && true) ||
                             (errorOneNeedData && true) ||
                             (errorReadyOne && true)
@@ -1008,7 +1025,7 @@ export default function DaoNeedSignature() {
                               (signatureError && true) ||
                               (errorVerify && true) ||
                               (errorWalletInformation && true) ||
-                              (errorSignature && true) ||
+                              (errorPSignature && true) ||
                               (errorSignIn && true) ||
                               (errorOneNeedData && true) ||
                               (errorReadyOne && true)
@@ -1032,7 +1049,8 @@ export default function DaoNeedSignature() {
                         )
                       )}
                       <Typography sx={{ mb: 4, mt: 1 }}>
-                        {loadingVerifiedSwAddress && 'Verifying the signature...'}
+                        {loadingVerifiedSwAddress && 'Verifying social worker signature...'}
+                        {loadingSignature && 'Preparing the signature...'}
                       </Typography>
                     </Grid>
                   )}
@@ -1073,21 +1091,21 @@ export default function DaoNeedSignature() {
       {(signatureError ||
         errorVerify ||
         errorWalletInformation ||
-        errorSignature ||
+        errorPSignature ||
         errorSignIn) && (
         <MessageWallet
           walletError={
-            signatureError || errorVerify || errorWalletInformation || errorSignature || errorSignIn
+            signatureError ||
+            errorVerify ||
+            errorWalletInformation ||
+            errorPSignature ||
+            errorSignIn
           }
           walletToastOpen={walletToastOpen}
           handleCloseWalletToast={handleCloseWalletToast}
           severity="error"
         />
       )}
-      <Typography>test:{test && JSON.stringify(test)}</Typography>;
-      <Typography>test:{test2 && JSON.stringify(test2)}</Typography>;
-      <Typography>errorOneNeedData:{errorOneNeedData}</Typography>
-      <Typography>ecoResultError:{ecoResultError}</Typography>
     </Grid>
   );
 }

@@ -1,3 +1,4 @@
+import { readContract } from '@wagmi/core';
 import { daoApi } from '../../../apis/sayBase';
 import { SAYPlatformRoles } from '../../../utils/types';
 import {
@@ -13,9 +14,9 @@ import {
   READY_TO_SIGN_ONE_NEED_REQUEST,
   READY_TO_SIGN_ONE_NEED_SUCCESS,
   READY_TO_SIGN_ONE_NEED_FAIL,
-  SIGNATURE_REQUEST,
-  SIGNATURE_SUCCESS,
-  SIGNATURE_FAIL,
+  SIGNATURE_PREPARE_REQUEST,
+  SIGNATURE_PREPARE_SUCCESS,
+  SIGNATURE_PREPARE_FAIL,
   WALLET_NONCE_REQUEST,
   WALLET_NONCE_SUCCESS,
   WALLET_NONCE_FAIL,
@@ -37,12 +38,20 @@ import {
   SIGNATURE_VERIFICATION_REQUEST,
   SIGNATURE_VERIFICATION_SUCCESS,
   SIGNATURE_VERIFICATION_FAIL,
+  SIGNATURE_HASH_REQUEST,
+  SIGNATURE_HASH_SUCCESS,
+  SIGNATURE_HASH_FAIL,
+  SIGNATURE_CREATE_REQUEST,
+  SIGNATURE_CREATE_SUCCESS,
+  SIGNATURE_CREATE_FAIL,
 } from '../../constants/daoConstants';
 import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
 } from '../../constants/familyConstants';
+import VerifyVoucherContract from '../../../build/contracts/needModule/VerifyVoucher.sol/VerifyVoucher.json';
+import network from '../../../build/contracts/network-settings.json';
 
 export const fetchNonce = () => async (dispatch, getState) => {
   try {
@@ -307,10 +316,10 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
   }
 };
 
-export const signTransaction =
-  (values, signer, chainId, settest, settest2) => async (dispatch, getState) => {
+export const verifySocialWorkerSignature =
+  (swSignatureHash, signerAddress, flaskNeedId, chainId) => async (dispatch, getState) => {
     try {
-      dispatch({ type: SIGNATURE_REQUEST });
+      dispatch({ type: SIGNATURE_VERIFICATION_REQUEST });
 
       const {
         userLogin: { userInfo },
@@ -325,92 +334,174 @@ export const signTransaction =
         withCredentials: true,
       };
 
-      // 1- --------------------- First Prepare signature and get the hash -----------------------
       const request = {
-        needId: values.needId,
-        signerAddress: values.address,
         chainId,
+        flaskNeedId,
       };
 
-      const result1 = await daoApi.post(`/wallet/signature/dapp/prepare`, request, config);
-      const transaction = result1.data;
-      // The named list of all type definitions
-      const types = {
-        ...transaction.types,
-      };
-      let signatureHash;
-      try {
-        signatureHash = await signer.signTypedData({
-          domain: transaction.domain,
-          types,
-          primaryType: 'Voucher',
-          message: {
-            ...transaction.message,
+      const { data } = await daoApi.post(`/wallet/signature/verify`, request, config);
+
+      const verifiedAddress = await readContract({
+        address: network.mainnet.verifyVoucherAddress,
+        abi: VerifyVoucherContract.abi,
+        functionName: '_verify',
+        args: [
+          {
+            needId: data.message.needId,
+            title: data.message.title,
+            category: data.message.category,
+            paid: data.message.paid,
+            deliveryCode: data.message.deliveryCode,
+            child: data.message.child,
+            signer: data.message.signer,
+            swSignature: swSignatureHash, // social worker signature
+            role: data.message.role,
+            content: data.message.content,
           },
-        });
-      } catch (e) {
-        settest({ e });
-        settest2(
-          await signer.signTypedData({
-            domain: transaction.domain,
-            types,
-            primaryType: 'Voucher',
-            message: {
-              ...transaction.message,
-            },
-          }),
-        );
-        throw new Error(e);
+        ],
+        blockTag: 'safe',
+      });
+
+      if (signerAddress !== verifiedAddress) {
+        throw new Error('Not the same address!');
       }
-      console.log({
+      dispatch({
+        type: SIGNATURE_VERIFICATION_SUCCESS,
+        payload: verifiedAddress,
+      });
+    } catch (e) {
+      console.log(e);
+      dispatch({
+        type: SIGNATURE_VERIFICATION_FAIL,
+        payload:
+          e.response && e.response.data.detail
+            ? e.response.data.detail
+            : e.response && e.response.data.message
+            ? { message: e.response.data.message, status: e.response.data.status }
+            : { reason: e.reason, code: e.code }, // metamask signature
+      });
+    }
+  };
+
+export const prepareSignature = (needId, address, chainId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SIGNATURE_PREPARE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+      withCredentials: true,
+    };
+
+    const request = {
+      needId,
+      signerAddress: address,
+      chainId,
+    };
+
+    const result1 = await daoApi.post(`/wallet/signature/dapp/prepare`, request, config);
+    const transaction = result1.data;
+    // The named list of all type definitions
+    const types = {
+      ...transaction.types,
+    };
+
+    dispatch({
+      type: SIGNATURE_PREPARE_SUCCESS,
+      payload: {
         domain: transaction.domain,
         types,
         primaryType: 'Voucher',
         message: {
           ...transaction.message,
         },
-      });
-      // 2- --------------------- Second Verify social worker signature -----------------------
-      const request2 = {
-        chainId,
-        flaskNeedId: values.flaskNeedId,
-        signerAddress: signer,
+      },
+    });
+  } catch (e) {
+    dispatch({
+      type: SIGNATURE_PREPARE_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message
+          ? { message: e.response.data.message, status: e.response.data.status }
+          : { reason: e.reason, code: e.code }, // metamask signature
+    });
+  }
+};
+
+export const signTransaction = (signer, preparedData) => async (dispatch) => {
+  try {
+    dispatch({ type: SIGNATURE_HASH_REQUEST });
+
+    const signatureHash = await signer.signTypedData({
+      domain: preparedData.domain,
+      types: preparedData.types,
+      primaryType: 'Voucher',
+      message: preparedData.message,
+    });
+
+    dispatch({
+      type: SIGNATURE_HASH_SUCCESS,
+      payload: signatureHash,
+    });
+  } catch (e) {
+    dispatch({
+      type: SIGNATURE_HASH_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message
+          ? { message: e.response.data.message, status: e.response.data.status }
+          : { reason: e.reason, code: e.code }, // metamask signature
+    });
+  }
+};
+
+export const createSignature =
+  (flaskNeedId, signatureHash, preparedData) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: SIGNATURE_CREATE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: userInfo && userInfo.accessToken,
+          flaskId: 'me',
+        },
+        withCredentials: true,
       };
 
-      dispatch({
-        type: SIGNATURE_VERIFICATION_REQUEST,
-      });
-
-      const verifiedAddress = await daoApi.post(`/wallet/signature/verify`, request2, config);
-
-      dispatch({
-        type: SIGNATURE_VERIFICATION_SUCCESS,
-        payload: verifiedAddress,
-      });
-
-      const request3 = {
-        flaskNeedId: values.flaskNeedId,
-        sayRoles: transaction.sayRoles,
-        verifyVoucherAddress: transaction.domain.verifyingContract,
+      const request = {
+        flaskNeedId,
+        sayRoles: [SAYPlatformRoles.FAMILY],
+        verifyVoucherAddress: preparedData.domain.verifyingContract,
       };
 
-      const result3 = await daoApi.post(
+      const { data } = await daoApi.post(
         `/wallet/signature/create/${signatureHash}`,
-        request3,
+        request,
         config,
       );
-      const { ipfs, signature } = result3.data;
+
       dispatch({
-        type: SIGNATURE_SUCCESS,
-        payload: { transaction, ipfs, signature },
+        type: SIGNATURE_CREATE_SUCCESS,
+        payload: data,
       });
     } catch (e) {
-      console.log(e);
       dispatch({
-        type: SIGNATURE_VERIFICATION_FAIL,
-      });
-      dispatch({
-        type: SIGNATURE_FAIL,
+        type: SIGNATURE_CREATE_FAIL,
         payload:
           e.response && e.response.data.detail
             ? e.response.data.detail

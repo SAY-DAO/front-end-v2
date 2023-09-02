@@ -1,8 +1,4 @@
 import {
-  SIGNATURE_REQUEST,
-  SIGNATURE_SUCCESS,
-  SIGNATURE_FAIL,
-  SIGNATURE_RESET,
   WALLET_NONCE_REQUEST,
   WALLET_NONCE_SUCCESS,
   WALLET_NONCE_FAIL,
@@ -47,6 +43,16 @@ import {
   ONE_NEED_COEFFS_RESET,
   FAMILY_DISTANCE_RATIO_REST,
   ECOSYSTEM_MINT_RESET,
+  SIGNATURE_PREPARE_REQUEST,
+  SIGNATURE_PREPARE_SUCCESS,
+  SIGNATURE_PREPARE_FAIL,
+  SIGNATURE_CREATE_REQUEST,
+  SIGNATURE_CREATE_SUCCESS,
+  SIGNATURE_CREATE_FAIL,
+  SIGNATURE_HASH_REQUEST,
+  SIGNATURE_HASH_SUCCESS,
+  SIGNATURE_HASH_FAIL,
+  SIGNATURE_CREATE_RESET,
 } from '../constants/daoConstants';
 
 export const ecosystemAnalyticReducer = (state = {}, action) => {
@@ -177,7 +183,7 @@ export const signatureVerificationReducer = (state = {}, action) => {
     case SIGNATURE_VERIFICATION_REQUEST:
       return { ...state, loading: true, success: false };
     case SIGNATURE_VERIFICATION_SUCCESS:
-      return { ...state, loading: false, success: true, verifiedSwAddress: action.payload };
+      return { ...state, loading: false, success: true, swVerifiedAddress: action.payload };
     case SIGNATURE_VERIFICATION_FAIL:
       return { loading: false, error: action.payload };
     case SIGNATURE_VERIFICATION_RESET:
@@ -189,23 +195,28 @@ export const signatureVerificationReducer = (state = {}, action) => {
 
 export const signatureReducer = (state = {}, action) => {
   switch (action.type) {
-    case SIGNATURE_VERIFICATION_REQUEST:
+    // prepare
+    case SIGNATURE_PREPARE_REQUEST:
       return { ...state, loading: true, success: false };
-    case SIGNATURE_VERIFICATION_SUCCESS:
-      return { ...state, loading: false, success: true, verifiedAddress: action.payload };
-    case SIGNATURE_REQUEST:
-      return { ...state, loading: true, success: false };
-    case SIGNATURE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        success: true,
-        signature: action.payload.signature,
-        transaction: action.payload.transaction,
-      };
-    case SIGNATURE_FAIL:
+    case SIGNATURE_PREPARE_SUCCESS:
+      return { ...state, loading: false, success: true, prepared: action.payload };
+    case SIGNATURE_PREPARE_FAIL:
       return { loading: false, error: action.payload };
-    case SIGNATURE_RESET:
+    // hash
+    case SIGNATURE_HASH_REQUEST:
+      return { ...state, loading: true, success: false };
+    case SIGNATURE_HASH_SUCCESS:
+      return { ...state, loading: false, success: true, signatureHash: action.payload };
+    case SIGNATURE_HASH_FAIL:
+      return { loading: false, error: action.payload };
+    // create
+    case SIGNATURE_CREATE_REQUEST:
+      return { ...state, loading: true, success: false };
+    case SIGNATURE_CREATE_SUCCESS:
+      return { ...state, loading: false, success: true, createdSignature: action.payload };
+    case SIGNATURE_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+    case SIGNATURE_CREATE_RESET:
       return {};
     default:
       return state;
