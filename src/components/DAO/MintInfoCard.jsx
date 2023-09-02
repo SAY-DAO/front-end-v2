@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 import {
   fetchEcoFamilyRolesCompletePays,
   fetchEcoMintData,
-  fetchFamilyMemberDistanceRatio,
 } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
@@ -34,10 +33,6 @@ const MintInfoCard = () => {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
     dispatch(fetchEcoMintData());
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchFamilyMemberDistanceRatio());
   }, []);
 
   // toast

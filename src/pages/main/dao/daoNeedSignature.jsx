@@ -248,8 +248,11 @@ export default function DaoNeedSignature() {
   }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
 
   useEffect(() => {
-    dispatch(fetchNeedCoefficients(needId));
-  }, []);
+    if (!successOneNeedData) {
+      dispatch(fetchNeedCoefficients(needId));
+      dispatch(fetchFamilyMemberDistanceRatio());
+    }
+  }, [needId]);
 
   useEffect(() => {
     if (!successOneNeedData) {
@@ -281,12 +284,6 @@ export default function DaoNeedSignature() {
       dispatch({ type: SIGNATURE_RESET });
     };
   }, [created, signature]);
-
-  useEffect(() => {
-    if (!userVRole) {
-      dispatch(fetchFamilyMemberDistanceRatio());
-    }
-  }, []);
 
   useEffect(() => {
     if (

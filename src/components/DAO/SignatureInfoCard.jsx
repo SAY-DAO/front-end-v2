@@ -34,7 +34,9 @@ const SignatureInfoCard = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchFamilyMemberDistanceRatio());
+    if (!userResult) {
+      dispatch(fetchFamilyMemberDistanceRatio());
+    }
   }, []);
 
   // toast
