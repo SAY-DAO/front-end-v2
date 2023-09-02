@@ -64,7 +64,6 @@ if (env === 'production') {
     replaysOnErrorSampleRate: 1.0,
   });
 
-  
   const useSentryRoutes = Sentry.wrapUseRoutes(useRoutes);
 
   console.log('Sentry initiated.');
@@ -91,9 +90,7 @@ if (env === 'production') {
   });
 
   LogRocket.identify(theUser && JSON.parse(theUser).user.id, {
-    name: theUser && JSON.parse(theUser).user.firstName,
-    lastName: theUser && JSON.parse(theUser).user.lastName,
-    userName: theUser && JSON.parse(theUser).user.userName,
+    name: theUser && `${JSON.parse(theUser).user.firstName} ${JSON.parse(theUser).user.lastName}`,
     subscriptionType: 'Virtual Family',
   });
 

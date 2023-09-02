@@ -248,8 +248,10 @@ export default function DaoNeedSignature() {
   }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
 
   useEffect(() => {
-    if (!successOneNeedData) {
+    if (!coeffsResult) {
       dispatch(fetchNeedCoefficients(needId));
+    }
+    if (!userResult) {
       dispatch(fetchFamilyMemberDistanceRatio());
     }
   }, [needId]);
