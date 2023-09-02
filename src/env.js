@@ -34,9 +34,9 @@ if (env === 'production') {
 }
 
 console.log('initiating Sentry ...');
-
+console.log(process.env.REACT_APP_SENTRY_DSN,);
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.REACT_APP_SENTRY_DSN,
   integrations: [
     new Sentry.BrowserTracing({
       // See docs for support of different versions of variation of react router
