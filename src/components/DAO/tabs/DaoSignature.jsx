@@ -82,7 +82,8 @@ export default function DaoSignature() {
                 sx={{ p: 2, width: '100%', height: '100vh', overflowY: 'scroll', pb: 15, mt: 1 }}
               >
                 {alignment !== 'ready' ? (
-                  paidNeedsData && paidNeedsData.readyNeedsList.length > 0 ? (
+                  paidNeedsData &&
+                  paidNeedsData.readyNeedsList.length - paidNeedsData.signed > 0 ? (
                     <ImageList variant="Standard" cols={2} gap={10}>
                       {paidNeedsData.readyNeedsList
                         .filter((need) => signedIds.includes(need.id))
@@ -102,7 +103,7 @@ export default function DaoSignature() {
                     </Container>
                   )
                 ) : paidNeedsData &&
-                  paidNeedsData.readyNeedsList.filter((need) => signedIds.includes(need.id))
+                  paidNeedsData.readyNeedsList.filter((need) => !signedIds.includes(need.id))
                     .length > 0 ? (
                   <ImageList variant="Standard" cols={2} gap={10}>
                     {paidNeedsData.readyNeedsList
