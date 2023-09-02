@@ -82,7 +82,7 @@ export const ecosystemMintAnalyticReducer = (state = {}, action) => {
 export const oneNeedAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
     case ONE_NEED_COEFFS_REQUEST:
-      return { loading: true, success: false };
+      return { ...state, loading: true, success: false };
     case ONE_NEED_COEFFS_SUCCESS:
       return { ...state, loading: false, success: true, coeffsResult: action.payload };
     case ONE_NEED_COEFFS_FAIL:
@@ -90,7 +90,7 @@ export const oneNeedAnalyticReducer = (state = {}, action) => {
     case ONE_NEED_COEFFS_RESET:
       return {};
     case FAMILY_DISTANCE_RATIO_REQUEST:
-      return { loading: true, success: false };
+      return { ...state, loading: true, success: false };
     case FAMILY_DISTANCE_RATIO_SUCCESS:
       return { ...state, loading: false, success: true, userResult: action.payload };
     case FAMILY_DISTANCE_RATIO_FAIL:
