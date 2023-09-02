@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   Avatar,
   Card,
@@ -1051,7 +1052,6 @@ export default function DaoNeedSignature() {
           {errorEcosystem || errorReadyOne}
         </Message>
       )}
-
       {(signatureError ||
         errorVerify ||
         errorWalletInformation ||
@@ -1067,6 +1067,10 @@ export default function DaoNeedSignature() {
         />
       )}
       <Typography>{test && test.stringify()}</Typography>
+      <button type="submit" onClick={() => methodDoesNotExist()}>
+        Break the world
+      </button>
+      ;
     </Grid>
   );
 }
