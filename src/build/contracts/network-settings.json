@@ -1,0 +1,4 @@
+{
+  "sepolia": { "verifyVoucherAddress": "0x1699378878CF5864E1bc3D88c4eA55E3a8A466FA" },
+  "mainnet": { "verifyVoucherAddress": "0xAe9ae5ACdad18927Bd039ebBFDB8E3be4dbf5De3" }
+}
