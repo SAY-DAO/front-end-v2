@@ -255,7 +255,6 @@ export default function DaoNeedSignature() {
   useEffect(() => {
     dispatch(fetchOneReadySignNeed(needId));
     return () => {
-      dispatch({ type: ONE_NEED_COEFFS_RESET });
       if (
         errorOneNeedData ||
         errorReadyOne ||
@@ -269,7 +268,9 @@ export default function DaoNeedSignature() {
         dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
         dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
+        dispatch({ type: ONE_NEED_COEFFS_RESET });
       }
+
       dispatch({ type: SIGNATURE_RESET });
     };
   }, [created, signature]);
