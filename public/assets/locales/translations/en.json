@@ -712,8 +712,12 @@
     }
   },
   "dao": {
+    "status": {
+      "verifyingSwSignature": " Verifying social worker signature...",
+      "preparing": "'Preparing the signature...'"
+    },
     "link": "Link",
-    "smartContract":"Smart Contract: ",
+    "smartContract": "Smart Contract: ",
     "smartContractNotReady": "(Not Ready) ",
     "tabs": {
       "signatures": "Sign",

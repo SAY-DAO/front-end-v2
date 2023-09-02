@@ -708,6 +708,10 @@
     }
   },
   "dao": {
+    "status": {
+      "verifyingSwSignature": "در حال تأیید امضای مددکار ...",
+      "preparing": "در حال آماده سازی امضای شما ..."
+    },
     "link": "لینک",
     "smartContract": "قرارداد هوشمند: ",
     "smartContractNotReady": "(آماده نیست) ",

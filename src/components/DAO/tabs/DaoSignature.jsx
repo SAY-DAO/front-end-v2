@@ -9,7 +9,11 @@ import { fetchPaidNeeds } from '../../../redux/actions/main/daoAction';
 import SignatureCard from '../signing/SignatureCard';
 import SignatureInfoCard from '../SignatureInfoCard';
 import ToggleButton from '../signing/SignatureToggleButton';
-import { READY_TO_SIGN_ONE_NEED_RESET } from '../../../redux/constants/daoConstants';
+import {
+  READY_TO_SIGN_ONE_NEED_RESET,
+  SIGNATURE_CREATE_RESET,
+  SIGNATURE_VERIFICATION_RESET,
+} from '../../../redux/constants/daoConstants';
 
 export default function DaoSignature() {
   const dispatch = useDispatch();
@@ -27,6 +31,10 @@ export default function DaoSignature() {
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed } = readySigningOneNeed;
+
+  const { success: successSignature, error: errorSignature } = useSelector(
+    (state) => state.signature,
+  );
 
   useEffect(() => {
     if (!successPaidNeeds || !loadingPaidNeeds) {
@@ -52,6 +60,13 @@ export default function DaoSignature() {
       setSignedIds(alreadySignedIds);
     }
   }, [paidNeedsData]);
+
+  useEffect(() => {
+    if (successSignature || errorSignature) {
+      dispatch({ type: SIGNATURE_VERIFICATION_RESET });
+      dispatch({ type: SIGNATURE_CREATE_RESET });
+    }
+  }, []);
 
   return (
     <Grid container>
