@@ -34,7 +34,6 @@ if (env === 'production') {
 }
 
 console.log('initiating Sentry ...');
-console.log(process.env.REACT_APP_SENTRY_DSN,);
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   integrations: [
