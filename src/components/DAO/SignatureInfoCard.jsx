@@ -126,7 +126,7 @@ const SignatureInfoCard = () => {
                         {t('dao.signaturesTab.tooltip.ready')}
                         <br />
                         <br />
-                        {paidNeedsData ? (
+                        {paidNeedsData && paidNeedsData.readyNeedsList ? (
                           <span style={{ fontWeight: 300 }}>
                             <Trans i18nKey="dao.signaturesTab.tooltip.ready2">
                               {{

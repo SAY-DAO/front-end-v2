@@ -29,13 +29,10 @@ export default function DaoSignature() {
   const { oneReadyNeed } = readySigningOneNeed;
 
   useEffect(() => {
-    if (!successPaidNeeds) {
-      dispatch(fetchPaidNeeds());
-    }
     if (oneReadyNeed) {
       dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
     }
-  }, [oneReadyNeed]);
+  }, []);
 
   const handleAlignment = (alinement) => {
     setAlignment(alinement);

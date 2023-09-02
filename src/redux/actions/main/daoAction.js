@@ -351,14 +351,14 @@ export const signTransaction =
       } catch (e) {
         settest(e);
         settest2(
-          (signatureHash = await signer.signTypedData({
+          await signer.signTypedData({
             domain: transaction.domain,
             types,
             primaryType: 'Voucher',
             message: {
               ...transaction.message,
             },
-          })),
+          }),
         );
         throw new Error(e);
       }
