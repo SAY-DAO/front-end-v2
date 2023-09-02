@@ -248,12 +248,15 @@ export default function DaoNeedSignature() {
   }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
 
   useEffect(() => {
+    dispatch(fetchNeedCoefficients(needId));
+  }, [userResult]);
+
+  useEffect(() => {
     if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
     if (!oneReadyNeed || needId !== oneReadyNeed.id) {
       dispatch(fetchOneReadySignNeed(needId));
-      dispatch(fetchNeedCoefficients(needId));
     }
   }, [needId]);
 
@@ -1010,6 +1013,8 @@ export default function DaoNeedSignature() {
                               (errorReadyOne && true)
                             }
                             loading={
+                              !coeffsResult ||
+                              !userResult ||
                               successVerifiedSwAddress ||
                               loadingVerifiedSwAddress ||
                               isLoadingSignIn ||
