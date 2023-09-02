@@ -70,10 +70,26 @@ console.log('Sentry initiated.');
 console.log('initiating Log Rocket ...');
 
 const theUser = localStorage.getItem('userInfo');
-LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID);
+LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID, {
+  network: {
+    requestSanitizer: (request) => {
+      if (request.headers.Authorization) {
+        request.headers.Authorization = '';
+      }
+      // if the url contains 'ignore'
+      if (request.url.toLowerCase().indexOf('ignore') !== -1) {
+        // ignore the request response pair
+        return null;
+      }
+
+      // otherwise log the request normally
+      return request;
+    },
+  },
+});
 
 LogRocket.identify(theUser && JSON.parse(theUser).user.id, {
-  firstName: theUser && JSON.parse(theUser).user.firstName,
+  name: theUser && JSON.parse(theUser).user.firstName,
   lastName: theUser && JSON.parse(theUser).user.lastName,
   userName: theUser && JSON.parse(theUser).user.userName,
   subscriptionType: 'Virtual Family',

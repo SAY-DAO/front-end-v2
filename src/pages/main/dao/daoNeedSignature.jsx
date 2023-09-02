@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import {
   Avatar,
   Card,
@@ -379,6 +378,7 @@ export default function DaoNeedSignature() {
   const handleTooltipOpen = () => {
     setOpen(true);
   };
+
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
