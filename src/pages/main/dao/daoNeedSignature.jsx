@@ -1067,6 +1067,7 @@ export default function DaoNeedSignature() {
         />
       )}
       <Typography>{test && test.stringify()}</Typography>;
+      <Typography>{errorOneNeedData}</Typography>
     </Grid>
   );
 }

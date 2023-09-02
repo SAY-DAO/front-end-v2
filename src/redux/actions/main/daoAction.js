@@ -158,35 +158,6 @@ export const fetchWalletInformation = () => async (dispatch, getState) => {
   }
 };
 
-export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) => {
-  try {
-    dispatch({ type: FAMILY_DISTANCE_RATIO_REQUEST });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
-      },
-    };
-    const { data } = await daoApi.get(`/family/distanceRatio`, config);
-
-    dispatch({
-      type: FAMILY_DISTANCE_RATIO_SUCCESS,
-      payload: data,
-    });
-  } catch (e) {
-    dispatch({
-      type: FAMILY_DISTANCE_RATIO_FAIL,
-      payload: e.response && e.response.data ? e.response.data.message : e.message,
-    });
-  }
-};
-
 export const fetchEcoFamilyRolesCompletePays = () => async (dispatch, getState) => {
   try {
     dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REQUEST });
@@ -377,7 +348,7 @@ export const signTransaction = (values, signer, chainId, settest) => async (disp
         },
       });
     } catch (e) {
-      settest(JSON.parse({ e }));
+      settest(JSON.parse(e));
       throw new Error(e);
     }
     console.log({
@@ -493,6 +464,38 @@ export const signTransaction = (values, signer, chainId, settest) => async (disp
 //   }
 // };
 
+export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FAMILY_DISTANCE_RATIO_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: 'me',
+      },
+    };
+    const { data } = await daoApi.get(`/family/distanceRatio`, config);
+
+    dispatch({
+      type: FAMILY_DISTANCE_RATIO_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: FAMILY_DISTANCE_RATIO_FAIL,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message,
+    });
+  }
+};
+
 export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) => {
   try {
     dispatch({ type: ONE_NEED_COEFFS_REQUEST });
@@ -518,7 +521,10 @@ export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) 
   } catch (e) {
     dispatch({
       type: ONE_NEED_COEFFS_FAIL,
-      payload: e.response && e.response.data ? e.response.data.message : e.message,
+      payload:
+        e.response && e.response.data.detail
+          ? e.response.data.detail
+          : e.response && e.response.data.message,
     });
   }
 };
