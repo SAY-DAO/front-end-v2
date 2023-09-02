@@ -69,20 +69,10 @@ export default function Settings() {
         alignItems="stretch"
         spacing={1}
       >
-        <Grid
-          item
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Grid item container direction="row" justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
             <IconButton>
-              <img
-                src="/images/icons/language.svg"
-                alt="language icon"
-                className={classes.icon}
-              />
+              <img src="/images/icons/language.svg" alt="language icon" className={classes.icon} />
             </IconButton>
           </Grid>
 
@@ -106,15 +96,9 @@ export default function Settings() {
             }}
           />
         </Grid>
-        <Grid
-          item
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Grid item container direction="row" justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
-            <IconButton onClick={() => navigate('/setpassword')}>
+            <IconButton onClick={() => navigate('/auth/reset-password')}>
               <img
                 src="/images/icons/changePassword.svg"
                 alt="change password icon"
@@ -123,7 +107,7 @@ export default function Settings() {
             </IconButton>
           </Grid>
           <Grid item xs>
-            <Link to="/setpassword">
+            <Link to="/auth/reset-password">
               <Typography component="span" variant="subtitle2">
                 {t('setting.changePass.title')}
               </Typography>
@@ -235,29 +219,15 @@ export default function Settings() {
             />
           </Grid>
         </Grid> */}
-        <Grid
-          item
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Grid item container direction="row" justifyContent="space-between" alignItems="center">
           <Grid item xs={2}>
             <IconButton onClick={() => dispatch(logout())}>
-              <img
-                src="/images/icons/exit.svg"
-                alt="language icon"
-                className={classes.icon}
-              />
+              <img src="/images/icons/exit.svg" alt="language icon" className={classes.icon} />
             </IconButton>
           </Grid>
           <Grid item xs>
             <Link to="#" onClick={() => dispatch(logout())}>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                sx={{ color: '#FF8393' }}
-              >
+              <Typography component="span" variant="subtitle1" sx={{ color: '#FF8393' }}>
                 {t('setting.logout.title')}
               </Typography>
             </Link>

@@ -8,10 +8,10 @@ const LangButton = () => {
 
   const currentLang = getLanguage();
   const elem = document.getElementById('direction');
-  const attrs = elem.attributes;
+  const attrs = elem && elem.attributes;
 
   useEffect(() => {
-    if (!attrs.dir.value && currentLang) {
+    if ((!attrs || (!attrs.dir.value && currentLang)) && elem) {
       if (lang === 'fa') {
         elem.setAttribute('dir', 'rtl');
       } else {

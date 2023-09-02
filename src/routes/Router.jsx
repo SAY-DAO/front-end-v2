@@ -13,6 +13,7 @@ const Intro = Loadable(lazy(() => import('../pages/intro')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const ForgotPassword = Loadable(lazy(() => import('../pages/auth/ForgotPassword')));
+const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword')));
 const SearchChild = Loadable(lazy(() => import('../pages/child/searchChild')));
 const SearchResult = Loadable(lazy(() => import('../pages/child/searchResult')));
 const NeedPage = Loadable(lazy(() => import('../pages/needPage')));
@@ -38,6 +39,7 @@ const Router = [
       { path: '/auth/login', element: <Login /> },
       { path: '/auth/register', element: <Register /> },
       { path: '/auth/forgot-password', element: <ForgotPassword /> },
+      { path: '/auth/reset-password', element: <ResetPassword /> },
       { path: '/auth/404', element: <Error /> },
     ],
   },
