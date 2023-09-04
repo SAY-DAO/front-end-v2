@@ -19,7 +19,7 @@ export const createComment =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: 'me',
+          flaskId: userInfo && userInfo.user.id,
         },
       };
 

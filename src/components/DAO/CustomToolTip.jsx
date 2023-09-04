@@ -19,8 +19,8 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const oneNeedData = useSelector((state) => state.oneNeedData);
-  const { userResult } = oneNeedData;
+  const needVariables = useSelector((state) => state.needVariables);
+  const { userResult } = needVariables;
 
   const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
   const { mintEcoResult } = ecosystemMintData;

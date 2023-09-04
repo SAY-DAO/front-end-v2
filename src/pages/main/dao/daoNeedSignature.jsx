@@ -113,13 +113,13 @@ export default function DaoNeedSignature() {
   const commentResult = useSelector((state) => state.commentResult);
   const { created } = commentResult;
 
-  const oneNeedData = useSelector((state) => state.oneNeedData);
+  const needVariables = useSelector((state) => state.needVariables);
   const {
     coeffsResult,
     userResult,
     success: successOneNeedData,
     error: errorOneNeedData,
-  } = oneNeedData;
+  } = needVariables;
 
   const { nonceData, error: errorWalletNonce } = useSelector((state) => state.walletNonce);
   const { information, loading: loadingInformation } = useSelector(

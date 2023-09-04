@@ -1,6 +1,6 @@
 import { readContract } from '@wagmi/core';
 import { daoApi } from '../../../apis/sayBase';
-import { SAYPlatformRoles } from '../../../utils/types';
+import { FlaskUserTypesEnum, SAYPlatformRoles } from '../../../utils/types';
 import {
   MY_PAID_NEEDS_REQUEST,
   MY_PAID_NEEDS_SUCCESS,
@@ -64,13 +64,13 @@ export const fetchNonce = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
       crossDomain: true,
     };
     const response = await daoApi.get(
-      `/wallet/nonce/${userInfo.user.id}/${SAYPlatformRoles.FAMILY}`,
+      `/wallet/nonce/${FlaskUserTypesEnum.FAMILY}`,
       config,
     );
     dispatch({
@@ -100,7 +100,7 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
     };
@@ -144,7 +144,7 @@ export const fetchWalletInformation = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
     };
@@ -179,7 +179,7 @@ export const fetchEcoFamilyRolesCompletePays = () => async (dispatch, getState) 
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/family/roles/ecosystem/payments`, config);
@@ -208,7 +208,7 @@ export const fetchEcoMintData = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/mine/ecosystem/mineables`, config);
@@ -237,7 +237,7 @@ export const fetchPaidNeeds = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
 
@@ -268,7 +268,7 @@ export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) 
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
 
@@ -298,7 +298,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/children/network`, config);
@@ -317,7 +317,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
 };
 
 export const verifySocialWorkerSignature =
-  (swSignatureHash, signerAddress, flaskNeedId, chainId) => async (dispatch, getState) => {
+  (swSignatureHash, swAddress, flaskNeedId, chainId) => async (dispatch, getState) => {
     try {
       dispatch({ type: SIGNATURE_VERIFICATION_REQUEST });
 
@@ -329,7 +329,7 @@ export const verifySocialWorkerSignature =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: 'me',
+          flaskId: userInfo && userInfo.user.id,
         },
         withCredentials: true,
       };
@@ -362,7 +362,7 @@ export const verifySocialWorkerSignature =
         blockTag: 'safe',
       });
 
-      if (signerAddress !== verifiedAddress) {
+      if (swAddress !== verifiedAddress) {
         throw new Error('Not the same address!');
       }
       dispatch({
@@ -395,7 +395,7 @@ export const prepareSignature = (needId, address, chainId) => async (dispatch, g
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
     };
@@ -478,7 +478,7 @@ export const createSignature =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: 'me',
+          flaskId: userInfo && userInfo.user.id,
         },
         withCredentials: true,
       };
@@ -578,7 +578,7 @@ export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) =
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/family/distanceRatio`, config);
@@ -610,11 +610,11 @@ export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) 
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
 
-    const { data } = await daoApi.get(`/needs/coefficients/${needNestId}`, config);
+    const { data } = await daoApi.get(`/family/user/coefficients/${needNestId}`, config);
 
     dispatch({
       type: ONE_NEED_COEFFS_SUCCESS,
@@ -643,7 +643,7 @@ export const fetchAvailableContribution = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: 'me',
+        flaskId: userInfo && userInfo.user.id,
       },
     };
 

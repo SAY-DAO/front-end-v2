@@ -85,7 +85,7 @@ export const ecosystemMintAnalyticReducer = (state = {}, action) => {
   }
 };
 
-export const oneNeedAnalyticReducer = (state = {}, action) => {
+export const needVariablesAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
     case ONE_NEED_COEFFS_REQUEST:
       return { ...state, loading: true, success: false };

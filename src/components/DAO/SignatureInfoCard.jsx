@@ -21,8 +21,8 @@ const SignatureInfoCard = () => {
 
   const dispatch = useDispatch();
 
-  const oneNeedData = useSelector((state) => state.oneNeedData);
-  const { userResult, success: successOneNeedData, error: errorOneNeedData } = oneNeedData;
+  const needVariables = useSelector((state) => state.needVariables);
+  const { userResult, success: successOneNeedData, error: errorOneNeedData } = needVariables;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
   const { paidNeedsData } = paidNeeds;
