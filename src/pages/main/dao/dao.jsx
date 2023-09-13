@@ -34,7 +34,7 @@ export default function Dao() {
   return (
     <Box sx={{ flexGrow: 1, pb: 10 }}>
       <Grid container spacing={1} sx={{ p: 4 }}>
-        <Grid container item spacing={2} sx={{ mb: 1 }}>
+        <Grid container item spacing={2} sx={{ mb: 1 }} justifyContent="center" alignItems="center">
           <Grid item xs={6}>
             <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
               <CardActionArea onClick={() => setTabNumber(0)}>
@@ -43,13 +43,18 @@ export default function Dao() {
                   height="140"
                   image="/images/dao/pc.png"
                   alt="green iguana"
+                  sx={{ maxWidth: 100, m: 'auto' }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent sx={{ pt: 0 }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
+                    component="div"
+                  >
                     {t('dao.tabs.signatures')}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles,
+                  <Typography variant="body1" color="text.secondary">
+                    {t('dao.subTabs.signatures')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -63,13 +68,18 @@ export default function Dao() {
                   height="140"
                   image="/images/dao/pc.png"
                   alt="green iguana"
+                  sx={{ maxWidth: 100, m: 'auto' }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent sx={{ pt: 0 }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
+                    component="div"
+                  >
                     {t('dao.tabs.mintables')}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles,
+                  <Typography variant="body1" color="text.secondary">
+                    {t('dao.subTabs.mintables')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -78,20 +88,25 @@ export default function Dao() {
         </Grid>
         <Grid container item spacing={2} sx={{ mb: 1 }}>
           <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+            <Card sx={{ maxHeight: 345, borderRadius: 5 }}>
               <CardActionArea onClick={() => setTabNumber(2)}>
                 <CardMedia
                   component="img"
                   height="140"
                   image="/images/dao/pc.png"
                   alt="green iguana"
+                  sx={{ maxWidth: 100, m: 'auto' }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent sx={{ pt: 0 }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
+                    component="div"
+                  >
                     {t('dao.tabs.proposals')}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles,
+                  <Typography variant="body1" color="text.secondary">
+                    {t('dao.subTabs.proposals')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -105,13 +120,18 @@ export default function Dao() {
                   height="140"
                   image="/images/dao/pc.png"
                   alt="green iguana"
+                  sx={{ maxWidth: 100, m: 'auto' }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent sx={{ pt: 0 }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
+                    component="div"
+                  >
                     {t('dao.tabs.contributes')}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles,
+                  <Typography variant="body1" color="text.secondary">
+                    {t('dao.subTabs.contributes')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -127,13 +147,18 @@ export default function Dao() {
                   height="140"
                   image="/images/dao/pc.png"
                   alt="green iguana"
+                  sx={{ maxWidth: 100, m: 'auto' }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent sx={{ pt: 0 }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
+                    component="div"
+                  >
                     {t('dao.tabs.docs')}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles,
+                  <Typography variant="body1" color="text.secondary">
+                    {t('dao.subTabs.docs')}
                   </Typography>
                 </CardContent>
               </CardActionArea>

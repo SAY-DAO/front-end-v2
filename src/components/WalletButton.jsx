@@ -1,23 +1,23 @@
 import { LoadingButton } from '@mui/lab';
 import { styled, Typography } from '@mui/material';
 import React from 'react';
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const WalletButton = styled((props) => (
   <LoadingButton {...props} {...props.register} sx={{ display: 'flex !important' }}>
-    {!props.signbutton === true && <AccountBalanceWalletOutlinedIcon sx={{ mr: 1 }} />}
+    <AccountBalanceWalletIcon sx={{ mr: 1 }} />
     <Typography
       sx={{
-        fontSize: '16px',
+        fontSize: '12px',
+        fontWeight: 'bold',
         textDecoration: 'none',
-        fontWeight: 400,
       }}
     >
       {props.children}
     </Typography>
   </LoadingButton>
 ))((props) => ({
-  color: 'white',
+  color: !props.signbutton === true ? 'black' : 'white',
   textAlign: 'center',
   // backgroundColor: '#fee6e3',
   display: 'block',
@@ -29,9 +29,9 @@ const WalletButton = styled((props) => (
   // textShadow: '0px 1px 1px #000',
   filter: 'dropshadow(color=#000, offx=0px, offy=1px)',
   animation: '1.5s ease infinite alternate running shimmer',
-  background: `linear-gradient(20deg, #fbb563 ${
-    !props.signbutton === true ? 100 : 0
-  }%, #64E3FF 0%, #9192FF 100%)`,
+  background: `linear-gradient(20deg, #06DBBD ${
+    !props.signbutton === true ? 90 : 0
+  }%, #64E3FF 55%, #FF91BF 100%)`,
   // WebkitBoxShadow: 'inset 0 1px 0 #ffe5c4, 0 10px 0 #915100',
   // MozBoxShadow: 'inset 0 1px 0 #ffe5c4, 0 10px 0 #915100',
   // boxShadow: 'inset 0 1px 0 #ffe5c4, 0 10px 0 #915100',

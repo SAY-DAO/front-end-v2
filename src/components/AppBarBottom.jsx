@@ -262,7 +262,11 @@ export default function AppBarBottom() {
                   color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
                 },
               }}
-              icon={<Typography variant="subtitle2">{t('userLayout.dao')}</Typography>}
+              icon={
+                <Typography color="textSecondary" sx={{ fontWeight: 600 }} variant="subtitle2">
+                  {t('userLayout.dao')}
+                </Typography>
+              }
             />
           )}
         </BottomNavigation>

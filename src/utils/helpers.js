@@ -57,6 +57,23 @@ export function getSAYRolePersian(sayRole) {
   return roleString;
 }
 
+export function getVFamilyRoleString(vfamilyRole) {
+  let roleString;
+  if (vfamilyRole === VirtualFamilyRole.FATHER) {
+    roleString = 'Father';
+  } else if (vfamilyRole === VirtualFamilyRole.MOTHER) {
+    roleString = 'Mother';
+  } else if (vfamilyRole === VirtualFamilyRole.AMOO) {
+    roleString = 'Ammo';
+  } else if (vfamilyRole === VirtualFamilyRole.KHALEH) {
+    roleString = 'Khaleh';
+  } else if (vfamilyRole === VirtualFamilyRole.DAEI) {
+    roleString = 'Daei';
+  } else if (vfamilyRole === VirtualFamilyRole.AMME) {
+    roleString = 'Amme';
+  }
+  return roleString;
+}
 export function getSAYFamilyRolePersian(sayRole) {
   let roleString;
   if (sayRole === VirtualFamilyRole.FATHER) {

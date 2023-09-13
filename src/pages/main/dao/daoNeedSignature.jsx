@@ -23,7 +23,7 @@ import {
   useSignMessage,
   useWalletClient,
 } from 'wagmi';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import HardwareOutlinedIcon from '@mui/icons-material/HardwareOutlined';
@@ -49,6 +49,7 @@ import DurationTimeLine from '../../../components/DAO/signing/DurationTimeLine';
 import {
   changePersianNumbersToEnglish,
   getSAYRoleString,
+  getVFamilyRoleString,
   prepareUrl,
 } from '../../../utils/helpers';
 import WalletButton from '../../../components/WalletButton';
@@ -69,6 +70,8 @@ import Message from '../../../components/Message';
 import MessageWallet from '../../../components/MessageWallet';
 import CommentModal from '../../../components/modals/CommentModal';
 import CommentDrawer from '../../../components/DAO/signing/CommentDrawer';
+import DifficultyTable from '../../../components/DAO/signing/DifficultyTable';
+import DistanceRatioTable from '../../../components/DAO/signing/DistanceRatioTable';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -77,6 +80,11 @@ export default function DaoNeedSignature() {
   const { needId } = useParams();
 
   const [open, setOpen] = useState(false);
+  const [variablesOpen, setVariablesOpen] = useState({
+    distanceRatio: false,
+    difficulty: false,
+    collaboration: false,
+  });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [loadingEthereumSignature, setLoadingEthereumSignature] = useState(false);
   const [comment, setComment] = useState();
@@ -111,7 +119,7 @@ export default function DaoNeedSignature() {
   const { oneReadyNeed, error: errorReadyOne } = readySigningOneNeed;
 
   const commentResult = useSelector((state) => state.commentResult);
-  const { created } = commentResult;
+  const { created: commentCreated } = commentResult;
 
   const needVariables = useSelector((state) => state.needVariables);
   const {
@@ -154,10 +162,10 @@ export default function DaoNeedSignature() {
   }, [prepared, signatureHash, swVerifiedAddress]);
 
   useEffect(() => {
-    if (createdSignature) {
+    if (createdSignature || commentCreated) {
       dispatch(fetchOneReadySignNeed(needId));
     }
-  }, [createdSignature]);
+  }, [createdSignature, commentCreated]);
 
   // fetch nonce for the wallet siwe
   useEffect(() => {
@@ -198,8 +206,6 @@ export default function DaoNeedSignature() {
       if (status === 'loading' || !address || !chainId) return;
       // Check client and server nonce
       const localData = JSON.parse(localStorage.getItem('say-siwe'));
-      console.log(nonceData.nonce);
-      console.log(localData);
       if (nonceData.nonce === (localData && localData.nonce)) {
         return;
       }
@@ -305,7 +311,7 @@ export default function DaoNeedSignature() {
         dispatch({ type: ONE_NEED_COEFFS_RESET });
       }
     };
-  }, [created, createdSignature]);
+  }, [createdSignature]);
 
   useEffect(() => {
     if (
@@ -400,6 +406,20 @@ export default function DaoNeedSignature() {
 
   const handleTooltipOpen = () => {
     setOpen(true);
+  };
+
+  const handleVariablesTooltipClose = (variableName) => {
+    setVariablesOpen((state) => ({
+      ...state,
+      [variableName]: false,
+    }));
+  };
+
+  const handleVariablesTooltipOpen = (variableName) => {
+    setVariablesOpen((state) => ({
+      ...state,
+      [variableName]: true,
+    }));
   };
 
   return (
@@ -876,120 +896,288 @@ export default function DaoNeedSignature() {
                     sx={{ height: 130 }}
                     spacing={2}
                   >
+                    {/* -------------------distanceRatio ------------------------------*/}
                     <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                      <Card sx={{ p: 1 }}>
-                        <SocialDistanceIcon
-                          sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
-                        />
-                        {userResult && typeof userVRole === 'number' ? (
-                          <Typography
-                            variant="h4"
-                            fontWeight="600"
-                            sx={{
-                              lineHeight: '1.2',
-                              fontSize: 14,
+                      <ClickAwayListener
+                        onClickAway={() => handleVariablesTooltipClose('distanceRatio')}
+                      >
+                        <div>
+                          <Tooltip
+                            title={
+                              <>
+                                <Typography sx={{ fontSize: 12 }} component="div">
+                                  {t('dao.variables.distanceRatio.title')}
+                                </Typography>
+                                <br />
+                                <br />
+                                {userResult && typeof userVRole === 'number' ? (
+                                  <span style={{ fontWeight: 400, fontSize: 10 }}>
+                                    <Trans i18nKey="dao.variables.distanceRatio.body">
+                                      {{
+                                        paid: userResult.theUser[
+                                          `${getVFamilyRoleString(
+                                            oneReadyNeed.members &&
+                                              oneReadyNeed.members.find(
+                                                (m) => m.id_user === userInfo.user.id,
+                                              ).flaskFamilyRole,
+                                          ).toLowerCase()}CompletePay`
+                                        ],
+                                        role: t(
+                                          `roles.vFamily.${
+                                            oneReadyNeed.members &&
+                                            oneReadyNeed.members.find(
+                                              (m) => m.id_user === userInfo.user.id,
+                                            ).flaskFamilyRole
+                                          }`,
+                                        ),
+                                      }}
+                                    </Trans>
+                                    <DistanceRatioTable />
+                                  </span>
+                                ) : (
+                                  <Stack
+                                    sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
+                                    spacing={2}
+                                  >
+                                    <LinearProgress
+                                      sx={{ color: (theme) => theme.palette.primary }}
+                                    />
+                                  </Stack>
+                                )}
+                              </>
+                            }
+                            PopperProps={{
+                              disablePortal: true,
                             }}
+                            open={variablesOpen && variablesOpen.distanceRatio}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
                           >
-                            {userVRole === VirtualFamilyRole.FATHER
-                              ? userResult.theUser.distanceRatio.fatherQGrant
-                              : userVRole === VirtualFamilyRole.MOTHER
-                              ? userResult.theUser.distanceRatio.motherQGrant
-                              : userVRole === VirtualFamilyRole.AMOO
-                              ? userResult.theUser.distanceRatio.amooQGrant
-                              : userVRole === VirtualFamilyRole.KHALEH
-                              ? userResult.theUser.distanceRatio.khalehQGrant
-                              : userVRole === VirtualFamilyRole.DAEI
-                              ? userResult.theUser.distanceRatio.daeiQGrant
-                              : userVRole === VirtualFamilyRole.AMME &&
-                                userResult.theUser.distanceRatio.ammeQGrant}
-                          </Typography>
-                        ) : (
-                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )}
+                            <Card sx={{ p: 1 }}>
+                              <IconButton
+                                onClick={() => handleVariablesTooltipOpen('distanceRatio')}
+                              >
+                                <SocialDistanceIcon
+                                  sx={{
+                                    mb: 0,
+                                    color: (theme) => theme.palette.grey.A400,
+                                    fontSize: 30,
+                                  }}
+                                />
+                              </IconButton>
+                              {userResult && typeof userVRole === 'number' ? (
+                                <Typography
+                                  variant="h4"
+                                  fontWeight="600"
+                                  sx={{
+                                    lineHeight: '1.2',
+                                    fontSize: 14,
+                                  }}
+                                >
+                                  {userVRole === VirtualFamilyRole.FATHER
+                                    ? userResult.theUser.distanceRatio.fatherQGrant
+                                    : userVRole === VirtualFamilyRole.MOTHER
+                                    ? userResult.theUser.distanceRatio.motherQGrant
+                                    : userVRole === VirtualFamilyRole.AMOO
+                                    ? userResult.theUser.distanceRatio.amooQGrant
+                                    : userVRole === VirtualFamilyRole.KHALEH
+                                    ? userResult.theUser.distanceRatio.khalehQGrant
+                                    : userVRole === VirtualFamilyRole.DAEI
+                                    ? userResult.theUser.distanceRatio.daeiQGrant
+                                    : userVRole === VirtualFamilyRole.AMME &&
+                                      userResult.theUser.distanceRatio.ammeQGrant}
+                                </Typography>
+                              ) : (
+                                <Stack
+                                  sx={{ m: 'auto', width: '20%', color: 'grey.500' }}
+                                  spacing={2}
+                                >
+                                  <LinearProgress
+                                    sx={{ color: (theme) => theme.palette.primary }}
+                                  />
+                                </Stack>
+                              )}
 
-                        <Typography
-                          color="textSecondary"
-                          fontWeight="200"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 10,
-                            mt: 1,
-                          }}
-                        >
-                          {t('dao.signaturesTab.distance')}
-                        </Typography>
-                      </Card>
+                              <Typography
+                                color="textSecondary"
+                                fontWeight="200"
+                                sx={{
+                                  lineHeight: '1.2',
+                                  fontSize: 10,
+                                  mt: 1,
+                                }}
+                              >
+                                {t('dao.signaturesTab.distance')}
+                              </Typography>
+                            </Card>
+                          </Tooltip>
+                        </div>
+                      </ClickAwayListener>
+                    </Grid>
+                    {/* -------------------difficulty ------------------------------*/}
+                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
+                      <ClickAwayListener
+                        onClickAway={() => handleVariablesTooltipClose('difficulty')}
+                      >
+                        <div>
+                          <Tooltip
+                            title={
+                              <>
+                                <Typography sx={{ fontSize: 12 }} component="div">
+                                  {t('dao.variables.difficulty.title')}
+                                </Typography>
+                                <br />
+                                <br />
+                                {coeffsResult ? (
+                                  <span style={{ fontWeight: 400, fontSize: 10 }}>
+                                    <Trans i18nKey="dao.variables.difficulty.body">
+                                      {{
+                                        needConfirm:
+                                          coeffsResult.needConfirmDuration.confirmDuration,
+                                        needPayment:
+                                          coeffsResult.needPaymentDuration.paymentDuration,
+                                        needLogistic:
+                                          coeffsResult.needLogisticDuration.logisticDuration,
+                                      }}
+                                    </Trans>
+                                    <DifficultyTable />
+                                  </span>
+                                ) : (
+                                  <Stack
+                                    sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
+                                    spacing={2}
+                                  >
+                                    <LinearProgress
+                                      sx={{ color: (theme) => theme.palette.primary }}
+                                    />
+                                  </Stack>
+                                )}
+                              </>
+                            }
+                            PopperProps={{
+                              disablePortal: true,
+                            }}
+                            open={variablesOpen && variablesOpen.difficulty}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
+                          >
+                            <Card sx={{ p: 1 }}>
+                              <IconButton onClick={() => handleVariablesTooltipOpen('difficulty')}>
+                                <HardwareOutlinedIcon
+                                  sx={{
+                                    mb: 0,
+                                    color: (theme) => theme.palette.grey.A400,
+                                    fontSize: 30,
+                                  }}
+                                />
+                              </IconButton>
+                              {coeffsResult ? (
+                                <Typography
+                                  variant="h4"
+                                  fontWeight="600"
+                                  sx={{
+                                    lineHeight: '1.2',
+                                    fontSize: 14,
+                                  }}
+                                >
+                                  {coeffsResult.avgGrant}
+                                </Typography>
+                              ) : (
+                                <Stack
+                                  sx={{ m: 'auto', width: '20%', color: 'grey.500' }}
+                                  spacing={2}
+                                >
+                                  <LinearProgress
+                                    sx={{ color: (theme) => theme.palette.primary }}
+                                  />
+                                </Stack>
+                              )}
+
+                              <Typography
+                                color="textSecondary"
+                                fontWeight="200"
+                                sx={{
+                                  lineHeight: '1.2',
+                                  fontSize: 10,
+                                  mt: 1,
+                                }}
+                              >
+                                {t('dao.signaturesTab.difficulty')}
+                              </Typography>
+                            </Card>
+                          </Tooltip>
+                        </div>
+                      </ClickAwayListener>
                     </Grid>
                     <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                      <Card sx={{ p: 1 }}>
-                        <HardwareOutlinedIcon
-                          sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
-                        />
-                        {coeffsResult ? (
-                          <Typography
-                            variant="h4"
-                            fontWeight="600"
-                            sx={{
-                              lineHeight: '1.2',
-                              fontSize: 14,
+                      <ClickAwayListener
+                        onClickAway={() => handleVariablesTooltipClose('collaboration')}
+                      >
+                        <div>
+                          <Tooltip
+                            title={
+                              <Typography sx={{ fontSize: 12 }} component="div">
+                                {t('dao.variables.collaboration.title')}
+                              </Typography>
+                            }
+                            PopperProps={{
+                              disablePortal: true,
                             }}
+                            open={variablesOpen && variablesOpen.collaboration}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
                           >
-                            {coeffsResult.avgGrant}
-                          </Typography>
-                        ) : (
-                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )}
-
-                        <Typography
-                          color="textSecondary"
-                          fontWeight="200"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 10,
-                            mt: 1,
-                          }}
-                        >
-                          {t('dao.signaturesTab.difficulty')}
-                        </Typography>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                      <Card sx={{ p: 1 }}>
-                        <Diversity3Icon
-                          sx={{ mb: 0, color: (theme) => theme.palette.grey.A400, fontSize: 30 }}
-                        />
-                        {coeffsResult ? (
-                          <Typography
-                            variant="h4"
-                            fontWeight="600"
-                            sx={{
-                              lineHeight: '1.2',
-                              fontSize: 14,
-                            }}
-                          >
-                            {coeffsResult.contributionRatio}
-                          </Typography>
-                        ) : (
-                          <Stack sx={{ m: 'auto', width: '20%', color: 'grey.500' }} spacing={2}>
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )}
-                        <Typography
-                          color="textSecondary"
-                          fontWeight="200"
-                          sx={{
-                            lineHeight: '1.2',
-                            fontSize: 10,
-                            mt: 1,
-                          }}
-                        >
-                          {t('dao.signaturesTab.collaboration')}
-                        </Typography>
-                      </Card>
+                            <Card sx={{ p: 1 }}>
+                              <IconButton
+                                onClick={() => handleVariablesTooltipOpen('collaboration')}
+                              >
+                                <Diversity3Icon
+                                  sx={{
+                                    mb: 0,
+                                    color: (theme) => theme.palette.grey.A400,
+                                    fontSize: 30,
+                                  }}
+                                />
+                              </IconButton>
+                              {coeffsResult ? (
+                                <Typography
+                                  variant="h4"
+                                  fontWeight="600"
+                                  sx={{
+                                    lineHeight: '1.2',
+                                    fontSize: 14,
+                                  }}
+                                >
+                                  {coeffsResult.contributionRatio}
+                                </Typography>
+                              ) : (
+                                <Stack
+                                  sx={{ m: 'auto', width: '20%', color: 'grey.500' }}
+                                  spacing={2}
+                                >
+                                  <LinearProgress
+                                    sx={{ color: (theme) => theme.palette.primary }}
+                                  />
+                                </Stack>
+                              )}
+                              <Typography
+                                color="textSecondary"
+                                fontWeight="200"
+                                sx={{
+                                  lineHeight: '1.2',
+                                  fontSize: 10,
+                                  mt: 1,
+                                }}
+                              >
+                                {t('dao.signaturesTab.collaboration')}
+                              </Typography>
+                            </Card>
+                          </Tooltip>
+                        </div>
+                      </ClickAwayListener>
                     </Grid>
                   </Grid>
                 </Grid>
