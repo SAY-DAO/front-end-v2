@@ -57,7 +57,7 @@ export default function ChildStats({ needsArray }) {
     if (pieData && pieData[0]) {
       const textElement = document.getElementsByTagName('text');
       for (let i = 0; i < textElement.length; i++) {
-        textElement[i].style = 'direction:rtl !important;font-family: iranyekan !important;';
+        textElement[i].style = 'direction:rtl !important;font-family: unset !important;';
       }
     }
   };
