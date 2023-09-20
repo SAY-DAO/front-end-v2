@@ -53,8 +53,15 @@ export default function ChildStats({ needsArray }) {
     }
   }, [needsData]);
 
+  useEffect(() => {
+    const textElement = document.getElementsByTagName('text');
+    for (let i = 0; i < textElement.length; i++) {
+      textElement[i].style = ' font-family: iranyekan !important;';
+    }
+  }, []);
+
   return (
-    <div style={{ height: '300px', width: '100%', justifyContent: 'center' }}>
+    <div style={{ height: '300px', width: '100%' }}>
       {pieData && pieData[0] && (
         <ResponsivePie
           data={pieData}
@@ -124,7 +131,7 @@ export default function ChildStats({ needsArray }) {
             {
               anchor: 'bottom',
               direction: 'row',
-              // justify: false,
+              padding: 15,
               translateX: 0,
               translateY: 56,
               itemsSpacing: 18,
@@ -140,6 +147,7 @@ export default function ChildStats({ needsArray }) {
                   on: 'hover',
                   style: {
                     itemTextColor: '#000',
+                    fontFamily: 'iranyekan !important',
                   },
                 },
               ],
