@@ -30,7 +30,7 @@ export default function ChildStats({ needsArray }) {
     if (needsData) {
       setPieData([
         {
-          id: 'رشد',
+          id: t('childData.needCategory.growth'),
           label: t('childData.needCategory.growth'),
           value: needsData[1].length,
         },
@@ -84,8 +84,8 @@ export default function ChildStats({ needsArray }) {
           arcLinkLabelsTextColor="#333333"
           arcLinkLabelsColor={{ from: 'color' }}
           arcLabelsSkipAngle={10}
-          arcLinkLabelsDiagonalLength={0} // label line
-          arcLinkLabelsStraightLength={0} // label line
+          arcLinkLabelsDiagonalLength={15} // label line
+          arcLinkLabelsStraightLength={10} // label line
           arcLinkLabelsTextOffset={40} // offset text from line
           arcLinkLabelsThickness={3}
           arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
@@ -134,31 +134,31 @@ export default function ChildStats({ needsArray }) {
               id: 'dots',
             },
           ]}
-          // legends={[
-          //   {
-          //     anchor: 'bottom',
-          //     direction: 'row',
-          //     padding: 1,
-          //     translateX: 0,
-          //     translateY: 66,
-          //     itemsSpacing: 18,
-          //     itemWidth: 60,
-          //     itemHeight: 18,
-          //     itemTextColor: '#999',
-          //     itemDirection: 'bottom-to-top',
-          //     itemOpacity: 1,
-          //     symbolSize: 18,
-          //     symbolShape: 'circle',
-          //     effects: [
-          //       {
-          //         on: 'hover',
-          //         style: {
-          //           itemTextColor: '#000',
-          //         },
-          //       },
-          //     ],
-          //   },
-          // ]}
+          legends={[
+            {
+              anchor: 'bottom',
+              direction: 'row',
+              padding: 1,
+              translateX: 0,
+              translateY: 66,
+              itemsSpacing: 18,
+              itemWidth: 60,
+              itemHeight: 18,
+              itemTextColor: '#999',
+              itemDirection: 'bottom-to-top',
+              itemOpacity: 1,
+              symbolSize: 18,
+              symbolShape: 'circle',
+              effects: [
+                {
+                  on: 'hover',
+                  style: {
+                    itemTextColor: '#000',
+                  },
+                },
+              ],
+            },
+          ]}
         />
       )}
     </div>
