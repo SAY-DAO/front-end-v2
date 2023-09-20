@@ -54,7 +54,7 @@ export default function ChildStats({ needsArray }) {
   }, [needsData]);
 
   return (
-    <div style={{ height: '300px', width: '100%', direction: 'ltr' }}>
+    <div style={{ height: '300px', width: '100%', justifyContent: 'center' }}>
       {pieData && pieData[0] && (
         <ResponsivePie
           data={pieData}
@@ -71,8 +71,8 @@ export default function ChildStats({ needsArray }) {
           arcLinkLabelsColor={{ from: 'color' }}
           arcLabelsSkipAngle={10}
           arcLinkLabelsDiagonalLength={15} // label line
-          arcLinkLabelsStraightLength={5} // label line
-          arcLinkLabelsTextOffset={5} // offset text from line
+          arcLinkLabelsStraightLength={10} // label line
+          arcLinkLabelsTextOffset={35} // offset text from line
           arcLinkLabelsThickness={3}
           arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
           defs={[
@@ -82,7 +82,6 @@ export default function ChildStats({ needsArray }) {
               background: 'inherit',
               color: 'rgba(255, 255, 255, 0.3)',
               size: 4,
-              padding: 1,
               stagger: true,
             },
             {
@@ -125,14 +124,14 @@ export default function ChildStats({ needsArray }) {
             {
               anchor: 'bottom',
               direction: 'row',
-              justify: false,
+              // justify: false,
               translateX: 0,
               translateY: 56,
               itemsSpacing: 18,
               itemWidth: 60,
               itemHeight: 18,
               itemTextColor: '#999',
-              itemDirection: 'right-to-left',
+              itemDirection: 'top-to-bottom',
               itemOpacity: 1,
               symbolSize: 22,
               symbolShape: 'circle',
