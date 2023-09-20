@@ -56,13 +56,10 @@ export default function ChildStats({ needsArray }) {
   const handleFont = () => {
     if (pieData && pieData[0]) {
       const textElement = document.getElementsByTagName('text');
-      const rectElement = document.getElementsByTagName('g');
       for (let i = 0; i < textElement.length; i++) {
         textElement[i].style = 'margin:100px !important;font-family: iranyekan !important;';
       }
-      for (let i = 0; i < rectElement.length; i++) {
-        rectElement[i].style = 'transform:200px !important;';
-      }
+
     }
   };
   useEffect(() => {
