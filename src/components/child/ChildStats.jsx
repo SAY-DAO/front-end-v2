@@ -53,12 +53,23 @@ export default function ChildStats({ needsArray }) {
     }
   }, [needsData]);
 
-  useEffect(() => {
-    const textElement = document.getElementsByTagName('text');
-    for (let i = 0; i < textElement.length; i++) {
-      textElement[i].style = ' font-family: iranyekan !important;';
+  const handleFont = () => {
+    if (pieData && pieData[0]) {
+      const textElement = document.getElementsByTagName('text');
+      const rectElement = document.getElementsByTagName('g');
+      for (let i = 0; i < textElement.length; i++) {
+        textElement[i].style = 'margin:100px !important;font-family: iranyekan !important;';
+      }
+      for (let i = 0; i < rectElement.length; i++) {
+        rectElement[i].style = 'transform:200px !important;';
+      }
     }
-  }, []);
+  };
+  useEffect(() => {
+    if (pieData && pieData[0]) {
+      setTimeout(handleFont, 100);
+    }
+  }, [pieData, needsData]);
 
   return (
     <div style={{ height: '300px', width: '100%' }}>
@@ -79,7 +90,7 @@ export default function ChildStats({ needsArray }) {
           arcLabelsSkipAngle={10}
           arcLinkLabelsDiagonalLength={15} // label line
           arcLinkLabelsStraightLength={10} // label line
-          arcLinkLabelsTextOffset={35} // offset text from line
+          arcLinkLabelsTextOffset={40} // offset text from line
           arcLinkLabelsThickness={3}
           arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
           defs={[
@@ -147,7 +158,6 @@ export default function ChildStats({ needsArray }) {
                   on: 'hover',
                   style: {
                     itemTextColor: '#000',
-                    fontFamily: 'iranyekan !important',
                   },
                 },
               ],
