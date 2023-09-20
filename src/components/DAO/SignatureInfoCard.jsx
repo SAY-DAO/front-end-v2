@@ -9,7 +9,6 @@ import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
 import {
   fetchFamilyMemberDistanceRatio,
-  fetchEcoFamilyRolesCompletePays,
 } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
@@ -22,16 +21,10 @@ const SignatureInfoCard = () => {
   const dispatch = useDispatch();
 
   const needVariables = useSelector((state) => state.needVariables);
-  const { userResult, success: successOneNeedData, error: errorOneNeedData } = needVariables;
+  const { userResult, error: errorOneNeedData } = needVariables;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
   const { paidNeedsData } = paidNeeds;
-
-  useEffect(() => {
-    if (!successOneNeedData) {
-      dispatch(fetchEcoFamilyRolesCompletePays());
-    }
-  }, []);
 
   useEffect(() => {
     if (!userResult) {

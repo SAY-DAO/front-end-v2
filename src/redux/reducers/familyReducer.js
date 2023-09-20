@@ -1,4 +1,3 @@
-
 import {
   INVITE_TO_MY_FAMILY_REQUEST,
   INVITE_TO_MY_FAMILY_SUCCESS,
@@ -18,6 +17,7 @@ import {
   FAMILY_NETWORK_REQUEST,
   FAMILY_NETWORK_SUCCESS,
   FAMILY_NETWORK_FAIL,
+  FAMILY_NETWORK_RESET,
 } from '../constants/familyConstants';
 
 export const joinVirtualFamilyReducer = (state = {}, action) => {
@@ -86,6 +86,8 @@ export const familyNetworksReducer = (state = {}, action) => {
       return { loading: false, success: true, network: action.payload };
     case FAMILY_NETWORK_FAIL:
       return { loading: false, error: action.payload };
+    case FAMILY_NETWORK_RESET:
+      return {};
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { ResponsiveNetwork } from '@nivo/network';
 import { fetchFamilyNetworks } from '../../../redux/actions/main/daoAction';
 import { prepareUrl } from '../../../utils/helpers';
+import { FAMILY_NETWORK_RESET } from '../../../redux/constants/familyConstants';
 
 let prevId = null;
 
@@ -20,6 +21,9 @@ const ContributionNetwork = () => {
 
   useEffect(() => {
     dispatch(fetchFamilyNetworks());
+    return () => {
+      dispatch({ type: FAMILY_NETWORK_RESET });
+    };
   }, []);
 
   // add child node every ... second

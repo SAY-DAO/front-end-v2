@@ -55,9 +55,8 @@ export default function ChildStats({ needsArray }) {
 
   return (
     <div style={{ height: '300px', width: '100%', direction: 'ltr' }}>
-      {
-        pieData && pieData[0] && (
-          <ResponsivePie
+      {pieData && pieData[0] && (
+        <ResponsivePie
           data={pieData}
           margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
           innerRadius={0.35}
@@ -129,13 +128,13 @@ export default function ChildStats({ needsArray }) {
               justify: false,
               translateX: 0,
               translateY: 56,
-              itemsSpacing: 5,
+              itemsSpacing: 18,
               itemWidth: 60,
               itemHeight: 18,
               itemTextColor: '#999',
-              itemDirection: 'left-to-right',
+              itemDirection: 'right-to-left',
               itemOpacity: 1,
-              symbolSize: 18,
+              symbolSize: 22,
               symbolShape: 'circle',
               effects: [
                 {
@@ -148,9 +147,7 @@ export default function ChildStats({ needsArray }) {
             },
           ]}
         />
-        )
-      }
-  
+      )}
     </div>
   );
 }

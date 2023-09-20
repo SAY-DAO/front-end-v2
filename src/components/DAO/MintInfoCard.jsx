@@ -8,11 +8,14 @@ import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
 import {
-  fetchEcoFamilyRolesCompletePays,
   fetchEcoMintData,
 } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
+import {
+  ECOSYSTEM_MINT_RESET,
+  FAMILY_ECOSYSTEM_PAYS_REST,
+} from '../../redux/constants/daoConstants';
 
 const MintInfoCard = () => {
   const { t } = useTranslation();
@@ -24,15 +27,15 @@ const MintInfoCard = () => {
   const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
   const {
     mintEcoResult,
-    success: successMintEcosystem,
     error: errorMintEcosystem,
   } = ecosystemMintData;
 
   useEffect(() => {
-    if (!successMintEcosystem) {
-      dispatch(fetchEcoFamilyRolesCompletePays());
-    }
     dispatch(fetchEcoMintData());
+    return () => {
+      dispatch({ type: ECOSYSTEM_MINT_RESET });
+      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+    };
   }, []);
 
   // toast
