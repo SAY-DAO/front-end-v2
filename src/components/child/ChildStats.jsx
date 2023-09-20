@@ -139,16 +139,16 @@ export default function ChildStats({ needsArray }) {
             {
               anchor: 'bottom',
               direction: 'row',
-              padding: 15,
+              padding: 1,
               translateX: 0,
-              translateY: 56,
+              translateY: 66,
               itemsSpacing: 18,
               itemWidth: 60,
               itemHeight: 18,
               itemTextColor: '#999',
-              itemDirection: 'top-to-bottom',
+              itemDirection: 'bottom-to-top',
               itemOpacity: 1,
-              symbolSize: 22,
+              symbolSize: 18,
               symbolShape: 'circle',
               effects: [
                 {
