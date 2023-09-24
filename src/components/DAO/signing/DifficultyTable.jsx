@@ -8,12 +8,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function createData(name, min, q1, q2, q3, max) {
   return { name, min, q1, q2, q3, max };
 }
 
 export default function DifficultyTable() {
+  const { t } = useTranslation();
+
   const [rows, setRows] = useState([]);
   const needVariables = useSelector((state) => state.needVariables);
   const { coeffsResult } = needVariables;
@@ -22,7 +25,7 @@ export default function DifficultyTable() {
     if (coeffsResult) {
       setRows([
         createData(
-          'Confirm',
+          t('dao.variables.difficulty.confirmDuration'),
           coeffsResult.needConfirmDuration.min_confirm_duration,
           coeffsResult.needConfirmDuration.Q1_confirm_duration,
           coeffsResult.needConfirmDuration.Q2_confirm_duration,
@@ -30,7 +33,7 @@ export default function DifficultyTable() {
           coeffsResult.needConfirmDuration.max_confirm_duration,
         ),
         createData(
-          'Pay',
+          t('dao.variables.difficulty.paymentDuration'),
           coeffsResult.needPaymentDuration.min_payment_duration,
           coeffsResult.needPaymentDuration.Q1_payment_duration,
           coeffsResult.needPaymentDuration.Q2_payment_duration,
@@ -38,7 +41,7 @@ export default function DifficultyTable() {
           coeffsResult.needPaymentDuration.max_payment_duration,
         ),
         createData(
-          'Logistic',
+          t('dao.variables.difficulty.logisticDuration'),
           coeffsResult.needLogisticDuration.min_logistic_duration,
           coeffsResult.needLogisticDuration.Q1_logistic_duration,
           coeffsResult.needLogisticDuration.Q2_logistic_duration,
@@ -46,7 +49,7 @@ export default function DifficultyTable() {
           coeffsResult.needLogisticDuration.max_logistic_duration,
         ),
         createData(
-          'Amount',
+          t('dao.variables.difficulty.relativeAmount'),
           coeffsResult.needPaymentAmount.min_payment_amount.toLocaleString(),
           coeffsResult.needPaymentAmount.Q1_payment_amount.toLocaleString(),
           coeffsResult.needPaymentAmount.Q2_payment_amount.toLocaleString(),
@@ -65,23 +68,21 @@ export default function DifficultyTable() {
       <Table sx={{ minWidth: 350 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
+            <TableCell sx={{ fontWeight: 800 }} align="center" />
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Title
+              {t('dao.variables.min')}
             </TableCell>
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Min
+              {t('dao.variables.Q1')}
             </TableCell>
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Q1
+              {t('dao.variables.Q2')}
             </TableCell>
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Q2
+              {t('dao.variables.Q3')}
             </TableCell>
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Q3
-            </TableCell>
-            <TableCell sx={{ fontWeight: 800 }} align="center">
-              Max
+              {t('dao.variables.max')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -89,7 +90,11 @@ export default function DifficultyTable() {
           {rows.length > 0 &&
             rows.map((row) => (
               <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell sx={{ fontWeight: 800, textAlign: 'center' }} component="th" scope="row">
+                <TableCell
+                  sx={{ fontWeight: 800, textAlign: 'center', minWidth: 100 }}
+                  component="th"
+                  scope="row"
+                >
                   {row.name}
                 </TableCell>
                 <TableCell align="center">{row.min}</TableCell>

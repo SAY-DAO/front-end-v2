@@ -33,7 +33,12 @@ export default function DistanceRatioTable() {
     if (ecoResult) {
       setRows([
         createData(
-          'Fathers',
+          t(
+            `family.roles.plural.${getVFamilyRoleString(
+              oneReadyNeed.members &&
+                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
+            ).toLowerCase()}`,
+          ),
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.min[
             getVFamilyRoleString(
               oneReadyNeed.members &&
@@ -78,7 +83,7 @@ export default function DistanceRatioTable() {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 800 }} align="center">
-              Role
+              {t('dao.variables.distanceRatio.role')}
             </TableCell>
             <TableCell sx={{ fontWeight: 800 }} align="center">
               {t('dao.variables.min')}

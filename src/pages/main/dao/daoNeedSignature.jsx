@@ -306,10 +306,10 @@ export default function DaoNeedSignature() {
         errorWalletNonce
       ) {
         dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
-        dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
-        dispatch({ type: ONE_NEED_COEFFS_RESET });
       }
+      dispatch({ type: ONE_NEED_COEFFS_RESET });
+      dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
     };
   }, [createdSignature]);
 
@@ -1039,6 +1039,7 @@ export default function DaoNeedSignature() {
                                           coeffsResult.needPaymentDuration.paymentDuration,
                                         needLogistic:
                                           coeffsResult.needLogisticDuration.logisticDuration,
+                                        needCost: paymentDetails.totalAmount,
                                       }}
                                     </Trans>
                                     <DifficultyTable />
@@ -1191,6 +1192,8 @@ export default function DaoNeedSignature() {
                           fullWidth
                           variant="outlined"
                           disabled={
+                            !userResult ||
+                            !userResult.theUser.distanceRatio.allChildrenCaredFor ||
                             (errorVerify && true) ||
                             (errorWalletInformation && true) ||
                             (errorOneNeedData && true) ||
@@ -1207,6 +1210,8 @@ export default function DaoNeedSignature() {
                             signbutton="true"
                             variant="outlined"
                             disabled={
+                              (userResult &&
+                                !userResult.theUser.distanceRatio.allChildrenCaredFor) ||
                               (errorVerify && true) ||
                               (errorWalletInformation && true) ||
                               (errorSignIn && true) ||
@@ -1236,21 +1241,24 @@ export default function DaoNeedSignature() {
                       </Typography>
                     </Grid>
                   )}
-                {
-                  <>
-                    <CommentDrawer
-                      open={openDrawer}
-                      setOpen={setOpenDrawer}
-                      comment={comment}
-                      setComment={setComment}
-                    />
-                    {!oneReadyNeed.isResolved && (
-                      <Typography sx={{ p: 2, textAlign: 'center' }}>
-                        {t('comment.disabledWallet')}
-                      </Typography>
-                    )}
-                  </>
-                }
+                {userResult &&
+                  userResult.theUser &&
+                  !userResult.theUser.distanceRatio.allChildrenCaredFor && (
+                    <Typography sx={{ p: 2, textAlign: 'center' }}>
+                      {t('dao.variables.distanceRatio.zero')}
+                    </Typography>
+                  )}
+                <CommentDrawer
+                  open={openDrawer}
+                  setOpen={setOpenDrawer}
+                  comment={comment}
+                  setComment={setComment}
+                />
+                {!oneReadyNeed.isResolved && (
+                  <Typography sx={{ p: 2, textAlign: 'center' }}>
+                    {t('comment.disabledWallet')}
+                  </Typography>
+                )}
               </Card>
             </Grid>
           </Card>
