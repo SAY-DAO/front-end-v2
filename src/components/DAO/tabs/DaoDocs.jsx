@@ -13,7 +13,7 @@ export default function DaoDocs() {
   };
 
   useEffect(() => {
-    const myInterval = setTimeout(getIframe, 1000);
+    const myInterval = setInterval(getIframe, 2000);
     if (document.getElementById('main-title')) {
       setLoading(false);
       clearTimeout(myInterval);

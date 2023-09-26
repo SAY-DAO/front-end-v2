@@ -1,10 +1,18 @@
-﻿@import url(fontiran.css); /* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+﻿@import url(fontiran.css);
+
+@font-face {
+  font-family: 'Exodar-outline';
+  src: url(../../fonts/ttf/Exodar-Outline.ttf) format('truetype');
+}
 
 body {
   margin: 0;
   font-family: 'iranyekan !important';
 }
 
+#logo {
+  font-family: Exodar-outline !important;
+}
 
 .styles_simpleReactWeatherCity__zyECF {
   font-size: 14px;
@@ -15,9 +23,11 @@ body {
 .styles_simpleReactWeatherIcon__3sqXV {
   font-size: 100%;
 }
+
 .styles_simpleReactWeatherTemp__2PnUn {
   font-size: 12px;
 }
+
 .styles_simpleReactWeather__3uy4l {
   max-width: 50px;
   min-width: 50px;

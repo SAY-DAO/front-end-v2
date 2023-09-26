@@ -20,7 +20,6 @@ export default function DaoSignature() {
   const { t } = useTranslation();
 
   const [alignment, setAlignment] = useState('ready');
-  const [cardSelected, setCardSelected] = useState();
   const [signedIds, setSignedIds] = useState([]);
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -103,11 +102,7 @@ export default function DaoSignature() {
                         .filter((need) => signedIds.includes(need.id))
                         .map((need) => (
                           <ImageListItem key={need.id}>
-                            <SignatureCard
-                              need={need}
-                              setCardSelected={setCardSelected}
-                              cardSelected={cardSelected}
-                            />
+                            <SignatureCard need={need} />
                           </ImageListItem>
                         ))}
                     </ImageList>
@@ -124,11 +119,7 @@ export default function DaoSignature() {
                       .filter((need) => !signedIds.includes(need.id))
                       .map((need) => (
                         <ImageListItem key={need.id}>
-                          <SignatureCard
-                            need={need}
-                            setCardSelected={setCardSelected}
-                            cardSelected={cardSelected}
-                          />
+                          <SignatureCard need={need} />
                         </ImageListItem>
                       ))}
                   </ImageList>

@@ -36,14 +36,22 @@ export default function Dao() {
       <Grid container spacing={1} sx={{ p: 4 }}>
         <Grid container item spacing={2} sx={{ mb: 1 }} justifyContent="center" alignItems="center">
           <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+            <Card
+              sx={{
+                maxWidth: 345,
+                borderRadius: 5,
+                // bgcolor: '#d0fff2',
+                minHeight: 200,
+                color: 'black',
+              }}
+            >
               <CardActionArea onClick={() => setTabNumber(0)}>
                 <CardMedia
                   component="img"
                   height="140"
-                  image="/images/dao/pc.png"
+                  image="/images/dao/signature.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 100, m: 'auto' }}
+                  sx={{ maxWidth: 130, m: 'auto'}}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography
@@ -61,14 +69,22 @@ export default function Dao() {
             </Card>
           </Grid>
           <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+            <Card
+              sx={{
+                maxWidth: 345,
+                borderRadius: 5,
+                // bgcolor: '#ffd8d8',
+                minHeight: 200,
+                color: 'black',
+              }}
+            >
               <CardActionArea onClick={() => setTabNumber(1)}>
                 <CardMedia
                   component="img"
                   height="140"
-                  image="/images/dao/pc.png"
+                  image="/images/dao/mine.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 100, m: 'auto' }}
+                  sx={{ maxWidth: 130, m: 'auto' }}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography
@@ -88,14 +104,22 @@ export default function Dao() {
         </Grid>
         <Grid container item spacing={2} sx={{ mb: 1 }}>
           <Grid item xs={6}>
-            <Card sx={{ maxHeight: 345, borderRadius: 5 }}>
+            <Card
+              sx={{
+                maxHeight: 345,
+                borderRadius: 5,
+                // bgcolor: '#d3eef9',
+                minHeight: 200,
+                color: 'black',
+              }}
+            >
               <CardActionArea onClick={() => setTabNumber(2)}>
                 <CardMedia
                   component="img"
                   height="140"
-                  image="/images/dao/pc.png"
+                  image="/images/dao/proposals.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 100, m: 'auto' }}
+                  sx={{ maxWidth: 130, m: 'auto', transform: 'scale(-1, 1)' }}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography
@@ -113,14 +137,22 @@ export default function Dao() {
             </Card>
           </Grid>
           <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+            <Card
+              sx={{
+                maxWidth: 345,
+                borderRadius: 5,
+                // bgcolor: '#f3ecc4',
+                minHeight: 200,
+                color: 'black',
+              }}
+            >
               <CardActionArea onClick={() => setTabNumber(3)}>
                 <CardMedia
                   component="img"
                   height="140"
-                  image="/images/dao/pc.png"
+                  image="/images/dao/contribute.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 100, m: 'auto' }}
+                  sx={{ width: 170, m: 'auto' }}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography
@@ -140,14 +172,22 @@ export default function Dao() {
         </Grid>
         <Grid container item spacing={2} justifyContent="center">
           <Grid item xs={6}>
-            <Card sx={{ maxWidth: 345, borderRadius: 5 }}>
+            <Card
+              sx={{
+                maxWidth: 345,
+                borderRadius: 5,
+                // bgcolor: '#ece4f7',
+                minHeight: 200,
+                color: 'black',
+              }}
+            >
               <CardActionArea onClick={() => setTabNumber(4)}>
                 <CardMedia
                   component="img"
                   height="140"
-                  image="/images/dao/pc.png"
+                  image="/images/dao/documents.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 100, m: 'auto' }}
+                  sx={{ maxWidth: 130, m: 'auto' }}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography

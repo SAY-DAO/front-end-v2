@@ -7,9 +7,7 @@ import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
-import {
-  fetchFamilyMemberDistanceRatio,
-} from '../../redux/actions/main/daoAction';
+import { fetchFamilyMemberDistanceRatio } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
 
@@ -119,7 +117,9 @@ const SignatureInfoCard = () => {
                         {t('dao.signaturesTab.tooltip.ready')}
                         <br />
                         <br />
-                        {paidNeedsData && paidNeedsData.readyNeedsList ? (
+                        {paidNeedsData &&
+                        paidNeedsData.readyNeedsList &&
+                        paidNeedsData.readyNeedsList[0] ? (
                           <span style={{ fontWeight: 300 }}>
                             <Trans i18nKey="dao.signaturesTab.tooltip.ready2">
                               {{

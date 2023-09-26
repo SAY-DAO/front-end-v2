@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router';
 import WalletDialog from '../../modals/WalletDialog';
 import { prepareUrl } from '../../../utils/helpers';
 
-const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
+const SignatureCard = ({ need }) => {
   const navigate = useNavigate();
   const [openWallets, setOpenWallets] = useState(false);
 
   const handleCardClick = () => {
-    setCardSelected(need.id);
     navigate(`/dao/signatures/${need.id}`);
   };
   return (
@@ -18,7 +17,6 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
       <Card
         elevation={3}
         sx={{
-          opacity: cardSelected === need.id || cardSelected === 0 ? 1 : 0.9,
           p: 0,
           borderRadius: 8,
           height: 150,
@@ -37,16 +35,26 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
           <Grid item xs={4}>
             <Avatar
               alt="my child"
-              sx={{ width: 35, height: 35, m: 'auto' }}
+              sx={{ width: 35, height: 35, m: 'auto', bgcolor: 'white' }}
               src={prepareUrl(need.child.awakeAvatarUrl)}
             />
           </Grid>
           <Grid item xs>
-            <Typography sx={{ color: 'white', mt: 1, fontWeight: 800 }} fontSize="small">
-              {need.nameTranslations.fa}
-            </Typography>
-            <Typography sx={{ color: 'white', fontWeight: 400 }} fontSize="small">
+            <Typography sx={{ color: 'white', mt: 1, fontWeight: 400 }} fontSize="small">
               {need.child.sayNameTranslations.fa}
+            </Typography>
+            <Typography
+              sx={{
+                color: 'white',
+                fontWeight: 800,
+                maxWidth: '85px',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+              }}
+              fontSize="small"
+            >
+              {need.nameTranslations.fa}
             </Typography>
           </Grid>
         </Grid>
@@ -56,9 +64,9 @@ const SignatureCard = ({ need, setCardSelected, cardSelected }) => {
             position: 'absolute',
             bottom: 0,
             width: '100%',
-            height: 40,
+            height: 150,
             bgcolor: 'black',
-            opacity: 0.38,
+            opacity: 0.28,
           }}
         />
 
@@ -72,6 +80,4 @@ export default SignatureCard;
 
 SignatureCard.propTypes = {
   need: PropTypes.object,
-  setCardSelected: PropTypes.func,
-  cardSelected: PropTypes.string,
 };
