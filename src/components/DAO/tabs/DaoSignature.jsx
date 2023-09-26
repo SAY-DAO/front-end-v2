@@ -26,7 +26,7 @@ export default function DaoSignature() {
   const { userInfo } = userLogin;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
-  const { loading: loadingPaidNeeds, paidNeedsData, success: successPaidNeeds } = paidNeeds;
+  const { paidNeedsData, success: successPaidNeeds } = paidNeeds;
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed } = readySigningOneNeed;
@@ -36,9 +36,6 @@ export default function DaoSignature() {
   );
 
   useEffect(() => {
-    if (!successPaidNeeds || !loadingPaidNeeds) {
-      dispatch(fetchPaidNeeds());
-    }
     if (oneReadyNeed) {
       dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
     }
