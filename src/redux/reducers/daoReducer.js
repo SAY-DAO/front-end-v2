@@ -53,6 +53,7 @@ import {
   SIGNATURE_HASH_SUCCESS,
   SIGNATURE_HASH_FAIL,
   SIGNATURE_CREATE_RESET,
+  MY_PAID_NEEDS_RESET,
 } from '../constants/daoConstants';
 
 export const ecosystemAnalyticReducer = (state = {}, action) => {
@@ -116,6 +117,8 @@ export const readyToSignNeedsReducer = (state = {}, action) => {
       return { loading: false, success: true, paidNeedsData: action.payload };
     case MY_PAID_NEEDS_FAIL:
       return { loading: false, error: action.payload };
+    case MY_PAID_NEEDS_RESET:
+      return {};
     default:
       return state;
   }

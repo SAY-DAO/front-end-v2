@@ -1029,7 +1029,7 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {coeffsResult ? (
+                                {paymentDetails && coeffsResult ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.difficulty.body">
                                       {{

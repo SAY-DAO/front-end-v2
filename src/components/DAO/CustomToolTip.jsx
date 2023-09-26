@@ -39,7 +39,6 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       );
     }
   }, [paidNeedsData]);
-
   useEffect(() => {
     if (mintEcoResult && which === 'mintWaiting') {
       setCount(mintEcoResult.theUser.waiting);
@@ -57,12 +56,14 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
           userResult.theUser.ammeCompletePay -
           paidNeedsData.readyNeedsList.length,
       );
-    } else if (userResult && signedCount >= 0 && paidNeedsData && which === 'signReady') {
+    } else if (signedCount >= 0 && paidNeedsData && which === 'signReady') {
       setCount(paidNeedsData.readyNeedsList.length - signedCount);
-    } else if (userResult && paidNeedsData && which === 'signed') {
+      console.log('signedCount');
+      console.log(signedCount);
+    } else if (paidNeedsData && which === 'signed') {
       setCount(signedCount);
     }
-  }, [mintEcoResult, which, userResult, paidNeedsData]);
+  }, [mintEcoResult, which, userResult, paidNeedsData, signedCount]);
 
   const handleTooltipClose = () => {
     setOpen(false);
