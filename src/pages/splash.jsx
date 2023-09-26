@@ -11,7 +11,7 @@ export default function Splash() {
   function myFunction() {
     setTimeout(() => {
       navigate('/auth/intro');
-    }, 3000);
+    }, 30000000);
   }
 
   myFunction();
@@ -60,6 +60,7 @@ TxtRotate.prototype.tick = function () {
   if (!this.isDeleting && this.txt === fullTxt) {
     delta = this.period;
     this.isDeleting = true;
+    window.location.replace('/auth/intro');
   } else if (this.isDeleting && this.txt === '') {
     this.isDeleting = false;
     this.loopNum++;
