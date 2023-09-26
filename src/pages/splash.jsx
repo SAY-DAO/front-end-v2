@@ -2,19 +2,9 @@
 /* eslint-disable func-names */
 import React from 'react';
 import { Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import '../resources/styles/css/splash.css';
 
 export default function Splash() {
-  const navigate = useNavigate();
-
-  function myFunction() {
-    setTimeout(() => {
-      navigate('/auth/intro');
-    }, 30000000);
-  }
-
-  myFunction();
   return (
     <Grid
       container
