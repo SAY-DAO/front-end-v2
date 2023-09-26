@@ -50,7 +50,7 @@ TxtRotate.prototype.tick = function () {
   if (!this.isDeleting && this.txt === fullTxt) {
     delta = this.period;
     this.isDeleting = true;
-    window.location.replace('/auth/intro');
+    window.location.href('/auth/intro');
   } else if (this.isDeleting && this.txt === '') {
     this.isDeleting = false;
     this.loopNum++;
