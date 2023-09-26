@@ -2,9 +2,19 @@
 /* eslint-disable func-names */
 import React from 'react';
 import { Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import '../resources/styles/css/splash.css';
 
 export default function Splash() {
+  const navigate = useNavigate();
+
+  function myFunction() {
+    setTimeout(() => {
+      navigate('/auth/intro');
+    }, 5000);
+  }
+
+  myFunction();
   return (
     <Grid
       container
@@ -50,7 +60,6 @@ TxtRotate.prototype.tick = function () {
   if (!this.isDeleting && this.txt === fullTxt) {
     delta = this.period;
     this.isDeleting = true;
-    window.location.href('/auth/intro');
   } else if (this.isDeleting && this.txt === '') {
     this.isDeleting = false;
     this.loopNum++;
