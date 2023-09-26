@@ -99,7 +99,7 @@ export const needVariablesAnalyticReducer = (state = {}, action) => {
     case FAMILY_DISTANCE_RATIO_REQUEST:
       return { ...state, loading: true, success: false };
     case FAMILY_DISTANCE_RATIO_SUCCESS:
-      return { ...state, loading: false, success: true, userResult: action.payload };
+      return { ...state, loading: false, success: true, distanceResult: action.payload };
     case FAMILY_DISTANCE_RATIO_FAIL:
       return { success: false, loading: false, error: action.payload };
     case FAMILY_DISTANCE_RATIO_REST:
