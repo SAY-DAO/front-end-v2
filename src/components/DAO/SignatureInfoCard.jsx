@@ -19,13 +19,13 @@ const SignatureInfoCard = () => {
   const dispatch = useDispatch();
 
   const needVariables = useSelector((state) => state.needVariables);
-  const { userResult, error: errorOneNeedData } = needVariables;
+  const { distanceResult, error: errorOneNeedData } = needVariables;
 
   const paidNeeds = useSelector((state) => state.paidNeeds);
   const { paidNeedsData } = paidNeeds;
 
   useEffect(() => {
-    if (!userResult) {
+    if (!distanceResult) {
       dispatch(fetchFamilyMemberDistanceRatio());
     }
   }, []);
@@ -77,16 +77,16 @@ const SignatureInfoCard = () => {
                         {t('dao.signaturesTab.tooltip.waiting')}
                         <br />
                         <br />
-                        {userResult && userResult.theUser ? (
+                        {distanceResult && distanceResult.paid ? (
                           <span style={{ fontWeight: 300 }}>
                             <Trans i18nKey="dao.signaturesTab.tooltip.waiting2">
                               {{
-                                father: userResult && userResult.theUser.fatherCompletePay,
-                                mother: userResult && userResult.theUser.motherCompletePay,
-                                amoo: userResult && userResult.theUser.amooCompletePay,
-                                khaleh: userResult && userResult.theUser.khalehCompletePay,
-                                daei: userResult && userResult.theUser.daeiCompletePay,
-                                amme: userResult && userResult.theUser.ammeCompletePay,
+                                father: distanceResult && distanceResult.paid.fatherCompletePay,
+                                mother: distanceResult && distanceResult.paid.motherCompletePay,
+                                amoo: distanceResult && distanceResult.paid.amooCompletePay,
+                                khaleh: distanceResult && distanceResult.paid.khalehCompletePay,
+                                daei: distanceResult && distanceResult.paid.daeiCompletePay,
+                                amme: distanceResult && distanceResult.paid.ammeCompletePay,
                               }}
                             </Trans>
                           </span>

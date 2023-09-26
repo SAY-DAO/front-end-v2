@@ -7,9 +7,7 @@ import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
-import {
-  fetchEcoMintData,
-} from '../../redux/actions/main/daoAction';
+import { fetchEcoMintData } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
 import {
@@ -25,10 +23,7 @@ const MintInfoCard = () => {
   const dispatch = useDispatch();
 
   const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
-  const {
-    mintEcoResult,
-    error: errorMintEcosystem,
-  } = ecosystemMintData;
+  const { mintEcoResult, error: errorMintEcosystem } = ecosystemMintData;
 
   useEffect(() => {
     dispatch(fetchEcoMintData());
@@ -161,30 +156,7 @@ const MintInfoCard = () => {
                 <Grid item xs={3} sx={{ textAlign: 'center' }}>
                   <CustomToolTip
                     title={t('dao.mintTab.mined')}
-                    popup={
-                      <>
-                        {t('dao.mintTab.tooltip.mined')}
-                        <br />
-                        <br />
-                        {/* {paidNeedsData && userResult && userResult.theUser ? (
-                          <span style={{ fontWeight: 300 }}>
-                            <Trans i18nKey="dao.signaturesTab.tooltip.ready2">
-                              {{
-                                ready: paidNeedsData.length,
-                                signed: paidNeedsData.readyNeedsList.length,
-                              }}
-                            </Trans>
-                          </span>
-                        ) : (
-                          <Stack
-                            sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
-                            spacing={2}
-                          >
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )} */}
-                      </>
-                    }
+                    popup={<>{t('dao.mintTab.tooltip.mined')}</>}
                     icon={
                       <TollIcon
                         fontSize="medium"
