@@ -5,9 +5,9 @@ import {
   MY_PAID_NEEDS_REQUEST,
   MY_PAID_NEEDS_SUCCESS,
   MY_PAID_NEEDS_FAIL,
-  ONE_NEED_COEFFS_REQUEST,
-  ONE_NEED_COEFFS_SUCCESS,
-  ONE_NEED_COEFFS_FAIL,
+  ONE_NEED_COLLECTIVE_RATIO_REQUEST,
+  ONE_NEED_COLLECTIVE_RATIO_SUCCESS,
+  ONE_NEED_COLLECTIVE_RATIO_FAIL,
   CONTRIBUTION_LIST_REQUEST,
   CONTRIBUTION_LIST_SUCCESS,
   CONTRIBUTION_LIST_FAIL,
@@ -32,9 +32,9 @@ import {
   ECOSYSTEM_MINT_REQUEST,
   ECOSYSTEM_MINT_SUCCESS,
   ECOSYSTEM_MINT_FAIL,
-  FAMILY_DISTANCE_RATIO_REQUEST,
-  FAMILY_DISTANCE_RATIO_SUCCESS,
-  FAMILY_DISTANCE_RATIO_FAIL,
+  ONE_NEED_PERSONAL_RATIO_REQUEST,
+  ONE_NEED_PERSONAL_RATIO_SUCCESS,
+  ONE_NEED_PERSONAL_RATIO_FAIL,
   SIGNATURE_VERIFICATION_REQUEST,
   SIGNATURE_VERIFICATION_SUCCESS,
   SIGNATURE_VERIFICATION_FAIL,
@@ -69,10 +69,7 @@ export const fetchNonce = () => async (dispatch, getState) => {
       withCredentials: true,
       crossDomain: true,
     };
-    const response = await daoApi.get(
-      `/wallet/nonce/${FlaskUserTypesEnum.FAMILY}`,
-      config,
-    );
+    const response = await daoApi.get(`/wallet/nonce/${FlaskUserTypesEnum.FAMILY}`, config);
     dispatch({
       type: WALLET_NONCE_SUCCESS,
       payload: response.data,
@@ -383,59 +380,60 @@ export const verifySocialWorkerSignature =
     }
   };
 
-export const prepareSignature = (needId, address, chainId) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: SIGNATURE_PREPARE_REQUEST });
+export const prepareSignature =
+  (needId, address, chainId, ratios) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: SIGNATURE_PREPARE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
-      },
-      withCredentials: true,
-    };
-
-    const request = {
-      needId,
-      signerAddress: address,
-      chainId,
-    };
-
-    const result1 = await daoApi.post(`/wallet/signature/dapp/prepare`, request, config);
-    const transaction = result1.data;
-    // The named list of all type definitions
-    const types = {
-      ...transaction.types,
-    };
-
-    dispatch({
-      type: SIGNATURE_PREPARE_SUCCESS,
-      payload: {
-        domain: transaction.domain,
-        types,
-        primaryType: 'Voucher',
-        message: {
-          ...transaction.message,
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: userInfo && userInfo.accessToken,
+          flaskId: userInfo && userInfo.user.id,
         },
-      },
-    });
-  } catch (e) {
-    dispatch({
-      type: SIGNATURE_PREPARE_FAIL,
-      payload:
-        e.response && e.response.data.detail
-          ? e.response.data.detail
-          : e.response && e.response.data.message
-          ? { message: e.response.data.message, status: e.response.data.status }
-          : { reason: e.reason, code: e.code }, // metamask signature
-    });
-  }
-};
+        withCredentials: true,
+      };
+
+      const request = {
+        needId,
+        signerAddress: address,
+        chainId,
+        variables: ratios,
+      };
+
+      const result1 = await daoApi.post(`/wallet/signature/dapp/prepare`, request, config);
+      const transaction = result1.data;
+      // The named list of all type definitions
+      const types = {
+        ...transaction.types,
+      };
+
+      dispatch({
+        type: SIGNATURE_PREPARE_SUCCESS,
+        payload: {
+          domain: transaction.domain,
+          types,
+          primaryType: 'Voucher',
+          message: {
+            ...transaction.message,
+          },
+        },
+      });
+    } catch (e) {
+      dispatch({
+        type: SIGNATURE_PREPARE_FAIL,
+        payload:
+          e.response && e.response.data.detail
+            ? e.response.data.detail
+            : e.response && e.response.data.message
+            ? { message: e.response.data.message, status: e.response.data.status }
+            : { reason: e.reason, code: e.code }, // metamask signature
+      });
+    }
+  };
 
 export const signTransaction = (signer, preparedData) => async (dispatch) => {
   try {
@@ -568,7 +566,7 @@ export const createSignature =
 
 export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: FAMILY_DISTANCE_RATIO_REQUEST });
+    dispatch({ type: ONE_NEED_PERSONAL_RATIO_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -584,12 +582,12 @@ export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) =
     const { data } = await daoApi.get(`/family/distanceRatio`, config);
 
     dispatch({
-      type: FAMILY_DISTANCE_RATIO_SUCCESS,
+      type: ONE_NEED_PERSONAL_RATIO_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: FAMILY_DISTANCE_RATIO_FAIL,
+      type: ONE_NEED_PERSONAL_RATIO_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail
@@ -598,9 +596,9 @@ export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) =
   }
 };
 
-export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) => {
+export const fetchNeedCollectiveRatios = (needNestId) => async (dispatch, getState) => {
   try {
-    dispatch({ type: ONE_NEED_COEFFS_REQUEST });
+    dispatch({ type: ONE_NEED_COLLECTIVE_RATIO_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -617,12 +615,12 @@ export const fetchNeedCoefficients = (needNestId) => async (dispatch, getState) 
     const { data } = await daoApi.get(`/family/user/coefficients/${needNestId}`, config);
 
     dispatch({
-      type: ONE_NEED_COEFFS_SUCCESS,
+      type: ONE_NEED_COLLECTIVE_RATIO_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: ONE_NEED_COEFFS_FAIL,
+      type: ONE_NEED_COLLECTIVE_RATIO_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail

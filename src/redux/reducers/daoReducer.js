@@ -23,15 +23,15 @@ import {
   READY_TO_SIGN_ONE_NEED_SUCCESS,
   READY_TO_SIGN_ONE_NEED_FAIL,
   READY_TO_SIGN_ONE_NEED_RESET,
-  ONE_NEED_COEFFS_FAIL,
-  ONE_NEED_COEFFS_REQUEST,
-  ONE_NEED_COEFFS_SUCCESS,
+  ONE_NEED_COLLECTIVE_RATIO_FAIL,
+  ONE_NEED_COLLECTIVE_RATIO_REQUEST,
+  ONE_NEED_COLLECTIVE_RATIO_SUCCESS,
   FAMILY_ECOSYSTEM_PAYS_REQUEST,
   FAMILY_ECOSYSTEM_PAYS_SUCCESS,
   FAMILY_ECOSYSTEM_PAYS_FAIL,
-  FAMILY_DISTANCE_RATIO_REQUEST,
-  FAMILY_DISTANCE_RATIO_SUCCESS,
-  FAMILY_DISTANCE_RATIO_FAIL,
+  ONE_NEED_PERSONAL_RATIO_REQUEST,
+  ONE_NEED_PERSONAL_RATIO_SUCCESS,
+  ONE_NEED_PERSONAL_RATIO_FAIL,
   ECOSYSTEM_MINT_REQUEST,
   ECOSYSTEM_MINT_SUCCESS,
   ECOSYSTEM_MINT_FAIL,
@@ -40,8 +40,8 @@ import {
   SIGNATURE_VERIFICATION_FAIL,
   SIGNATURE_VERIFICATION_RESET,
   FAMILY_ECOSYSTEM_PAYS_REST,
-  ONE_NEED_COEFFS_RESET,
-  FAMILY_DISTANCE_RATIO_REST,
+  ONE_NEED_COLLECTIVE_RATIO_RESET,
+  ONE_NEED_PERSONAL_RATIO_REST,
   ECOSYSTEM_MINT_RESET,
   SIGNATURE_PREPARE_REQUEST,
   SIGNATURE_PREPARE_SUCCESS,
@@ -88,21 +88,21 @@ export const ecosystemMintAnalyticReducer = (state = {}, action) => {
 
 export const needVariablesAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
-    case ONE_NEED_COEFFS_REQUEST:
+    case ONE_NEED_COLLECTIVE_RATIO_REQUEST:
       return { ...state, loading: true, success: false };
-    case ONE_NEED_COEFFS_SUCCESS:
-      return { ...state, loading: false, success: true, coeffsResult: action.payload };
-    case ONE_NEED_COEFFS_FAIL:
+    case ONE_NEED_COLLECTIVE_RATIO_SUCCESS:
+      return { ...state, loading: false, success: true, collectiveResult: action.payload };
+    case ONE_NEED_COLLECTIVE_RATIO_FAIL:
       return { success: false, loading: false, error: action.payload };
-    case ONE_NEED_COEFFS_RESET:
-      return {};
-    case FAMILY_DISTANCE_RATIO_REQUEST:
+    case ONE_NEED_COLLECTIVE_RATIO_RESET:
+      return { personalResult: { ...state.personalResult } };
+    case ONE_NEED_PERSONAL_RATIO_REQUEST:
       return { ...state, loading: true, success: false };
-    case FAMILY_DISTANCE_RATIO_SUCCESS:
-      return { ...state, loading: false, success: true, distanceResult: action.payload };
-    case FAMILY_DISTANCE_RATIO_FAIL:
+    case ONE_NEED_PERSONAL_RATIO_SUCCESS:
+      return { ...state, loading: false, success: true, personalResult: action.payload };
+    case ONE_NEED_PERSONAL_RATIO_FAIL:
       return { success: false, loading: false, error: action.payload };
-    case FAMILY_DISTANCE_RATIO_REST:
+    case ONE_NEED_PERSONAL_RATIO_REST:
       return {};
     default:
       return state;

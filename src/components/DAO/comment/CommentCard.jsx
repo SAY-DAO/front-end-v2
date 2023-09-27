@@ -9,7 +9,7 @@ import { dateConvertor } from '../../../utils/persianToEnglish';
 
 export default function CommentCard({ comment }) {
   return (
-    <Grid container>
+    <Grid container sx={{ pl: 2, pr: 2 }}>
       <Grid item xs={2}>
         <Avatar alt="Remy Sharp" src={prepareUrl(comment.user.avatarUrl)} />
       </Grid>

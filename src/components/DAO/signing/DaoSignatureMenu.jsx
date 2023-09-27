@@ -6,6 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PropTypes } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { SAY_DAPP_ID } from '../../../utils/configs';
 
 export default function DaoSignatureMenu({ handleComment, setOpenDrawer }) {
   const { t } = useTranslation();
@@ -64,8 +65,19 @@ export default function DaoSignatureMenu({ handleComment, setOpenDrawer }) {
           !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id)
             ? t('comment.report')
             : oneReadyNeed &&
-              oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id)
+              oneReadyNeed.isResolved &&
+              oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+              oneReadyNeed.verifiedPayments.filter(
+                (p) => p.needAmount > 0 && p.flaskUserId !== SAY_DAPP_ID,
+              ).length === 1 // only one family member
             ? t('comment.waitingAuditor')
+            : oneReadyNeed &&
+              oneReadyNeed.isResolved &&
+              oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+              oneReadyNeed.verifiedPayments.filter(
+                (p) => p.needAmount > 0 && p.flaskUserId !== SAY_DAPP_ID,
+              ).length > 1 // more than one family member
+            ? t('comment.waitingFamily')
             : t('comment.investigating')}
         </MenuItem>
         {oneReadyNeed && oneReadyNeed.comments && oneReadyNeed.comments[0] && (

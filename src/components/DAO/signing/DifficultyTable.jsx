@@ -19,46 +19,46 @@ export default function DifficultyTable() {
 
   const [rows, setRows] = useState([]);
   const needVariables = useSelector((state) => state.needVariables);
-  const { coeffsResult } = needVariables;
+  const { collectiveResult } = needVariables;
 
   useEffect(() => {
-    if (coeffsResult) {
+    if (collectiveResult) {
       setRows([
         createData(
           t('dao.variables.difficulty.confirmDuration'),
-          coeffsResult.needConfirmDuration.min_confirm_duration,
-          coeffsResult.needConfirmDuration.Q1_confirm_duration,
-          coeffsResult.needConfirmDuration.Q2_confirm_duration,
-          coeffsResult.needConfirmDuration.Q3_confirm_duration,
-          coeffsResult.needConfirmDuration.max_confirm_duration,
+          collectiveResult.needConfirmDuration.min_confirm_duration,
+          collectiveResult.needConfirmDuration.Q1_confirm_duration,
+          collectiveResult.needConfirmDuration.Q2_confirm_duration,
+          collectiveResult.needConfirmDuration.Q3_confirm_duration,
+          collectiveResult.needConfirmDuration.max_confirm_duration,
         ),
         createData(
           t('dao.variables.difficulty.paymentDuration'),
-          coeffsResult.needPaymentDuration.min_payment_duration,
-          coeffsResult.needPaymentDuration.Q1_payment_duration,
-          coeffsResult.needPaymentDuration.Q2_payment_duration,
-          coeffsResult.needPaymentDuration.Q3_payment_duration,
-          coeffsResult.needPaymentDuration.max_payment_duration,
+          collectiveResult.needPaymentDuration.min_payment_duration,
+          collectiveResult.needPaymentDuration.Q1_payment_duration,
+          collectiveResult.needPaymentDuration.Q2_payment_duration,
+          collectiveResult.needPaymentDuration.Q3_payment_duration,
+          collectiveResult.needPaymentDuration.max_payment_duration,
         ),
         createData(
           t('dao.variables.difficulty.logisticDuration'),
-          coeffsResult.needLogisticDuration.min_logistic_duration,
-          coeffsResult.needLogisticDuration.Q1_logistic_duration,
-          coeffsResult.needLogisticDuration.Q2_logistic_duration,
-          coeffsResult.needLogisticDuration.Q3_logistic_duration,
-          coeffsResult.needLogisticDuration.max_logistic_duration,
+          collectiveResult.needLogisticDuration.min_logistic_duration,
+          collectiveResult.needLogisticDuration.Q1_logistic_duration,
+          collectiveResult.needLogisticDuration.Q2_logistic_duration,
+          collectiveResult.needLogisticDuration.Q3_logistic_duration,
+          collectiveResult.needLogisticDuration.max_logistic_duration,
         ),
         createData(
           t('dao.variables.difficulty.relativeAmount'),
-          coeffsResult.needPaymentAmount.min_payment_amount.toLocaleString(),
-          coeffsResult.needPaymentAmount.Q1_payment_amount.toLocaleString(),
-          coeffsResult.needPaymentAmount.Q2_payment_amount.toLocaleString(),
-          coeffsResult.needPaymentAmount.Q3_payment_amount.toLocaleString(),
-          coeffsResult.needPaymentAmount.max_payment_amount.toLocaleString(),
+          collectiveResult.needPaymentAmount.min_payment_amount.toLocaleString(),
+          collectiveResult.needPaymentAmount.Q1_payment_amount.toLocaleString(),
+          collectiveResult.needPaymentAmount.Q2_payment_amount.toLocaleString(),
+          collectiveResult.needPaymentAmount.Q3_payment_amount.toLocaleString(),
+          collectiveResult.needPaymentAmount.max_payment_amount.toLocaleString(),
         ),
       ]);
     }
-  }, [coeffsResult]);
+  }, [collectiveResult]);
 
   return (
     <TableContainer

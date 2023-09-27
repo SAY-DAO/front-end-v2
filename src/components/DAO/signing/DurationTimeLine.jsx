@@ -35,7 +35,8 @@ export default function DurationTimeLine({ need }) {
 
   return (
     <Timeline position="alternate" sx={{ pt: 4, pl: 0, pr: 0 }}>
-      {familySignatures &&
+      {initialSignature &&
+        familySignatures &&
         familySignatures[0] &&
         familySignatures.map((s) => (
           <TimelineItem key={s.hash}>

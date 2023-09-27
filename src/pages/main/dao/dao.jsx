@@ -51,7 +51,7 @@ export default function Dao() {
                   height="140"
                   image="/images/dao/signature.png"
                   alt="green iguana"
-                  sx={{ maxWidth: 130, m: 'auto'}}
+                  sx={{ maxWidth: 130, m: 'auto' }}
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Typography
@@ -102,11 +102,11 @@ export default function Dao() {
             </Card>
           </Grid>
         </Grid>
-        <Grid container item spacing={2} sx={{ mb: 1 }}>
+        <Grid container item spacing={2} sx={{ mb: 1 }} justifyContent="center" alignItems="center">
           <Grid item xs={6}>
             <Card
               sx={{
-                maxHeight: 345,
+                maxWidth: 345,
                 borderRadius: 5,
                 // bgcolor: '#d3eef9',
                 minHeight: 200,
@@ -170,7 +170,7 @@ export default function Dao() {
             </Card>
           </Grid>
         </Grid>
-        <Grid container item spacing={2} justifyContent="center">
+        <Grid container item spacing={2} sx={{ mb: 1 }} justifyContent="center" alignItems="center">
           <Grid item xs={6}>
             <Card
               sx={{

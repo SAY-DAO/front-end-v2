@@ -20,7 +20,7 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
   const { userInfo } = userLogin;
 
   const needVariables = useSelector((state) => state.needVariables);
-  const { distanceResult } = needVariables;
+  const { personalResult } = needVariables;
 
   const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
   const { mintEcoResult } = ecosystemMintData;
@@ -46,14 +46,14 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       setCount(mintEcoResult.theUser.ready);
     } else if (mintEcoResult && which === 'mined') {
       setCount(mintEcoResult.theUser.mined);
-    } else if (paidNeedsData && distanceResult && which === 'signWaiting') {
+    } else if (paidNeedsData && personalResult && which === 'signWaiting') {
       setCount(
-        distanceResult.paid.fatherCompletePay +
-          distanceResult.paid.motherCompletePay +
-          distanceResult.paid.amooCompletePay +
-          distanceResult.paid.daeiCompletePay +
-          distanceResult.paid.khalehCompletePay +
-          distanceResult.paid.ammeCompletePay -
+        personalResult.paid.fatherCompletePay +
+          personalResult.paid.motherCompletePay +
+          personalResult.paid.amooCompletePay +
+          personalResult.paid.daeiCompletePay +
+          personalResult.paid.khalehCompletePay +
+          personalResult.paid.ammeCompletePay -
           paidNeedsData.readyNeedsList.length,
       );
     } else if (signedCount >= 0 && paidNeedsData && which === 'signReady') {
@@ -63,7 +63,7 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
     } else if (paidNeedsData && which === 'signed') {
       setCount(signedCount);
     }
-  }, [mintEcoResult, which, distanceResult, paidNeedsData, signedCount]);
+  }, [mintEcoResult, which, personalResult, paidNeedsData, signedCount]);
 
   const handleTooltipClose = () => {
     setOpen(false);

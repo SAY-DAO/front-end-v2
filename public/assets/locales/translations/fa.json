@@ -872,6 +872,7 @@
     "comments": "پیغام‌ها",
     "disabledWallet": "تا رفع خطا گزارش شده این نیاز قابل امضا نخواهد بود!",
     "investigating": "در حال بررسی",
-    "waitingAuditor": "در انتظار امضا شاهد"
+    "waitingAuditor": "در انتظار امضا شاهد",
+    "waitingFamily": "در انتظار امضا عضو خانواده"
   }
 }

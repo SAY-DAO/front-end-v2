@@ -35,7 +35,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import {
   fetchFamilyMemberDistanceRatio,
   fetchEcoFamilyRolesCompletePays,
-  fetchNeedCoefficients,
+  fetchNeedCollectiveRatios,
   fetchNonce,
   fetchOneReadySignNeed,
   fetchWalletInformation,
@@ -55,9 +55,8 @@ import {
 import WalletButton from '../../../components/WalletButton';
 import WalletDialog from '../../../components/modals/WalletDialog';
 import {
-  FAMILY_DISTANCE_RATIO_REST,
   FAMILY_ECOSYSTEM_PAYS_REST,
-  ONE_NEED_COEFFS_RESET,
+  ONE_NEED_COLLECTIVE_RATIO_RESET,
   SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
@@ -79,6 +78,7 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [ratios, setRatios] = useState();
   const [open, setOpen] = useState(false);
   const [variablesOpen, setVariablesOpen] = useState({
     distanceRatio: false,
@@ -123,8 +123,8 @@ export default function DaoNeedSignature() {
 
   const needVariables = useSelector((state) => state.needVariables);
   const {
-    coeffsResult,
-    distanceResult,
+    collectiveResult,
+    personalResult,
     success: successOneNeedData,
     error: errorOneNeedData,
   } = needVariables;
@@ -148,9 +148,51 @@ export default function DaoNeedSignature() {
   } = useSelector((state) => state.signature);
 
   useEffect(() => {
+    if (personalResult && collectiveResult && oneReadyNeed) {
+      if (
+        !oneReadyNeed.variables ||
+        !oneReadyNeed.variables.find(
+          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
+        )
+      ) {
+        const theRatio =
+          userVRole === VirtualFamilyRole.FATHER
+            ? personalResult.distanceRatio.fatherQGrant
+            : userVRole === VirtualFamilyRole.MOTHER
+            ? personalResult.distanceRatio.motherQGrant
+            : userVRole === VirtualFamilyRole.AMOO
+            ? personalResult.distanceRatio.amooQGrant
+            : userVRole === VirtualFamilyRole.KHALEH
+            ? personalResult.distanceRatio.khalehQGrant
+            : userVRole === VirtualFamilyRole.DAEI
+            ? personalResult.distanceRatio.daeiQGrant
+            : userVRole === VirtualFamilyRole.AMME && personalResult.distanceRatio.ammeQGrant;
+        setRatios({
+          distanceRatio: theRatio,
+          difficultyRatio: collectiveResult.difficultyRatio,
+          contributionRatio: collectiveResult.contributionRatio,
+        });
+      } else if (
+        oneReadyNeed.variables.find(
+          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
+        )
+      ) {
+        const { distanceRatio, difficultyRatio, contributionRatio } = oneReadyNeed.variables.find(
+          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
+        );
+        setRatios({
+          distanceRatio,
+          difficultyRatio,
+          contributionRatio,
+        });
+      }
+    }
+  }, [personalResult, collectiveResult]);
+
+  useEffect(() => {
     if (oneReadyNeed && chain && !errorSignature) {
       if (swVerifiedAddress && !prepared) {
-        dispatch(prepareSignature(oneReadyNeed.id, address, chain.id));
+        dispatch(prepareSignature(oneReadyNeed.id, address, chain.id, ratios));
       }
       if (swVerifiedAddress && prepared && !signatureHash) {
         dispatch(signTransaction(walletClient, prepared));
@@ -277,10 +319,8 @@ export default function DaoNeedSignature() {
   }, [errorSignIn, errorVerify, errorWalletInformation, errorWalletNonce, errorSignature]);
 
   useEffect(() => {
-    if (!coeffsResult) {
-      dispatch(fetchNeedCoefficients(needId));
-    }
-    if (!distanceResult) {
+    dispatch(fetchNeedCollectiveRatios(needId));
+    if (!personalResult) {
       dispatch(fetchFamilyMemberDistanceRatio());
     }
   }, [needId]);
@@ -308,8 +348,7 @@ export default function DaoNeedSignature() {
         dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
       }
-      dispatch({ type: ONE_NEED_COEFFS_RESET });
-      dispatch({ type: FAMILY_DISTANCE_RATIO_REST });
+      dispatch({ type: ONE_NEED_COLLECTIVE_RATIO_RESET });
     };
   }, [createdSignature]);
 
@@ -910,11 +949,11 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {distanceResult && typeof userVRole === 'number' ? (
+                                {personalResult && typeof userVRole === 'number' ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.distanceRatio.body">
                                       {{
-                                        paid: distanceResult.paid[
+                                        paid: personalResult.paid[
                                           `${getVFamilyRoleString(
                                             oneReadyNeed.members &&
                                               oneReadyNeed.members.find(
@@ -966,7 +1005,7 @@ export default function DaoNeedSignature() {
                                   }}
                                 />
                               </IconButton>
-                              {distanceResult && typeof userVRole === 'number' ? (
+                              {ratios && typeof userVRole === 'number' ? (
                                 <Typography
                                   variant="h4"
                                   fontWeight="600"
@@ -975,18 +1014,7 @@ export default function DaoNeedSignature() {
                                     fontSize: 14,
                                   }}
                                 >
-                                  {userVRole === VirtualFamilyRole.FATHER
-                                    ? distanceResult.distanceRatio.fatherQGrant
-                                    : userVRole === VirtualFamilyRole.MOTHER
-                                    ? distanceResult.distanceRatio.motherQGrant
-                                    : userVRole === VirtualFamilyRole.AMOO
-                                    ? distanceResult.distanceRatio.amooQGrant
-                                    : userVRole === VirtualFamilyRole.KHALEH
-                                    ? distanceResult.distanceRatio.khalehQGrant
-                                    : userVRole === VirtualFamilyRole.DAEI
-                                    ? distanceResult.distanceRatio.daeiQGrant
-                                    : userVRole === VirtualFamilyRole.AMME &&
-                                      distanceResult.distanceRatio.ammeQGrant}
+                                  {ratios.distanceRatio}
                                 </Typography>
                               ) : (
                                 <Stack
@@ -1029,16 +1057,16 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {paymentDetails && coeffsResult ? (
+                                {paymentDetails && collectiveResult ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.difficulty.body">
                                       {{
                                         needConfirm:
-                                          coeffsResult.needConfirmDuration.confirmDuration,
+                                          collectiveResult.needConfirmDuration.confirmDuration,
                                         needPayment:
-                                          coeffsResult.needPaymentDuration.paymentDuration,
+                                          collectiveResult.needPaymentDuration.paymentDuration,
                                         needLogistic:
-                                          coeffsResult.needLogisticDuration.logisticDuration,
+                                          collectiveResult.needLogisticDuration.logisticDuration,
                                         needCost: paymentDetails.totalAmount,
                                       }}
                                     </Trans>
@@ -1074,7 +1102,7 @@ export default function DaoNeedSignature() {
                                   }}
                                 />
                               </IconButton>
-                              {coeffsResult ? (
+                              {ratios ? (
                                 <Typography
                                   variant="h4"
                                   fontWeight="600"
@@ -1083,7 +1111,7 @@ export default function DaoNeedSignature() {
                                     fontSize: 14,
                                   }}
                                 >
-                                  {coeffsResult.difficultyRatio}
+                                  {ratios.difficultyRatio}
                                 </Typography>
                               ) : (
                                 <Stack
@@ -1143,7 +1171,7 @@ export default function DaoNeedSignature() {
                                   }}
                                 />
                               </IconButton>
-                              {coeffsResult ? (
+                              {ratios ? (
                                 <Typography
                                   variant="h4"
                                   fontWeight="600"
@@ -1152,7 +1180,7 @@ export default function DaoNeedSignature() {
                                     fontSize: 14,
                                   }}
                                 >
-                                  {coeffsResult.contributionRatio}
+                                  {ratios.contributionRatio}
                                 </Typography>
                               ) : (
                                 <Stack
@@ -1192,8 +1220,9 @@ export default function DaoNeedSignature() {
                           fullWidth
                           variant="outlined"
                           disabled={
-                            !distanceResult ||
-                            !distanceResult.distanceRatio.allChildrenCaredFor ||
+                            !ratios ||
+                            !personalResult ||
+                            !personalResult.distanceRatio.allChildrenCaredFor ||
                             (errorVerify && true) ||
                             (errorWalletInformation && true) ||
                             (errorOneNeedData && true) ||
@@ -1210,8 +1239,9 @@ export default function DaoNeedSignature() {
                             signbutton="true"
                             variant="outlined"
                             disabled={
-                              (distanceResult &&
-                                !distanceResult.distanceRatio.allChildrenCaredFor) ||
+                              !ratios ||
+                              !personalResult ||
+                              !personalResult.distanceRatio.allChildrenCaredFor ||
                               (errorVerify && true) ||
                               (errorWalletInformation && true) ||
                               (errorSignIn && true) ||
@@ -1219,8 +1249,8 @@ export default function DaoNeedSignature() {
                               (errorReadyOne && true)
                             }
                             loading={
-                              !coeffsResult ||
-                              !distanceResult ||
+                              !collectiveResult ||
+                              !personalResult ||
                               loadingVerifiedSwAddress ||
                               isLoadingSignIn ||
                               loadingSignature ||
@@ -1241,9 +1271,9 @@ export default function DaoNeedSignature() {
                       </Typography>
                     </Grid>
                   )}
-                {distanceResult &&
-                  distanceResult.paid &&
-                  !distanceResult.distanceRatio.allChildrenCaredFor && (
+                {personalResult &&
+                  personalResult.paid &&
+                  !personalResult.distanceRatio.allChildrenCaredFor && (
                     <Typography sx={{ p: 2, textAlign: 'center' }}>
                       {t('dao.variables.distanceRatio.zero')}
                     </Typography>
