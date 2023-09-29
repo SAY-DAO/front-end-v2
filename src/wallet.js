@@ -4,8 +4,9 @@ import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { createPublicClient, webSocket } from 'viem';
+// import { CoinbaseWalletConnector } from '@wagmi/core/connectors/coinbaseWallet';
 
-// Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
+
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
   [infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY }), publicProvider()],
@@ -15,10 +16,18 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 export const config = createConfig({
   autoConnect: true,
   connectors: [
+    // new CoinbaseWalletConnector({
+    //   chains,
+    //   options: {
+    //     appName: 'SAY DAO',
+    //     jsonRpcUrl: `https://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
+    //   },
+    // }),
     new MetaMaskConnector({ chains }),
     new WalletConnectConnector({
       chains,
       options: {
+        relayUrl: `wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),

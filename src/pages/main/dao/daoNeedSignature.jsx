@@ -15,14 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { grey } from '@mui/material/colors';
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useNetwork,
-  useSignMessage,
-  useWalletClient,
-} from 'wagmi';
+import { useAccount, useDisconnect, useNetwork, useSignMessage, useWalletClient } from 'wagmi';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -96,6 +89,7 @@ export default function DaoNeedSignature() {
   const [signatureError, setSignatureError] = useState('');
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState();
+
   const {
     status,
     isLoading: isLoadingSignIn,
@@ -107,7 +101,6 @@ export default function DaoNeedSignature() {
 
   const { address, isConnected } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const { isLoading, pendingConnector } = useConnect();
 
   const { chain } = useNetwork();
   const { disconnect } = useDisconnect();
@@ -135,9 +128,11 @@ export default function DaoNeedSignature() {
   );
   const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
   const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
-  const { swVerifiedAddress, loading: loadingVerifiedSwAddress } = useSelector(
-    (state) => state.signatureVerification,
-  );
+  const {
+    swVerifiedAddress,
+    loading: loadingVerifiedSwAddress,
+    error: errorVerifiedSwAddress,
+  } = useSelector((state) => state.signatureVerification);
 
   const {
     prepared,
@@ -211,10 +206,11 @@ export default function DaoNeedSignature() {
 
   // fetch nonce for the wallet siwe
   useEffect(() => {
-    if (userInfo && userInfo.user.id) {
+    if (userInfo && userInfo.user.id && isConnected) {
+      setOpenWallets(false);
       dispatch(fetchNonce());
     }
-  }, [userInfo]);
+  }, [userInfo, isConnected]);
 
   // after sign in get sign-in information
   useEffect(() => {
@@ -305,6 +301,7 @@ export default function DaoNeedSignature() {
   // Disconnect if did not sign in
   useEffect(() => {
     if (
+      errorVerifiedSwAddress ||
       errorSignIn ||
       errorVerify ||
       errorSignature ||
@@ -1255,8 +1252,6 @@ export default function DaoNeedSignature() {
                               isLoadingSignIn ||
                               loadingSignature ||
                               loadingInformation ||
-                              isLoading ||
-                              pendingConnector ||
                               loadingEthereumSignature
                             }
                             onClick={handleSignature}
@@ -1303,9 +1298,9 @@ export default function DaoNeedSignature() {
         comment={comment}
         setComment={setComment}
       />
-      {(errorOneNeedData || errorReadyOne) && (
+      {(errorOneNeedData || errorReadyOne || errorVerifiedSwAddress) && (
         <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
-          {errorOneNeedData || errorReadyOne}
+          {errorOneNeedData || errorReadyOne || errorVerifiedSwAddress}
         </Message>
       )}
       {(signatureError ||

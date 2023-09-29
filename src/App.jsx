@@ -16,6 +16,7 @@ import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
+// window.Buffer = window.Buffer || Buffer; // coinbase wallet needs this
 
 function App() {
   const routing = useRoutes(Router);

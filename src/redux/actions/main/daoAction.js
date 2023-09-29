@@ -360,7 +360,11 @@ export const verifySocialWorkerSignature =
       });
 
       if (swAddress !== verifiedAddress) {
-        throw new Error('Not the same address!');
+        dispatch({
+          type: SIGNATURE_VERIFICATION_FAIL,
+          payload: 'امضای مددکار مخدوش است!',
+        });
+        return
       }
       dispatch({
         type: SIGNATURE_VERIFICATION_SUCCESS,

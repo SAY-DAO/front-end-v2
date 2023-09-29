@@ -58,8 +58,6 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       );
     } else if (signedCount >= 0 && paidNeedsData && which === 'signReady') {
       setCount(paidNeedsData.readyNeedsList.length - signedCount);
-      console.log('signedCount');
-      console.log(signedCount);
     } else if (paidNeedsData && which === 'signed') {
       setCount(signedCount);
     }

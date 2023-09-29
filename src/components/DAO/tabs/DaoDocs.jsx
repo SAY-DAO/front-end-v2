@@ -6,7 +6,6 @@ export default function DaoDocs() {
 
   const getIframe = () => {
     const theIframe = document.getElementById('docs-iframe');
-    console.log('theIframe');
     if (theIframe) {
       setLoading(false);
     }

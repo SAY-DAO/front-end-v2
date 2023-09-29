@@ -20,14 +20,23 @@ function TheDialog(props) {
 
   const [walletToastOpen, setWalletToastOpen] = useState(false);
 
-  const { connect, connectors, isLoading, pendingConnector, error } = useConnect();
+  const { connect, connectors, isLoading, pendingConnector, error, reset } = useConnect();
 
   // toast
   useEffect(() => {
     if (error) {
       setWalletToastOpen(true);
     }
+    return () => {
+      reset();
+    };
   }, [error && error.code]);
+
+  useEffect(() => {
+    if (isLoading) {
+      onClose();
+    }
+  }, [isLoading]);
 
   const handleConnect = (connector) => {
     connect({ connector });

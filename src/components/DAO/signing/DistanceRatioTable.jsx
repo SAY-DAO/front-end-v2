@@ -6,16 +6,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getVFamilyRoleString } from '../../../utils/helpers';
+import { fetchEcoFamilyRolesCompletePays } from '../../../redux/actions/main/daoAction';
 
 function createData(name, min, q1, q2, q3, max) {
   return { name, min, q1, q2, q3, max };
 }
 
 export default function DistanceRatioTable() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const [rows, setRows] = useState([]);
@@ -28,6 +30,10 @@ export default function DistanceRatioTable() {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  useEffect(() => {
+    dispatch(fetchEcoFamilyRolesCompletePays());
+  }, []);
 
   useEffect(() => {
     if (ecoResult) {
