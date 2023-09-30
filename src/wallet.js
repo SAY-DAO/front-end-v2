@@ -4,18 +4,11 @@ import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { createPublicClient, http } from 'viem';
 import { alchemyProvider } from '@wagmi/core/providers/alchemy';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import { InjectedConnector } from 'wagmi/connectors/injected';
 import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect';
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
   [
-    jsonRpcProvider({
-      rpc: () => ({
-        http: `https:///mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
-      }),
-    }),
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 1_000 }),
     publicProvider(),
@@ -26,18 +19,11 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 export const config = createConfig({
   autoConnect: false,
   connectors: [
-    new InjectedConnector({
-      chains,
-      options: {
-        name: 'Injected',
-        shimDisconnect: true,
-      },
-    }),
     new MetaMaskConnector({ chains }),
     new WalletConnectConnector({
       chains,
       options: {
-        relayUrl: `wss://blue-green-borough.discover.quiknode.pro/${process.env.REACT_APP_QUICK_NODE_KEY}`,
+        relayUrl: `wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),
@@ -51,5 +37,5 @@ export const config = createConfig({
     // transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
     chain: mainnet,
   }),
-  webSocketPublicClient,
+  // webSocketPublicClient,
 });
