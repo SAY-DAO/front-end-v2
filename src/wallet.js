@@ -2,7 +2,7 @@ import { createConfig, configureChains, mainnet, sepolia } from 'wagmi';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { publicProvider } from 'wagmi/providers/public';
 // import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { createPublicClient, http } from 'viem';
+import { createPublicClient, webSocket } from 'viem';
 import { alchemyProvider } from '@wagmi/core/providers/alchemy';
 // import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -47,9 +47,9 @@ export const config = createConfig({
     // batch: {
     //   multicall: true,
     // },
-    transport: http(),
-    // transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
+    // transport: http(),
+    transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
     chain: mainnet,
   }),
-  // webSocketPublicClient,
+  webSocketPublicClient,
 });
