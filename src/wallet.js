@@ -23,7 +23,7 @@ export const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
-        relayUrl: `wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
+        relayUrl: `wss://blue-green-borough.discover.quiknode.pro/${process.env.REACT_APP_QUICK_NODE_KEY}`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),

@@ -144,12 +144,10 @@ export default function DaoNeedSignature() {
 
   useEffect(() => {
     if (personalResult && collectiveResult && oneReadyNeed) {
-      if (
-        !oneReadyNeed.variables ||
-        !oneReadyNeed.variables.find(
-          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
-        )
-      ) {
+      const theNeedVariables = oneReadyNeed.variables.find(
+        (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
+      );
+      if (personalResult.distanceRatio && (!oneReadyNeed.variables || !theNeedVariables)) {
         const theRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
@@ -167,14 +165,8 @@ export default function DaoNeedSignature() {
           difficultyRatio: collectiveResult.difficultyRatio,
           contributionRatio: collectiveResult.contributionRatio,
         });
-      } else if (
-        oneReadyNeed.variables.find(
-          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
-        )
-      ) {
-        const { distanceRatio, difficultyRatio, contributionRatio } = oneReadyNeed.variables.find(
-          (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
-        );
+      } else if (oneReadyNeed.variables && oneReadyNeed.variables[0]) {
+        const { distanceRatio, difficultyRatio, contributionRatio } = theNeedVariables;
         setRatios({
           distanceRatio,
           difficultyRatio,

@@ -46,7 +46,7 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       setCount(mintEcoResult.theUser.ready);
     } else if (mintEcoResult && which === 'mined') {
       setCount(mintEcoResult.theUser.mined);
-    } else if (paidNeedsData && personalResult && which === 'signWaiting') {
+    } else if (paidNeedsData && personalResult && personalResult.paid && which === 'signWaiting') {
       setCount(
         personalResult.paid.fatherCompletePay +
           personalResult.paid.motherCompletePay +
