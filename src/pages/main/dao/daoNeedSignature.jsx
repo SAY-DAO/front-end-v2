@@ -458,6 +458,30 @@ export default function DaoNeedSignature() {
     }));
   };
 
+  const [test, setTest] = useState('waiting...');
+  function handleEthereum() {
+    const { ethereum } = window;
+    if (ethereum && ethereum.isMetaMask) {
+      setTest('Ethereum successfully detected!');
+      // Access the decentralized web!
+    } else {
+      setTest('Please install MetaMask!');
+    }
+  }
+  useEffect(() => {
+    if (window.ethereum) {
+      handleEthereum();
+    } else {
+      window.addEventListener('ethereum#initialized', handleEthereum, {
+        once: true,
+      });
+
+      // If the event is not dispatched by the end of the timeout,
+      // the user probably doesn't have MetaMask installed.
+      setTimeout(handleEthereum, 3000); // 3 seconds
+    }
+  }, []);
+
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -1207,6 +1231,7 @@ export default function DaoNeedSignature() {
                     </Grid>
                   </Grid>
                 </Grid>
+                {test}
                 {/* Button */}
                 {oneReadyNeed.members &&
                   !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
