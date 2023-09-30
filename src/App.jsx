@@ -11,7 +11,6 @@ import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { WagmiConfig } from 'wagmi';
 import { useSelector } from 'react-redux';
-import { ConnectKitProvider } from 'connectkit';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
@@ -35,7 +34,6 @@ function App() {
 
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider debugMode>
         <CacheProvider value={cacheRtl}>
           <StylesProvider jss={jss}>
             <div id="direction" dir="">
@@ -61,7 +59,6 @@ function App() {
             </div>
           </StylesProvider>
         </CacheProvider>
-      </ConnectKitProvider>
     </WagmiConfig>
   );
 }
