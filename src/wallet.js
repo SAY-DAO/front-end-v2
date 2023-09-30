@@ -13,7 +13,7 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     // jsonRpcProvider({
     //   rpc: () => ({
-    //     http: `https:///mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
+    //     http: `https://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
     //   }),
     // }),
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
@@ -37,7 +37,7 @@ export const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
-        // relayUrl: `wss://blue-green-borough.discover.quiknode.pro/${process.env.REACT_APP_QUICK_NODE_KEY}`,
+        relayUrl: `wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),
