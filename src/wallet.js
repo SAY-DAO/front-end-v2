@@ -31,7 +31,7 @@ export const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
-        relayUrl: `ws://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
+        relayUrl: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),
