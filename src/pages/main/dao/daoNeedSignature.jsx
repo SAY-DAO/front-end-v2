@@ -994,7 +994,7 @@ export default function DaoNeedSignature() {
                                   }}
                                 />
                               </IconButton>
-                              {ratios && typeof userVRole === 'number' ? (
+                              {ratios ? (
                                 <Typography
                                   variant="h4"
                                   fontWeight="600"
