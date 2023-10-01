@@ -147,7 +147,7 @@ export default function DaoNeedSignature() {
       const theNeedVariables = oneReadyNeed.variables.find(
         (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
       );
-      if (personalResult.distanceRatio && (!oneReadyNeed.variables || !theNeedVariables)) {
+      if (userVRole && (!oneReadyNeed.variables || !theNeedVariables)) {
         const theRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
@@ -174,7 +174,7 @@ export default function DaoNeedSignature() {
         });
       }
     }
-  }, [personalResult, collectiveResult, oneReadyNeed]);
+  }, [personalResult, collectiveResult, oneReadyNeed, userVRole]);
 
   useEffect(() => {
     if (oneReadyNeed && chain && !errorSignature) {
@@ -1003,7 +1003,7 @@ export default function DaoNeedSignature() {
                                     fontSize: 14,
                                   }}
                                 >
-                                  {String(ratios.distanceRatio)}
+                                  {ratios.distanceRatio}
                                 </Typography>
                               ) : (
                                 <Stack
