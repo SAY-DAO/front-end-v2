@@ -1003,7 +1003,7 @@ export default function DaoNeedSignature() {
                                     fontSize: 14,
                                   }}
                                 >
-                                  {ratios.distanceRatio}
+                                  {String(ratios.distanceRatio)}
                                 </Typography>
                               ) : (
                                 <Stack
