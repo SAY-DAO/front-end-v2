@@ -8,6 +8,7 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 // import { InjectedConnector } from 'wagmi/connectors/injected';
 import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect';
+import { getDefaultConfig } from 'connectkit';
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
@@ -24,26 +25,49 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 // Set up client
-export const config = createConfig({
-  autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        relayUrl: `wss://relay.walletconnect.com`,
-        projectId: process.env.REACT_APP_WC_PROJECT_ID,
-      },
-    }),
-  ],
+export const config = createConfig(
+  getDefaultConfig({
+    autoConnect: false,
+    // Required API Keys
+    // infuraId: process.env.REACT_APP_INFURA_KEY, // or alchemyId
+    // walletConnectProjectId: process.env.REACT_APP_WC_PROJECT_ID, // crash due to 403 Forbidden!
+    // Required
+    // appName: 'SAY DAO',
+    // // Optional
+    // appDescription: 'DAO',
+    // appUrl: 'https://dapp.saydao.org', // your app's url
+    // appIcon: 'https://dapp.saydao.org/images/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
 
-  publicClient: createPublicClient({
-    // batch: {
-    //   multicall: true,
-    // },
-    // transport: http(),
-    transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
-    chain: mainnet,
+    publicClient: createPublicClient({
+      batch: {
+        multicall: true,
+      },
+      // transport: http(),
+      transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+      chain: mainnet,
+    }),
   }),
-  webSocketPublicClient,
-});
+  // {
+  //   autoConnect: true,
+  //   connectors: [
+  //     new MetaMaskConnector({ chains }),
+  //     new WalletConnectConnector({
+  //       chains,
+  //       options: {
+  //         relayUrl: `wss://relay.walletconnect.com`,
+  //         projectId: process.env.REACT_APP_WC_PROJECT_ID,
+  //       },
+  //     }),
+  //   ],
+
+  // publicClient: createPublicClient({
+  //   batch: {
+  //     multicall: true,
+  //   },
+  //   // transport: http(),
+  //   transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+  //   chain: mainnet,
+  // }),
+  //   webSocketPublicClient,
+  // },
+);
