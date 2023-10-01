@@ -31,7 +31,6 @@ export const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
-        relayUrl: `ws://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),
@@ -41,8 +40,8 @@ export const config = createConfig({
     // batch: {
     //   multicall: true,
     // },
-    // transport: http(),
-    transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+    transport: http(),
+    // transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
     chain: mainnet,
   }),
   webSocketPublicClient,
