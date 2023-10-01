@@ -40,8 +40,8 @@ export const config = createConfig({
     // batch: {
     //   multicall: true,
     // },
-    transport: http(),
-    // transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+    // transport: http(),
+    transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
     chain: mainnet,
   }),
   webSocketPublicClient,
