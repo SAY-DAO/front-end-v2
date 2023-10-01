@@ -29,14 +29,14 @@ export const config = createConfig(
   getDefaultConfig({
     autoConnect: false,
     // Required API Keys
-    // infuraId: process.env.REACT_APP_INFURA_KEY, // or alchemyId
-    // walletConnectProjectId: process.env.REACT_APP_WC_PROJECT_ID, // crash due to 403 Forbidden!
+    infuraId: process.env.REACT_APP_INFURA_KEY, // or alchemyId
+    walletConnectProjectId: process.env.REACT_APP_WC_PROJECT_ID, 
     // Required
-    // appName: 'SAY DAO',
-    // // Optional
-    // appDescription: 'DAO',
-    // appUrl: 'https://dapp.saydao.org', // your app's url
-    // appIcon: 'https://dapp.saydao.org/images/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    appName: 'SAY DAO',
+    // Optional
+    appDescription: 'DAO',
+    appUrl: 'https://dapp.saydao.org', // your app's url
+    appIcon: 'https://dapp.saydao.org/images/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
 
     publicClient: createPublicClient({
       batch: {
