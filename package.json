@@ -30,6 +30,7 @@
     "@wagmi/core": "^1.4.2",
     "axios": "^1.4.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
+    "connectkit": "^1.5.3",
     "copy-to-clipboard": "^3.3.3",
     "dotenv": "^16.1.4",
     "ethers": "^6.7.0",

@@ -9,11 +9,13 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import { WagmiConfig } from 'wagmi';
+// import { WagmiConfig } from 'wagmi';
 import { useSelector } from 'react-redux';
+import { WagmiConfig, createConfig } from 'wagmi';
+import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from 'connectkit';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
-import { config } from './wallet';
+// import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
 function App() {
@@ -32,8 +34,23 @@ function App() {
   });
   const theTheme = ThemeSettings();
 
+  const config = createConfig(
+    getDefaultConfig({
+      // Required API Keys
+      infuraId: process.env.REACT_APP_INFURA_KEY, // or alchemyId
+      walletConnectProjectId: process.env.REACT_APP_WC_PROJECT_ID,
+      // Required
+      appName: 'SAY DAO',
+      // Optional
+      appDescription: 'DAO',
+      appUrl: 'https://dapp.saydao.org', // your app's url
+      appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    }),
+  );
+
   return (
     <WagmiConfig config={config}>
+      <ConnectKitProvider>
         <CacheProvider value={cacheRtl}>
           <StylesProvider jss={jss}>
             <div id="direction" dir="">
@@ -59,6 +76,8 @@ function App() {
             </div>
           </StylesProvider>
         </CacheProvider>
+        <ConnectKitButton />
+      </ConnectKitProvider>
     </WagmiConfig>
   );
 }

@@ -31,6 +31,7 @@ export const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
+        relayUrl: `wss://relay.walletconnect.com`,
         projectId: process.env.REACT_APP_WC_PROJECT_ID,
       },
     }),
