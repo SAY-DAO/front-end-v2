@@ -12,13 +12,13 @@ import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect';
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
   [
-    // jsonRpcProvider({
-    //   rpc: () => ({
-    //     http: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
-    //   }),
-    // }),
+    jsonRpcProvider({
+      rpc: () => ({
+        http: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
+      }),
+    }),
     // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
-    infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 1_000 }),
+    // infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 1_000 }),
     publicProvider(),
   ],
 );
@@ -27,7 +27,7 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 export const config = createConfig({
   autoConnect: true,
   connectors: [
-    // new MetaMaskConnector({ chains }),
+    new MetaMaskConnector({ chains }),
     new WalletConnectConnector({
       chains,
       options: {
