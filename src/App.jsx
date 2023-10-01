@@ -33,6 +33,10 @@ function App() {
   });
   const theTheme = ThemeSettings();
 
+  const socket = new WebSocket("wss://relay.walletconnect.org");
+  socket.addEventListener("error", (event) => {
+    console.log("WebSocket error: ", event);
+  });
   return (
     <WagmiConfig config={config}>
       <ConnectKitProvider>

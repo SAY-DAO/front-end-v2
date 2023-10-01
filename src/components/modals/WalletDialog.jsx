@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import List from '@mui/material/List';
@@ -109,6 +111,22 @@ function TheDialog(props) {
             ),
           )}
       </List>
+      <div className="card">
+        {connectors && connectors.map((connector) => (
+          <button
+            disabled={!connector.ready}
+            key={connector.id}
+            onClick={() => connect({ connector })}
+          >
+            Connect to {connector.name}
+            {isLoading && pendingConnector?.id === connector.id && ' (connecting)'}
+          </button>
+        ))}
+        {/* <p>Connected to: {address || 'not connected yet'}</p> */}
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
       <Divider variant="middle" sx={{ m: 2 }} />
       <Typography sx={{ fontWeight: 600 }}>{t('wallet.dialog.learn')}</Typography>
       <Typography

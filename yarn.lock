@@ -11517,6 +11517,13 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==
 
+phantom-wagmi-connector@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/phantom-wagmi-connector/-/phantom-wagmi-connector-1.0.7.tgz#2590b2c72265950ea956c3e1fddae7b4feac414b"
+  integrity sha512-Xv1/tXQCK6xP7YPRQ3/lhfRbj4s9lZhgYwuPKJoHX7HlwppQO5pcyLlj1jcuboqCPhPpAqtKTrfOZaWR0h60Cg==
+  dependencies:
+    wagmi "^1.0.2"
+
 picocolors@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
@@ -14876,7 +14883,7 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
-wagmi@^1.4.2:
+wagmi@^1.0.2, wagmi@^1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-1.4.2.tgz#cd681b1d35cf36613a11852cf25c2c39ce456f9f"
   integrity sha512-Cxu0LatB44stqHoqdc6dgsTb9woYH1bEquJFq9PbTkePmnRCvceAD4aFUREUTaBWzIBcouhFlanWweDzEnb3mg==
