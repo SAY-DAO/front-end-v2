@@ -35,14 +35,14 @@ function App() {
   const theTheme = ThemeSettings();
 
   return (
-    <MetaMaskUIProvider
-      sdkOptions={{
-        dappMetadata: {
-          name: 'Demo UI React App',
-        },
-      }}
-    >
-      <WagmiConfig config={config}>
+    <WagmiConfig config={config}>
+      <MetaMaskUIProvider
+        sdkOptions={{
+          dappMetadata: {
+            name: 'Demo UI React App',
+          },
+        }}
+      >
         <ConnectKitProvider>
           <CacheProvider value={cacheRtl}>
             <StylesProvider jss={jss}>
@@ -74,8 +74,8 @@ function App() {
             <MetaMaskButton theme="light" color="white" />
           </div>
         </ConnectKitProvider>
-      </WagmiConfig>
-    </MetaMaskUIProvider>
+      </MetaMaskUIProvider>
+    </WagmiConfig>
   );
 }
 
