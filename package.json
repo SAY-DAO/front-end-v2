@@ -7,6 +7,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^2.8.8",
+    "@metamask/sdk-react-ui": "^0.7.0",
     "@mui/base": "^5.0.0-beta.11",
     "@mui/icons-material": "^5.13.7",
     "@mui/lab": "^5.0.0-alpha.105",

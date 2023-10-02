@@ -364,7 +364,7 @@ export const verifySocialWorkerSignature =
           type: SIGNATURE_VERIFICATION_FAIL,
           payload: 'امضای مددکار مخدوش است!',
         });
-        return
+        return;
       }
       dispatch({
         type: SIGNATURE_VERIFICATION_SUCCESS,

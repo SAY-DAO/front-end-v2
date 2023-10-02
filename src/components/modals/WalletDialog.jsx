@@ -112,16 +112,17 @@ function TheDialog(props) {
           )}
       </List>
       <div className="card">
-        {connectors && connectors.map((connector) => (
-          <button
-            disabled={!connector.ready}
-            key={connector.id}
-            onClick={() => connect({ connector })}
-          >
-            Connect to {connector.name}
-            {isLoading && pendingConnector?.id === connector.id && ' (connecting)'}
-          </button>
-        ))}
+        {connectors &&
+          connectors.map((connector) => (
+            <button
+              disabled={!connector.ready}
+              key={connector.id}
+              onClick={() => connect({ connector })}
+            >
+              Connect to {connector.name}
+              {isLoading && pendingConnector?.id === connector.id && ' (connecting)'}
+            </button>
+          ))}
         {/* <p>Connected to: {address || 'not connected yet'}</p> */}
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR

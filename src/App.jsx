@@ -12,6 +12,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
 import { ConnectKitProvider, ConnectKitButton } from 'connectkit';
+import { MetaMaskUIProvider, MetaMaskButton } from '@metamask/sdk-react-ui';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
@@ -33,41 +34,48 @@ function App() {
   });
   const theTheme = ThemeSettings();
 
-  const socket = new WebSocket("wss://relay.walletconnect.org");
-  socket.addEventListener("error", (event) => {
-    console.log("WebSocket error: ", event);
-  });
   return (
-    <WagmiConfig config={config}>
-      <ConnectKitProvider>
-        <CacheProvider value={cacheRtl}>
-          <StylesProvider jss={jss}>
-            <div id="direction" dir="">
-              <CssBaseline />
-              <Container
-                sx={{
-                  margin: 'auto',
-                  paddingLeft: '0px !important',
-                  paddingRight: '0px !important',
-                }}
-                maxWidth="lg"
-              >
-                <ThemeProvider theme={theTheme}>
-                  <RTL direction={themOptions && themOptions.activeDir}>
-                    <CssBaseline />
-                    {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                    {/* <React.StrictMode> */}
-                    {routing}
-                    {/* </React.StrictMode> */}
-                  </RTL>
-                </ThemeProvider>
-              </Container>
-            </div>
-          </StylesProvider>
-        </CacheProvider>
-        <ConnectKitButton />
-      </ConnectKitProvider>
-    </WagmiConfig>
+    <MetaMaskUIProvider
+      sdkOptions={{
+        dappMetadata: {
+          name: 'Demo UI React App',
+        },
+      }}
+    >
+      <WagmiConfig config={config}>
+        <ConnectKitProvider>
+          <CacheProvider value={cacheRtl}>
+            <StylesProvider jss={jss}>
+              <div id="direction" dir="">
+                <CssBaseline />
+                <Container
+                  sx={{
+                    margin: 'auto',
+                    paddingLeft: '0px !important',
+                    paddingRight: '0px !important',
+                  }}
+                  maxWidth="lg"
+                >
+                  <ThemeProvider theme={theTheme}>
+                    <RTL direction={themOptions && themOptions.activeDir}>
+                      <CssBaseline />
+                      {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                      {/* <React.StrictMode> */}
+                      {routing}
+                      {/* </React.StrictMode> */}
+                    </RTL>
+                  </ThemeProvider>
+                </Container>
+              </div>
+            </StylesProvider>
+          </CacheProvider>
+          <ConnectKitButton />
+          <div className="App">
+            <MetaMaskButton theme="light" color="white" />
+          </div>
+        </ConnectKitProvider>
+      </WagmiConfig>
+    </MetaMaskUIProvider>
   );
 }
 
