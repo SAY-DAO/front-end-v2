@@ -12,10 +12,11 @@ import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
-import { ThirdwebSDKProvider } from '@thirdweb-dev/react';
+import { ThirdwebProvider, ThirdwebSDKProvider } from '@thirdweb-dev/react';
+import { ConnectButton, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
-import { config } from './wallet';
+import { chains, config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
 function App() {
@@ -38,40 +39,46 @@ function App() {
   // const { data: signer } = useSigner();
 
   return (
-    <WagmiConfig config={config}>
-      <CacheProvider value={cacheRtl}>
-        <StylesProvider jss={jss}>
-          <div id="direction" dir="">
-            <CssBaseline />
-            <Container
-              sx={{
-                margin: 'auto',
-                paddingLeft: '0px !important',
-                paddingRight: '0px !important',
-              }}
-              maxWidth="lg"
-            >
-              <ThemeProvider theme={theTheme}>
-                <RTL direction={themOptions && themOptions.activeDir}>
-                  <ThirdwebSDKProvider
-                    desiredChainId={1}
-                    // signer={signer}
-                    provider={config.provider}
-                    queryClient={config.queryClient}
-                  >
-                    <CssBaseline />
-                    {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                    {/* <React.StrictMode> */}
-                    {routing}
-                    {/* </React.StrictMode> */}
-                  </ThirdwebSDKProvider>
-                </RTL>
-              </ThemeProvider>
-            </Container>
-          </div>
-        </StylesProvider>
-      </CacheProvider>
-    </WagmiConfig>
+    <CacheProvider value={cacheRtl}>
+      <StylesProvider jss={jss}>
+        <div id="direction" dir="">
+          <CssBaseline />
+          <Container
+            sx={{
+              margin: 'auto',
+              paddingLeft: '0px !important',
+              paddingRight: '0px !important',
+            }}
+            maxWidth="lg"
+          >
+            <ThemeProvider theme={theTheme}>
+              <RTL direction={themOptions && themOptions.activeDir}>
+                <ThirdwebSDKProvider
+                  desiredChainId={1}
+                  // signer={signer}
+                  provider={config.provider}
+                  queryClient={config.queryClient}
+                >
+                  <WagmiConfig config={config}>
+                    <RainbowKitProvider chains={chains}>
+                      <ThirdwebProvider wagmiClient={config}>
+                        <CssBaseline />
+                        {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                        {/* <React.StrictMode> */}
+                        {routing}
+                        <ConnectButton />
+                      </ThirdwebProvider>
+                    </RainbowKitProvider>
+                  </WagmiConfig>
+
+                  {/* </React.StrictMode> */}
+                </ThirdwebSDKProvider>
+              </RTL>
+            </ThemeProvider>
+          </Container>
+        </div>
+      </StylesProvider>
+    </CacheProvider>
   );
 }
 

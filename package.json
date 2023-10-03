@@ -89,7 +89,7 @@
     "stylis-plugin-rtl": "^2.1.1",
     "url": "latest",
     "viem": "^1.14.0",
-    "wagmi": "^1.4.2",
+    "wagmi": "^1.4.3",
     "web-vitals": "^3.3.2",
     "zlib": "npm:browserify-zlib"
   },

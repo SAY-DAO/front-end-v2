@@ -10,6 +10,8 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect';
 // import { getDefaultConfig } from 'connectkit';
 import { PhantomConnector } from 'phantom-wagmi-connector';
+import '@rainbow-me/rainbowkit/styles.css';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
@@ -20,11 +22,16 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
       }),
     }),
     // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
-    // infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 1_000 }),
+    infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 1_000 }),
     publicProvider(),
   ],
 );
 
+const { connectors } = getDefaultWallets({
+  appName: 'SAY DAOp',
+  projectId: process.env.REACT_APP_WC_PROJECT_ID,
+  chains,
+});
 // Set up client
 export const config = createConfig(
   // getDefaultConfig({
@@ -49,18 +56,20 @@ export const config = createConfig(
   //   }),
   // }),
   {
-    autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({ chains }),
-      new PhantomConnector({ chains }),
-      // new WalletConnectConnector({
-      //   chains,
-      //   options: {
-      //     relayUrl: `wss://relay.walletconnect.com`,
-      //     projectId: process.env.REACT_APP_WC_PROJECT_ID,
-      //   },
-      // }),
-    ],
+    autoConnect: false,
+    connectors,
+    //  [
+    //   new MetaMaskConnector({ chains }),
+    //   new PhantomConnector({ chains }),
+
+    //   // new WalletConnectConnector({
+    //   //   chains,
+    //   //   options: {
+    //   //     relayUrl: `wss://relay.walletconnect.com`,
+    //   //     projectId: process.env.REACT_APP_WC_PROJECT_ID,
+    //   //   },
+    //   // }),
+    // ],
 
     publicClient: createPublicClient({
       batch: {
