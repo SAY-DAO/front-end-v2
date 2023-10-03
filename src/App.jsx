@@ -12,10 +12,11 @@ import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
-import { ConnectWallet, ThirdwebProvider, ThirdwebSDKProvider } from '@thirdweb-dev/react';
+import { ThirdwebProvider, ThirdwebSDKProvider } from '@thirdweb-dev/react';
+import { ConnectButton, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
-import { config } from './wallet';
+import { chains, config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
 function App() {
@@ -59,17 +60,19 @@ function App() {
                   queryClient={config.queryClient}
                 >
                   <WagmiConfig config={config}>
-                    <ThirdwebProvider
-                      activeChain="ethereum"
-                      clientId={process.env.REACT_APP_THIRD_WEB_ID}
-                      wagmiClient={config}
-                    >
-                      <CssBaseline />
-                      {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                      {/* <React.StrictMode> */}
-                      {routing}
-                      <ConnectWallet />
-                    </ThirdwebProvider>
+                    <RainbowKitProvider chains={chains}>
+                      <ThirdwebProvider
+                        activeChain="ethereum"
+                        clientId={process.env.REACT_APP_THIRD_WEB_ID}
+                        wagmiClient={config}
+                      >
+                        <CssBaseline />
+                        {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                        {/* <React.StrictMode> */}
+                        {routing}
+                        <ConnectButton />
+                      </ThirdwebProvider>
+                    </RainbowKitProvider>
                   </WagmiConfig>
 
                   {/* </React.StrictMode> */}
