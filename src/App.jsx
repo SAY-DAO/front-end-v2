@@ -12,11 +12,10 @@ import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
-import { ThirdwebProvider, ThirdwebSDKProvider } from '@thirdweb-dev/react';
-import { ConnectButton, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { ConnectWallet, ThirdwebProvider, ThirdwebSDKProvider } from '@thirdweb-dev/react';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
-import { chains, config } from './wallet';
+import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
 
 function App() {
@@ -60,15 +59,17 @@ function App() {
                   queryClient={config.queryClient}
                 >
                   <WagmiConfig config={config}>
-                    <RainbowKitProvider chains={chains}>
-                      <ThirdwebProvider wagmiClient={config}>
-                        <CssBaseline />
-                        {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                        {/* <React.StrictMode> */}
-                        {routing}
-                        <ConnectButton />
-                      </ThirdwebProvider>
-                    </RainbowKitProvider>
+                    <ThirdwebProvider
+                      activeChain="ethereum"
+                      clientId={process.env.REACT_APP_THIRD_WEB_ID}
+                      wagmiClient={config}
+                    >
+                      <CssBaseline />
+                      {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                      {/* <React.StrictMode> */}
+                      {routing}
+                      <ConnectWallet />
+                    </ThirdwebProvider>
                   </WagmiConfig>
 
                   {/* </React.StrictMode> */}
