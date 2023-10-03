@@ -13,7 +13,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
 import { ThirdwebSDKProvider } from '@thirdweb-dev/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
@@ -36,7 +35,8 @@ function App() {
   });
   const theTheme = ThemeSettings();
 
-  const queryClient = new QueryClient();
+  // const { data: signer } = useSigner();
+
   return (
     <WagmiConfig config={config}>
       <CacheProvider value={cacheRtl}>
@@ -53,15 +53,18 @@ function App() {
             >
               <ThemeProvider theme={theTheme}>
                 <RTL direction={themOptions && themOptions.activeDir}>
-                  <QueryClientProvider client={queryClient}>
-                    <ThirdwebSDKProvider queryClient={queryClient}>
-                      <CssBaseline />
-                      {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                      {/* <React.StrictMode> */}
-                      {routing}
-                      {/* </React.StrictMode> */}
-                    </ThirdwebSDKProvider>
-                  </QueryClientProvider>
+                  <ThirdwebSDKProvider
+                    desiredChainId={1}
+                    // signer={signer}
+                    provider={config.provider}
+                    queryClient={config.queryClient}
+                  >
+                    <CssBaseline />
+                    {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                    {/* <React.StrictMode> */}
+                    {routing}
+                    {/* </React.StrictMode> */}
+                  </ThirdwebSDKProvider>
                 </RTL>
               </ThemeProvider>
             </Container>
