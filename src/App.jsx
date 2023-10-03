@@ -13,8 +13,9 @@ import { useSelector } from 'react-redux';
 // import { WagmiConfig } from 'wagmi';
 // import { ConnectKitProvider, ConnectKitButton } from 'connectkit';
 // import { MetaMaskUIProvider, MetaMaskButton } from '@metamask/sdk-react-ui';
-import { ThirdwebProvider, ConnectWallet } from '@thirdweb-dev/react';
+import { ThirdwebSDKProvider, ThirdwebProvider, ConnectWallet } from '@thirdweb-dev/react';
 // import Router from './routes/Router';
+import { ethers } from 'ethers';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
 // import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
@@ -52,32 +53,35 @@ function App() {
           >
             <ThemeProvider theme={theTheme}>
               <RTL direction={themOptions && themOptions.activeDir}>
-                <ThirdwebProvider
-                  clientId={process.env.REACT_APP_THIRD_WEB_ID}
-                  activeChain={activeChain}
-                  authConfig={{
-                    domain: 'example.org',
-                    authUrl: '/',
-                    loginRedirect: '/',
-                  }}
-                >
-                  <CssBaseline />
-                  {/* hint: if on useEffect will Dispatch twice to check for errors */}
-                  {/* <React.StrictMode> */}
-                  {/* {routing} */}
-                  {/* </React.StrictMode> */}
-                  <div>
+                <ThirdwebProvider>
+                  <ThirdwebSDKProvider
+                    clientId={process.env.REACT_APP_THIRD_WEB_ID}
+                    activeChain={activeChain}
+                    signer={new ethers.providers.Web3Provider(window.ethereum).getSigner()}
+                    // authConfig={{
+                    // domain: 'example.org',
+                    // authUrl: '/',
+                    // loginRedirect: '/',
+                    // }}
+                  >
+                    <CssBaseline />
+                    {/* hint: if on useEffect will Dispatch twice to check for errors */}
+                    {/* <React.StrictMode> */}
+                    {/* {routing} */}
+                    {/* </React.StrictMode> */}
                     <div>
-                      <ConnectWallet
-                        auth={{
-                          domain: 'example.org',
-                          // authUrl: "/api/auth",
-                          loginRedirect: '/',
-                        }}
-                      />
+                      <div>
+                        <ConnectWallet
+                          auth={{
+                            domain: 'example.org',
+                            // authUrl: "/api/auth",
+                            loginRedirect: '/',
+                          }}
+                        />
+                      </div>
+                      {/* {user && <p>You are signed in as {user.address}</p>} */}
                     </div>
-                    {/* {user && <p>You are signed in as {user.address}</p>} */}
-                  </div>
+                  </ThirdwebSDKProvider>
                 </ThirdwebProvider>
               </RTL>
             </ThemeProvider>
