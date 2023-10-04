@@ -71,6 +71,7 @@ export default function DaoNeedSignature() {
   const { t } = useTranslation();
   const { needId } = useParams();
 
+  const [connectorLoading, setConnectorLoading] = useState(false);
   const [ratios, setRatios] = useState();
   const [open, setOpen] = useState(false);
   const [variablesOpen, setVariablesOpen] = useState({
@@ -142,6 +143,19 @@ export default function DaoNeedSignature() {
     error: errorSignature,
   } = useSelector((state) => state.signature);
 
+  // reset wallet connection
+  useEffect(() => {
+    if (nonceData) {
+      setConnectorLoading(false);
+    }
+    return () => {
+      if (connectorLoading) {
+        reset();
+      }
+    };
+  }, [nonceData]);
+
+  // set ratios
   useEffect(() => {
     if (personalResult && collectiveResult && oneReadyNeed) {
       const theNeedVariables = oneReadyNeed.variables.find(
@@ -449,7 +463,7 @@ export default function DaoNeedSignature() {
       [variableName]: true,
     }));
   };
-
+  console.log(connectorLoading);
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -1206,6 +1220,7 @@ export default function DaoNeedSignature() {
                     <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
                       {!isConnected ? (
                         <WalletButton
+                          loading={connectorLoading}
                           fullWidth
                           variant="outlined"
                           disabled={
@@ -1238,6 +1253,7 @@ export default function DaoNeedSignature() {
                               (errorReadyOne && true)
                             }
                             loading={
+                              connectorLoading ||
                               !collectiveResult ||
                               !personalResult ||
                               loadingVerifiedSwAddress ||
@@ -1278,37 +1294,50 @@ export default function DaoNeedSignature() {
                 )}
               </Card>
             </Grid>
+            {(errorOneNeedData || errorReadyOne || errorVerifiedSwAddress) && (
+              <Message
+                variant="standard"
+                severity="error"
+                sx={{ justifyContent: 'center' }}
+                icon={false}
+              >
+                {errorOneNeedData || errorReadyOne || errorVerifiedSwAddress}
+              </Message>
+            )}
+            {(signatureError ||
+              errorVerify ||
+              errorWalletInformation ||
+              errorSignature ||
+              errorSignIn) && (
+              <MessageWallet
+                walletError={
+                  signatureError ||
+                  errorVerify ||
+                  errorWalletInformation ||
+                  errorSignature ||
+                  errorSignIn
+                }
+                walletToastOpen={walletToastOpen}
+                handleCloseWalletToast={handleCloseWalletToast}
+                severity={errorSignIn || errorSignature ? 'warning' : 'error'}
+              />
+            )}
           </Card>
         </>
       ) : (
         <CircularProgress />
       )}
-      <WalletDialog openWallets={openWallets} setOpenWallets={setOpenWallets} />
+      <WalletDialog
+        openWallets={openWallets}
+        setOpenWallets={setOpenWallets}
+        setConnectorLoading={setConnectorLoading}
+      />
       <CommentModal
         open={commentOpen}
         setOpen={setCommentOpen}
         comment={comment}
         setComment={setComment}
       />
-      {(errorOneNeedData || errorReadyOne || errorVerifiedSwAddress) && (
-        <Message variant="standard" severity="error" sx={{ justifyContent: 'center' }} icon={false}>
-          {errorOneNeedData || errorReadyOne || errorVerifiedSwAddress}
-        </Message>
-      )}
-      {(signatureError ||
-        errorVerify ||
-        errorWalletInformation ||
-        errorSignature ||
-        errorSignIn) && (
-        <MessageWallet
-          walletError={
-            signatureError || errorVerify || errorWalletInformation || errorSignature || errorSignIn
-          }
-          walletToastOpen={walletToastOpen}
-          handleCloseWalletToast={handleCloseWalletToast}
-          severity={errorSignIn || errorSignature ? 'warning' : 'error'}
-        />
-      )}
     </Grid>
   );
 }

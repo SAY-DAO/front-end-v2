@@ -1,5 +1,3 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import List from '@mui/material/List';
@@ -18,7 +16,7 @@ import MessageWallet from '../MessageWallet';
 
 function TheDialog(props) {
   const { t } = useTranslation();
-  const { onClose, open } = props;
+  const { onClose, open, setConnectorLoading } = props;
 
   const [walletToastOpen, setWalletToastOpen] = useState(false);
 
@@ -34,11 +32,12 @@ function TheDialog(props) {
     };
   }, [error && error.code]);
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     onClose();
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    if (isLoading) {
+      onClose();
+      setConnectorLoading(true);
+    }
+  }, [isLoading]);
 
   const handleConnect = (connector) => {
     connect({ connector });
@@ -157,9 +156,10 @@ function TheDialog(props) {
 TheDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  setConnectorLoading: PropTypes.func.isRequired,
 };
 
-export default function WalletDialog({ openWallets, setOpenWallets }) {
+export default function WalletDialog({ openWallets, setOpenWallets, setConnectorLoading }) {
   const { isConnected } = useAccount();
 
   useEffect(() => {
@@ -172,10 +172,13 @@ export default function WalletDialog({ openWallets, setOpenWallets }) {
     setOpenWallets(false);
   };
 
-  return <TheDialog open={openWallets} onClose={handleClose} />;
+  return (
+    <TheDialog open={openWallets} onClose={handleClose} setConnectorLoading={setConnectorLoading} />
+  );
 }
 
 WalletDialog.propTypes = {
   setOpenWallets: PropTypes.func.isRequired,
+  setConnectorLoading: PropTypes.func.isRequired,
   openWallets: PropTypes.bool.isRequired,
 };
