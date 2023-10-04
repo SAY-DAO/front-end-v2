@@ -34,11 +34,11 @@ function TheDialog(props) {
     };
   }, [error && error.code]);
 
-  useEffect(() => {
-    if (isLoading) {
-      onClose();
-    }
-  }, [isLoading]);
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     onClose();
+  //   }
+  // }, [isLoading]);
 
   const handleConnect = (connector) => {
     connect({ connector });

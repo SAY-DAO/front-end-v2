@@ -28,7 +28,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@wagmi/core": "^1.4.2",
-    "axios": "^1.4.0",
+    "axios": "^1.5.1",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "copy-to-clipboard": "^3.3.3",
     "dotenv": "^16.1.4",
@@ -83,7 +83,7 @@
     }
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "PORT=3002 react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
