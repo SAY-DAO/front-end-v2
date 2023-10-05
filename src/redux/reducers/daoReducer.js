@@ -89,21 +89,29 @@ export const ecosystemMintAnalyticReducer = (state = {}, action) => {
 export const needVariablesAnalyticReducer = (state = {}, action) => {
   switch (action.type) {
     case ONE_NEED_COLLECTIVE_RATIO_REQUEST:
-      return { ...state, loading: true, success: false };
+      return {
+        personalResult: state.personalResult && { ...state.personalResult },
+        loading: true,
+        success: false,
+      };
     case ONE_NEED_COLLECTIVE_RATIO_SUCCESS:
       return { ...state, loading: false, success: true, collectiveResult: action.payload };
     case ONE_NEED_COLLECTIVE_RATIO_FAIL:
       return { success: false, loading: false, error: action.payload };
     case ONE_NEED_COLLECTIVE_RATIO_RESET:
-      return { personalResult: { ...state.personalResult } };
+      return { personalResult: state.personalResult && { ...state.personalResult } };
     case ONE_NEED_PERSONAL_RATIO_REQUEST:
-      return { ...state, loading: true, success: false };
+      return {
+        collectiveResult: state.collectiveResult && { ...state.collectiveResult },
+        loading: true,
+        success: false,
+      };
     case ONE_NEED_PERSONAL_RATIO_SUCCESS:
       return { ...state, loading: false, success: true, personalResult: action.payload };
     case ONE_NEED_PERSONAL_RATIO_FAIL:
       return { success: false, loading: false, error: action.payload };
     case ONE_NEED_PERSONAL_RATIO_REST:
-      return {};
+      return { collectiveResult: state.collectiveResult && { ...state.collectiveResult } };
     default:
       return state;
   }

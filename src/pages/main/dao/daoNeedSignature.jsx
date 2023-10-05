@@ -56,6 +56,7 @@ import {
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
+import { IP_LOCATION_RESET } from '../../../redux/constants/main/userConstants';
 import DaoSignatureMenu from '../../../components/DAO/signing/DaoSignatureMenu';
 import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
 import { SAY_DAPP_ID } from '../../../utils/configs';
@@ -355,6 +356,7 @@ export default function DaoNeedSignature() {
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
       }
       dispatch({ type: ONE_NEED_COLLECTIVE_RATIO_RESET });
+      dispatch({ type: IP_LOCATION_RESET });
     };
   }, [createdSignature]);
 

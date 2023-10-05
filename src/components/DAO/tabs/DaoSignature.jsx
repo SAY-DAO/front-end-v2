@@ -10,6 +10,7 @@ import SignatureCard from '../signing/SignatureCard';
 import SignatureInfoCard from '../SignatureInfoCard';
 import ToggleButton from '../signing/SignatureToggleButton';
 import {
+  ONE_NEED_PERSONAL_RATIO_REST,
   READY_TO_SIGN_ONE_NEED_RESET,
   SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
@@ -40,6 +41,9 @@ export default function DaoSignature() {
     if (oneReadyNeed) {
       dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
     }
+    return () => {
+      dispatch({ type: ONE_NEED_PERSONAL_RATIO_REST });
+    };
   }, []);
 
   const handleAlignment = (alinement) => {
