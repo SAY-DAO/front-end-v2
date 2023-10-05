@@ -27,7 +27,7 @@ import { round } from 'lodash';
 import { SiweMessage } from 'siwe';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import {
-  fetchFamilyMemberDistanceRatio,
+  fetchPersonalRatios,
   fetchEcoFamilyRolesCompletePays,
   fetchNeedCollectiveRatios,
   fetchNonce,
@@ -51,6 +51,7 @@ import WalletDialog from '../../../components/modals/WalletDialog';
 import {
   FAMILY_ECOSYSTEM_PAYS_REST,
   ONE_NEED_COLLECTIVE_RATIO_RESET,
+  ONE_NEED_PERSONAL_RATIO_REST,
   SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
@@ -327,9 +328,10 @@ export default function DaoNeedSignature() {
 
   useEffect(() => {
     dispatch(fetchNeedCollectiveRatios(needId));
-    if (!personalResult) {
-      dispatch(fetchFamilyMemberDistanceRatio());
-    }
+    dispatch(fetchPersonalRatios());
+    return () => {
+      dispatch({ type: ONE_NEED_PERSONAL_RATIO_REST });
+    };
   }, [needId]);
 
   useEffect(() => {

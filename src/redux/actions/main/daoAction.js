@@ -568,7 +568,7 @@ export const createSignature =
 //   }
 // };
 
-export const fetchFamilyMemberDistanceRatio = () => async (dispatch, getState) => {
+export const fetchPersonalRatios = () => async (dispatch, getState) => {
   try {
     dispatch({ type: ONE_NEED_PERSONAL_RATIO_REQUEST });
 
