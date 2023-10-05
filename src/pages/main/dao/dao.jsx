@@ -58,6 +58,7 @@ export default function Dao() {
                     gutterBottom
                     sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
                     component="div"
+                    color="text.secondary"
                   >
                     {t('dao.tabs.signatures')}
                   </Typography>
@@ -91,6 +92,7 @@ export default function Dao() {
                     gutterBottom
                     sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
                     component="div"
+                    color="text.secondary"
                   >
                     {t('dao.tabs.mintables')}
                   </Typography>
@@ -126,6 +128,7 @@ export default function Dao() {
                     gutterBottom
                     sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
                     component="div"
+                    color="text.secondary"
                   >
                     {t('dao.tabs.proposals')}
                   </Typography>
@@ -159,6 +162,7 @@ export default function Dao() {
                     gutterBottom
                     sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
                     component="div"
+                    color="text.secondary"
                   >
                     {t('dao.tabs.contributes')}
                   </Typography>
@@ -194,6 +198,7 @@ export default function Dao() {
                     gutterBottom
                     sx={{ fontSize: 18, fontWeight: 400, lineHeight: 1.2, mb: 2 }}
                     component="div"
+                    color="text.secondary"
                   >
                     {t('dao.tabs.docs')}
                   </Typography>

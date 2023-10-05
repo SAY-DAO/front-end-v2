@@ -71,7 +71,7 @@ export default function Splash() {
       css.innerHTML = '.txt-rotate > .wrap { border-right: 0.08em solid #cdc9c2 }';
       document.body.appendChild(css);
     };
-  }, [values]);
+  }, [document]);
 
   useEffect(() => {
     if (values) {
