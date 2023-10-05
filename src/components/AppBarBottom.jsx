@@ -45,6 +45,7 @@ export default function AppBarBottom() {
   const themeOptions = useSelector((state) => state.themeOptions);
   const { activeMode } = themeOptions;
 
+
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [value]);

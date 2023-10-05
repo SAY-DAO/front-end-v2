@@ -35,6 +35,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  IP_LOCATION_REQUEST,
+  IP_LOCATION_SUCCESS,
+  IP_LOCATION_FAIL,
 } from '../constants/main/userConstants';
 import standalone from '../../standalone';
 
@@ -45,6 +48,27 @@ export const changeVerifyStep = (step) => async (dispatch) => {
     type: CHANGE_VERIFY_STEP,
     payload: step,
   });
+};
+
+export const fetchUserIpLocation = () => async (dispatch) => {
+  try {
+    dispatch({ type: IP_LOCATION_REQUEST });
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      },
+    };
+    const { data } = await publicApi.get('https://ipapi.co/json/', { config });
+    dispatch({
+      type: IP_LOCATION_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: IP_LOCATION_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
 };
 
 export const checkContactBeforeVerify = (theKey, value) => async (dispatch) => {
@@ -86,7 +110,7 @@ export const checkUserNameBeforeVerify = (userName) => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.get(`/check/username/${userName}`, config );
+    const { data } = await publicApi.get(`/check/username/${userName}`, config);
 
     dispatch({
       type: CHECK_USERNAME_SUCCESS,
@@ -309,7 +333,7 @@ export const fetchUserDetails = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi.get(`user/userId=me`, config );
+    const { data } = await publicApi.get(`user/userId=me`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,

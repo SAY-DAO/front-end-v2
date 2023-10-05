@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRoutes } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -10,17 +10,26 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@mui/styles';
 import { ThemeProvider } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { WagmiConfig } from 'wagmi';
 import Router from './routes/Router';
 import ThemeSettings from './layouts/customizer/ThemeSettings';
 import { config } from './wallet';
 import RTL from './layouts/customizer/RTL';
+import { fetchUserIpLocation } from './redux/actions/userAction';
 
 function App() {
+  const dispatch = useDispatch();
+
   const routing = useRoutes(Router);
   const themOptions = useSelector((state) => state.themOptions);
-  // const { user } = useUser();
+  const { ipResult } = useSelector((state) => state.ipLocation);
+
+  useEffect(() => {
+    if (!ipResult) {
+      dispatch(fetchUserIpLocation());
+    }
+  }, []);
 
   // Configure JSS for RTL
   const jss = create({
@@ -34,13 +43,11 @@ function App() {
   });
   const theTheme = ThemeSettings();
 
-  // const { data: signer } = useSigner();
-
   return (
-    <WagmiConfig config={config}>
-      <CacheProvider value={cacheRtl}>
-        <StylesProvider jss={jss}>
-          <div id="direction" dir="">
+    <div id="direction" dir="">
+      <WagmiConfig config={config(ipResult && ipResult.country)}>
+        <CacheProvider value={cacheRtl}>
+          <StylesProvider jss={jss}>
             <CssBaseline />
             <Container
               sx={{
@@ -61,10 +68,10 @@ function App() {
                 </RTL>
               </ThemeProvider>
             </Container>
-          </div>
-        </StylesProvider>
-      </CacheProvider>
-    </WagmiConfig>
+          </StylesProvider>
+        </CacheProvider>
+      </WagmiConfig>
+    </div>
   );
 }
 

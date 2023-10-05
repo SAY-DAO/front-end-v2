@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   NeedTypeEnum,
   PaymentStatusEnum,
@@ -9,6 +10,23 @@ import {
   VirtualFamilyRole,
 } from './types';
 import { PRODUCT_UNPAYABLE_PERIOD } from './configs';
+
+export function getGeoInfo() {
+  let result;
+  return axios
+    .get('https://ipapi.co/json/')
+    .then((response) => {
+      const { data } = response;
+      result = {
+        countryName: data.country_name,
+        countryCode: data.country_calling_code,
+      };
+      return result;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 export function prepareUrl(imageUrl) {
   let url;

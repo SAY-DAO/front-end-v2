@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Box, Card, CardActionArea, Grid, Typography } from '@mui/material';
 import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router';
-import WalletDialog from '../../modals/WalletDialog';
 import { prepareUrl } from '../../../utils/helpers';
 
 const SignatureCard = ({ need }) => {
   const navigate = useNavigate();
-  const [openWallets, setOpenWallets] = useState(false);
 
   const handleCardClick = () => {
     navigate(`/dao/signatures/${need.id}`);
@@ -69,8 +67,6 @@ const SignatureCard = ({ need }) => {
             opacity: 0.28,
           }}
         />
-
-        <WalletDialog openWallets={openWallets} setOpenWallets={setOpenWallets} />
       </Card>
     </CardActionArea>
   );

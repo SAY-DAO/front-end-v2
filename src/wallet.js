@@ -22,26 +22,31 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 // Set up client
-export const config = createConfig({
-  autoConnect: false,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        projectId: process.env.REACT_APP_WC_PROJECT_ID,
-        isNewChainsStale: false,
-      },
+export const config = (country) => {
+  return createConfig({
+    autoConnect: false,
+    connectors:
+      !country || country === 'IR'
+        ? [new MetaMaskConnector({ chains })]
+        : [
+            new MetaMaskConnector({ chains }),
+            new WalletConnectConnector({
+              chains,
+              options: {
+                projectId: process.env.REACT_APP_WC_PROJECT_ID,
+                isNewChainsStale: false,
+              },
+            }),
+          ],
+    publicClient: createPublicClient({
+      // batch: {
+      //   multicall: true,
+      // },
+      // transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+      transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
+      chain: mainnet,
     }),
-  ],
-  publicClient: createPublicClient({
-    // batch: {
-    //   multicall: true,
-    // },
-    // transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
-    transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
-    chain: mainnet,
-  }),
 
-  webSocketPublicClient,
-});
+    webSocketPublicClient,
+  });
+};

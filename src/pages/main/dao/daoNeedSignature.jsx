@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Card,
   CircularProgress,
@@ -90,6 +91,8 @@ export default function DaoNeedSignature() {
   const [signatureError, setSignatureError] = useState('');
   const [walletToastOpen, setWalletToastOpen] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState();
+
+  const { ipResult } = useSelector((state) => state.ipLocation);
 
   const {
     status,
@@ -1213,6 +1216,17 @@ export default function DaoNeedSignature() {
                     </Grid>
                   </Grid>
                 </Grid>
+                {/* Ip Location */}
+                {(!ipResult || ipResult.country === 'IR') && (
+                  <Grid container sx={{ p: 2 }}>
+                    <Alert
+                      sx={{ width: '100%', maxWidth: 400, m: 'auto', fontSize: 10 }}
+                      severity="warning"
+                    >
+                      {t('ip.restrictions.title')}
+                    </Alert>
+                  </Grid>
+                )}
                 {/* Button */}
                 {oneReadyNeed.members &&
                   !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
@@ -1224,6 +1238,8 @@ export default function DaoNeedSignature() {
                           fullWidth
                           variant="outlined"
                           disabled={
+                            !ipResult ||
+                            ipResult.country === 'IR' ||
                             !ratios ||
                             !personalResult ||
                             !personalResult.distanceRatio.allChildrenCaredFor ||
@@ -1243,6 +1259,8 @@ export default function DaoNeedSignature() {
                             signbutton="true"
                             variant="outlined"
                             disabled={
+                              !ipResult ||
+                              ipResult.country === 'IR' ||
                               !ratios ||
                               !personalResult ||
                               !personalResult.distanceRatio.allChildrenCaredFor ||

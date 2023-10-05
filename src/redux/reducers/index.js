@@ -10,6 +10,7 @@ import {
   userForgotPasswordReducer,
   userResetPasswordReducer,
   userDetailsReducer,
+  ipLocationReducer,
 } from './userReducer';
 import {
   childRandomSearchReducer,
@@ -49,6 +50,7 @@ import { commentReducer } from './commentReducer';
 
 export default combineReducers({
   themeOptions: themeReducer,
+  ipLocation: ipLocationReducer,
   commentResult: commentReducer,
   ecosystemData: ecosystemAnalyticReducer,
   ecosystemMintData: ecosystemMintAnalyticReducer,

@@ -36,12 +36,31 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
+  IP_LOCATION_REQUEST,
+  IP_LOCATION_SUCCESS,
+  IP_LOCATION_FAIL,
+  IP_LOCATION_RESET,
 } from '../constants/main/userConstants';
 
 export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
   switch (action.type) {
     case CHANGE_VERIFY_STEP:
       return { step: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const ipLocationReducer = (state = { checkResult: {} }, action) => {
+  switch (action.type) {
+    case IP_LOCATION_REQUEST:
+      return { loading: true, success: false, ...state };
+    case IP_LOCATION_SUCCESS:
+      return { loading: false, success: true, ipResult: action.payload };
+    case IP_LOCATION_FAIL:
+      return { loading: false, error: action.payload };
+    case IP_LOCATION_RESET:
+      return {};
     default:
       return state;
   }
