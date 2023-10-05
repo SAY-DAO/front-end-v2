@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +50,7 @@ export default function Splash() {
   };
 
   useEffect(() => {
-    window.onload = () => {
+    window.onload = function () {
       const elements = document.getElementsByClassName('txt-rotate');
       for (let i = 0; i < elements.length; i++) {
         const toRotate = elements[i].getAttribute('data-rotate');
@@ -71,7 +72,7 @@ export default function Splash() {
       css.innerHTML = '.txt-rotate > .wrap { border-right: 0.08em solid #cdc9c2 }';
       document.body.appendChild(css);
     };
-  }, [document]);
+  }, [values]);
 
   useEffect(() => {
     if (values) {
