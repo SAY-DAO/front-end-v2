@@ -50,29 +50,30 @@ export default function Splash() {
   };
 
   useEffect(() => {
-    window.onload = function () {
       const elements = document.getElementsByClassName('txt-rotate');
-      for (let i = 0; i < elements.length; i++) {
-        const toRotate = elements[i].getAttribute('data-rotate');
-        const period = elements[i].getAttribute('data-period');
-        if (toRotate) {
-          setValues({
-            toRotate: JSON.parse(toRotate),
-            el: elements[i],
-            loopNum: 0,
-            period: parseInt(period, 10) || 2000,
-            txt: '',
-            isDeleting: false,
-          });
+      if(elements && elements[0]){
+        for (let i = 0; i < elements.length; i++) {
+          const toRotate = elements[i].getAttribute('data-rotate');
+          const period = elements[i].getAttribute('data-period');
+          if (toRotate) {
+            setValues({
+              toRotate: JSON.parse(toRotate),
+              el: elements[i],
+              loopNum: 0,
+              period: parseInt(period, 10) || 2000,
+              txt: '',
+              isDeleting: false,
+            });
+          }
         }
+        // INJECT CSS
+        const css = document.createElement('style');
+        css.type = 'text/css';
+        css.innerHTML = '.txt-rotate > .wrap { border-right: 0.08em solid #cdc9c2 }';
+        document.body.appendChild(css);
       }
-      // INJECT CSS
-      const css = document.createElement('style');
-      css.type = 'text/css';
-      css.innerHTML = '.txt-rotate > .wrap { border-right: 0.08em solid #cdc9c2 }';
-      document.body.appendChild(css);
-    };
-  }, [values]);
+ 
+  }, [document]);
 
   useEffect(() => {
     if (values) {
@@ -87,7 +88,7 @@ export default function Splash() {
     >
       <h1 style={{ margin: 'auto' }}>
         SAY
-        <span className="txt-rotate" data-period="200000" data-rotate='[ " DAO" ]' />
+        <span className="txt-rotate" data-period="2000" data-rotate='[ " DAO" ]' />
       </h1>
     </Grid>
   );
