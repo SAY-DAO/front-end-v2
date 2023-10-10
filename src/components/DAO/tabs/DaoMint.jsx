@@ -21,10 +21,12 @@ export default function DaoMint() {
     if (!mintEcoResult) {
       dispatch(fetchEcoMintData());
     }
-    return () => {
-      dispatch({ type: ECOSYSTEM_MINT_RESET });
-      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
-    };
+    if (mintEcoResult) {
+      return () => {
+        dispatch({ type: ECOSYSTEM_MINT_RESET });
+        dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+      };
+    }
   }, []);
 
   return (
