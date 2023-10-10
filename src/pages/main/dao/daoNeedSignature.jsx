@@ -1230,6 +1230,7 @@ export default function DaoNeedSignature() {
                   </Grid>
                 )}
                 {/* Button */}
+                <Typography>{ipResult && ipResult.countryCode}</Typography>
                 {oneReadyNeed.members &&
                 !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
                 oneReadyNeed.isResolved ? (
