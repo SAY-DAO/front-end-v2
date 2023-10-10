@@ -166,7 +166,7 @@ export default function DaoNeedSignature() {
       oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id)
     ) {
       setUserVRole(
-        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
+        Number(oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole),
       );
     }
   }, [oneReadyNeed]);
@@ -957,7 +957,7 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {personalResult && typeof userVRole >= 0 ? (
+                                {personalResult && userVRole >= 0 ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.distanceRatio.body">
                                       {{
