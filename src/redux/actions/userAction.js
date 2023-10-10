@@ -58,6 +58,7 @@ export const fetchUserIpLocation = () => async (dispatch) => {
         'Content-type': 'application/json',
       },
     };
+
     const { data } = await publicApi.get('https://ipapi.co/json/', { config });
     dispatch({
       type: IP_LOCATION_SUCCESS,

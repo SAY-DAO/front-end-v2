@@ -39,6 +39,7 @@ const CustomToolTip = ({ title, popup, icon, which }) => {
       );
     }
   }, [paidNeedsData]);
+
   useEffect(() => {
     if (mintEcoResult && which === 'mintWaiting') {
       setCount(mintEcoResult.theUser.waiting);

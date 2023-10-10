@@ -57,7 +57,6 @@ import {
   WALLET_INFORMATION_RESET,
   WALLET_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
-import { IP_LOCATION_RESET } from '../../../redux/constants/main/userConstants';
 import DaoSignatureMenu from '../../../components/DAO/signing/DaoSignatureMenu';
 import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
 import { SAY_DAPP_ID } from '../../../utils/configs';
@@ -160,13 +159,25 @@ export default function DaoNeedSignature() {
     };
   }, [nonceData]);
 
+  useEffect(() => {
+    if (
+      oneReadyNeed &&
+      oneReadyNeed.members &&
+      oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id)
+    ) {
+      setUserVRole(
+        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
+      );
+    }
+  }, [oneReadyNeed]);
+
   // set ratios
   useEffect(() => {
     if (personalResult && collectiveResult && oneReadyNeed) {
       const theNeedVariables = oneReadyNeed.variables.find(
         (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
       );
-      if (typeof userVRole === 'number' && (!oneReadyNeed.variables || !theNeedVariables)) {
+      if (userVRole === SAYPlatformRoles.FAMILY && (!oneReadyNeed.variables || !theNeedVariables)) {
         const theRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
@@ -358,21 +369,8 @@ export default function DaoNeedSignature() {
         dispatch({ type: SIGNATURE_VERIFICATION_RESET });
       }
       dispatch({ type: ONE_NEED_COLLECTIVE_RATIO_RESET });
-      dispatch({ type: IP_LOCATION_RESET });
     };
   }, [createdSignature]);
-
-  useEffect(() => {
-    if (
-      oneReadyNeed &&
-      oneReadyNeed.members &&
-      oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id)
-    ) {
-      setUserVRole(
-        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-      );
-    }
-  }, [oneReadyNeed]);
 
   useEffect(() => {
     if (oneReadyNeed) {
@@ -1233,13 +1231,34 @@ export default function DaoNeedSignature() {
                 )}
                 {/* Button */}
                 {oneReadyNeed.members &&
-                  !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
-                  oneReadyNeed.isResolved && (
-                    <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
-                      {!isConnected ? (
+                !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+                oneReadyNeed.isResolved ? (
+                  <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
+                    {!isConnected ? (
+                      <WalletButton
+                        loading={connectorLoading}
+                        fullWidth
+                        variant="outlined"
+                        disabled={
+                          !ipResult ||
+                          ipResult.country === 'IR' ||
+                          !ratios ||
+                          !personalResult ||
+                          !personalResult.distanceRatio.allChildrenCaredFor ||
+                          (errorVerify && true) ||
+                          (errorWalletInformation && true) ||
+                          (errorOneNeedData && true) ||
+                          (errorReadyOne && true)
+                        }
+                        onClick={handleWalletButton}
+                      >
+                        {t('button.wallet.connect')}
+                      </WalletButton>
+                    ) : (
+                      isConnected && (
                         <WalletButton
-                          loading={connectorLoading}
                           fullWidth
+                          signbutton="true"
                           variant="outlined"
                           disabled={
                             !ipResult ||
@@ -1249,53 +1268,36 @@ export default function DaoNeedSignature() {
                             !personalResult.distanceRatio.allChildrenCaredFor ||
                             (errorVerify && true) ||
                             (errorWalletInformation && true) ||
+                            (errorSignIn && true) ||
                             (errorOneNeedData && true) ||
                             (errorReadyOne && true)
                           }
-                          onClick={handleWalletButton}
+                          loading={
+                            connectorLoading ||
+                            !collectiveResult ||
+                            !personalResult ||
+                            loadingVerifiedSwAddress ||
+                            isLoadingSignIn ||
+                            loadingSignature ||
+                            loadingInformation ||
+                            loadingEthereumSignature
+                          }
+                          onClick={handleSignature}
                         >
-                          {t('button.wallet.connect')}
+                          {t('button.wallet.sign')}
                         </WalletButton>
-                      ) : (
-                        isConnected && (
-                          <WalletButton
-                            fullWidth
-                            signbutton="true"
-                            variant="outlined"
-                            disabled={
-                              !ipResult ||
-                              ipResult.country === 'IR' ||
-                              !ratios ||
-                              !personalResult ||
-                              !personalResult.distanceRatio.allChildrenCaredFor ||
-                              (errorVerify && true) ||
-                              (errorWalletInformation && true) ||
-                              (errorSignIn && true) ||
-                              (errorOneNeedData && true) ||
-                              (errorReadyOne && true)
-                            }
-                            loading={
-                              connectorLoading ||
-                              !collectiveResult ||
-                              !personalResult ||
-                              loadingVerifiedSwAddress ||
-                              isLoadingSignIn ||
-                              loadingSignature ||
-                              loadingInformation ||
-                              loadingEthereumSignature
-                            }
-                            onClick={handleSignature}
-                          >
-                            {t('button.wallet.sign')}
-                          </WalletButton>
-                        )
-                      )}
-                      <Typography sx={{ mb: 4, mt: 1 }}>
-                        {loadingVerifiedSwAddress && t('dao.status.verifyingSwSignature')}
-                        {loadingSignature && t('dao.status.preparing')}
-                      </Typography>
-                    </Grid>
-                  )}
+                      )
+                    )}
+                    <Typography sx={{ mb: 4, mt: 1 }}>
+                      {loadingVerifiedSwAddress && t('dao.status.verifyingSwSignature')}
+                      {loadingSignature && t('dao.status.preparing')}
+                    </Typography>
+                  </Grid>
+                ) : (
+                  <Grid container sx={{ width: '100%', m: 'auto', justifyContent: 'center' }}>
+                    <Typography>{t('dao.signaturesTab.signed')}</Typography>
+                  </Grid>
+                )}
                 {personalResult &&
                   personalResult.paid &&
                   !personalResult.distanceRatio.allChildrenCaredFor && (
