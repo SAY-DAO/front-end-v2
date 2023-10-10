@@ -177,7 +177,7 @@ export default function DaoNeedSignature() {
       const theNeedVariables = oneReadyNeed.variables.find(
         (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
       );
-      if (userVRole === SAYPlatformRoles.FAMILY && (!oneReadyNeed.variables || !theNeedVariables)) {
+      if (userVRole && (!oneReadyNeed.variables || !theNeedVariables)) {
         const theRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
