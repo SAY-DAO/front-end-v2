@@ -173,17 +173,11 @@ export default function DaoNeedSignature() {
 
   // set ratios
   useEffect(() => {
-    console.log('1');
-    if (personalResult && collectiveResult && oneReadyNeed) {
-      console.log('2');
+    if (personalResult && personalResult.distanceRatio && collectiveResult && oneReadyNeed) {
       const theNeedVariables = oneReadyNeed.variables.find(
         (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
       );
-      console.log(userVRole);
-      console.log('2');
-
       if (userVRole >= 0 && (!oneReadyNeed.variables || !theNeedVariables)) {
-        console.log('3');
         const theRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
