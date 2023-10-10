@@ -6,8 +6,15 @@ import Typography from '@mui/material/Typography';
 import { Box, CardActionArea, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import {
+  fetchEcoMintData,
+  fetchPaidNeeds,
+  fetchAvailableContribution,
+} from '../../../redux/actions/main/daoAction';
 
 export default function Dao() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -16,15 +23,18 @@ export default function Dao() {
   useEffect(() => {
     if (tabNumber === 0) {
       navigate('/main/dao/tabs/signature');
+      dispatch(fetchPaidNeeds());
     }
     if (tabNumber === 1) {
       navigate('/main/dao/tabs/mint');
+      dispatch(fetchEcoMintData());
     }
     if (tabNumber === 2) {
       navigate('/main/dao/tabs/proposals');
     }
     if (tabNumber === 3) {
       navigate('/main/dao/tabs/contribute');
+      dispatch(fetchAvailableContribution());
     }
     if (tabNumber === 4) {
       navigate('/main/dao/tabs/docs');

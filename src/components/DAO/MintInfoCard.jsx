@@ -7,7 +7,6 @@ import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
-import { fetchEcoMintData } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
 import {
@@ -26,7 +25,6 @@ const MintInfoCard = () => {
   const { mintEcoResult, error: errorMintEcosystem } = ecosystemMintData;
 
   useEffect(() => {
-    dispatch(fetchEcoMintData());
     return () => {
       dispatch({ type: ECOSYSTEM_MINT_RESET });
       dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });

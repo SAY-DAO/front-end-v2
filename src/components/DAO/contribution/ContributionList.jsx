@@ -5,16 +5,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Typography } from '@mui/material';
 import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
-import { fetchAvailableContribution } from '../../../redux/actions/main/daoAction';
 import ContributionModal from '../../modals/ContributionModal';
 
 export default function ContributionList() {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -22,9 +20,6 @@ export default function ContributionList() {
   const ecoContribution = useSelector((state) => state.ecoContribution);
   const { contributions } = ecoContribution;
 
-  useEffect(() => {
-    dispatch(fetchAvailableContribution());
-  }, []);
   const handlePopUp = (contribution) => {
     setOpen(true);
     setData({ ...contribution });
