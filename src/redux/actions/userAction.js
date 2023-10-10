@@ -59,7 +59,7 @@ export const fetchUserIpLocation = () => async (dispatch) => {
       },
     };
 
-    const { data } = await publicApi.get('https://ipapi.co/json/', { config });
+    const { data } = await publicApi.get('https://www.geolocation-db.com/json/', { config });
     dispatch({
       type: IP_LOCATION_SUCCESS,
       payload: data,

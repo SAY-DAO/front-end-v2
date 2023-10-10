@@ -1218,7 +1218,7 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Ip Location */}
-                {(!ipResult || ipResult.country === 'IR') && (
+                {(!ipResult || ipResult.country_code === 'IR') && (
                   <Grid container sx={{ p: 2 }}>
                     <Alert
                       sx={{ width: '100%', maxWidth: 400, m: 'auto', fontSize: 10 }}
@@ -1231,7 +1231,7 @@ export default function DaoNeedSignature() {
                 {/* Button */}
                 <Typography>ipResult</Typography>
                 <Typography>{userVRole}</Typography>
-                <Typography>{ipResult && ipResult.country}</Typography>
+                <Typography>{ipResult && ipResult.country_code}</Typography>
                 {oneReadyNeed.members &&
                 !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
                 oneReadyNeed.isResolved ? (
@@ -1243,7 +1243,7 @@ export default function DaoNeedSignature() {
                         variant="outlined"
                         disabled={
                           !ipResult ||
-                          ipResult.country === 'IR' ||
+                          ipResult.country_code === 'IR' ||
                           !ratios ||
                           !personalResult ||
                           !personalResult.distanceRatio.allChildrenCaredFor ||
@@ -1264,7 +1264,7 @@ export default function DaoNeedSignature() {
                           variant="outlined"
                           disabled={
                             !ipResult ||
-                            ipResult.country === 'IR' ||
+                            ipResult.country_code === 'IR' ||
                             !ratios ||
                             !personalResult ||
                             !personalResult.distanceRatio.allChildrenCaredFor ||
