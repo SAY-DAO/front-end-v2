@@ -1,11 +1,31 @@
 import { Grid, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import MintInfoCard from '../MintInfoCard';
+import { fetchEcoMintData } from '../../../redux/actions/main/daoAction';
+import {
+  ECOSYSTEM_MINT_RESET,
+  FAMILY_ECOSYSTEM_PAYS_REST,
+} from '../../../redux/constants/daoConstants';
 
 export default function DaoMint() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
+  const { mintEcoResult } = ecosystemMintData;
+
+  useEffect(() => {
+    if (!mintEcoResult) {
+      dispatch(fetchEcoMintData());
+    }
+    return () => {
+      dispatch({ type: ECOSYSTEM_MINT_RESET });
+      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
+    };
+  }, []);
 
   return (
     <Grid container>

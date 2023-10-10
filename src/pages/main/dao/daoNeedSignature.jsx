@@ -85,7 +85,7 @@ export default function DaoNeedSignature() {
   const [loadingEthereumSignature, setLoadingEthereumSignature] = useState(false);
   const [comment, setComment] = useState();
   const [commentOpen, setCommentOpen] = useState(false);
-  const [userVRole, setUserVRole] = useState('');
+  const [userVRole, setUserVRole] = useState();
   const [openWallets, setOpenWallets] = useState(false);
   const [images, setImages] = useState(false);
   const [values, setValues] = useState();
@@ -957,7 +957,7 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {personalResult && typeof userVRole === 'number' ? (
+                                {personalResult && typeof userVRole >= 0 ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.distanceRatio.body">
                                       {{

@@ -2,34 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, LinearProgress } from '@mui/material';
 import TollIcon from '@mui/icons-material/Toll';
 import { Trans, useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
-import {
-  ECOSYSTEM_MINT_RESET,
-  FAMILY_ECOSYSTEM_PAYS_REST,
-} from '../../redux/constants/daoConstants';
 
 const MintInfoCard = () => {
   const { t } = useTranslation();
 
   const [walletToastOpen, setWalletToastOpen] = useState(false);
 
-  const dispatch = useDispatch();
-
   const ecosystemMintData = useSelector((state) => state.ecosystemMintData);
   const { mintEcoResult, error: errorMintEcosystem } = ecosystemMintData;
-
-  useEffect(() => {
-    return () => {
-      dispatch({ type: ECOSYSTEM_MINT_RESET });
-      dispatch({ type: FAMILY_ECOSYSTEM_PAYS_REST });
-    };
-  }, []);
 
   // toast
   useEffect(() => {

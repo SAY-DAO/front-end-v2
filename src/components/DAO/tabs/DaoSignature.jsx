@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { useTranslation } from 'react-i18next';
+import { fetchPaidNeeds } from '../../../redux/actions/main/daoAction';
 import SignatureCard from '../signing/SignatureCard';
 import SignatureInfoCard from '../SignatureInfoCard';
 import ToggleButton from '../signing/SignatureToggleButton';
@@ -35,10 +36,12 @@ export default function DaoSignature() {
   );
 
   useEffect(() => {
+    if (!paidNeedsData) {
+      dispatch(fetchPaidNeeds());
+    }
     if (oneReadyNeed) {
       dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
     }
- 
   }, []);
 
   const handleAlignment = (alinement) => {
