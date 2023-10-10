@@ -468,7 +468,6 @@ export default function DaoNeedSignature() {
       [variableName]: true,
     }));
   };
-  console.log(connectorLoading);
   return (
     <Grid container direction="column">
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -1231,6 +1230,7 @@ export default function DaoNeedSignature() {
                 )}
                 {/* Button */}
                 <Typography>ipResult</Typography>
+                <Typography>{userVRole}</Typography>
                 <Typography>{ipResult && ipResult.country}</Typography>
                 {oneReadyNeed.members &&
                 !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
