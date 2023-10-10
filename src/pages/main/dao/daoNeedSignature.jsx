@@ -957,7 +957,7 @@ export default function DaoNeedSignature() {
                                 </Typography>
                                 <br />
                                 <br />
-                                {personalResult && userVRole >= 0 ? (
+                                {personalResult && personalResult.paid && userVRole >= 0 ? (
                                   <span style={{ fontWeight: 400, fontSize: 10 }}>
                                     <Trans i18nKey="dao.variables.distanceRatio.body">
                                       {{
