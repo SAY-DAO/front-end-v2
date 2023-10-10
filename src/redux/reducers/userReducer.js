@@ -51,7 +51,7 @@ export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
   }
 };
 
-export const ipLocationReducer = (state = { checkResult: {} }, action) => {
+export const ipLocationReducer = (state = {}, action) => {
   switch (action.type) {
     case IP_LOCATION_REQUEST:
       return { loading: true, success: false, ...state };
