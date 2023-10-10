@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div id="direction" dir="">
-      <WagmiConfig config={config(ipResult && ipResult.country)}>
+      <WagmiConfig config={config(ipResult && ipResult.countryCode)}>
         <CacheProvider value={cacheRtl}>
           <StylesProvider jss={jss}>
             <CssBaseline />

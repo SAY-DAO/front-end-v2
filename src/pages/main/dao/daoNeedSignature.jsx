@@ -1219,7 +1219,7 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Ip Location */}
-                {(!ipResult || ipResult.country === 'IR') && (
+                {(!ipResult || ipResult.countryCode === 'IR') && (
                   <Grid container sx={{ p: 2 }}>
                     <Alert
                       sx={{ width: '100%', maxWidth: 400, m: 'auto', fontSize: 10 }}
@@ -1241,7 +1241,7 @@ export default function DaoNeedSignature() {
                         variant="outlined"
                         disabled={
                           !ipResult ||
-                          ipResult.country === 'IR' ||
+                          ipResult.countryCode === 'IR' ||
                           !ratios ||
                           !personalResult ||
                           !personalResult.distanceRatio.allChildrenCaredFor ||
@@ -1262,7 +1262,7 @@ export default function DaoNeedSignature() {
                           variant="outlined"
                           disabled={
                             !ipResult ||
-                            ipResult.country === 'IR' ||
+                            ipResult.countryCode === 'IR' ||
                             !ratios ||
                             !personalResult ||
                             !personalResult.distanceRatio.allChildrenCaredFor ||

@@ -58,11 +58,11 @@ export const fetchUserIpLocation = () => async (dispatch) => {
         'Content-type': 'application/json',
       },
     };
-
-    const { data } = await publicApi.get('https://ipapi.co/json/', { config });
+    const { data } = await publicApi.get(`https://api.ipify.org/?format=json`, { config });
+    const result = await publicApi.get(`http://ip-api.com/json/${data.ip}`, { config });
     dispatch({
       type: IP_LOCATION_SUCCESS,
-      payload: data,
+      payload: result.data,
     });
   } catch (e) {
     dispatch({
