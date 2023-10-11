@@ -339,11 +339,14 @@ export default function DaoNeedSignature() {
 
   useEffect(() => {
     dispatch(fetchNeedCollectiveRatios(needId));
+  }, [needId]);
+
+  useEffect(() => {
     dispatch(fetchPersonalRatios());
     return () => {
       dispatch({ type: ONE_NEED_PERSONAL_RATIO_REST });
     };
-  }, [needId]);
+  }, []);
 
   useEffect(() => {
     if (!successOneNeedData) {
