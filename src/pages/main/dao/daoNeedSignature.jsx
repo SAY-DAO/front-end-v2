@@ -932,7 +932,6 @@ export default function DaoNeedSignature() {
                     )}
                   </Grid>
                 </Grid>
-
                 <Grid container sx={{ pl: 2, pr: 2, pt: 0, pb: 4 }}>
                   <Grid
                     container
@@ -1147,6 +1146,7 @@ export default function DaoNeedSignature() {
                         </div>
                       </ClickAwayListener>
                     </Grid>
+                    {/* -------------------difficulty ------------------------------*/}
                     <Grid item xs={4} sx={{ textAlign: 'center' }}>
                       <ClickAwayListener
                         onClickAway={() => handleVariablesTooltipClose('collaboration')}
@@ -1229,6 +1229,13 @@ export default function DaoNeedSignature() {
                   </Grid>
                 )}
                 {/* Button */}
+                <Typography>ipResult</Typography>
+                <Typography>{ipResult && ipResult.country_code}</Typography>
+                <Typography>
+                  {personalResult && personalResult.distanceRatio && 'personalResult'}
+                </Typography>
+                <Typography>{collectiveResult && 'collectiveResult'}</Typography>
+                <Typography>{oneReadyNeed && 'oneReadyNeed'}</Typography>
                 <Typography>ipResult</Typography>
                 <Typography>{userVRole}</Typography>
                 <Typography>{ipResult && ipResult.country_code}</Typography>
