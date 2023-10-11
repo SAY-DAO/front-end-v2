@@ -5,16 +5,16 @@ import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { createPublicClient, webSocket } from 'viem';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+// import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
   [
-    jsonRpcProvider({
-      rpc: () => ({
-        webSocket: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
-      }),
-    }),
+    // jsonRpcProvider({
+    //   rpc: () => ({
+    //     webSocket: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
+    //   }),
+    // }),
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 8000 }),
     publicProvider({ stallTimeout: 1_000 }), // The publicProvider configures the chains with a public RPC URL.
