@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 import { fetchPersonalRatios } from '../../redux/actions/main/daoAction';
 import MessageWallet from '../MessageWallet';
 import CustomToolTip from './CustomToolTip';
-import { ONE_NEED_PERSONAL_RATIO_REST } from '../../redux/constants/daoConstants';
 
 const SignatureInfoCard = () => {
   const { t } = useTranslation();
@@ -29,9 +28,6 @@ const SignatureInfoCard = () => {
     if (!personalResult) {
       dispatch(fetchPersonalRatios());
     }
-    return () => {
-      dispatch({ type: ONE_NEED_PERSONAL_RATIO_REST });
-    };
   }, []);
 
   // toast
