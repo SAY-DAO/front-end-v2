@@ -1,5 +1,6 @@
 import { createConfig, configureChains, mainnet, sepolia } from 'wagmi';
-// import { infuraProvider } from 'wagmi/providers/infura';
+import { infuraProvider } from 'wagmi/providers/infura';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
@@ -12,11 +13,11 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     jsonRpcProvider({
       rpc: () => ({
-        http: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
+        webSocket: `wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`,
       }),
     }),
-    // alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
-    // infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 8000 }),
+    alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
+    infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 8000 }),
     publicProvider(),
   ],
 );
@@ -41,8 +42,8 @@ export const config = (country) => {
       // batch: {
       //   multicall: true,
       // },
-      transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
-      // transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
+      // transport: webSocket(`wss://eth.getblock.io/${process.env.REACT_APP_GET_BLOCK_KEY}/mainnet/`),
+      transport: webSocket(`wss://mainnet.infura.io/ws/v3/${process.env.REACT_APP_INFURA_KEY}`),
       chain: mainnet,
     }),
 

@@ -1235,7 +1235,10 @@ export default function DaoNeedSignature() {
                   </Grid>
                 )}
                 {/* Button */}
-                <Typography>ipResult</Typography>
+                <Typography>status</Typography>isConnected
+                <Typography>{status}</Typography>
+                <Typography>isConnected</Typography>
+                <Typography>{isConnected}</Typography>
                 <Typography>{ipResult && ipResult.country_code}</Typography>
                 <Typography>
                   {personalResult && personalResult.distanceRatio && 'personalResult'}
