@@ -359,13 +359,13 @@ export const resetPassword = (password) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
         Authorization: userInfo && userInfo.accessToken,
       },
     };
-
     const formData = new FormData();
-    formData.append('password', password);
+    formData.set('password', password);
 
     const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
     dispatch({
