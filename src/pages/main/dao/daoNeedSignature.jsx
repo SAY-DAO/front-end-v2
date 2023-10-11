@@ -348,8 +348,10 @@ export default function DaoNeedSignature() {
   }, [needId]);
 
   useEffect(() => {
-    dispatch(fetchPersonalRatios());
-  }, []);
+    if (!personalResult) {
+      dispatch(fetchPersonalRatios());
+    }
+  }, [needId]);
 
   useEffect(() => {
     if (!successOneNeedData) {
