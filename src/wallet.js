@@ -7,7 +7,6 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { createPublicClient, webSocket } from 'viem';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
-// Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia],
   [
@@ -18,7 +17,7 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
     }),
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
     infuraProvider({ apiKey: process.env.REACT_APP_INFURA_KEY, stallTimeout: 8000 }),
-    publicProvider(),
+    publicProvider({ stallTimeout: 1_000 }), // The publicProvider configures the chains with a public RPC URL.
   ],
 );
 
@@ -47,6 +46,6 @@ export const config = (country) => {
       chain: mainnet,
     }),
 
-    webSocketPublicClient,
+    // webSocketPublicClient,
   });
 };
