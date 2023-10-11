@@ -367,7 +367,7 @@ export const resetPassword = (password) => async (dispatch, getState) => {
     const formData = new FormData();
     formData.append('password', password);
 
-    const { data } = await publicApi.patch(`/user/update/userId=me`, formData, { config });
+    const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
     dispatch({
       type: USER_RESET_PASSWORD_SUCCESS,
       payload: data,
