@@ -357,9 +357,7 @@ export default function DaoNeedSignature() {
     if (!successOneNeedData) {
       dispatch(fetchEcoFamilyRolesCompletePays());
     }
-    if (!oneReadyNeed) {
-      dispatch(fetchOneReadySignNeed(needId));
-    }
+    dispatch(fetchOneReadySignNeed(needId));
   }, [needId]);
 
   useEffect(() => {
