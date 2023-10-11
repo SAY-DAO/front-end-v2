@@ -731,6 +731,9 @@ export default function DaoNeedSignature() {
                                   </Typography>
                                   <Typography>
                                     {p.familyMember.firstName} {p.familyMember.lastName}
+                                    {!p.familyMember.firstName &&
+                                      !p.familyMember.lastName &&
+                                      p.familyMember.userName}
                                   </Typography>
                                 </Grid>
                               </Grid>
