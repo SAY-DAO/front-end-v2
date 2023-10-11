@@ -1235,19 +1235,6 @@ export default function DaoNeedSignature() {
                   </Grid>
                 )}
                 {/* Button */}
-                <Typography>status</Typography>isConnected
-                <Typography>{status}</Typography>
-                <Typography>isConnected</Typography>
-                <Typography>{isConnected}</Typography>
-                <Typography>{ipResult && ipResult.country_code}</Typography>
-                <Typography>
-                  {personalResult && personalResult.distanceRatio && 'personalResult'}
-                </Typography>
-                <Typography>{collectiveResult && 'collectiveResult'}</Typography>
-                <Typography>{oneReadyNeed && 'oneReadyNeed'}</Typography>
-                <Typography>ipResult</Typography>
-                <Typography>{userVRole}</Typography>
-                <Typography>{ipResult && ipResult.country_code}</Typography>
                 {oneReadyNeed.members &&
                 !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
                 oneReadyNeed.isResolved ? (

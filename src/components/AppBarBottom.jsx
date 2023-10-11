@@ -45,7 +45,6 @@ export default function AppBarBottom() {
   const themeOptions = useSelector((state) => state.themeOptions);
   const { activeMode } = themeOptions;
 
-
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [value]);
@@ -247,29 +246,27 @@ export default function AppBarBottom() {
               />
             }
           />
-          {userInfo && userInfo.user && userInfo.user.id === 115 && (
-            <BottomNavigationAction
-              value="daoPortal"
-              label={path === '/main/dao' && t('userLayout.dao')}
-              sx={{
-                '& .Mui-selected': {
-                  position: 'absolute',
-                },
-                maxWidth: path === '/main/dao/portal' ? '180px' : '25px',
-                minWidth: '70px',
-                borderRadius: '25px',
-                backgroundColor: path === '/main/dao/portal' ? '#ffdfc1' : 'transparent',
-                '& .MuiBottomNavigationAction-label': {
-                  color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
-                },
-              }}
-              icon={
-                <Typography color="textSecondary" sx={{ fontWeight: 600 }} variant="subtitle2">
-                  {t('userLayout.dao')}
-                </Typography>
-              }
-            />
-          )}
+          <BottomNavigationAction
+            value="daoPortal"
+            label={path === '/main/dao' && t('userLayout.dao')}
+            sx={{
+              '& .Mui-selected': {
+                position: 'absolute',
+              },
+              maxWidth: path === '/main/dao/portal' ? '180px' : '25px',
+              minWidth: '70px',
+              borderRadius: '25px',
+              backgroundColor: path === '/main/dao/portal' ? '#ffdfc1' : 'transparent',
+              '& .MuiBottomNavigationAction-label': {
+                color: activeMode === 'dark' ? '#282C34' : 'rgb(251, 181, 99)',
+              },
+            }}
+            icon={
+              <Typography color="textSecondary" sx={{ fontWeight: 600 }} variant="subtitle2">
+                {t('userLayout.dao')}
+              </Typography>
+            }
+          />
         </BottomNavigation>
       </Paper>
     </Box>
