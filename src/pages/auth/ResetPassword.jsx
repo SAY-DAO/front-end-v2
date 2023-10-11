@@ -93,19 +93,29 @@ const ResetPassword = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect(async () => {
-    setValidateErr('');
-    setRepeatPasswordErr(true);
-    if (repeatPassword) {
-      const result = validateRepeatPassword(password, repeatPassword);
-      if (result && result.errorMessage) {
-        const timeout = setTimeout(() => {
-          setValidateErr(t(result.errorMessage));
-        }, 100);
-        return () => clearTimeout(timeout);
+  useEffect(() => {
+    const myAsync = async () => {
+      try {
+        setValidateErr('');
+        setRepeatPasswordErr(true);
+        if (repeatPassword) {
+          const result = validateRepeatPassword(password, repeatPassword);
+          if (result && result.errorMessage) {
+            const timeout = setTimeout(() => {
+              setValidateErr(t(result.errorMessage));
+            }, 100);
+            return () => clearTimeout(timeout);
+          }
+        }
+        setRepeatPasswordErr(false);
+      } catch (e) {
+        console.log({
+          message: e.details,
+          code: e.code,
+        });
       }
-    }
-    setRepeatPasswordErr(false);
+    };
+    myAsync();
   }, [password, repeatPassword]);
 
   useEffect(() => {
