@@ -34,7 +34,6 @@ export const config = (country) => {
               chains,
               options: {
                 projectId: process.env.REACT_APP_WC_PROJECT_ID,
-                isNewChainsStale: false,
               },
             }),
           ],
