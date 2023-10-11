@@ -25,9 +25,7 @@ const SignatureInfoCard = () => {
   const { paidNeedsData } = paidNeeds;
 
   useEffect(() => {
-    if (!personalResult) {
-      dispatch(fetchPersonalRatios());
-    }
+    dispatch(fetchPersonalRatios());
   }, []);
 
   // toast

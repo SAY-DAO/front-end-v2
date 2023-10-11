@@ -66,6 +66,7 @@ import CommentModal from '../../../components/modals/CommentModal';
 import CommentDrawer from '../../../components/DAO/signing/CommentDrawer';
 import DifficultyTable from '../../../components/DAO/signing/DifficultyTable';
 import DistanceRatioTable from '../../../components/DAO/signing/DistanceRatioTable';
+import { fetchUserIpLocation } from '../../../redux/actions/userAction';
 
 export default function DaoNeedSignature() {
   const dispatch = useDispatch();
@@ -146,6 +147,12 @@ export default function DaoNeedSignature() {
     loading: loadingSignature,
     error: errorSignature,
   } = useSelector((state) => state.signature);
+
+  useEffect(() => {
+    if (!ipResult) {
+      dispatch(fetchUserIpLocation());
+    }
+  }, []);
 
   // reset wallet connection
   useEffect(() => {
