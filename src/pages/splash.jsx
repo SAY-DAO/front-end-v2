@@ -13,7 +13,6 @@ export default function Splash() {
   const timer = (ms) =>
     setTimeout(() => {
       navigate('/auth/intro');
-      console.log('hala');
     }, ms);
 
   const tick = () => {
