@@ -37,12 +37,10 @@ export default function Splash() {
       if (!values.isDeleting && values.txt === fullTxt) {
         delta = values.period;
         values.isDeleting = true;
-        timer(2500);
       } else if (values.isDeleting && values.txt === '') {
         values.isDeleting = false;
         values.loopNum++;
         delta = 500;
-        timer(2500);
       }
 
       setTimeout(() => {
@@ -80,6 +78,7 @@ export default function Splash() {
   useEffect(() => {
     if (values) {
       tick();
+      timer(3000);
     }
   }, [values]);
 
