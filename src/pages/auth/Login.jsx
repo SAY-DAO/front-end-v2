@@ -52,7 +52,11 @@ const Login = () => {
   const { success: successRegister } = userRegister;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { loading: loadingUserDetails, success: successUserDetails } = userDetails;
+  const {
+    loading: loadingUserDetails,
+    success: successUserDetails,
+    error: errorUserDetails,
+  } = userDetails;
 
   // loading button
   useEffect(() => {
@@ -73,7 +77,15 @@ const Login = () => {
   }, [userName, password, errorLogin, successLogin]);
 
   useEffect(() => {
-    dispatch(fetchUserDetails());
+    if (successLogin) {
+      dispatch(fetchUserDetails());
+    }
+    if (errorLogin || errorUserDetails) {
+      dispatch({ type: USER_DETAILS_RESET });
+    }
+  }, [successLogin, errorUserDetails, errorLogin]);
+
+  useEffect(() => {
     if ((successLogin || userInfo) && successUserDetails) {
       navigate(`/${redirect}`);
     }
