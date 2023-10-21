@@ -51,7 +51,7 @@ export default function AppBarBottom() {
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
-    if (!successHome && !loadingHome) {
+    if (userInfo && !successHome && !loadingHome) {
       dispatch(fetchMyHome());
     }
     if (userInfo && children && !children[0]) {
