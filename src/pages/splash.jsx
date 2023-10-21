@@ -10,11 +10,11 @@ export default function Splash() {
   const [isDone, setIsDone] = useState(false);
   const [values, setValues] = useState();
 
-  const timer = () =>
+  const timer = (ms) =>
     setTimeout(() => {
       navigate('/auth/intro');
       console.log('hala');
-    }, 2000);
+    }, ms);
 
   const tick = () => {
     if (values) {
@@ -34,11 +34,9 @@ export default function Splash() {
       if (values.isDeleting) {
         delta /= 2;
       }
-
       if (!values.isDeleting && values.txt === fullTxt) {
         delta = values.period;
         values.isDeleting = true;
-        timer();
       } else if (values.isDeleting && values.txt === '') {
         values.isDeleting = false;
         values.loopNum++;
@@ -47,6 +45,7 @@ export default function Splash() {
 
       setTimeout(() => {
         tick();
+        timer(2500);
       }, delta);
     }
   };
