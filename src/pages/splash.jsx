@@ -9,7 +9,7 @@ export default function Splash() {
 
   const [isDone, setIsDone] = useState(false);
   const [values, setValues] = useState();
-  
+  const [called, setCalled] = useState(false);
   const timer = () =>
     setTimeout(() => {
       navigate('/auth/intro');
@@ -77,8 +77,9 @@ export default function Splash() {
   }, [document]);
 
   useEffect(() => {
-    if (values) {
+    if (values && !called) {
       tick();
+      setCalled(true); // to stop calling which might result in calling this =? navigating when logging in
     }
   }, [values]);
 
