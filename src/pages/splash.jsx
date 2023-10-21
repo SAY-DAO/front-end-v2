@@ -9,10 +9,11 @@ export default function Splash() {
 
   const [isDone, setIsDone] = useState(false);
   const [values, setValues] = useState();
-  const [called, setCalled] = useState(false);
+
   const timer = () =>
     setTimeout(() => {
       navigate('/auth/intro');
+      console.log('hala');
     }, 2000);
 
   const tick = () => {
@@ -77,9 +78,8 @@ export default function Splash() {
   }, [document]);
 
   useEffect(() => {
-    if (values && !called) {
+    if (values) {
       tick();
-      setCalled(true); // to stop calling which might result in calling this =? navigating when logging in
     }
   }, [values]);
 
