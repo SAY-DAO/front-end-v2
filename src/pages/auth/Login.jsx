@@ -33,10 +33,10 @@ const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // eslint-disable-next-line no-restricted-globals
-  const redirect = location.search
+
+  const redirect = window.location.search
     ? // eslint-disable-next-line no-restricted-globals
-      location.search.split('redirect=')[1]
+      window.location.search.split('redirect=')[1]
     : 'main/home';
 
   const [userName, setUserName] = useState('');

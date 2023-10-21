@@ -9,11 +9,10 @@ export default function Splash() {
 
   const [isDone, setIsDone] = useState(false);
   const [values, setValues] = useState();
-  function myFunction() {
+  const timer = () =>
     setTimeout(() => {
       navigate('/auth/intro');
     }, 2000);
-  }
 
   const tick = () => {
     if (values) {
@@ -37,7 +36,7 @@ export default function Splash() {
       if (!values.isDeleting && values.txt === fullTxt) {
         delta = values.period;
         values.isDeleting = true;
-        myFunction();
+        timer();
       } else if (values.isDeleting && values.txt === '') {
         values.isDeleting = false;
         values.loopNum++;
@@ -49,9 +48,8 @@ export default function Splash() {
       }, delta);
     }
   };
-  useEffect(() => {
-    console.log(isDone);
 
+  useEffect(() => {
     const elements = document.getElementsByClassName('txt-rotate');
     if (!isDone && elements && elements[0]) {
       for (let i = 0; i < elements.length; i++) {
