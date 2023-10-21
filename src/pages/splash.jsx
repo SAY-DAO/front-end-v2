@@ -9,6 +9,7 @@ export default function Splash() {
 
   const [isDone, setIsDone] = useState(false);
   const [values, setValues] = useState();
+  
   const timer = () =>
     setTimeout(() => {
       navigate('/auth/intro');
