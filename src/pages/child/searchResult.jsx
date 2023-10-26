@@ -198,7 +198,7 @@ const SearchResult = () => {
                       setIsInvite={setIsInvite}
                       invitationToken={invitationToken}
                       fromLocalStorage={fromLocalStorage}
-                    />{' '}
+                    />
                   </Grid>
                 </Grid>
               </Box>
