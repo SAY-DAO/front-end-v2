@@ -9,6 +9,7 @@ import { logout } from '../../redux/actions/userAction';
 import Back from '../Back';
 import LangButton from '../LangButton';
 import Message from '../Message';
+import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -37,6 +38,9 @@ export default function Settings() {
     if (!userInfo && !successLogin) {
       navigate('/auth/login?redirect=main/home');
     }
+    return () => {
+      dispatch({ type: USER_RESET_PASSWORD_RESET });
+    };
   }, [userInfo, successLogin]);
 
   // cart badge number

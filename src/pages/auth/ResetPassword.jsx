@@ -34,7 +34,12 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userResetPass = useSelector((state) => state.userResetPass);
-  const { loading: loadingReset, error: errorReset, success: successReset } = userResetPass;
+  const {
+    resetPass,
+    loading: loadingReset,
+    error: errorReset,
+    success: successReset,
+  } = userResetPass;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -44,10 +49,10 @@ const ResetPassword = () => {
 
   // login
   useEffect(() => {
-    if (errorUserDetails) {
+    if (errorUserDetails && !token) {
       navigate('/auth/login?redirect=auth/reset-password');
     }
-  }, [userInfo, successLogin, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch, token]);
 
   // loading button
   useEffect(() => {
@@ -71,9 +76,6 @@ const ResetPassword = () => {
     if (!userInfo && !successLogin && !token) {
       navigate('/auth/login?redirect=auth/reset-password');
     }
-    return () => {
-      dispatch({ type: USER_RESET_PASSWORD_RESET });
-    };
   }, [userInfo, successLogin, token]);
 
   // check password every 1000 ms when typing
@@ -119,10 +121,29 @@ const ResetPassword = () => {
   }, [password, repeatPassword]);
 
   useEffect(() => {
-    if (successReset) {
-      navigate('/main/profile/settings');
+    if (successReset && token) {
+      window.localStorage.removeItem('userInfo');
+      localStorage.setItem(
+        'userInfo',
+        JSON.stringify({
+          accessToken: resetPass.accessToken,
+          message: 'reset password',
+          refreshToken: resetPass.refreshToken,
+          user: resetPass.user,
+        }),
+      );
+      return () => {
+        dispatch({ type: USER_RESET_PASSWORD_RESET });
+      };
+      // navigate('/main/profile/settings');
     }
-  }, [successReset]);
+    if (successReset && !token) {
+      // navigate('/main/profile/settings');
+      return () => {
+        dispatch({ type: USER_RESET_PASSWORD_RESET });
+      };
+    }
+  }, [successReset, resetPass, token]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -226,6 +247,13 @@ const ResetPassword = () => {
               severity="error"
             >
               {validateErr}
+            </Message>
+          )}
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: 'center', margin: 4 }}>
+          {successReset && (
+            <Message variant="standard" severity="success">
+              {t('change-password.successNotif')}
             </Message>
           )}
         </Grid>
