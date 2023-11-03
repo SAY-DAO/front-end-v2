@@ -62,7 +62,9 @@ const Profile = () => {
                 />
               </Grid>
               <Grid item xs={6} sx={{ padding: 2 }}>
-                <Typography variant="subtitle1">{`${theUser.firstName} ${theUser.lastName}`}</Typography>
+                <Typography variant="subtitle1">{`${
+                  theUser.firstName ? theUser.firstName : theUser.userName
+                } ${theUser.lastName}`}</Typography>
                 <Grid item xs>
                   <Link to="/main/profile/edit">
                     <Typography
@@ -109,7 +111,9 @@ const Profile = () => {
                     float: 'left',
                   }}
                 >
-                  {`${theUser.firstName} ${theUser.lastName}`}
+                  {`${theUser.firstName ? theUser.firstName : theUser.userName} ${
+                    theUser.lastName
+                  }`}
                 </Typography>
               </Grid>
             </Grid>
@@ -160,7 +164,6 @@ const Profile = () => {
       ) : (
         <CircularProgress />
       )}
-      
     </Grid>
   );
 };
