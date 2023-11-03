@@ -30,12 +30,8 @@ const ForgotPassword = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const userResetPass = useSelector((state) => state.userResetPass);
-  const {
-    loading: loadingReset,
-    error: errorReset,
-    success: successReset,
-  } = userResetPass;
+  const userForgotPass = useSelector((state) => state.userForgotPass);
+  const { loading: loadingForgot, error: errorForgot, success: successReset } = userForgotPass;
 
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
@@ -78,12 +74,12 @@ const ForgotPassword = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingReset) {
+    if (loadingForgot) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingReset, phoneNumber, email]);
+  }, [loadingForgot, phoneNumber, email]);
 
   // disable button
   useEffect(() => {
@@ -124,13 +120,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
+    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
       <Back to="/auth/login" isOrange />
       <Grid
         container
@@ -140,10 +130,7 @@ const ForgotPassword = () => {
         item
         sx={{ marginTop: 10 }}
       >
-        <Typography
-          variant="h5"
-          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
-        >
+        <Typography variant="h5" sx={{ marginBottom: 6, fontWeight: 'lighter' }}>
           {t('forgot-password.title')}
         </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
@@ -162,9 +149,7 @@ const ForgotPassword = () => {
               countryCodeEditable={false}
             />
             <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
-              <Typography variant="subtitle1">
-                {t('divider.register')}
-              </Typography>
+              <Typography variant="subtitle1">{t('divider.register')}</Typography>
             </Divider>
             <TextField
               type="email"
@@ -193,12 +178,12 @@ const ForgotPassword = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {(validateErr || errorReset) && (
-          <Message frontError={errorReset} variant="standard" severity="error">
+        {(validateErr || errorForgot) && (
+          <Message frontError={errorForgot} variant="standard" severity="error">
             {validateErr}
           </Message>
         )}
-        {(!validateErr || !errorReset) && successReset && (
+        {(!validateErr || !errorForgot) && successReset && (
           <Message variant="standard" severity="success">
             {t('forgot-password.successNotif')}
           </Message>
