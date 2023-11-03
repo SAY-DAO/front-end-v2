@@ -16,7 +16,7 @@ import {
   USER_SIGNATURES_REQUEST,
   USER_SIGNATURES_SUCCESS,
   USER_SIGNATURES_FAIL,
-  MY_PAID_NEEDS_REQUEST,
+  MY_READY_PAID_NEEDS_REQUEST,
   MY_PAID_NEEDS_SUCCESS,
   MY_PAID_NEEDS_FAIL,
   READY_TO_SIGN_ONE_NEED_REQUEST,
@@ -119,7 +119,7 @@ export const needVariablesAnalyticReducer = (state = {}, action) => {
 
 export const readyToSignNeedsReducer = (state = {}, action) => {
   switch (action.type) {
-    case MY_PAID_NEEDS_REQUEST:
+    case MY_READY_PAID_NEEDS_REQUEST:
       return { loading: true, success: false };
     case MY_PAID_NEEDS_SUCCESS:
       return { loading: false, success: true, paidNeedsData: action.payload };

@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-// For multi-language
+import React, { useState, useEffect } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography, IconButton, CircularProgress } from '@mui/material';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { withStyles } from '@mui/styles';
 import Slider from '@mui/material/Slider';
 import CloseIcon from '@mui/icons-material/Close';
@@ -42,20 +40,31 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 // eslint-disable-next-line react/prop-types
-export default function UserProfileEdit() {
+export default function ProfileUpload({ uploadImage, handleImageClose, setFinalImageFile }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [photo, setPhoto] = useState(null);
   const [editor, setEditor] = useState(null);
-  const [done, setDone] = useState(false);
-  const [file, setFile] = useState(location.state.imageUpload);
-  const [tumb, setTumb] = useState(null);
+  const [file, setFile] = useState();
+
+  const setEditorRef = (thisEditor) => setEditor(thisEditor);
+
+  // disable IconButton
+  useEffect(() => {
+    if (!uploadImage) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    setFile(uploadImage);
+  }, []);
 
   const scaleHandler = () => {
     const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
@@ -84,7 +93,9 @@ export default function UserProfileEdit() {
     return new File([u8arr], filename, { type: mime });
   };
 
-  const onClickSave = () => {
+  const onClickSave = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     if (editor) {
       const canvas = editor.getImageScaledToCanvas().toDataURL('image/png');
 
@@ -101,72 +112,69 @@ export default function UserProfileEdit() {
       console.warn('test png file --> ', theFile);
       console.warn('uploaded file --> ', file);
 
-      setPhoto(theFile);
-      setTumb(canvas);
-      setDone(true);
-      navigate('/main/profile/edit', { newImage: theFile });
+      // navigate('/main/profile/edit', { newImage: theFile });
+      // setThumb(canvas);
+      setFinalImageFile(theFile);
+      handleImageClose(); // close dialog
+
+      setIsLoading(false);
     }
   };
-
-  const setEditorRef = (thisEditor) => setEditor(thisEditor);
 
   return (
     <Grid container>
       <Grid item container justifyContent="space-between" alignItems="center">
-        <Link
-          to={{
-            pathname: '/main/profile/edit',
-            state: { newPhoto: null, tumbnail: null },
-          }}
-        >
-          <CloseIcon
-            sx={{
-              color: 'red',
-              top: 0,
-              right: 0,
-              width: '24px',
-              margin: '18px',
-              zIndex: 10,
-            }}
-          />
-        </Link>
-
-        <Typography
-          variant="h6"
-          sx={{
-            padding: 2,
-            fontWeight: 'lighter',
-            textAlign: 'center',
-          }}
-        >
-          {t('profile.editProfile.avatar.title')}
-        </Typography>
-
-        {isLoading ? (
-          <CircularProgress
-            size={20}
-            sx={{
-              top: 0,
-              left: 0,
-              width: '24px',
-              margin: '18px',
-              zIndex: 10,
-            }}
-          />
-        ) : (
-          <IconButton onClick={onClickSave}>
-            <DoneIcon
+        <Grid item xs={4}>
+          {isLoading ? (
+            <CircularProgress
+              size={20}
               sx={{
-                color: isDisabled ? 'gray' : 'green',
                 top: 0,
                 left: 0,
-                width: '24px',
+                width: '20px',
+                margin: '18px',
+                zIndex: 10,
+              }}
+            />
+          ) : (
+            <IconButton onClick={onClickSave}>
+              <DoneIcon
+                sx={{
+                  color: isDisabled ? 'gray' : 'green',
+                  top: 0,
+                  left: 0,
+                  width: '20px',
+                  margin: '18px',
+                  zIndex: 10,
+                }}
+              />
+            </IconButton>
+          )}
+        </Grid>
+        <Grid item xs={4}>
+          <Typography
+            sx={{
+              fontWeight: 'lighter',
+              textAlign: 'center',
+            }}
+          >
+            {t('profile.editProfile.avatar.title')}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <IconButton onClick={() => handleImageClose()}>
+            <CloseIcon
+              sx={{
+                color: 'red',
+                top: 0,
+                right: 0,
+                width: '20px',
                 margin: '18px',
                 zIndex: 10,
               }}
             />
           </IconButton>
-        )}
+        </Grid>
       </Grid>
       <Grid container sx={{ margin: 2 }}>
         <div className="setting body-content flex-col al-center">
@@ -182,36 +190,29 @@ export default function UserProfileEdit() {
             style={{ maxWidth: '100%', height: 'auto' }}
           />
 
-          <Grid container sx={{ margin: 2 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}
-            >
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}>
               {t('profile.editProfile.avatar.scale')}
             </Typography>
-            <div className="flex-row" style={{ width: '70%' }}>
+            <div className="flex-row" style={{ width: '100%' }}>
               <PrettoSlider
                 valueLabelDisplay="auto"
                 aria-label="pretto slider"
-                defaultValue={0}
+                defaultValue={100}
                 onChange={scaleHandler}
                 onClick={scaleHandler}
               />
             </div>
           </Grid>
-
-          <Grid container sx={{ margin: 2 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}
-            >
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" sx={{ margin: 'auto', marginLeft: 1, marginRight: 1 }}>
               {t('profile.editProfile.avatar.rotate')}
             </Typography>
-            <div className="flex-row" style={{ width: '70%' }}>
+            <div className="flex-row" style={{ width: '100%' }}>
               <PrettoSlider
                 valueLabelDisplay="auto"
                 aria-label="pretto slider"
-                defaultValue={0}
+                defaultValue={100}
                 onChange={rotateHandler}
                 onClick={rotateHandler}
               />

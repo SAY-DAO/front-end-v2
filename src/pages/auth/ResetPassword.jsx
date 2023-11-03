@@ -4,13 +4,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { resetPassword } from '../../redux/actions/userAction';
+import { resetPassword, resetPasswordByToken } from '../../redux/actions/userAction';
 import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
@@ -18,9 +18,12 @@ import Back from '../../components/Back';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 
 const ResetPassword = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
+
+  const token = searchParams.get('token');
 
   const [validateErr, setValidateErr] = useState('');
   const [passwordErr, setPasswordErr] = useState(false);
@@ -42,7 +45,7 @@ const ResetPassword = () => {
   // login
   useEffect(() => {
     if (errorUserDetails) {
-      navigate('/auth/login?redirect=setpassword');
+      navigate('/auth/login?redirect=auth/reset-password');
     }
   }, [userInfo, successLogin, errorUserDetails, dispatch]);
 
@@ -65,16 +68,13 @@ const ResetPassword = () => {
   }, [password, repeatPassword, passwordErr, repeatPasswordErr, errorReset, successReset]);
 
   useEffect(() => {
-    dispatch({ type: USER_RESET_PASSWORD_RESET });
-    if (!userInfo && !successLogin) {
-      navigate('/auth/login?redirect=setpassword');
+    if (!userInfo && !successLogin && !token) {
+      navigate('/auth/login?redirect=auth/reset-password');
     }
-  }, [userInfo, successLogin]);
-
-  // cleanup the state error after leaving the page - this runs every reload
-  useEffect(() => {
-    dispatch({ type: USER_RESET_PASSWORD_RESET });
-  }, [password, repeatPassword]);
+    return () => {
+      dispatch({ type: USER_RESET_PASSWORD_RESET });
+    };
+  }, [userInfo, successLogin, token]);
 
   // check password every 1000 ms when typing
   useEffect(() => {
@@ -126,8 +126,11 @@ const ResetPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password) {
+    if (!token && password) {
       dispatch(resetPassword(password));
+    }
+    if (token && password) {
+      dispatch(resetPasswordByToken(token, password, repeatPassword));
     }
   };
 

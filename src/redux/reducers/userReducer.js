@@ -40,6 +40,17 @@ import {
   IP_LOCATION_SUCCESS,
   IP_LOCATION_FAIL,
   IP_LOCATION_RESET,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_EMAIL_MARKETING_UPDATE_REQUEST,
+  USER_EMAIL_MARKETING_UPDATE_FAIL,
+  USER_EMAIL_MARKETING_UPDATE_SUCCESS,
+  USER_EMAIL_MARKETING_UPDATE_RESET,
+  USER_UPDATE_PROFILE_RESET,
+  USER_EMAIL_MARKETING_REQUEST,
+  USER_EMAIL_MARKETING_SUCCESS,
+  USER_EMAIL_MARKETING_FAIL,
 } from '../constants/main/userConstants';
 
 export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
@@ -205,6 +216,42 @@ export const userResetPasswordReducer = (state = {}, action) => {
     case USER_RESET_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
     case USER_RESET_PASSWORD_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_UPDATE_PROFILE_REQUEST:
+      return { ...state, loading: true };
+    case USER_UPDATE_PROFILE_SUCCESS:
+      return { loading: false, success: true, updatedUser: action.payload };
+    case USER_UPDATE_PROFILE_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_UPDATE_PROFILE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userEmailMarketingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_EMAIL_MARKETING_REQUEST:
+      return { ...state, loading: true };
+    case USER_EMAIL_MARKETING_SUCCESS:
+      return { loading: false, success: true, emailMarketing: action.payload };
+    case USER_EMAIL_MARKETING_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_EMAIL_MARKETING_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case USER_EMAIL_MARKETING_UPDATE_SUCCESS:
+      return { loading: false, success: true, updatedEmailStatus: action.payload };
+    case USER_EMAIL_MARKETING_UPDATE_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_EMAIL_MARKETING_UPDATE_RESET:
       return {};
     default:
       return state;

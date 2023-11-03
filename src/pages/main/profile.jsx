@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import {  useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 import FiatWalletModal from '../../components/modals/FiatWalletModal';
 
@@ -61,7 +61,7 @@ const Profile = () => {
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={6} sx={{ padding: 2 }}>
+              <Grid item xs={6} sx={{ padding: 2 }}>
                 <Typography variant="subtitle1">{`${theUser.firstName} ${theUser.lastName}`}</Typography>
                 <Grid item xs>
                   <Link to="/main/profile/edit">
@@ -75,7 +75,7 @@ const Profile = () => {
                     </Typography>
                   </Link>
                 </Grid>
-              </Grid> */}
+              </Grid>
               <Grid item xs={3} sx={{ padding: 2, zIndex: 10 }}>
                 <IconButton color="primary" onClick={() => navigate('/main/profile/settings')}>
                   <Card
@@ -104,7 +104,7 @@ const Profile = () => {
                     fontWeight: 900,
                     lineHeight: '56px',
                     whiteSpace: 'nowrap',
-                    left: 'calc(100vw - 400px)',
+                    left: 'calc(100% - 120px)',
                     top: '-50px',
                     float: 'left',
                   }}

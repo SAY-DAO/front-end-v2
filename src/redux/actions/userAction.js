@@ -1,5 +1,5 @@
 import LogRocket from 'logrocket';
-import { publicApi } from '../../apis/sayBase';
+import { daoApi, publicApi } from '../../apis/sayBase';
 import { CART_ADD_RESET } from '../constants/main/cartConstants';
 import { HOME_RESET } from '../constants/main/homeConstants';
 import {
@@ -32,6 +32,12 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_EMAIL_MARKETING_UPDATE_REQUEST,
+  USER_EMAIL_MARKETING_UPDATE_FAIL,
+  USER_EMAIL_MARKETING_UPDATE_SUCCESS,
+  USER_EMAIL_MARKETING_REQUEST,
+  USER_EMAIL_MARKETING_FAIL,
+  USER_EMAIL_MARKETING_SUCCESS,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
@@ -380,6 +386,37 @@ export const resetPassword = (password) => async (dispatch, getState) => {
   }
 };
 
+export const resetPasswordByToken = (token, password, confirmPassword) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_RESET_PASSWORD_REQUEST });
+
+    const config = {
+      headers: {
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    };
+    const formData = new FormData();
+    formData.set('password', password);
+    formData.set('confirm_password', confirmPassword);
+
+    const { data } = await publicApi.post(
+      `/auth/password/reset/confirm/token=${token}`,
+      formData,
+      config,
+    );
+    dispatch({
+      type: USER_RESET_PASSWORD_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_RESET_PASSWORD_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
 export const userEditProfile =
   (phoneAuth, emailAuth, avatarUrl, firstName, lastName, phoneNumber, email, userName) =>
   async (dispatch, getState) => {
@@ -392,7 +429,7 @@ export const userEditProfile =
 
       const config = {
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': `multipart/form-data`,
           Authorization: userInfo && userInfo.accessToken,
         },
       };
@@ -407,16 +444,19 @@ export const userEditProfile =
       if (userInfo.user.lastName !== lastName) {
         formData.append('lastName', lastName);
       }
-      if (phoneAuth && userInfo.user.phone_number !== phoneNumber) {
+      console.log(phoneNumber);
+      if (!phoneAuth && userInfo.user.phone_number !== phoneNumber) {
+        console.log('phne');
         formData.append('phoneNumber', phoneNumber);
       }
-      if (emailAuth && userInfo.user.emailAddress !== email) {
+      if (!emailAuth && userInfo.user.emailAddress !== email) {
+        console.log('mail');
         formData.append('email', email);
       }
       if (userInfo.user.userName !== userName) {
         formData.append('userName', userName);
       }
-      const { data } = await publicApi.patch(`/user/update/userId=me`, formData, { config });
+      const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
 
       dispatch({
         type: USER_UPDATE_PROFILE_SUCCESS,
@@ -429,3 +469,63 @@ export const userEditProfile =
       });
     }
   };
+
+export const fetchEmailMarketingStatus = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_EMAIL_MARKETING_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: userInfo && userInfo.user.id,
+      },
+    };
+
+    const { data } = await daoApi.get(`/family/email/status`, config);
+
+    dispatch({
+      type: USER_EMAIL_MARKETING_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_EMAIL_MARKETING_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+export const updateEmailMarketingStatus = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_EMAIL_MARKETING_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: userInfo && userInfo.user.id,
+      },
+    };
+
+    const { data } = await daoApi.patch(`/family/email/status`, {}, config);
+
+    dispatch({
+      type: USER_EMAIL_MARKETING_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_EMAIL_MARKETING_UPDATE_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};

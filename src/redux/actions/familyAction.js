@@ -148,7 +148,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userInfo && userInfo.access_token,
+        Authorization: userInfo && userInfo.accessToken,
       },
     };
     const { data } = await publicApi.get(`/public/children`, config);

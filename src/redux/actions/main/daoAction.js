@@ -2,7 +2,7 @@ import { readContract } from '@wagmi/core';
 import { daoApi } from '../../../apis/sayBase';
 import { FlaskUserTypesEnum, SAYPlatformRoles } from '../../../utils/types';
 import {
-  MY_PAID_NEEDS_REQUEST,
+  MY_READY_PAID_NEEDS_REQUEST,
   MY_PAID_NEEDS_SUCCESS,
   MY_PAID_NEEDS_FAIL,
   ONE_NEED_COLLECTIVE_RATIO_REQUEST,
@@ -222,9 +222,9 @@ export const fetchEcoMintData = () => async (dispatch, getState) => {
   }
 };
 
-export const fetchPaidNeeds = () => async (dispatch, getState) => {
+export const fetchReadyPaidNeeds = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: MY_PAID_NEEDS_REQUEST });
+    dispatch({ type: MY_READY_PAID_NEEDS_REQUEST });
 
     const {
       userLogin: { userInfo },

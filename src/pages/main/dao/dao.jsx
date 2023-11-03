@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import {
   fetchEcoMintData,
-  fetchPaidNeeds,
+  fetchReadyPaidNeeds,
   fetchAvailableContribution,
 } from '../../../redux/actions/main/daoAction';
 
@@ -23,7 +23,7 @@ export default function Dao() {
   useEffect(() => {
     if (tabNumber === 0) {
       navigate('/main/dao/tabs/signature');
-      dispatch(fetchPaidNeeds());
+      dispatch(fetchReadyPaidNeeds());
     }
     if (tabNumber === 1) {
       navigate('/main/dao/tabs/mint');

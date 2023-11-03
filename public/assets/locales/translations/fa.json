@@ -5,6 +5,9 @@
       "tooltip": ""
     }
   },
+  "email":{
+    "monthlySummaries":"دریافت ایمیل ماهانه از کودکان من"
+  },
   "button": {
     "skip": "می‌دانم",
     "register": "ثبت نام",

@@ -1,4 +1,7 @@
 {
+  "email":{
+    "monthlySummaries":"Receive monthly updates on my children"
+  },
   "button": {
     "skip": "Skip",
     "register": "Register",
