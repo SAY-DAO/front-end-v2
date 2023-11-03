@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography } from '@mui/material';
+import { Grid, Divider, Typography, LinearProgress } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -29,10 +29,30 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [enableResend, setEnableResend] = useState(false);
+  const [progress, setProgress] = useState(100);
 
   const userForgotPass = useSelector((state) => state.userForgotPass);
   const { loading: loadingForgot, error: errorForgot, success: successReset } = userForgotPass;
 
+  console.log(progress);
+  // resend progress
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          setEnableResend(false);
+          return 100;
+        }
+        const diff = 1.5;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
     dispatch({ type: USER_FORGOT_PASSWORD_RESET });
@@ -117,6 +137,8 @@ const ForgotPassword = () => {
     } else {
       setValidateErr('verification logic error');
     }
+    setEnableResend(true);
+    setProgress(0);
   };
 
   return (
@@ -167,12 +189,34 @@ const ForgotPassword = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={isDisabled}
+                disabled={isDisabled || enableResend}
                 loading={isLoading}
                 sx={{ bottom: 5 }}
               >
                 {t('button.submit')}
               </LoadingButton>
+            </Grid>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              {enableResend && (
+                <Grid sx={{ width: '100%', marginTop: 2 }}>
+                  <Grid item xs={12}>
+                    <LinearProgress variant="determinate" value={parseInt(progress, 10)} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'center',
+                        color: '#f5a344',
+                      }}
+                    >
+                      {t('verify.pleaseWait')}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
             </Grid>
           </form>
         </FormControl>
@@ -181,11 +225,6 @@ const ForgotPassword = () => {
         {(validateErr || errorForgot) && (
           <Message frontError={errorForgot} variant="standard" severity="error">
             {validateErr}
-          </Message>
-        )}
-        {(!validateErr || !errorForgot) && successReset && (
-          <Message variant="standard" severity="success">
-            {t('forgot-password.successNotif')}
           </Message>
         )}
       </Grid>
