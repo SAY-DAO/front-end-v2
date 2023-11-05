@@ -220,7 +220,7 @@ const ContributionNetwork = () => {
         <div
           style={{
             height: '60vh',
-            width: '120%',
+            width: '100%',
             // background: 'white',
           }}
         >

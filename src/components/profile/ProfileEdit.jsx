@@ -347,38 +347,6 @@ const ProfileEdit = () => {
                   textAlign: 'center',
                 }}
               >
-                <IconButton onClick={() => navigate('/main/profile')}>
-                  <CloseIcon
-                    sx={{
-                      color: 'red',
-                      top: 0,
-                      right: 0,
-                      width: '24px',
-                      margin: '18px',
-                      zIndex: 10,
-                    }}
-                  />
-                </IconButton>
-              </Grid>
-              <Grid item xs={4}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    padding: 2,
-                    fontWeight: 'lighter',
-                    textAlign: 'center',
-                  }}
-                >
-                  {t('profile.editProfile.title')}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={4}
-                sx={{
-                  textAlign: 'center',
-                }}
-              >
                 <IconButton disabled={isDisabled || !userName} type="submit">
                   {isLoading ? (
                     <CircularProgress
@@ -403,6 +371,38 @@ const ProfileEdit = () => {
                       }}
                     />
                   )}
+                </IconButton>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    padding: 2,
+                    fontWeight: 'lighter',
+                    textAlign: 'center',
+                  }}
+                >
+                  {t('profile.editProfile.title')}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={4}
+                sx={{
+                  textAlign: 'center',
+                }}
+              >
+                <IconButton onClick={() => navigate('/main/profile')}>
+                  <CloseIcon
+                    sx={{
+                      color: 'red',
+                      top: 0,
+                      right: 0,
+                      width: '24px',
+                      margin: '18px',
+                      zIndex: 10,
+                    }}
+                  />
                 </IconButton>
               </Grid>
             </Grid>

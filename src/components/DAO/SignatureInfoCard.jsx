@@ -53,126 +53,124 @@ const SignatureInfoCard = () => {
         backgroundColor: 'transparent',
       }}
     >
-      <div>
-        <CardContent
-          sx={{
-            pt: '12px',
-            pb: '0.8rem !important',
-          }}
-        >
-          {/* infos */}
-          <Grid container spacing={0}>
-            <Grid item lg={4} sm={12} xs={12} sx={{ order: { xs: '2', sm: '2', lg: '1' } }}>
-              <Grid
-                container
-                spacing={0}
-                sx={{ mt: { xs: 1 }, mb: { xs: 1 } }}
-                justifyContent="center"
-              >
-                <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                  <CustomToolTip
-                    title={t('dao.signaturesTab.waiting')}
-                    popup={
-                      <>
-                        {t('dao.signaturesTab.tooltip.waiting')}
-                        <br />
-                        <br />
-                        {personalResult && personalResult.paid ? (
-                          <span style={{ fontWeight: 300 }}>
-                            <Trans i18nKey="dao.signaturesTab.tooltip.waiting2">
-                              {{
-                                father: personalResult && personalResult.paid.fatherCompletePay,
-                                mother: personalResult && personalResult.paid.motherCompletePay,
-                                amoo: personalResult && personalResult.paid.amooCompletePay,
-                                khaleh: personalResult && personalResult.paid.khalehCompletePay,
-                                daei: personalResult && personalResult.paid.daeiCompletePay,
-                                amme: personalResult && personalResult.paid.ammeCompletePay,
-                              }}
-                            </Trans>
-                          </span>
-                        ) : (
-                          <Stack
-                            sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
-                            spacing={2}
+      <CardContent
+        sx={{
+          pt: '12px',
+          pb: '0.8rem !important',
+        }}
+      >
+        {/* infos */}
+        <Grid container spacing={0} justifyContent='center'>
+          <Grid item lg={4} sm={12} xs={12} sx={{ order: { xs: '2', sm: '2', lg: '1' } }}>
+            <Grid
+              container
+              spacing={0}
+              sx={{ mt: { xs: 1 }, mb: { xs: 1 } }}
+              justifyContent="center"
+            >
+              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                <CustomToolTip
+                  title={t('dao.signaturesTab.waiting')}
+                  popup={
+                    <>
+                      {t('dao.signaturesTab.tooltip.waiting')}
+                      <br />
+                      <br />
+                      {personalResult && personalResult.paid ? (
+                        <span style={{ fontWeight: 300 }}>
+                          <Trans i18nKey="dao.signaturesTab.tooltip.waiting2">
+                            {{
+                              father: personalResult && personalResult.paid.fatherCompletePay,
+                              mother: personalResult && personalResult.paid.motherCompletePay,
+                              amoo: personalResult && personalResult.paid.amooCompletePay,
+                              khaleh: personalResult && personalResult.paid.khalehCompletePay,
+                              daei: personalResult && personalResult.paid.daeiCompletePay,
+                              amme: personalResult && personalResult.paid.ammeCompletePay,
+                            }}
+                          </Trans>
+                        </span>
+                      ) : (
+                        <Stack
+                          sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
+                          spacing={2}
+                        >
+                          <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
+                        </Stack>
+                      )}
+                    </>
+                  }
+                  icon={
+                    <TimerOutlinedIcon
+                      fontSize="medium"
+                      sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
+                    />
+                  }
+                  which="signWaiting"
+                />
+              </Grid>
+              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                <CustomToolTip
+                  title={t('dao.signaturesTab.ready')}
+                  popup={
+                    <>
+                      {t('dao.signaturesTab.tooltip.ready')}
+                      <br />
+                      <br />
+                      {paidNeedsData &&
+                      paidNeedsData.readyNeedsList &&
+                      paidNeedsData.readyNeedsList[0] ? (
+                        <span style={{ fontWeight: 300 }}>
+                          <Trans i18nKey="dao.signaturesTab.tooltip.ready2">
+                            {{
+                              ready: paidNeedsData.readyNeedsList.length - paidNeedsData.signed,
+                            }}
+                          </Trans>
+                          <br />
+                          <br />
+                          {t('dao.smartContract')}
+                          <Link
+                            target="_blank"
+                            to="https://etherscan.io/address/0xae9ae5acdad18927bd039ebbfdb8e3be4dbf5de3"
                           >
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )}
-                      </>
-                    }
-                    icon={
-                      <TimerOutlinedIcon
-                        fontSize="medium"
-                        sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
-                      />
-                    }
-                    which="signWaiting"
-                  />
-                </Grid>
-                <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                  <CustomToolTip
-                    title={t('dao.signaturesTab.ready')}
-                    popup={
-                      <>
-                        {t('dao.signaturesTab.tooltip.ready')}
-                        <br />
-                        <br />
-                        {paidNeedsData &&
-                        paidNeedsData.readyNeedsList &&
-                        paidNeedsData.readyNeedsList[0] ? (
-                          <span style={{ fontWeight: 300 }}>
-                            <Trans i18nKey="dao.signaturesTab.tooltip.ready2">
-                              {{
-                                ready: paidNeedsData.readyNeedsList.length - paidNeedsData.signed,
-                              }}
-                            </Trans>
-                            <br />
-                            <br />
-                            {t('dao.smartContract')}
-                            <Link
-                              target="_blank"
-                              to="https://etherscan.io/address/0xae9ae5acdad18927bd039ebbfdb8e3be4dbf5de3"
-                            >
-                              {t('dao.link')}
-                            </Link>
-                          </span>
-                        ) : (
-                          <Stack
-                            sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
-                            spacing={2}
-                          >
-                            <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
-                          </Stack>
-                        )}
-                      </>
-                    }
-                    icon={
-                      <AlarmOnIcon
-                        fontSize="medium"
-                        sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
-                      />
-                    }
-                    which="signReady"
-                  />
-                </Grid>
-                <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                  <CustomToolTip
-                    title={t('dao.signaturesTab.signed')}
-                    popup={<>{t('dao.signaturesTab.tooltip.signed')}</>}
-                    icon={
-                      <HandshakeOutlinedIcon
-                        fontSize="medium"
-                        sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
-                      />
-                    }
-                    which="signed"
-                  />
-                </Grid>
+                            {t('dao.link')}
+                          </Link>
+                        </span>
+                      ) : (
+                        <Stack
+                          sx={{ m: 'auto', width: '20%', color: 'grey.500', mt: 3 }}
+                          spacing={2}
+                        >
+                          <LinearProgress sx={{ color: (theme) => theme.palette.primary }} />
+                        </Stack>
+                      )}
+                    </>
+                  }
+                  icon={
+                    <AlarmOnIcon
+                      fontSize="medium"
+                      sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
+                    />
+                  }
+                  which="signReady"
+                />
+              </Grid>
+              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                <CustomToolTip
+                  title={t('dao.signaturesTab.signed')}
+                  popup={<>{t('dao.signaturesTab.tooltip.signed')}</>}
+                  icon={
+                    <HandshakeOutlinedIcon
+                      fontSize="medium"
+                      sx={{ mb: 0, color: (theme) => theme.palette.grey.A400 }}
+                    />
+                  }
+                  which="signed"
+                />
               </Grid>
             </Grid>
           </Grid>
-        </CardContent>
-      </div>
+        </Grid>
+      </CardContent>
       {errorOneNeedData && (
         <MessageWallet
           walletError={errorOneNeedData}

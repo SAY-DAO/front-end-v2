@@ -53,6 +53,7 @@ export default function Dao() {
                 // bgcolor: '#d0fff2',
                 minHeight: 200,
                 color: 'black',
+                m: 'auto',
               }}
             >
               <CardActionArea onClick={() => setTabNumber(0)}>
@@ -87,6 +88,7 @@ export default function Dao() {
                 // bgcolor: '#ffd8d8',
                 minHeight: 200,
                 color: 'black',
+                m: 'auto',
               }}
             >
               <CardActionArea onClick={() => setTabNumber(1)}>
@@ -123,6 +125,7 @@ export default function Dao() {
                 // bgcolor: '#d3eef9',
                 minHeight: 200,
                 color: 'black',
+                m: 'auto',
               }}
             >
               <CardActionArea onClick={() => setTabNumber(2)}>
@@ -157,6 +160,7 @@ export default function Dao() {
                 // bgcolor: '#f3ecc4',
                 minHeight: 200,
                 color: 'black',
+                m: 'auto',
               }}
             >
               <CardActionArea onClick={() => setTabNumber(3)}>
@@ -193,6 +197,7 @@ export default function Dao() {
                 // bgcolor: '#ece4f7',
                 minHeight: 200,
                 color: 'black',
+                m: 'auto',
               }}
             >
               <CardActionArea onClick={() => setTabNumber(4)}>

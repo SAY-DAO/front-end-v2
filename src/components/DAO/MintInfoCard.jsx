@@ -50,7 +50,7 @@ const MintInfoCard = () => {
           }}
         >
           {/* infos */}
-          <Grid container spacing={0}>
+          <Grid container spacing={0} justifyContent='center'>
             <Grid item lg={4} sm={12} xs={12} sx={{ order: { xs: '2', sm: '2', lg: '1' } }}>
               <Grid
                 container
