@@ -12,7 +12,7 @@ export default function NeedPage() {
   const { childId, needId } = useParams();
 
   const childOneNeed = useSelector((state) => state.childOneNeed);
-  const { oneNeed, success: successOneNeed } = childOneNeed;
+  const { oneNeed } = childOneNeed;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -25,7 +25,7 @@ export default function NeedPage() {
 
   // fetch need
   useEffect(() => {
-    if (!successOneNeed && needId) {
+    if (needId) {
       dispatch(fetchChildOneNeed(needId));
       // const doneNeedInterval = setInterval(() => dispatch(fetchChildOneNeed(needId)), 3000);
       // setTimeout(() => clearInterval(doneNeedInterval), 60 * 10 * 1000);
@@ -39,7 +39,7 @@ export default function NeedPage() {
         window.clearInterval(i);
       }
     }
-  }, [successOneNeed, needId]);
+  }, [needId]);
 
   return (
     <>

@@ -328,7 +328,14 @@ const ProfileEdit = () => {
   };
 
   return (
-    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      maxWidth
+      sx={{ mb: 10 }}
+    >
       <FormControl onSubmit={handleSubmit} variant="outlined" sx={{ width: '100%' }}>
         <form style={{ width: '100%' }}>
           <Grid
