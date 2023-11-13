@@ -109,7 +109,7 @@ export function getSAYFamilyRolePersian(sayRole) {
   }
   return roleString;
 }
-// "-1": "تائید نشده",
+// "-1": "تأیید نشده",
 // "0": "پرداخت نشده,
 // "1": "نیم‌پرداخت",
 // "2": "پرداخت کامل",
