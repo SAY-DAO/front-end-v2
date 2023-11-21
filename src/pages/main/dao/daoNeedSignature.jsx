@@ -111,7 +111,7 @@ export default function DaoNeedSignature() {
   const { disconnect } = useDisconnect();
 
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, successLogin } = userLogin;
 
   const readySigningOneNeed = useSelector((state) => state.readySigningOneNeed);
   const { oneReadyNeed, error: errorReadyOne } = readySigningOneNeed;
@@ -146,6 +146,12 @@ export default function DaoNeedSignature() {
     loading: loadingSignature,
     error: errorSignature,
   } = useSelector((state) => state.signature);
+
+  useEffect(() => {
+    if (!userInfo && !successLogin) {
+      navigate(`/auth/login?redirect=dao/signatures/${needId}`);
+    }
+  }, [userInfo, successLogin]);
 
   useEffect(() => {
     if (!ipResult) {
