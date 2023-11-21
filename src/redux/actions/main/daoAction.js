@@ -122,10 +122,10 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
         e.response && e.response.data.detail
           ? e.response.data.detail
           : e.response && e.response.data.message
-          ? e.response.data.message
-          : e.response && e.response.statusText
-          ? e.response.statusText
-          : { reason: e.reason, code: e.code }, // metamask signature
+            ? e.response.data.message
+            : e.response && e.response.statusText
+              ? e.response.statusText
+              : { reason: e.reason, code: e.code }, // metamask signature
     });
   }
 };
@@ -158,8 +158,8 @@ export const fetchWalletInformation = () => async (dispatch, getState) => {
         e.response && e.response.data.detail
           ? e.response.data.detail
           : e.response && e.response.data.message
-          ? e.response.data.message
-          : { reason: e.reason, code: e.code }, // metamask signature
+            ? e.response.data.message
+            : { reason: e.reason, code: e.code }, // metamask signature
     });
   }
 };
@@ -358,7 +358,9 @@ export const verifySocialWorkerSignature =
         ],
         blockTag: 'safe',
       });
-
+      console.log(data.message);
+      console.log(swAddress);
+      console.log(verifiedAddress);
       if (swAddress !== verifiedAddress) {
         dispatch({
           type: SIGNATURE_VERIFICATION_FAIL,
@@ -378,8 +380,8 @@ export const verifySocialWorkerSignature =
           e.response && e.response.data.detail
             ? e.response.data.detail
             : e.response && e.response.data.message
-            ? { message: e.response.data.message, status: e.response.data.status }
-            : { reason: e.reason, code: e.code }, // metamask signature
+              ? { message: e.response.data.message, status: e.response.data.status }
+              : { reason: e.reason, code: e.code }, // metamask signature
       });
     }
   };
@@ -433,8 +435,8 @@ export const prepareSignature =
           e.response && e.response.data.detail
             ? e.response.data.detail
             : e.response && e.response.data.message
-            ? { message: e.response.data.message, status: e.response.data.status }
-            : { reason: e.reason, code: e.code }, // metamask signature
+              ? { message: e.response.data.message, status: e.response.data.status }
+              : { reason: e.reason, code: e.code }, // metamask signature
       });
     }
   };
@@ -461,8 +463,8 @@ export const signTransaction = (signer, preparedData) => async (dispatch) => {
         e.response && e.response.data.detail
           ? e.response.data.detail
           : e.response && e.response.data.message
-          ? { message: e.response.data.message, status: e.response.data.status }
-          : { reason: e.reason, code: e.code }, // metamask signature
+            ? { message: e.response.data.message, status: e.response.data.status }
+            : { reason: e.reason, code: e.code }, // metamask signature
     });
   }
 };
@@ -508,8 +510,8 @@ export const createSignature =
           e.response && e.response.data.detail
             ? e.response.data.detail
             : e.response && e.response.data.message
-            ? { message: e.response.data.message, status: e.response.data.status }
-            : { reason: e.reason, code: e.code }, // metamask signature
+              ? { message: e.response.data.message, status: e.response.data.status }
+              : { reason: e.reason, code: e.code }, // metamask signature
       });
     }
   };
