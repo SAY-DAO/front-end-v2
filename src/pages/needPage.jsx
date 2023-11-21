@@ -19,7 +19,7 @@ export default function NeedPage() {
 
   useEffect(() => {
     if (!userInfo && !successLogin) {
-      navigate(`/auth/login?redirect=main/home`);
+      navigate(`/auth/login?redirect=child/${childId}/needs/${needId}`);
     }
   }, [userInfo, successLogin]);
 

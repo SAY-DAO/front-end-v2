@@ -43,11 +43,7 @@ const FinalForm = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
   const queryStringValue = queryString.parse(search);
-  // eslint-disable-next-line no-restricted-globals
-  const redirect = queryStringValue.redirect
-    ? // eslint-disable-next-line no-restricted-globals
-      queryStringValue.redirect
-    : 'main/search';
+  const redirect = queryStringValue.redirect ? queryStringValue.redirect : 'main/search';
 
   const [validateErr, setValidateErr] = useState('');
   const [userNameErr, setUserNameErr] = useState(false);
@@ -179,8 +175,8 @@ const FinalForm = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect( () => {
-    async function passwordStuff(){
+  useEffect(() => {
+    async function passwordStuff() {
       setValidateErr('');
       setRepeatPasswordErr(true);
       if (repeatPassword) {
@@ -194,8 +190,7 @@ const FinalForm = () => {
       }
       setRepeatPasswordErr(false);
     }
-    passwordStuff()
- 
+    passwordStuff();
   }, [password, repeatPassword]);
 
   useEffect(() => {
