@@ -725,6 +725,10 @@
     }
   },
   "dao": {
+    "wallet": {
+      "wallet": "کیف پول",
+      "signature": "امضا"
+    },
     "variables": {
       "min": "کمینه",
       "Q1": "چارک اول",

@@ -715,6 +715,10 @@
     }
   },
   "dao": {
+    "wallet": {
+      "wallet": "Wallet",
+      "signature": "Signature"
+    },
     "status": {
       "verifyingSwSignature": " Verifying social worker signature...",
       "preparing": "'Preparing the signature...'"

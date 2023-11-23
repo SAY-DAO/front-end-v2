@@ -343,7 +343,7 @@ export const verifySocialWorkerSignature =
         abi: VerifyVoucherContract.abi,
         functionName: '_verify',
         args: [
-          {
+          data.message.deliveryCode ? {
             needId: Number(data.message.needId),
             title: data.message.title,
             category: data.message.category,
@@ -354,13 +354,23 @@ export const verifySocialWorkerSignature =
             swSignature: swSignatureHash, // social worker signature
             role: data.message.role,
             content: data.message.content,
-          },
+          } :
+            {
+              needId: Number(data.message.needId),
+              title: data.message.title,
+              category: data.message.category,
+              paid: Number(data.message.paid),
+              child: data.message.child,
+              signer: data.message.signer,
+              swSignature: swSignatureHash, // social worker signature
+              role: data.message.role,
+              content: data.message.content,
+            },
+
         ],
         blockTag: 'safe',
       });
-      console.log(data.message);
-      console.log(swAddress);
-      console.log(verifiedAddress);
+   
       if (swAddress !== verifiedAddress) {
         dispatch({
           type: SIGNATURE_VERIFICATION_FAIL,

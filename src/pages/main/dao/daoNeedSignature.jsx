@@ -1235,16 +1235,48 @@ export default function DaoNeedSignature() {
                   </Grid>
                 </Grid>
                 {/* Ip Location */}
-                {(!ipResult || ipResult.country_code === 'IR') && (
-                  <Grid container sx={{ p: 2 }}>
-                    <Alert
-                      sx={{ width: '100%', maxWidth: 400, m: 'auto', fontSize: 10 }}
-                      severity="warning"
-                    >
-                      {t('ip.restrictions.title')}
-                    </Alert>
-                  </Grid>
-                )}
+                {oneReadyNeed &&
+                  !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
+                  (!ipResult || ipResult.country_code === 'IR') && (
+                    <Grid container sx={{ p: 2 }}>
+                      <Alert
+                        sx={{ width: '100%', maxWidth: 400, m: 'auto', fontSize: 10 }}
+                        severity="warning"
+                      >
+                        {t('ip.restrictions.title')}
+                      </Alert>
+                    </Grid>
+                  )}
+                {oneReadyNeed &&
+                  oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) && (
+                    <>
+                      <Grid container sx={{ textAlign: 'center' }}>
+                        <Typography sx={{ width: '100%', fontSize: 10 }}>
+                          <strong>{t('dao.wallet.wallet')}: </strong>
+                          {oneReadyNeed.signatures
+                            .find((s) => s.flaskUserId === userInfo.user.id)
+                            .signerAddress.slice(0, 5)}
+                          ...
+                          {oneReadyNeed.signatures
+                            .find((s) => s.flaskUserId === userInfo.user.id)
+                            .signerAddress.slice(-4)}
+                        </Typography>
+                      </Grid>
+                      <Grid container sx={{ textAlign: 'center' }}>
+                        <Typography sx={{ width: '100%', fontSize: 10 }}>
+                          <strong>{t('dao.wallet.signature')}: </strong>
+                          {oneReadyNeed.signatures
+                            .find((s) => s.flaskUserId === userInfo.user.id)
+                            .hash.slice(0, 5)}
+                          ...
+                          {oneReadyNeed.signatures
+                            .find((s) => s.flaskUserId === userInfo.user.id)
+                            .hash.slice(-4)}
+                        </Typography>
+                      </Grid>
+                    </>
+                  )}
+
                 {/* Button */}
                 {oneReadyNeed.members &&
                 !oneReadyNeed.signatures.find((s) => s.flaskUserId === userInfo.user.id) &&
