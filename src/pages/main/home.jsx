@@ -156,7 +156,7 @@ const Home = () => {
                     fontWeight: 900,
                     lineHeight: '56px',
                     whiteSpace: 'nowrap',
-                    left: 'calc(100vw - 400px)',
+                    left: 'calc(100% - 120px)',
                     top: '-50px',
                     float: 'left',
                   }}
