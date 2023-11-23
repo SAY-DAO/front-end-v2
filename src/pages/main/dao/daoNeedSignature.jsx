@@ -158,9 +158,7 @@ export default function DaoNeedSignature() {
   }, [userInfo, successLogin]);
 
   useEffect(() => {
-    if (!ipResult) {
-      dispatch(fetchUserIpLocation());
-    }
+    dispatch(fetchUserIpLocation());
   }, []);
 
   useEffect(() => {
