@@ -51,6 +51,7 @@ import WalletDialog from '../../../components/modals/WalletDialog';
 import {
   FAMILY_ECOSYSTEM_PAYS_REST,
   ONE_NEED_COLLECTIVE_RATIO_RESET,
+  READY_TO_SIGN_ONE_NEED_RESET,
   SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
@@ -150,6 +151,9 @@ export default function DaoNeedSignature() {
   useEffect(() => {
     if (!errorReadyOne || (!userInfo && !successLogin)) {
       navigate(`/auth/login?redirect=dao/signatures/${needId}`);
+      return () => {
+        dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
+      };
     }
   }, [userInfo, successLogin]);
 
