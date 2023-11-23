@@ -148,7 +148,7 @@ export default function DaoNeedSignature() {
   } = useSelector((state) => state.signature);
 
   useEffect(() => {
-    if (!userInfo && !successLogin) {
+    if (!errorReadyOne || (!userInfo && !successLogin)) {
       navigate(`/auth/login?redirect=dao/signatures/${needId}`);
     }
   }, [userInfo, successLogin]);
