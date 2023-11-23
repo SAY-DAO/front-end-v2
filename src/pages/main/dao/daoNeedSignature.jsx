@@ -151,7 +151,7 @@ export default function DaoNeedSignature() {
     if (!errorReadyOne || (!userInfo && !successLogin)) {
       navigate(`/auth/login?redirect=dao/signatures/${needId}`);
     }
-  }, [userInfo, successLogin]);
+  }, [userInfo, successLogin, errorReadyOne]);
 
   useEffect(() => {
     if (!ipResult) {
