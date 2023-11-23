@@ -149,7 +149,7 @@ export default function DaoNeedSignature() {
   } = useSelector((state) => state.signature);
 
   useEffect(() => {
-    if (!errorReadyOne || (!userInfo && !successLogin)) {
+    if (errorReadyOne || (!userInfo && !successLogin)) {
       navigate(`/auth/login?redirect=dao/signatures/${needId}`);
       return () => {
         dispatch({ type: READY_TO_SIGN_ONE_NEED_RESET });
@@ -162,6 +162,12 @@ export default function DaoNeedSignature() {
       dispatch(fetchUserIpLocation());
     }
   }, []);
+
+  useEffect(() => {
+    if (createdSignature || commentCreated) {
+      dispatch(fetchOneReadySignNeed(needId));
+    }
+  }, [createdSignature, commentCreated]);
 
   // reset wallet connection
   useEffect(() => {
@@ -235,12 +241,6 @@ export default function DaoNeedSignature() {
       }
     }
   }, [prepared, signatureHash, swVerifiedAddress]);
-
-  useEffect(() => {
-    if (createdSignature || commentCreated) {
-      dispatch(fetchOneReadySignNeed(needId));
-    }
-  }, [createdSignature, commentCreated]);
 
   // fetch nonce for the wallet siwe
   useEffect(() => {
