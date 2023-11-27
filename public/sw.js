@@ -1,4 +1,4 @@
-const staticCacheName = 'SAY-DAPP-v2.1.13';
+const staticCacheName = 'SAY-DAPP-v2.1.14';
 const urlsToCache = [];
 
 const self = this;
