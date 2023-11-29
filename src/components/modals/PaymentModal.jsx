@@ -38,7 +38,8 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
           <Grid item xs={6}>
             <DialogActions sx={{ m: 'auto', display: 'block', textAlign: 'center' }}>
               <LoadingButton
-                loading={loadingShaparakGate}
+                loading={loadingShaparakGate || false}
+                disabled
                 onClick={() => submit()}
                 sx={{ border: '1px solid', height: 120, width: 120 }}
                 autoFocus
@@ -57,7 +58,7 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
           <Grid item xs={6}>
             <DialogActions sx={{ m: 'auto', display: 'block', textAlign: 'center' }}>
               <LoadingButton
-                loading={loadingShaparakGate}
+                loading={loadingShaparakGate || false}
                 onClick={() => submit()}
                 disabled
                 sx={{ border: '1px solid', height: 120, width: 120 }}

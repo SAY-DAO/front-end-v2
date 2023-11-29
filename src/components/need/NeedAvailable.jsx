@@ -417,7 +417,6 @@ export default function NeedAvailable({ childId }) {
                       </Grid>
                       <FormControl
                         error={inputError}
-                        loading={isPaying}
                         required
                         component="fieldset"
                         variant="standard"
@@ -583,7 +582,7 @@ export default function NeedAvailable({ childId }) {
                                     variant={!inCart ? 'contained' : 'outlined'}
                                     color="primary"
                                     disabled={isDisabled}
-                                    loading={isLoading}
+                                    loading={isLoading || isPaying}
                                     sx={{
                                       marginTop: 1,
                                       marginBottom: !inCart ? 4 : 2,
