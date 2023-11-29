@@ -30,6 +30,7 @@ import UnavailableModal from '../modals/UnavailableModal';
 import { fetchChildOneNeed, fetchMyChildById } from '../../redux/actions/childAction';
 import { SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 import NeedInfo from './NeedInfo';
+import PaymentModal from '../modals/PaymentModal';
 
 const useStyles = makeStyles({
   root: {
@@ -103,6 +104,8 @@ export default function NeedAvailable({ childId }) {
   const [isCredit, setIsCredit] = useState(false);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
+  const [isPaying, setIsPaying] = useState(false);
 
   const userDetails = useSelector((state) => state.userDetails);
   const { success: successUserDetails, error: errorUserDetails } = userDetails;
@@ -290,6 +293,7 @@ export default function NeedAvailable({ childId }) {
         if (result.status === 299) {
           windowReference.document.write(result.response);
         } else {
+          setIsPaying(true);
           windowReference.document.write('loading...');
           windowReference.location = result.link;
         }
@@ -329,8 +333,12 @@ export default function NeedAvailable({ childId }) {
     navigate(`/child/${theChild.id}`, { childTab: 1 });
   };
 
-  const handlePayment = (e) => {
+  const handlePopUp = (e) => {
     e.preventDefault();
+    setModalOpen(true);
+  };
+  const handlePayment = () => {
+    setModalOpen(false);
 
     if (amount >= parseInt(payLimit, 10) && !unpayable) {
       const ref = window.open('', '_blank');
@@ -409,6 +417,7 @@ export default function NeedAvailable({ childId }) {
                       </Grid>
                       <FormControl
                         error={inputError}
+                        loading={isPaying}
                         required
                         component="fieldset"
                         variant="standard"
@@ -418,7 +427,7 @@ export default function NeedAvailable({ childId }) {
                             ? (e) => handleAddToCart(e)
                             : inCart
                             ? (e) => handleContinueShop(e)
-                            : handlePayment
+                            : handlePopUp
                         }
                       >
                         <form
@@ -670,6 +679,7 @@ export default function NeedAvailable({ childId }) {
                 </Grid>
               </Grid>
             </Grid>
+            <PaymentModal open={modalOpen} setOpen={setModalOpen} handlePayment={handlePayment} />
           </Grid>
         )}
 
