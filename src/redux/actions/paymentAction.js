@@ -32,6 +32,7 @@ export const makePayment =
         formData.append('amount', amount);
         formData.append('donate', donation);
         formData.append('useCredit', isCredit);
+        formData.append('gateway', 2);
       }
 
       const { data } = await publicApi.post(`/payment`, formData, config);
@@ -40,6 +41,7 @@ export const makePayment =
         payload: data,
       });
     } catch (e) {
+      console.log(e);
       // check for generic and custom message to return using ternary statement
       dispatch({
         type: SHAPARAK_PAYMENT_FAIL,
