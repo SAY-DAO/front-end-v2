@@ -1,4 +1,4 @@
-const staticCacheName = 'SAY-DAPP-v2.1.14';
+const staticCacheName = 'SAY-DAPP-v2.1.16';
 const urlsToCache = [];
 
 const self = this;
@@ -41,7 +41,7 @@ self.addEventListener('activate', (event) => {
 
 // fetch
 self.addEventListener('fetch', (event) => {
-  console.log('Service Worker: Fetching ', event.request.url);
+  // console.log('Service Worker: Fetching ', event.request.url);
   event.respondWith(
     caches
       .match(event.request)
@@ -50,7 +50,7 @@ self.addEventListener('fetch', (event) => {
           console.log('Found ', event.request.url, ' in cache');
           return response;
         }
-        console.log('Network request for ', event.request.url);
+        // console.log('Network request for ', event.request.url);
         return fetch(event.request);
 
         // TODO 4 - Add fetched files to the cache

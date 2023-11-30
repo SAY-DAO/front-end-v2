@@ -19,6 +19,7 @@ import {
   CART_BADGE_RESET,
   CART_UPDATE_BACK_RESET,
 } from '../../redux/constants/main/cartConstants';
+import PaymentModal from '../modals/PaymentModal';
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
@@ -39,6 +40,9 @@ export default function CartAccordion() {
   const [donation, setDonation] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
+  const [gateWay, setGateWay] = useState();
 
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
@@ -97,6 +101,7 @@ export default function CartAccordion() {
         if (shaparakResult.status === 299) {
           windowReference.document.write(shaparakResult.response);
         } else {
+          setIsPaying(true);
           windowReference.document.write('loading...');
           windowReference.location = shaparakResult.link;
         }
@@ -116,15 +121,16 @@ export default function CartAccordion() {
 
   // pay or remove unavailable
   useEffect(() => {
-    if (successCartUpdate && updateResult.needs[0] && !successShaparakGate) {
-      dispatch(makeCartPayment(donation, isCredit));
+    if (successCartUpdate && updateResult.needs[0] && !successShaparakGate && gateWay) {
+      setModalOpen(false);
+      dispatch(makeCartPayment(donation, isCredit, gateWay));
     }
     // } else if (
     //  errorShaparakGate || errorUpdate || errorCartPayCheck
     // ) {
     //   // dispatch(removeUnavailableItems(updateResult.data.invalidNeedIds));
     // }
-  }, [successCartUpdate, updateResult]);
+  }, [successCartUpdate, updateResult, gateWay]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -231,9 +237,14 @@ export default function CartAccordion() {
     dispatch(changeCartBadgeNumber(badgeNumber));
   };
 
-  // check & payment
-  const handleCartCheck = (e) => {
+  const handlePopUp = (e) => {
     e.preventDefault();
+    setModalOpen(true);
+  };
+
+  // check & payment
+  const handleCartCheck = (selectedGateWay) => {
+    setGateWay(selectedGateWay);
     const ref = window.open('', '_blank');
     setWindowReference(ref);
 
@@ -325,11 +336,11 @@ export default function CartAccordion() {
                         </Grid>
                         <Grid sx={{ textAlign: 'center' }}>
                           <LoadingButton
-                            loading={isLoading}
+                            loading={isLoading || isPaying}
                             disabled={isDisabled}
                             variant="contained"
                             color="primary"
-                            onClick={handleCartCheck}
+                            onClick={handlePopUp}
                           >
                             {!isLoading && (
                               <Typography
@@ -351,6 +362,11 @@ export default function CartAccordion() {
                     )}
                   </Grid>
                 </form>
+                <PaymentModal
+                  open={modalOpen}
+                  setOpen={setModalOpen}
+                  handlePayment={handleCartCheck}
+                />
               </FormControl>
             )}
 

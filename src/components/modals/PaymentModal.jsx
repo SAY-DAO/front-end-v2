@@ -15,8 +15,8 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
     setOpen(false);
   };
 
-  const submit = () => {
-    handlePayment();
+  const handleClick = (gateWayNumber) => {
+    handlePayment(gateWayNumber);
   };
 
   useEffect(() => {
@@ -39,8 +39,7 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
             <DialogActions sx={{ m: 'auto', display: 'block', textAlign: 'center' }}>
               <LoadingButton
                 loading={loadingShaparakGate || false}
-                disabled
-                onClick={() => submit()}
+                onClick={() => handleClick(2)}
                 sx={{ border: '1px solid', height: 120, width: 120 }}
                 autoFocus
               >
@@ -52,15 +51,15 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
                 />
               </LoadingButton>
               <Typography sx={{ color: 'black', mt: 1 }}>پرداخت با زیبال</Typography>
-              <Typography sx={{ color: 'black', mt: 1 }}>( در حال تعمیر)</Typography>
+              <Typography sx={{ color: 'black', mt: 1 }}>(در حال تعمیر)</Typography>
             </DialogActions>
           </Grid>
           <Grid item xs={6}>
             <DialogActions sx={{ m: 'auto', display: 'block', textAlign: 'center' }}>
               <LoadingButton
                 loading={loadingShaparakGate || false}
-                onClick={() => submit()}
-                disabled
+                onClick={() => handleClick(1)}
+                // disabled
                 sx={{ border: '1px solid', height: 120, width: 120 }}
                 autoFocus
               >

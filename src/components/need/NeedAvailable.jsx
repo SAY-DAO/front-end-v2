@@ -337,7 +337,8 @@ export default function NeedAvailable({ childId }) {
     e.preventDefault();
     setModalOpen(true);
   };
-  const handlePayment = () => {
+
+  const handlePayment = (gateWay) => {
     setModalOpen(false);
 
     if (amount >= parseInt(payLimit, 10) && !unpayable) {
@@ -348,8 +349,8 @@ export default function NeedAvailable({ childId }) {
       console.log(`amount = ${amount}`);
       console.log(`donation = ${donation}`);
       console.log(`useCredit = ${isCredit}`);
-
-      dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit));
+      console.log(gateWay);
+      dispatch(makePayment(method, oneNeed.id, amount, donation, isCredit, gateWay));
     }
   };
 
@@ -426,7 +427,7 @@ export default function NeedAvailable({ childId }) {
                             ? (e) => handleAddToCart(e)
                             : inCart
                             ? (e) => handleContinueShop(e)
-                            : handlePopUp
+                            : () => handlePopUp()
                         }
                       >
                         <form
