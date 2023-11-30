@@ -51,7 +51,7 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
                 />
               </LoadingButton>
               <Typography sx={{ color: 'black', mt: 1 }}>پرداخت با زیبال</Typography>
-              <Typography sx={{ color: 'black', mt: 1 }}>(در حال تعمیر)</Typography>
+              <Typography sx={{ color: 'black', mt: 1 }}>(فعال)</Typography>
             </DialogActions>
           </Grid>
           <Grid item xs={6}>
@@ -59,7 +59,7 @@ export default function PaymentModal({ open, setOpen, handlePayment }) {
               <LoadingButton
                 loading={loadingShaparakGate || false}
                 onClick={() => handleClick(1)}
-                // disabled
+                disabled
                 sx={{ border: '1px solid', height: 120, width: 120 }}
                 autoFocus
               >

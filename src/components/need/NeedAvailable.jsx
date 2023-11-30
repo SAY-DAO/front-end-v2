@@ -104,7 +104,7 @@ export default function NeedAvailable({ childId }) {
   const [isCredit, setIsCredit] = useState(false);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
 
   const userDetails = useSelector((state) => state.userDetails);
@@ -427,7 +427,7 @@ export default function NeedAvailable({ childId }) {
                             ? (e) => handleAddToCart(e)
                             : inCart
                             ? (e) => handleContinueShop(e)
-                            : () => handlePopUp()
+                            : (e) => handlePopUp(e)
                         }
                       >
                         <form
