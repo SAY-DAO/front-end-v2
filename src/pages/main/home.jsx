@@ -17,7 +17,6 @@ import {
   JOIN_VIRTUAL_FAMILY_RESET,
   LEAVE_VIRTUAL_FAMILY_RESET,
 } from '../../redux/constants/familyConstants';
-import MaintenanceModal from '../../components/modals/MaintenanceModal';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -187,7 +186,7 @@ const Home = () => {
                   <ChildCard key={child.id} handleMyChildPage={handleMyChildPage} myChild={child} />
                 ))}
             </Grid>
-            <MaintenanceModal isOpen />
+            {/* <MaintenanceModal isOpen /> */}
           </Grid>
         </>
       ) : (
