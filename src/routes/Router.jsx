@@ -5,6 +5,7 @@ import Loadable from '../layouts/loadable/Loadable';
 // import MainLayout from '../layouts/main-layout/MainLayout';
 import BlankLayout from '../layouts/PlainLayout';
 import DaoTabs from '../components/DAO/tabs/DaoTabs';
+import OfflineHome from '../pages/main/offlineHome';
 
 const Error = Loadable(lazy(() => import('../components/Error')));
 
@@ -41,6 +42,7 @@ const Router = [
       { path: '/auth/forgot-password', element: <ForgotPassword /> },
       { path: '/auth/reset-password', element: <ResetPassword /> },
       { path: '/auth/404', element: <Error /> },
+      { path: '/main/offlineHome', element: <OfflineHome /> },
     ],
   },
   {
