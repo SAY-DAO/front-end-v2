@@ -12,8 +12,8 @@ export default function Splash() {
 
   const timer = (ms) =>
     setTimeout(() => {
-      navigate('/main/offlineHome');
-      // navigate('/auth/intro');
+      // navigate('/main/offlineHome');
+      navigate('/auth/intro');
     }, ms);
 
   const tick = () => {
