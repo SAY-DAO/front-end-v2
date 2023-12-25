@@ -96,7 +96,7 @@ export default function NeedCard({ need, handleNeedCardClick, childId }) {
                 <Grid item xs={10}>
                   <LinearProgress
                     variant="determinate"
-                    value={need && need.progress}
+                    value={need && parseInt(need.progress, 10)}
                     className={classes.progressBar}
                   />
                 </Grid>

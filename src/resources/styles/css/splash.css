@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'Exodar-outline';
+  src: url(../../fonts/ttf/Exodar-Outline.ttf) format('truetype');
+}
+
+h1,
+h2 {
+  font-weight: 200;
+  font-family: Exodar-outline;
+
+}
+
+h1 {
+  font-size: 3.5em;
+}
+
+h2 {
+  font-size: 2em;
+
+}

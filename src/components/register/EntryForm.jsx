@@ -16,7 +16,7 @@ import {
   changeVerifyStep,
   verifyUser,
   checkContactBeforeVerify,
-} from '../../actions/userAction';
+} from '../../redux/actions/userAction';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
 import Message from '../Message';
@@ -25,7 +25,7 @@ import Back from '../Back';
 import {
   CHECK_CONTACT_RESET,
   USER_VERIFY_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -219,7 +219,7 @@ const EntryForm = () => {
       alignItems="center"
       maxWidth
     >
-      <Back to="/intro" isOrange />
+      <Back to="/auth/intro" isOrange />
       <Grid item xs={12}>
         <img
           src="/images/register.svg"
@@ -285,7 +285,7 @@ const EntryForm = () => {
         <Typography variant="subtitle2">
           <Trans i18nKey="join.alreadyJoined">
             If already joined tap
-            <Link to={`/Login${redirectLogin}`}>here</Link>
+            <Link to={`/login${redirectLogin}`}>here</Link>
           </Trans>
         </Typography>
       </Grid>

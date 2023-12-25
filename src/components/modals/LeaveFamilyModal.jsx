@@ -4,7 +4,7 @@ import Fade from '@mui/material/Fade';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { leaveFamily } from '../../actions/familyAction';
+import { leaveFamily } from '../../redux/actions/familyAction';
 
 const style = {
   position: 'absolute',

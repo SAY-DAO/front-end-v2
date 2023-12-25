@@ -1,14 +1,13 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
+import React, { useState, useEffect } from 'react';
 import roles from '../../apis/roles.json';
 import GoneModal from '../modals/GoneModal';
 import AdoptModal from '../modals/AdoptionModal';
@@ -68,7 +67,7 @@ export default function InfoTabs({
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [isGone, setIsGone] = useState(false);
   const [value, setValue] = useState(0);
@@ -106,7 +105,7 @@ export default function InfoTabs({
       }
       setFamily(theChild.childFamilyMembers);
     }
-  }, [userRole, theChild, history, dispatch]);
+  }, [userRole, theChild, navigate, dispatch]);
 
   useEffect(() => {
     setInviteeRole(userRole);
@@ -132,7 +131,7 @@ export default function InfoTabs({
   // error code: 747
   const handleAlreadyInFamily = () => {
     localStorage.removeItem('invitationToken');
-    history.push(`/child/${theChild.id}`);
+    navigate(`/child/${theChild.id}`);
   };
 
   const handleCannotBeMember = () => {
@@ -246,8 +245,8 @@ export default function InfoTabs({
           takenRole={takenRole}
           setTakenRole={setTakenRole}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
-          roles={`${t(roles.roles[userRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
+          roles={t(roles.roles[userRole])}
         />
       )}
       {/* Cannot be member anymore popup */}
@@ -255,9 +254,9 @@ export default function InfoTabs({
         <CannotBeMemberModal
           cannotBeMember={cannotBeMember}
           setCannotBeMember={setCannotBeMember}
-          previousRole={`${t(roles.roles[previousRole])}`}
+          previousRole={t(roles.roles[previousRole])}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
           isInvite={isInvite}
         />
       )}
@@ -266,8 +265,8 @@ export default function InfoTabs({
         <GoneModal
           isGone={isGone}
           childSayName={theChild.sayName}
-          roles={`${t(roles.roles[userRole])}`}
-          rolesRelative={`${t(roles.rolesRelative[userRole])}`}
+          roles={t(roles.roles[userRole])}
+          rolesRelative={t(roles.rolesRelative[userRole])}
         />
       )}
       {/* Back to Previous Role warn popup */}
@@ -275,9 +274,9 @@ export default function InfoTabs({
         <PrevRoleModal
           backToPrevRole={backToPrevRole}
           setBackToPrevRole={setBackToPrevRole}
-          previousRole={`${t(roles.roles[previousRole])}`}
+          previousRole={t(roles.roles[previousRole])}
           childSayName={theChild.sayName}
-          rolesRelative={`${t(roles.rolesRelative[previousRole])}`}
+          rolesRelative={t(roles.rolesRelative[previousRole])}
         />
       )}
       {/* Adoption popup */}
@@ -290,8 +289,8 @@ export default function InfoTabs({
           isInvite={isInvite}
           invitationToken={invitationToken}
           childSayName={theChild.sayName}
-          roles={`${t(roles.roles[selectedRole])}`}
-          rolesRelative={`${t(roles.rolesRelative[selectedRole])}`}
+          roles={t(roles.roles[selectedRole])}
+          rolesRelative={t(roles.rolesRelative[selectedRole])}
         />
       )}
     </>

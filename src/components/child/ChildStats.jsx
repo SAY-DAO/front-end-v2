@@ -1,5 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
@@ -55,99 +53,114 @@ export default function ChildStats({ needsArray }) {
     }
   }, [needsData]);
 
+  const handleFont = () => {
+    if (pieData && pieData[0]) {
+      const textElement = document.getElementsByTagName('text');
+      for (let i = 0; i < textElement.length; i++) {
+        textElement[i].style = 'direction:rtl !important;font-family: iranyekan !important;';
+      }
+    }
+  };
+  useEffect(() => {
+    if (pieData && pieData[0]) {
+      setTimeout(handleFont, 100);
+    }
+  }, [pieData, needsData]);
+
   return (
-    <div style={{ height: '300px', width: '100%', direction: 'ltr' }}>
-      <ResponsivePie
-        data={pieData}
-        margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
-        innerRadius={0.35}
-        padAngle={1.7}
-        cornerRadius={5}
-        activeOuterRadiusOffset={8}
-        colors={{ scheme: 'nivo' }}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLinkLabelsDiagonalLength={15} // label line
-        arcLinkLabelsStraightLength={5} // label line
-        arcLinkLabelsTextOffset={5} // offset text from line
-        arcLinkLabelsThickness={3}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-        defs={[
-          {
-            id: 'dots',
-            type: 'patternDots',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            size: 4,
-            padding: 1,
-            stagger: true,
-          },
-          {
-            id: 'lines',
-            type: 'patternLines',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            rotation: -45,
-            lineWidth: 6,
-            spacing: 10,
-          },
-        ]}
-        fill={[
-          {
-            match: {
-              id: t('childData.needCategory.growth'),
+    <div style={{ height: '300px', width: '100%' }}>
+      {pieData && pieData[0] && (
+        <ResponsivePie
+          data={pieData}
+          margin={{ top: 40, right: 50, bottom: 80, left: 50 }}
+          innerRadius={0.35}
+          padAngle={1.7}
+          cornerRadius={5}
+          activeOuterRadiusOffset={8}
+          colors={{ scheme: 'nivo' }}
+          borderWidth={1}
+          borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabelsTextColor="#333333"
+          arcLinkLabelsColor={{ from: 'color' }}
+          arcLabelsSkipAngle={10}
+          arcLinkLabelsDiagonalLength={15} // label line
+          arcLinkLabelsStraightLength={10} // label line
+          arcLinkLabelsTextOffset={40} // offset text from line
+          arcLinkLabelsThickness={3}
+          arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+          defs={[
+            {
+              id: 'dots',
+              type: 'patternDots',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              size: 4,
+              stagger: true,
             },
-            id: 'dots',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.joy'),
+            {
+              id: 'lines',
+              type: 'patternLines',
+              background: 'inherit',
+              color: 'rgba(255, 255, 255, 0.3)',
+              rotation: -45,
+              lineWidth: 6,
+              spacing: 10,
             },
-            id: 'dotes',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.health'),
-            },
-            id: 'lines',
-          },
-          {
-            match: {
-              id: t('childData.needCategory.surroundings'),
-            },
-            id: 'dots',
-          },
-        ]}
-        legends={[
-          {
-            anchor: 'bottom',
-            direction: 'row',
-            justify: false,
-            translateX: 0,
-            translateY: 56,
-            itemsSpacing: 5,
-            itemWidth: 60,
-            itemHeight: 18,
-            itemTextColor: '#999',
-            itemDirection: 'left-to-right',
-            itemOpacity: 1,
-            symbolSize: 18,
-            symbolShape: 'circle',
-            effects: [
-              {
-                on: 'hover',
-                style: {
-                  itemTextColor: '#000',
-                },
+          ]}
+          fill={[
+            {
+              match: {
+                id: t('childData.needCategory.growth'),
               },
-            ],
-          },
-        ]}
-      />
+              id: 'dots',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.joy'),
+              },
+              id: 'dotes',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.health'),
+              },
+              id: 'lines',
+            },
+            {
+              match: {
+                id: t('childData.needCategory.surroundings'),
+              },
+              id: 'dots',
+            },
+          ]}
+          legends={[
+            {
+              anchor: 'bottom',
+              direction: 'row',
+              padding: 1,
+              translateX: 0,
+              translateY: 66,
+              itemsSpacing: 18,
+              itemWidth: 60,
+              itemHeight: 18,
+              itemTextColor: '#999',
+              itemDirection: 'bottom-to-top',
+              itemOpacity: 1,
+              symbolSize: 18,
+              symbolShape: 'circle',
+              effects: [
+                {
+                  on: 'hover',
+                  style: {
+                    itemTextColor: '#000',
+                  },
+                },
+              ],
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }

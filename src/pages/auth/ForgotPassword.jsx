@@ -1,20 +1,19 @@
 /* eslint-disable consistent-return */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Grid, Divider, Typography } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { Grid, Divider, Typography, LinearProgress } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-input-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { forgotPassword } from '../../actions/userAction';
+import { forgotPassword } from '../../redux/actions/userAction';
 import Message from '../../components/Message';
 import contents from '../../inputsValidation/Contents';
 import Back from '../../components/Back';
 import validateEmail from '../../inputsValidation/validateEmail';
 import validatePhone from '../../inputsValidation/validatePhone';
-import { USER_FORGOT_PASSWORD_RESET } from '../../constants/main/userConstants';
+import { USER_FORGOT_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 // Customized "react-phone-input-2/lib/material.css"
 import '../../resources/styles/css/material.css';
 
@@ -30,14 +29,30 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [enableResend, setEnableResend] = useState(false);
+  const [progress, setProgress] = useState(100);
 
-  const userResetPass = useSelector((state) => state.userResetPass);
-  const {
-    loading: loadingReset,
-    error: errorReset,
-    success: successReset,
-  } = userResetPass;
+  const userForgotPass = useSelector((state) => state.userForgotPass);
+  const { loading: loadingForgot, error: errorForgot, success: successReset } = userForgotPass;
 
+  console.log(progress);
+  // resend progress
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          setEnableResend(false);
+          return 100;
+        }
+        const diff = 1.5;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   // cleanup the state error after leaving the page - this runs every reload
   useEffect(() => {
     dispatch({ type: USER_FORGOT_PASSWORD_RESET });
@@ -79,12 +94,12 @@ const ForgotPassword = () => {
 
   // loading button
   useEffect(() => {
-    if (loadingReset) {
+    if (loadingForgot) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [loadingReset, phoneNumber, email]);
+  }, [loadingForgot, phoneNumber, email]);
 
   // disable button
   useEffect(() => {
@@ -122,17 +137,13 @@ const ForgotPassword = () => {
     } else {
       setValidateErr('verification logic error');
     }
+    setEnableResend(true);
+    setProgress(0);
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      maxWidth
-    >
-      <Back to="/login" isOrange />
+    <Grid container direction="column" justifyContent="center" alignItems="center" maxWidth>
+      <Back to="/auth/login" isOrange />
       <Grid
         container
         direction="column"
@@ -141,10 +152,7 @@ const ForgotPassword = () => {
         item
         sx={{ marginTop: 10 }}
       >
-        <Typography
-          variant="h5"
-          sx={{ marginBottom: 6, fontWeight: 'lighter' }}
-        >
+        <Typography variant="h5" sx={{ marginBottom: 6, fontWeight: 'lighter' }}>
           {t('forgot-password.title')}
         </Typography>
         <FormControl onSubmit={handleSubmit} variant="outlined">
@@ -163,9 +171,7 @@ const ForgotPassword = () => {
               countryCodeEditable={false}
             />
             <Divider sx={{ marginTop: 4, marginBottom: 4 }}>
-              <Typography variant="subtitle1">
-                {t('divider.register')}
-              </Typography>
+              <Typography variant="subtitle1">{t('divider.register')}</Typography>
             </Divider>
             <TextField
               type="email"
@@ -183,25 +189,42 @@ const ForgotPassword = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={isDisabled}
+                disabled={isDisabled || enableResend}
                 loading={isLoading}
                 sx={{ bottom: 5 }}
               >
                 {t('button.submit')}
               </LoadingButton>
             </Grid>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              {enableResend && (
+                <Grid sx={{ width: '100%', marginTop: 2 }}>
+                  <Grid item xs={12}>
+                    <LinearProgress variant="determinate" value={parseInt(progress, 10)} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'center',
+                        color: '#f5a344',
+                      }}
+                    >
+                      {t('verify.pleaseWait')}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
           </form>
         </FormControl>
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        {(validateErr || errorReset) && (
-          <Message frontError={errorReset} variant="standard" severity="error">
+        {(validateErr || errorForgot) && (
+          <Message frontError={errorForgot} variant="standard" severity="error">
             {validateErr}
-          </Message>
-        )}
-        {(!validateErr || !errorReset) && successReset && (
-          <Message variant="standard" severity="success">
-            {t('forgot-password.successNotif')}
           </Message>
         )}
       </Grid>

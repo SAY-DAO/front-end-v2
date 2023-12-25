@@ -58,10 +58,12 @@ export default function VoiceBar({ url }) {
   }, []);
 
   const timeHandler = () => {
-    const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
-    const newTime = (w.split('%')[0] / 100) * sound.duration;
-    // this.setState({ from: newTime });
-    sound.setPosition(newTime);
+    if (sound && sound.duration) {
+      const w = document.getElementsByClassName('MuiSlider-track')[0].style.width;
+      const newTime = (w.split('%')[0] / 100) * sound.duration;
+      // this.setState({ from: newTime });
+      sound.setPosition(newTime);
+    }
   };
 
   const handleChange = () => {
@@ -77,10 +79,10 @@ export default function VoiceBar({ url }) {
 
         try {
           document.getElementsByClassName(
-            'MuiSlider-track'
+            'MuiSlider-track',
           )[0].style.width = `${percent.toString()}%`;
           document.getElementsByClassName(
-            'MuiSlider-thumb'
+            'MuiSlider-thumb',
           )[0].style.left = `${percent.toString()}%`;
         } catch (error) {
           clearInterval(theInterval);

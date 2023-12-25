@@ -13,9 +13,9 @@ import { makeStyles } from '@mui/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import NumberFormat from 'react-number-format';
 import Back from '../Back';
-import { verifyUser, userVerifyCode, changeVerifyStep } from '../../actions/userAction';
+import { verifyUser, userVerifyCode, changeVerifyStep } from '../../redux/actions/userAction';
 import Message from '../Message';
-import { CHECK_CONTACT_RESET, CODE_VERIFY_RESET } from '../../constants/main/userConstants';
+import { CHECK_CONTACT_RESET, CODE_VERIFY_RESET } from '../../redux/constants/main/userConstants';
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

@@ -1,0 +1,4 @@
+export const ALL_NEEDS_REQUEST = ' ALL_NEEDS_REQUEST';
+export const ALL_NEEDS_SUCCESS = ' ALL_NEEDS_SUCCESS';
+export const ALL_NEEDS_FAIL = ' ALL_NEEDS_FAIL';
+export const ALL_NEEDS_RESET = ' ALL_NEEDS_RESET';

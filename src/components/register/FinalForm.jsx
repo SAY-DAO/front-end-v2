@@ -1,7 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -17,14 +13,18 @@ import InputAdornment from '@mui/material/InputAdornment';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import PasswordStrengthBar from 'react-password-strength-bar';
-import { useHistory, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import Message from '../Message';
 import validateUsername from '../../inputsValidation/validateUsername';
-import { checkUserNameBeforeVerify, register } from '../../actions/userAction';
+import { checkUserNameBeforeVerify, register } from '../../redux/actions/userAction';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
-import { CHECK_USERNAME_RESET, USER_REGISTER_RESET } from '../../constants/main/userConstants';
+import {
+  CHECK_USERNAME_RESET,
+  USER_REGISTER_RESET,
+} from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -39,15 +39,11 @@ const useStyles = makeStyles({
 
 const FinalForm = () => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { search } = useLocation();
   const queryStringValue = queryString.parse(search);
-  // eslint-disable-next-line no-restricted-globals
-  const redirect = queryStringValue.redirect
-    ? // eslint-disable-next-line no-restricted-globals
-      queryStringValue.redirect
-    : 'main/search';
+  const redirect = queryStringValue.redirect ? queryStringValue.redirect : 'main/search';
 
   const [validateErr, setValidateErr] = useState('');
   const [userNameErr, setUserNameErr] = useState(false);
@@ -119,7 +115,7 @@ const FinalForm = () => {
   // change step
   useEffect(() => {
     if (successRegister) {
-      history.push(`/${redirect}`);
+      navigate(`/${redirect}`);
     }
   }, [successRegister]);
 
@@ -179,19 +175,22 @@ const FinalForm = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect(async () => {
-    setValidateErr('');
-    setRepeatPasswordErr(true);
-    if (repeatPassword) {
-      const result = validateRepeatPassword(password, repeatPassword);
-      if (result && result.errorMessage) {
-        const timeout = setTimeout(() => {
-          setValidateErr(t(result.errorMessage));
-        }, 100);
-        return () => clearTimeout(timeout);
+  useEffect(() => {
+    async function passwordStuff() {
+      setValidateErr('');
+      setRepeatPasswordErr(true);
+      if (repeatPassword) {
+        const result = validateRepeatPassword(password, repeatPassword);
+        if (result && result.errorMessage) {
+          const timeout = setTimeout(() => {
+            setValidateErr(t(result.errorMessage));
+          }, 100);
+          return () => clearTimeout(timeout);
+        }
       }
+      setRepeatPasswordErr(false);
     }
-    setRepeatPasswordErr(false);
+    passwordStuff();
   }, [password, repeatPassword]);
 
   useEffect(() => {
