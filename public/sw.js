@@ -1,4 +1,4 @@
-const staticCacheName = 'SAY-DAPP-v2.1.18';
+const staticCacheName = 'SAY-DAPP-v2.1.20';
 const urlsToCache = [];
 
 const self = this;
@@ -20,7 +20,7 @@ self.addEventListener('install', (event) => {
 });
 
 // activate
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event) => {  
   console.log('Service Worker: Activating new service worker...');
   const cacheAllowlist = [staticCacheName];
 

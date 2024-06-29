@@ -5,8 +5,10 @@
       "tooltip": ""
     }
   },
-  "email": {
-    "monthlySummaries": "دریافت ایمیل ماهانه از کودکان من"
+  "campaign": {
+    "monthly": "دریافت نیازهای ماهانه کودکان من",
+    "newsLetter": "دریافت خبرنامه"
+
   },
   "button": {
     "skip": "می‌دانم",
@@ -96,7 +98,9 @@
     "emptyCart": "سبد خرید شما خالی است"
   },
   "divider": {
-    "register": "یا"
+    "register": "یا",
+    "campaign": "دریافت پیامک و ایمیل"
+
   },
   "placeholder": {
     "name": "نام",

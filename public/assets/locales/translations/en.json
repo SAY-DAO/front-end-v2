@@ -1,6 +1,8 @@
 {
-  "email":{
-    "monthlySummaries":"Receive monthly updates on my children"
+  "campaign": {
+    "monthly": "Receive monthly updates on my children",
+    "newsLetter": "Receive news letter"
+
   },
   "button": {
     "skip": "Skip",
@@ -94,7 +96,8 @@
     "emptyCart": "Your Cart Is Empty!"
   },
   "divider": {
-    "register": "OR"
+    "register": "OR",
+    "campaign": "Email/SMS Subscription"
   },
   "placeholder": {
     "name": "First name",

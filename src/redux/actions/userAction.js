@@ -32,12 +32,15 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_SUCCESS,
-  USER_EMAIL_MARKETING_UPDATE_REQUEST,
-  USER_EMAIL_MARKETING_UPDATE_FAIL,
-  USER_EMAIL_MARKETING_UPDATE_SUCCESS,
-  USER_EMAIL_MARKETING_REQUEST,
-  USER_EMAIL_MARKETING_FAIL,
-  USER_EMAIL_MARKETING_SUCCESS,
+  USER_NEWS_LETTER_CAMPAIGN_UPDATE_REQUEST,
+  USER_NEWS_LETTER_CAMPAIGN_UPDATE_FAIL,
+  USER_NEWS_LETTER_CAMPAIGN_UPDATE_SUCCESS,
+  USER_MONTHLY_CAMPAIGN_UPDATE_REQUEST,
+  USER_MONTHLY_CAMPAIGN_UPDATE_FAIL,
+  USER_MONTHLY_CAMPAIGN_UPDATE_SUCCESS,
+  USER_MONTHLY_CAMPAIGN_REQUEST,
+  USER_MONTHLY_CAMPAIGN_FAIL,
+  USER_MONTHLY_CAMPAIGN_SUCCESS,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
@@ -419,60 +422,60 @@ export const resetPasswordByToken = (token, password, confirmPassword) => async 
 
 export const userEditProfile =
   (phoneAuth, emailAuth, avatarUrl, firstName, lastName, phoneNumber, email, userName) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+    async (dispatch, getState) => {
+      try {
+        dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+        const {
+          userLogin: { userInfo },
+        } = getState();
 
-      const config = {
-        headers: {
-          'Content-Type': `multipart/form-data`,
-          Authorization: userInfo && userInfo.accessToken,
-        },
-      };
+        const config = {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+            Authorization: userInfo && userInfo.accessToken,
+          },
+        };
 
-      const formData = new FormData();
-      if (userInfo.user.avatarUrl !== avatarUrl) {
-        formData.append('avatarUrl', avatarUrl);
-      }
-      if (userInfo.user.firstName !== firstName) {
-        formData.append('firstName', firstName);
-      }
-      if (userInfo.user.lastName !== lastName) {
-        formData.append('lastName', lastName);
-      }
-      console.log(phoneNumber);
-      if (!phoneAuth && userInfo.user.phone_number !== phoneNumber) {
-        console.log('phne');
-        formData.append('phoneNumber', phoneNumber);
-      }
-      if (!emailAuth && userInfo.user.emailAddress !== email) {
-        console.log('mail');
-        formData.append('email', email);
-      }
-      if (userInfo.user.userName !== userName) {
-        formData.append('userName', userName);
-      }
-      const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
+        const formData = new FormData();
+        if (userInfo.user.avatarUrl !== avatarUrl) {
+          formData.append('avatarUrl', avatarUrl);
+        }
+        if (userInfo.user.firstName !== firstName) {
+          formData.append('firstName', firstName);
+        }
+        if (userInfo.user.lastName !== lastName) {
+          formData.append('lastName', lastName);
+        }
+        console.log(phoneNumber);
+        if (!phoneAuth && userInfo.user.phone_number !== phoneNumber) {
+          console.log('phne');
+          formData.append('phoneNumber', phoneNumber);
+        }
+        if (!emailAuth && userInfo.user.emailAddress !== email) {
+          console.log('mail');
+          formData.append('email', email);
+        }
+        if (userInfo.user.userName !== userName) {
+          formData.append('userName', userName);
+        }
+        const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
 
-      dispatch({
-        type: USER_UPDATE_PROFILE_SUCCESS,
-        payload: data,
-      });
-    } catch (e) {
-      dispatch({
-        type: USER_UPDATE_PROFILE_FAIL,
-        payload: e.response && e.response.status ? e.response : e.message,
-      });
-    }
-  };
+        dispatch({
+          type: USER_UPDATE_PROFILE_SUCCESS,
+          payload: data,
+        });
+      } catch (e) {
+        dispatch({
+          type: USER_UPDATE_PROFILE_FAIL,
+          payload: e.response && e.response.status ? e.response : e.message,
+        });
+      }
+    };
 
-export const fetchEmailMarketingStatus = () => async (dispatch, getState) => {
+export const fetchUserCampaignsStatuses = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: USER_EMAIL_MARKETING_REQUEST });
+    dispatch({ type: USER_MONTHLY_CAMPAIGN_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -486,23 +489,23 @@ export const fetchEmailMarketingStatus = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.get(`/family/email/status`, config);
+    const { data } = await daoApi.get(`/family/campaigns/statuses`, config);
 
     dispatch({
-      type: USER_EMAIL_MARKETING_SUCCESS,
+      type: USER_MONTHLY_CAMPAIGN_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: USER_EMAIL_MARKETING_FAIL,
+      type: USER_MONTHLY_CAMPAIGN_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
 };
 
-export const updateEmailMarketingStatus = () => async (dispatch, getState) => {
+export const updateMonthlyCampaignStatus = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: USER_EMAIL_MARKETING_UPDATE_REQUEST });
+    dispatch({ type: USER_MONTHLY_CAMPAIGN_UPDATE_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -516,15 +519,46 @@ export const updateEmailMarketingStatus = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.patch(`/family/email/status`, {}, config);
+    const { data } = await daoApi.patch(`/family/campaigns/monthly/status`, {}, config);
 
     dispatch({
-      type: USER_EMAIL_MARKETING_UPDATE_SUCCESS,
+      type: USER_MONTHLY_CAMPAIGN_UPDATE_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: USER_EMAIL_MARKETING_UPDATE_FAIL,
+      type: USER_MONTHLY_CAMPAIGN_UPDATE_FAIL,
+      payload: e.response && e.response.status ? e.response : e.message,
+    });
+  }
+};
+
+
+export const updateNewsLetterCampaignStatus = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_NEWS_LETTER_CAMPAIGN_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo && userInfo.accessToken,
+        flaskId: userInfo && userInfo.user.id,
+      },
+    };
+
+    const { data } = await daoApi.patch(`/family/campaign/newsletter/status`, {}, config);
+
+    dispatch({
+      type: USER_NEWS_LETTER_CAMPAIGN_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: USER_NEWS_LETTER_CAMPAIGN_UPDATE_FAIL,
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }

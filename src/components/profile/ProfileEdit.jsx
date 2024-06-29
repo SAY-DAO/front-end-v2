@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   Dialog,
   DialogContent,
+  Divider,
 } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
@@ -32,9 +33,10 @@ import {
 import {
   checkContactBeforeVerify,
   checkUserNameBeforeVerify,
-  fetchEmailMarketingStatus,
+  fetchUserCampaignsStatuses,
   fetchUserDetails,
-  updateEmailMarketingStatus,
+  updateMonthlyCampaignStatus,
+  updateNewsLetterCampaignStatus,
   userEditProfile,
 } from '../../redux/actions/userAction';
 import validateEmail from '../../inputsValidation/validateEmail';
@@ -67,7 +69,9 @@ const ProfileEdit = () => {
   const [finalAvatarFile, setFinalAvatarFile] = useState();
   const [openImageDialog, setOpenImageDialog] = useState(false);
 
-  const [checked, setChecked] = React.useState(true);
+  const [monthlyChecked, setMonthlyChecked] = useState(true);
+  const [newsLetterChecked, setNewsLetterChecked] = useState(true);
+  const [campaignSwitch, setCampaignSwitch] = useState(null);
 
   const checkContact = useSelector((state) => state.checkContact);
   const { loading: loadingCheck, error: errorCheck, success: successCheck } = checkContact;
@@ -84,8 +88,13 @@ const ProfileEdit = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { updatedUser, loading: loadingUpdate } = userUpdateProfile;
 
-  const userEmailMarketing = useSelector((state) => state.userEmailMarketing);
-  const { emailMarketing, updatedEmailStatus, loading: loadingEmailStatus } = userEmailMarketing;
+  const userCampaigns = useSelector((state) => state.userCampaigns);
+  const {
+    statuses,
+    updatedMonthlyStatus,
+    updatedNewsLetterStatus,
+    loading: loadingCampaigns,
+  } = userCampaigns;
 
   useEffect(() => {
     dispatch({ type: USER_RESET_PASSWORD_RESET });
@@ -95,8 +104,8 @@ const ProfileEdit = () => {
   }, [theUser, userInfo]);
 
   useEffect(() => {
-    dispatch(fetchEmailMarketingStatus());
-  }, [updatedEmailStatus]);
+    dispatch(fetchUserCampaignsStatuses());
+  }, []);
 
   // Success
   useEffect(() => {
@@ -246,13 +255,34 @@ const ProfileEdit = () => {
     setUserNameErr(false);
   }, [userName]);
 
+  // Switches
   useEffect(() => {
-    if (emailMarketing) {
-      setChecked(true);
-    } else {
-      setChecked(false);
+    console.log(statuses);
+    console.log(campaignSwitch);
+    console.log(updatedMonthlyStatus);
+    console.log(updatedNewsLetterStatus);
+    if (campaignSwitch === 'monthly') {
+      if (!statuses) {
+        setMonthlyChecked(updatedMonthlyStatus);
+      } else if (statuses) {
+        setMonthlyChecked(statuses.monthlyStatus);
+      }
+    } else if (statuses && campaignSwitch === null) {
+      setMonthlyChecked(statuses.monthlyStatus);
     }
-  }, [emailMarketing]);
+  }, [updatedMonthlyStatus, statuses, campaignSwitch]);
+
+  useEffect(() => {
+    if (campaignSwitch === 'newsLetter') {
+      if (!statuses) {
+        setNewsLetterChecked(updatedNewsLetterStatus);
+      } else if (!updatedNewsLetterStatus && statuses) {
+        setNewsLetterChecked(statuses.newsLetterStatus);
+      }
+    } else if (statuses && campaignSwitch === null) {
+      setNewsLetterChecked(statuses.newsLetterStatus);
+    }
+  }, [updatedNewsLetterStatus, statuses, campaignSwitch]);
 
   // first name changes
   const handleChangeFirstName = (e) => {
@@ -323,8 +353,14 @@ const ProfileEdit = () => {
     }
   };
 
-  const handleChange = () => {
-    dispatch(updateEmailMarketingStatus());
+  const handleChangeMonthly = () => {
+    dispatch(updateMonthlyCampaignStatus());
+    setCampaignSwitch('monthly');
+  };
+
+  const handleChangeNewsLetter = () => {
+    dispatch(updateNewsLetterCampaignStatus());
+    setCampaignSwitch('newsLetter');
   };
 
   return (
@@ -334,7 +370,7 @@ const ProfileEdit = () => {
       justifyContent="center"
       alignItems="center"
       maxWidth
-      sx={{ mb: 10 }}
+      sx={{ mb: 20 }}
     >
       <FormControl onSubmit={handleSubmit} variant="outlined" sx={{ width: '100%' }}>
         <form style={{ width: '100%' }}>
@@ -549,18 +585,42 @@ const ProfileEdit = () => {
                 )}
               </FormControl>
             </Grid>
+            <Divider
+              sx={{
+                width: '100%',
+                marginTop: 3,
+                marginBottom: 1,
+                color: (theme) => theme.palette.text.secondary,
+              }}
+            >
+              {t('divider.campaign')}
+            </Divider>
             <Grid item xs={12} sx={{ width: '100%', textAlign: 'center' }}>
               <FormControlLabel
                 sx={{ width: 250 }}
                 control={
                   <Switch
-                    disabled={loadingEmailStatus}
-                    checked={checked}
-                    onChange={handleChange}
+                    disabled={loadingCampaigns}
+                    checked={monthlyChecked}
+                    onChange={handleChangeMonthly}
                     inputProps={{ 'aria-label': 'controlled' }}
                   />
                 }
-                label={t('email.monthlySummaries')}
+                label={t('campaign.monthly')}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ width: '100%', textAlign: 'center' }}>
+              <FormControlLabel
+                sx={{ width: 250 }}
+                control={
+                  <Switch
+                    disabled={loadingCampaigns}
+                    checked={newsLetterChecked}
+                    onChange={handleChangeNewsLetter}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                }
+                label={t('campaign.newsLetter')}
               />
             </Grid>
           </Grid>
