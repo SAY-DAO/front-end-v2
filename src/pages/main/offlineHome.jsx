@@ -22,8 +22,9 @@ export default function OfflineHome() {
         style={{ width: 60, height: 60, marginBottom: 10 }}
       />
       <h3 style={{ margin: 'auto' }}>
-       پوزش از اختلال به وجود آمده، در حال رفع مشکل دسترسی به سرور هستیم.
+      پوزش از اختلال به وجود آمده، در حال رفع مشکل درگاه پرداخت هستیم. 
       </h3>
+      <h5>info@saydao.org</h5>
     </Grid>
   );
 }

@@ -12,7 +12,6 @@ export default function Splash() {
 
   const timer = (ms) =>
     setTimeout(() => {
-      // navigate('/main/offlineHome'); // use this when something wrong with server
       navigate('/auth/intro');
     }, ms);
 

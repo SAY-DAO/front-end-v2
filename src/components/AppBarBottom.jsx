@@ -46,6 +46,7 @@ export default function AppBarBottom() {
   const { activeMode } = themeOptions;
 
   useEffect(() => {
+    navigate('/main/offlineHome'); // use this when something wrong with server
     dispatch(fetchUserDetails());
   }, [value]);
 
