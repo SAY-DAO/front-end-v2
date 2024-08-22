@@ -1,4 +1,4 @@
-import { publicApi } from '../../apis/sayBase';
+import { daoApi, publicApi } from '../../apis/sayBase';
 import {
   SHAPARAK_PAYMENT_REQUEST,
   SHAPARAK_PAYMENT_SUCCESS,
@@ -21,21 +21,22 @@ export const makePayment =
         } = getState();
         const config = {
           headers: {
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
             Authorization: userInfo && userInfo.accessToken,
+            flaskId: userInfo && userInfo.user.id,
           },
         };
         const formData = new FormData();
         if (method === 'payAll' || method === 'paySome') {
-          formData.append('method', method); // TODO: blockChain, Shaparak, PayPal, ...
-          formData.append('need_id', needId);
+          formData.append('needId', needId);
           formData.append('amount', amount);
-          formData.append('donate', donation);
+          formData.append('donation', donation);
           formData.append('useCredit', isCredit);
-          formData.append('gateway', gateWay);
+          formData.append('gateWay', gateWay);
         }
-        console.log(gateWay);
-        const { data } = await publicApi.post(`/payment`, formData, config);
+        // const { data } = await publicApi.post(`/payment`, formData, config);
+        const { data } = await daoApi.post(`/payment/new`, formData, config);
+
         dispatch({
           type: SHAPARAK_PAYMENT_SUCCESS,
           payload: data,

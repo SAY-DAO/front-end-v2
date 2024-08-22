@@ -292,7 +292,7 @@ export default function NeedAvailable({ childId }) {
         // only wallet -status 299
         if (result.status === 299) {
           windowReference.document.write(result.response);
-        } else {
+        } else if (result.link) {
           setIsPaying(true);
           windowReference.document.write('loading...');
           windowReference.location = result.link;
