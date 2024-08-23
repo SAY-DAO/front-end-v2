@@ -247,12 +247,6 @@ export default function CartAccordion() {
     setGateWay(selectedGateWay);
     const ref = window.open('', '_blank');
     setWindowReference(ref);
-
-    // console.log(`method = Cart`);
-    // console.log(`amount = ${amount}`);
-    // console.log(`donation = ${donation}`);
-    // console.log(`useCredit = ${isCredit}`);
-
     dispatch(updateBackEndCart());
   };
 

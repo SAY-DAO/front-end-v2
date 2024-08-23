@@ -66,13 +66,13 @@ export const makeCartPayment =
         },
       };
       const formData = new FormData();
-      formData.append('donate', donation);
+      formData.append('donation', donation);
       formData.append('useCredit', isCredit);
-      formData.append('gateway', gateWay);
+      formData.append('gateWay', gateWay);
 
-      const { data } = await publicApi.post(
-        `/mycart/payment`,
-        formData,
+      const { data } = await daoApi.post(
+        `/payment/cart/new`,
+        formData, 
         config
       );
       dispatch({
