@@ -71,7 +71,7 @@ export const makeCartPayment =
       formData.append('gateWay', gateWay);
 
       const { data } = await daoApi.post(
-        `/payment/cart/new`,
+        `/payment/new/cart`,
         formData, 
         config
       );
