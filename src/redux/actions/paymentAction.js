@@ -66,6 +66,7 @@ export const makeCartPayment =
           flaskId: userInfo && userInfo.user.id,
         },
       };
+      
       const formData = new FormData();
       formData.append('donation', donation);
       formData.append('useCredit', isCredit);
