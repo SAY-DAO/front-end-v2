@@ -63,6 +63,7 @@ export const makeCartPayment =
         headers: {
           'Content-type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
+          flaskId: userInfo && userInfo.user.id,
         },
       };
       const formData = new FormData();
