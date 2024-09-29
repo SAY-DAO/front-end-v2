@@ -68,7 +68,7 @@ export function getSAYRolePersian(sayRole) {
   } else if (sayRole === SAYPlatformRoles.FAMILY) {
     roleString = 'خانواده';
   } else if (sayRole === SAYPlatformRoles.RELATIVE) {
-    roleString = 'خویش‌آوند';
+    roleString = 'خویشاوند';
   } else if (sayRole === SAYPlatformRoles.NO_ROLE) {
     roleString = 'noRole';
   }
