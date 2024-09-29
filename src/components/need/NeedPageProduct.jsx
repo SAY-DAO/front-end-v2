@@ -17,7 +17,6 @@ export default function NeedPageProduct({ oneNeed, handleDelete }) {
   const { t } = useTranslation();
 
   const [imageSkeleton, setImageSkeleton] = useState(true);
-  console.log('need type: ', oneNeed.type);
 
   return (
     <>
