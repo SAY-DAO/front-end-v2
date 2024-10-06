@@ -70,7 +70,7 @@ export const makeCartPayment =
       const formData = new FormData();
       formData.append('donation', donation);
       formData.append('useCredit', isCredit);
-      formData.append('gateWay', gateWay);
+      formData.append('gateWay', Number(gateWay));
 
       const { data } = await daoApi.post(
         `/payment/new/cart`,

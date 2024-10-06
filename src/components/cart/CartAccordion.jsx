@@ -20,6 +20,7 @@ import {
   CART_UPDATE_BACK_RESET,
 } from '../../redux/constants/main/cartConstants';
 import PaymentModal from '../modals/PaymentModal';
+import { PaymentGateWays } from '../../utils/types';
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ export default function CartAccordion() {
       !cartCheckPayResult.needs[0]
     ) {
       if (successShaparakGate) {
-        dispatch(makeCartPayment(donation, isCredit));
+        dispatch(makeCartPayment(donation, isCredit, PaymentGateWays.ZIBAL));
         setIsSuccess(true);
         dispatch({ type: SHAPARAK_RESET });
         dispatch({ type: CART_BADGE_RESET });

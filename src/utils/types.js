@@ -147,3 +147,8 @@ export const NeedCategoryEnum = {
   HEALTH: 2,
   SURROUNDING: 3,
 };
+
+export const PaymentGateWays = {
+  IDPAY: 1,
+  ZIBAL: 2,
+};
