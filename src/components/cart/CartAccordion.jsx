@@ -148,7 +148,7 @@ export default function CartAccordion() {
       !cartCheckPayResult.needs[0]
     ) {
       if (successShaparakGate) {
-        dispatch(makeCartPayment(donation, isCredit, PaymentGateWays.ZIBAL));
+        dispatch(makeCartPayment(donation, isCredit, gateWay || PaymentGateWays.ZIBAL));
         setIsSuccess(true);
         dispatch({ type: SHAPARAK_RESET });
         dispatch({ type: CART_BADGE_RESET });
