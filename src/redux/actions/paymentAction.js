@@ -23,7 +23,7 @@ export const makePayment =
           headers: {
             'Content-Type': 'application/json',
             Authorization: userInfo && userInfo.accessToken,
-            flaskId: userInfo && userInfo.user.id,
+            flaskDappId: userInfo && userInfo.user.id,
           },
         };
         const formData = new FormData();
@@ -63,7 +63,7 @@ export const makeCartPayment =
         headers: {
           'Content-type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: userInfo && userInfo.user.id,
+          flaskDappId: userInfo && userInfo.user.id,
         },
       };
       

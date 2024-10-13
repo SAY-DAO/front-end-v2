@@ -485,7 +485,7 @@ export const fetchUserCampaignsStatuses = () => async (dispatch, getState) => {
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
@@ -515,7 +515,7 @@ export const updateMonthlyCampaignStatus = () => async (dispatch, getState) => {
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
@@ -546,7 +546,7 @@ export const updateNewsLetterCampaignStatus = () => async (dispatch, getState) =
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 

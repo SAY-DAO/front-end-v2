@@ -64,7 +64,7 @@ export const fetchNonce = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
       crossDomain: true,
@@ -97,7 +97,7 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
     };
@@ -141,7 +141,7 @@ export const fetchWalletInformation = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
       withCredentials: true,
     };
@@ -176,7 +176,7 @@ export const fetchEcoFamilyRolesCompletePays = () => async (dispatch, getState) 
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/family/roles/ecosystem/payments`, config);
@@ -205,7 +205,7 @@ export const fetchEcoMintData = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/mine/ecosystem/mineables`, config);
@@ -234,7 +234,7 @@ export const fetchReadyPaidNeeds = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
@@ -265,7 +265,7 @@ export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) 
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
@@ -295,7 +295,7 @@ export const fetchFamilyNetworks = () => async (dispatch, getState) => {
       headers: {
         'Content-type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/children/network`, config);
@@ -326,7 +326,7 @@ export const verifySocialWorkerSignature =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: userInfo && userInfo.user.id,
+          flaskDappId: userInfo && userInfo.user.id,
         },
         withCredentials: true,
       };
@@ -408,7 +408,7 @@ export const prepareSignature =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: userInfo && userInfo.user.id,
+          flaskDappId: userInfo && userInfo.user.id,
         },
         withCredentials: true,
       };
@@ -492,7 +492,7 @@ export const createSignature =
         headers: {
           'Content-Type': 'application/json',
           Authorization: userInfo && userInfo.accessToken,
-          flaskId: userInfo && userInfo.user.id,
+          flaskDappId: userInfo && userInfo.user.id,
         },
         withCredentials: true,
       };
@@ -592,7 +592,7 @@ export const fetchPersonalRatios = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
     const { data } = await daoApi.get(`/family/distanceRatio`, config);
@@ -624,7 +624,7 @@ export const fetchNeedCollectiveRatios = (needNestId) => async (dispatch, getSta
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
@@ -657,7 +657,7 @@ export const fetchAvailableContribution = () => async (dispatch, getState) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: userInfo && userInfo.accessToken,
-        flaskId: userInfo && userInfo.user.id,
+        flaskDappId: userInfo && userInfo.user.id,
       },
     };
 
