@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import Switch from '@mui/material/Switch';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchUserDetails } from '../../actions/userAction';
 
 export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
   const { t } = useTranslation();
@@ -34,18 +33,8 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
       if (checked) {
         setIsCredit(true);
       }
-    } else {
-      dispatch(fetchUserDetails());
     }
-  }, [
-    successUserDetails,
-    dispatch,
-    theUser,
-    checked,
-    userCredit,
-    setUserCredit,
-    setIsCredit,
-  ]);
+  }, [successUserDetails, dispatch, theUser, checked, userCredit, setUserCredit, setIsCredit]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -60,9 +49,7 @@ export default function Wallet({ setIsCredit, userCredit, setUserCredit }) {
     >
       <Grid item xs container direction="column">
         <Grid item sx={{ marginBottom: 1 }}>
-          <Typography variant="subtitle2">
-            {t('needPage.useCredit.title')}
-          </Typography>
+          <Typography variant="subtitle2">{t('needPage.useCredit.title')}</Typography>
         </Grid>
         <Grid item container direction="row">
           <Grid>

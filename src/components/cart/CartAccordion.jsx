@@ -1,31 +1,29 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Typography, Grid, FormControl, Divider, Paper } from '@mui/material';
-import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useHistory } from 'react-router';
 import NeedPageProduct from '../need/NeedPageProduct';
-import { changeCartBadgeNumber, updateBackEndCart } from '../../actions/main/cartAction';
+import { changeCartBadgeNumber, updateBackEndCart } from '../../redux/actions/main/cartAction';
 import Donation from '../payment/Donation';
 import Wallet from '../payment/Wallet';
-import { checkCartPayment, makeCartPayment } from '../../actions/paymentAction';
+import { checkCartPayment, makeCartPayment } from '../../redux/actions/paymentAction';
 import Message from '../Message';
-import { CHECK_CART_PAYMENT_RESET, SHAPARAK_RESET } from '../../constants/paymentConstants';
+import { CHECK_CART_PAYMENT_RESET, SHAPARAK_RESET } from '../../redux/constants/paymentConstants';
 import {
   CART_ADD_RESET,
   CART_BADGE_RESET,
   CART_UPDATE_BACK_RESET,
-} from '../../constants/main/cartConstants';
+} from '../../redux/constants/main/cartConstants';
+import PaymentModal from '../modals/PaymentModal';
+import { PaymentGateWays } from '../../utils/types';
 
 export default function CartAccordion() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { t } = useTranslation();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -43,6 +41,9 @@ export default function CartAccordion() {
   const [donation, setDonation] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [onlyWallet, setOnlyWallet] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
+  const [gateWay, setGateWay] = useState();
 
   const theCart = useSelector((state) => state.theCart);
   const { cartItems } = theCart;
@@ -101,6 +102,7 @@ export default function CartAccordion() {
         if (shaparakResult.status === 299) {
           windowReference.document.write(shaparakResult.response);
         } else {
+          setIsPaying(true);
           windowReference.document.write('loading...');
           windowReference.location = shaparakResult.link;
         }
@@ -120,15 +122,16 @@ export default function CartAccordion() {
 
   // pay or remove unavailable
   useEffect(() => {
-    if (successCartUpdate && updateResult.needs[0] && !successShaparakGate) {
-      dispatch(makeCartPayment(donation, isCredit));
+    if (successCartUpdate && updateResult.needs[0] && !successShaparakGate && gateWay) {
+      setModalOpen(false);
+      dispatch(makeCartPayment(donation, isCredit, gateWay));
     }
     // } else if (
     //  errorShaparakGate || errorUpdate || errorCartPayCheck
     // ) {
     //   // dispatch(removeUnavailableItems(updateResult.data.invalidNeedIds));
     // }
-  }, [successCartUpdate, updateResult]);
+  }, [successCartUpdate, updateResult, gateWay]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -145,7 +148,7 @@ export default function CartAccordion() {
       !cartCheckPayResult.needs[0]
     ) {
       if (successShaparakGate) {
-        dispatch(makeCartPayment(donation, isCredit));
+        dispatch(makeCartPayment(donation, isCredit, gateWay || PaymentGateWays.ZIBAL));
         setIsSuccess(true);
         dispatch({ type: SHAPARAK_RESET });
         dispatch({ type: CART_BADGE_RESET });
@@ -235,17 +238,16 @@ export default function CartAccordion() {
     dispatch(changeCartBadgeNumber(badgeNumber));
   };
 
-  // check & payment
-  const handleCartCheck = (e) => {
+  const handlePopUp = (e) => {
     e.preventDefault();
+    setModalOpen(true);
+  };
+
+  // check & payment
+  const handleCartCheck = (selectedGateWay) => {
+    setGateWay(selectedGateWay);
     const ref = window.open('', '_blank');
     setWindowReference(ref);
-
-    // console.log(`method = Cart`);
-    // console.log(`amount = ${amount}`);
-    // console.log(`donation = ${donation}`);
-    // console.log(`useCredit = ${isCredit}`);
-
     dispatch(updateBackEndCart());
   };
 
@@ -272,6 +274,7 @@ export default function CartAccordion() {
           </AccordionSummary>
           <AccordionDetails sx={{ padding: 0, paddingTop: 2, paddingBottom: 1 }}>
             {childrenNeedObj[childId].items.map((item, index) => (
+              // eslint-disable-next-line react/no-array-index-key
               <Grid key={index} sx={{ marginTop: 1 }}>
                 <NeedPageProduct oneNeed={item} handleDelete={handleDelete} />
               </Grid>
@@ -328,11 +331,11 @@ export default function CartAccordion() {
                         </Grid>
                         <Grid sx={{ textAlign: 'center' }}>
                           <LoadingButton
-                            loading={isLoading}
+                            loading={isLoading || isPaying}
                             disabled={isDisabled}
                             variant="contained"
                             color="primary"
-                            onClick={handleCartCheck}
+                            onClick={handlePopUp}
                           >
                             {!isLoading && (
                               <Typography
@@ -354,6 +357,11 @@ export default function CartAccordion() {
                     )}
                   </Grid>
                 </form>
+                <PaymentModal
+                  open={modalOpen}
+                  setOpen={setModalOpen}
+                  handlePayment={handleCartCheck}
+                />
               </FormControl>
             )}
 

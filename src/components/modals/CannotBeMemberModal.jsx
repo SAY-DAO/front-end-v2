@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Backdrop from '@mui/material/Backdrop';
 import { Box, Grid, Link, Modal } from '@mui/material';
 import Fade from '@mui/material/Fade';
@@ -29,7 +29,7 @@ export default function CannotBeMemberModal({
   isInvite,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const warnTextKey = isInvite
     ? 'error.adoption.cannotBeMemberInvite'
     : 'error.adoption.cannotBeMember';
@@ -40,7 +40,7 @@ export default function CannotBeMemberModal({
   const handleClose = () => {
     setCannotBeMember(false);
     setOpen(false);
-    history.push('/main/search');
+    navigate('/main/search');
   };
 
   useEffect(() => {
@@ -66,25 +66,12 @@ export default function CannotBeMemberModal({
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
+            <Grid container direction="column" justifyContent="center" alignItems="center">
               <Grid item xs={12}>
-                <img
-                  src="/images/child/gone.svg"
-                  alt="icon"
-                  style={{ minWidth: '45px' }}
-                />
+                <img src="/images/child/gone.svg" alt="icon" style={{ minWidth: '45px' }} />
               </Grid>
               <Grid item xs={12} sx={{ marginTop: 2, textAlign: 'center' }}>
-                <Typography
-                  id="transition-modal-title"
-                  variant="body2"
-                  component="h2"
-                >
+                <Typography id="transition-modal-title" variant="body2" component="h2">
                   {t(warnTextKey, {
                     childSayName,
                     previousRole,

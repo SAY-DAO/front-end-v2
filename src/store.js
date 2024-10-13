@@ -2,11 +2,11 @@ import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import LogRocket from 'logrocket';
 import * as Sentry from '@sentry/react';
-import reducers from './reducers';
+import reducers from './redux/reducers';
 import {
   USER_LOGIN_REQUEST,
   USER_REGISTER_REQUEST,
-} from './constants/main/userConstants';
+} from './redux/constants/main/userConstants';
 
 const verifyInfo = localStorage.getItem('verifyInfo')
   ? JSON.parse(localStorage.getItem('verifyInfo'))

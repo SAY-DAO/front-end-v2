@@ -1,25 +1,22 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import FormControl from '@mui/material/FormControl';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Link } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import queryString from 'query-string';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
-import { fetchUserDetails, login } from '../../actions/userAction';
+import { fetchUserDetails, login } from '../../redux/actions/userAction';
 import {
+  USER_DETAILS_RESET,
   USER_LOGOUT,
   USER_REGISTER_RESET,
-} from '../../constants/main/userConstants';
+} from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -35,17 +32,12 @@ const useStyles = makeStyles({
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { search } = useLocation();
-  const queryStringValue = queryString.parse(search);
-  // eslint-disable-next-line no-restricted-globals
-  const redirect = queryStringValue.redirect
+  const navigate = useNavigate();
+
+  const redirect = window.location.search
     ? // eslint-disable-next-line no-restricted-globals
-      queryStringValue.redirect
+      window.location.search.split('redirect=')[1]
     : 'main/home';
-  const redirectQueryString = queryStringValue.redirect
-    ? `?redirect=${queryStringValue.redirect}`
-    : '';
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -60,7 +52,11 @@ const Login = () => {
   const { success: successRegister } = userRegister;
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { loading: loadingUserDetails, success: successUserDetails } = userDetails;
+  const {
+    loading: loadingUserDetails,
+    success: successUserDetails,
+    error: errorUserDetails,
+  } = userDetails;
 
   // loading button
   useEffect(() => {
@@ -81,11 +77,19 @@ const Login = () => {
   }, [userName, password, errorLogin, successLogin]);
 
   useEffect(() => {
-    dispatch(fetchUserDetails());
-    if ((successLogin || userInfo) && successUserDetails) {
-      history.push(`/${redirect}`);
+    if (successLogin) {
+      dispatch(fetchUserDetails());
     }
-  }, [history, redirect, successLogin, successUserDetails]);
+    if (errorLogin || errorUserDetails) {
+      dispatch({ type: USER_DETAILS_RESET });
+    }
+  }, [successLogin, errorUserDetails, errorLogin]);
+
+  useEffect(() => {
+    if ((successLogin || userInfo) && successUserDetails) {
+      navigate(`/${redirect}`);
+    }
+  }, [redirect, successLogin, successUserDetails]);
 
   // Message input for some status error (422)
   useEffect(() => {
@@ -103,19 +107,22 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(userName, password));
+    const theUserName = userName && userName.startsWith(0) ? `+98${userName.slice(1)}` : userName;
+    dispatch(login(theUserName, password));
   };
 
   const handleChangeUserName = (event) => {
     setUserName(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
     // clean error
     dispatch({ type: USER_LOGOUT });
+    dispatch({ type: USER_DETAILS_RESET });
   };
 
   const classes = useStyles();
@@ -128,7 +135,7 @@ const Login = () => {
       maxWidth
       sx={{ marginTop: 34 }}
     >
-      <Back to="/intro" isOrange />
+      <Back to="/auth/intro" isOrange />
       <Grid item xs={12}>
         <img src="/images/register.svg" className={classes.root} alt="Login" />
       </Grid>
@@ -176,11 +183,11 @@ const Login = () => {
           <Typography variant="subtitle2">
             <Trans i18nKey="comeback.noAccount">
               Don't have an account yet?
-              <Link to={`/register${redirectQueryString}`} className="link" />
+              <Link to="/auth/register" className="link" />
             </Trans>
           </Typography>
           <Typography variant="subtitle2">
-            <Link to="/forgot-password" className="link">
+            <Link to="/auth/forgot-password" className="link">
               {t('forgot-password.title')}
             </Link>
           </Typography>

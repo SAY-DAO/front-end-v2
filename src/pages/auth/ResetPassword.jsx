@@ -1,30 +1,29 @@
-/* eslint-disable consistent-return */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { fetchUserDetails, resetPassword } from '../../actions/userAction';
+import { resetPassword, resetPasswordByToken } from '../../redux/actions/userAction';
 import Message from '../../components/Message';
 import validatePassword from '../../inputsValidation/validatePassword';
 import validateRepeatPassword from '../../inputsValidation/validateRepeatPassword';
 import Back from '../../components/Back';
-import { USER_RESET_PASSWORD_RESET } from '../../constants/main/userConstants';
+import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 
 const ResetPassword = () => {
-  const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
+
+  const token = searchParams.get('token');
 
   const [validateErr, setValidateErr] = useState('');
   const [passwordErr, setPasswordErr] = useState(false);
@@ -35,7 +34,12 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userResetPass = useSelector((state) => state.userResetPass);
-  const { loading: loadingReset, error: errorReset, success: successReset } = userResetPass;
+  const {
+    resetPass,
+    loading: loadingReset,
+    error: errorReset,
+    success: successReset,
+  } = userResetPass;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, success: successLogin } = userLogin;
@@ -45,11 +49,10 @@ const ResetPassword = () => {
 
   // login
   useEffect(() => {
-    dispatch(fetchUserDetails());
-    if (errorUserDetails) {
-      history.push('/login?redirect=setpassword');
+    if (errorUserDetails && !token) {
+      navigate('/auth/login?redirect=auth/reset-password');
     }
-  }, [userInfo, successLogin, history, errorUserDetails, dispatch]);
+  }, [userInfo, successLogin, errorUserDetails, dispatch, token]);
 
   // loading button
   useEffect(() => {
@@ -70,16 +73,10 @@ const ResetPassword = () => {
   }, [password, repeatPassword, passwordErr, repeatPasswordErr, errorReset, successReset]);
 
   useEffect(() => {
-    dispatch({ type: USER_RESET_PASSWORD_RESET });
-    if (!userInfo && !successLogin) {
-      history.push('/login?redirect=setpassword');
+    if (!userInfo && !successLogin && !token) {
+      navigate('/auth/login?redirect=auth/reset-password');
     }
-  }, [userInfo, successLogin, history]);
-
-  // cleanup the state error after leaving the page - this runs every reload
-  useEffect(() => {
-    dispatch({ type: USER_RESET_PASSWORD_RESET });
-  }, [password, repeatPassword]);
+  }, [userInfo, successLogin, token]);
 
   // check password every 1000 ms when typing
   useEffect(() => {
@@ -98,31 +95,63 @@ const ResetPassword = () => {
   }, [password, repeatPassword]);
 
   // check password every 1000 ms when typing
-  useEffect(async () => {
-    setValidateErr('');
-    setRepeatPasswordErr(true);
-    if (repeatPassword) {
-      const result = validateRepeatPassword(password, repeatPassword);
-      if (result && result.errorMessage) {
-        const timeout = setTimeout(() => {
-          setValidateErr(t(result.errorMessage));
-        }, 100);
-        return () => clearTimeout(timeout);
+  useEffect(() => {
+    const myAsync = async () => {
+      try {
+        setValidateErr('');
+        setRepeatPasswordErr(true);
+        if (repeatPassword) {
+          const result = validateRepeatPassword(password, repeatPassword);
+          if (result && result.errorMessage) {
+            const timeout = setTimeout(() => {
+              setValidateErr(t(result.errorMessage));
+            }, 100);
+            return () => clearTimeout(timeout);
+          }
+        }
+        setRepeatPasswordErr(false);
+      } catch (e) {
+        console.log({
+          message: e.details,
+          code: e.code,
+        });
       }
-    }
-    setRepeatPasswordErr(false);
+    };
+    myAsync();
   }, [password, repeatPassword]);
 
   useEffect(() => {
-    if (successReset) {
-      history.push('/main/profile/settings');
+    if (successReset && token) {
+      window.localStorage.removeItem('userInfo');
+      localStorage.setItem(
+        'userInfo',
+        JSON.stringify({
+          accessToken: resetPass.accessToken,
+          message: 'reset password',
+          refreshToken: resetPass.refreshToken,
+          user: resetPass.user,
+        }),
+      );
+      return () => {
+        dispatch({ type: USER_RESET_PASSWORD_RESET });
+      };
+      // navigate('/main/profile/settings');
     }
-  }, [successReset]);
+    if (successReset && !token) {
+      // navigate('/main/profile/settings');
+      return () => {
+        dispatch({ type: USER_RESET_PASSWORD_RESET });
+      };
+    }
+  }, [successReset, resetPass, token]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password) {
+    if (!token && password) {
       dispatch(resetPassword(password));
+    }
+    if (token && password) {
+      dispatch(resetPasswordByToken(token, password, repeatPassword));
     }
   };
 
@@ -218,6 +247,13 @@ const ResetPassword = () => {
               severity="error"
             >
               {validateErr}
+            </Message>
+          )}
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: 'center', margin: 4 }}>
+          {successReset && (
+            <Message variant="standard" severity="success">
+              {t('change-password.successNotif')}
             </Message>
           )}
         </Grid>

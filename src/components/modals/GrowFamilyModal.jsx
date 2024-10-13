@@ -17,7 +17,7 @@ import copy from 'copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { inviteToMyFamily } from '../../actions/familyAction';
+import { inviteToMyFamily } from '../../redux/actions/familyAction';
 import Share from '../ShareButton';
 import CopyModal from './CopyModal';
 
@@ -65,7 +65,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const invite = useSelector((state) => state.invite);
-  const { theInvite, success, loading, error } = invite;
+  const { theInvite, success } = invite;
 
   const handleOpen = () => {
     setOpen(true);
@@ -214,7 +214,7 @@ export default function GrowFamilyModal({ menuOpen, setMenuOpen, theChild }) {
                       /* tslint:disable-next-line:no-console */
                       onShareSuccess: () => handleClose,
                       /* tslint:disable-next-line:no-console */
-                      onShareError: (err) => {},
+                      onShareError: (err) => console.log(err),
                     }}
                     text={t('button.inviteRoleSelect.yes')}
                     disabled={submitDisabled}

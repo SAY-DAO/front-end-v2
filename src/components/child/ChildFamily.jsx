@@ -1,20 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Typography, Grid, Avatar, Chip, Stack } from '@mui/material';
-import { useHistory } from 'react-router';
 import roles from '../../apis/roles.json';
 
 export default function ChildFamily({ theChild }) {
-  const history = useHistory();
   const { t } = useTranslation();
-
-  // useEffect(() => {
-  //   if (!theChild.childFamilyMembers) {
-  //     history.push('/main/search');
-  //   }
-  // }, [theChild, history]);
 
   return (
     <div>
@@ -49,11 +41,9 @@ export default function ChildFamily({ theChild }) {
                       alignItems="center"
                       sx={{ minWidth: 220 }}
                     >
-                      <Typography variant="subtitle2">
-                        {`${t(roles.roles[member.role])}`}
-                      </Typography>
+                      <Typography variant="subtitle2">{t(roles.roles[member.role])}</Typography>
                       <Typography variant="subtitle2" style={{ right: 0 }}>
-                        {`${member.username}`}
+                        {member.username}
                       </Typography>
                     </Grid>
                   }

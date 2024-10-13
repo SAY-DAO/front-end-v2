@@ -29,6 +29,7 @@
   "parser": "babel-eslint",
   "rules": {
     "comma-dangle": "off",
+    "consistent-return":"off",
     "import/no-unresolved": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "jsx-a11y/click-events-have-key-events": "off",

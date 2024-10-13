@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +17,7 @@ export default function Message({
   severity,
 }) {
   const { t } = useTranslation();
+  // eslint-disable-next-line consistent-return
   const onRequestCheck = () => {
     if (backSuccess) {
       return t(contents.successBank);
@@ -99,7 +99,12 @@ export default function Message({
   Sentry.captureException(children, frontError, backError.message);
 
   return (
-    <Alert icon={icon} variant={variant} severity={severity} sx={{ margin: 'auto' }}>
+    <Alert
+      icon={icon}
+      variant={variant}
+      severity={severity}
+      sx={{ margin: 'auto' }}
+    >
       {children || onRequestCheck()}
     </Alert>
   );

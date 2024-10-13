@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Link, Modal, Typography, Backdrop } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import { useHistory } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 import exitQuote from '../../apis/quote.json';
 import {
   CHILD_RANDOM_SEARCH_RESET,
   CHILD_BY_TOKEN_RESET,
-} from '../../constants/childConstants';
+} from '../../redux/constants/childConstants';
 
 const style = {
   position: 'absolute',
@@ -29,7 +28,7 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [redirect, setRedirect] = useState();
 
@@ -53,12 +52,12 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
       dispatch({ type: CHILD_BY_TOKEN_RESET });
       localStorage.removeItem('randomChildToken');
       if (redirect) {
-        history.push(redirect);
+        navigate(redirect);
       } else {
-        history.push('/main/search');
+        navigate('/main/search');
       }
     }
-  }, [leave, open, dispatch, history, redirect]);
+  }, [leave, open, dispatch, navigate, redirect]);
 
   useEffect(() => {
     if (backIsTrue) {
@@ -82,23 +81,10 @@ export default function LeaveModel({ backIsTrue, setBackIsTrue }) {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
+            <Grid container direction="column" justifyContent="center" alignItems="center">
               <Grid item xs={12} sx={{ margin: 2, textAlign: 'center' }}>
-                <Typography
-                  id="transition-modal-title"
-                  variant="body2"
-                  component="h2"
-                >
-                  {t(
-                    exitQuote.exitQuote[
-                      Math.floor(Math.random() * exitQuote.exitQuote.length)
-                    ]
-                  )}
+                <Typography id="transition-modal-title" variant="body2" component="h2">
+                  {t(exitQuote.exitQuote[Math.floor(Math.random() * exitQuote.exitQuote.length)])}
                 </Typography>
               </Grid>
               <Grid
