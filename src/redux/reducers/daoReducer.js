@@ -2,16 +2,16 @@ import {
   WALLET_NONCE_REQUEST,
   WALLET_NONCE_SUCCESS,
   WALLET_NONCE_FAIL,
-  WALLET_VERIFY_REQUEST,
-  WALLET_VERIFY_SUCCESS,
-  WALLET_VERIFY_FAIL,
+  SIWE_VERIFY_REQUEST,
+  SIWE_VERIFY_SUCCESS,
+  SIWE_VERIFY_FAIL,
   WALLET_INFORMATION_REQUEST,
   WALLET_INFORMATION_SUCCESS,
   WALLET_INFORMATION_FAIL,
   CONTRIBUTION_LIST_REQUEST,
   CONTRIBUTION_LIST_SUCCESS,
   CONTRIBUTION_LIST_FAIL,
-  WALLET_VERIFY_RESET,
+  SIWE_VERIFY_RESET,
   WALLET_INFORMATION_RESET,
   USER_SIGNATURES_REQUEST,
   USER_SIGNATURES_SUCCESS,
@@ -160,15 +160,15 @@ export const walletNonceReducer = (state = {}, action) => {
   }
 };
 
-export const walletVerifyReducer = (state = {}, action) => {
+export const siweVerifyReducer = (state = {}, action) => {
   switch (action.type) {
-    case WALLET_VERIFY_REQUEST:
+    case SIWE_VERIFY_REQUEST:
       return { loading: true, success: false };
-    case WALLET_VERIFY_SUCCESS:
+    case SIWE_VERIFY_SUCCESS:
       return { loading: false, success: true, verifiedNonce: action.payload };
-    case WALLET_VERIFY_FAIL:
+    case SIWE_VERIFY_FAIL:
       return { loading: false, error: action.payload };
-    case WALLET_VERIFY_RESET:
+    case SIWE_VERIFY_RESET:
       return {};
     default:
       return state;

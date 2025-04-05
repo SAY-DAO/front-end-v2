@@ -34,7 +34,7 @@ import {
   fetchOneReadySignNeed,
   fetchWalletInformation,
   signTransaction,
-  walletVerify,
+  siweVerify,
   prepareSignature,
   verifySocialWorkerSignature,
   createSignature,
@@ -55,7 +55,7 @@ import {
   SIGNATURE_CREATE_RESET,
   SIGNATURE_VERIFICATION_RESET,
   WALLET_INFORMATION_RESET,
-  WALLET_VERIFY_RESET,
+  SIWE_VERIFY_RESET,
 } from '../../../redux/constants/daoConstants';
 import DaoSignatureMenu from '../../../components/DAO/signing/DaoSignatureMenu';
 import { SAYPlatformRoles, VirtualFamilyRole } from '../../../utils/types';
@@ -132,7 +132,7 @@ export default function DaoNeedSignature() {
   const { information, loading: loadingInformation } = useSelector(
     (state) => state.walletInformation,
   );
-  const { verifiedNonce, error: errorVerify } = useSelector((state) => state.walletVerify);
+  const { verifiedNonce, error: errorVerify } = useSelector((state) => state.siweVerification);
   const { error: errorWalletInformation } = useSelector((state) => state.walletInformation);
   const {
     swVerifiedAddress,
@@ -179,6 +179,7 @@ export default function DaoNeedSignature() {
     };
   }, [nonceData]);
 
+  // setUserVRole using the UserFamily flask model
   useEffect(() => {
     if (
       oneReadyNeed &&
@@ -191,6 +192,7 @@ export default function DaoNeedSignature() {
     }
   }, [oneReadyNeed]);
 
+   // TO-DO: we should cache the ratios at backend
   // set ratios
   useEffect(() => {
     if (personalResult && personalResult.distanceRatio && collectiveResult && oneReadyNeed) {
@@ -198,7 +200,7 @@ export default function DaoNeedSignature() {
         (v) => v.flaskUserId === userInfo.user.id && v.needFlaskId === oneReadyNeed.flaskId,
       );
       if (userVRole >= 0 && (!oneReadyNeed.variables || !theNeedVariables)) {
-        const theRatio =
+        const theDistanceRatio =
           userVRole === VirtualFamilyRole.FATHER
             ? personalResult.distanceRatio.fatherQGrant
             : userVRole === VirtualFamilyRole.MOTHER
@@ -211,7 +213,7 @@ export default function DaoNeedSignature() {
             ? personalResult.distanceRatio.daeiQGrant
             : userVRole === VirtualFamilyRole.AMME && personalResult.distanceRatio.ammeQGrant;
         setRatios({
-          distanceRatio: theRatio,
+          distanceRatio: theDistanceRatio, 
           difficultyRatio: collectiveResult.difficultyRatio,
           contributionRatio: collectiveResult.contributionRatio,
         });
@@ -226,6 +228,9 @@ export default function DaoNeedSignature() {
     }
   }, [personalResult, collectiveResult, oneReadyNeed, userVRole]);
 
+  //  1- prepare
+  //  2- sign
+  //  3- update db
   useEffect(() => {
     if (oneReadyNeed && chain && !errorSignature) {
       if (swVerifiedAddress && !prepared) {
@@ -328,10 +333,10 @@ export default function DaoNeedSignature() {
     }
   }, [isConnected, nonceData, errorSignIn]);
 
-  // Verify signature
+  // Verify SIWE signature
   useEffect(() => {
     if (!isSuccess) return;
-    dispatch(walletVerify(values.message, values.signature));
+    dispatch(siweVerify(values.message, values.signature));
   }, [values]);
 
   // Disconnect if did not sign in
@@ -386,6 +391,7 @@ export default function DaoNeedSignature() {
     };
   }, [createdSignature]);
 
+  // set UI payment details
   useEffect(() => {
     if (oneReadyNeed) {
       const userPayment = oneReadyNeed.verifiedPayments.find(
@@ -415,7 +421,7 @@ export default function DaoNeedSignature() {
     setOpenWallets(true);
     disconnect();
     reset();
-    dispatch({ type: WALLET_VERIFY_RESET });
+    dispatch({ type: SIWE_VERIFY_RESET });
     dispatch({ type: WALLET_INFORMATION_RESET });
     dispatch({ type: SIGNATURE_CREATE_RESET });
   };

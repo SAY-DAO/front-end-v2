@@ -20,9 +20,9 @@ import {
   WALLET_NONCE_REQUEST,
   WALLET_NONCE_SUCCESS,
   WALLET_NONCE_FAIL,
-  WALLET_VERIFY_REQUEST,
-  WALLET_VERIFY_SUCCESS,
-  WALLET_VERIFY_FAIL,
+  SIWE_VERIFY_REQUEST,
+  SIWE_VERIFY_SUCCESS,
+  SIWE_VERIFY_FAIL,
   WALLET_INFORMATION_REQUEST,
   WALLET_INFORMATION_SUCCESS,
   WALLET_INFORMATION_FAIL,
@@ -85,9 +85,9 @@ export const fetchNonce = () => async (dispatch, getState) => {
   }
 };
 
-export const walletVerify = (message, signature) => async (dispatch, getState) => {
+export const siweVerify = (message, signature) => async (dispatch, getState) => {
   try {
-    dispatch({ type: WALLET_VERIFY_REQUEST });
+    dispatch({ type: SIWE_VERIFY_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -112,12 +112,12 @@ export const walletVerify = (message, signature) => async (dispatch, getState) =
     );
 
     dispatch({
-      type: WALLET_VERIFY_SUCCESS,
+      type: SIWE_VERIFY_SUCCESS,
       payload: data,
     });
   } catch (e) {
     dispatch({
-      type: WALLET_VERIFY_FAIL,
+      type: SIWE_VERIFY_FAIL,
       payload:
         e.response && e.response.data.detail
           ? e.response.data.detail
@@ -238,7 +238,7 @@ export const fetchReadyPaidNeeds = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.get(`/mine/needs/paid`, config);
+    const { data } = await daoApi.get(`/wallet/signature/ready/all/needs`, config);
 
     dispatch({
       type: MY_PAID_NEEDS_SUCCESS,
@@ -269,7 +269,7 @@ export const fetchOneReadySignNeed = (nestNeedId) => async (dispatch, getState) 
       },
     };
 
-    const { data } = await daoApi.get(`/mine/signature/ready/${nestNeedId}`, config);
+    const { data } = await daoApi.get(`/wallet/signature/ready/${nestNeedId}`, config);
 
     dispatch({
       type: READY_TO_SIGN_ONE_NEED_SUCCESS,
