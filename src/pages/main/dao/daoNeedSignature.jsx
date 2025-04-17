@@ -192,7 +192,6 @@ export default function DaoNeedSignature() {
     }
   }, [oneReadyNeed]);
 
-   // TO-DO: we should cache the ratios at backend
   // set ratios
   useEffect(() => {
     if (personalResult && personalResult.distanceRatio && collectiveResult && oneReadyNeed) {

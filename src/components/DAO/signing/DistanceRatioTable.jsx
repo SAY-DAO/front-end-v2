@@ -32,48 +32,33 @@ export default function DistanceRatioTable() {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch(fetchEcoFamilyRolesCompletePays());
-  }, []);
+    if (!ecoResult) {
+      dispatch(fetchEcoFamilyRolesCompletePays());
+    }
+  }, [ecoResult]);
 
   useEffect(() => {
     if (ecoResult) {
+      const role =
+        oneReadyNeed.members &&
+        oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole;
       setRows([
         createData(
-          t(
-            `family.roles.plural.${getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()}`,
-          ),
+          t(`family.roles.plural.${getVFamilyRoleString(role).toLowerCase()}`),
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.min[
-            getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()
+            getVFamilyRoleString(role).toLowerCase()
           ],
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.Q1[
-            getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()
+            getVFamilyRoleString(role).toLowerCase()
           ],
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.Q2[
-            getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()
+            getVFamilyRoleString(role).toLowerCase()
           ],
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.Q3[
-            getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()
+            getVFamilyRoleString(role).toLowerCase()
           ],
           ecoResult.ecosystem.ecoCompletePayQuartile.IQRObject.max[
-            getVFamilyRoleString(
-              oneReadyNeed.members &&
-                oneReadyNeed.members.find((m) => m.id_user === userInfo.user.id).flaskFamilyRole,
-            ).toLowerCase()
+            getVFamilyRoleString(role).toLowerCase()
           ],
         ),
       ]);
