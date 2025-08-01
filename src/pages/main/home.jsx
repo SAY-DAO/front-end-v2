@@ -180,7 +180,7 @@ const Home = () => {
                 <Divider sx={{ width: '95%' }} />
               </Grid>
             </Grid>
-            <Grid item xs={12} sx={{ marginTop: 3, textAlign: 'center', width: '100%' }}>
+            <Grid item xs={12} sx={{ marginTop: 3,marginBottom: 10, textAlign: 'center', width: '100%' }}>
               {children &&
                 children.map((child) => (
                   <ChildCard key={child.id} handleMyChildPage={handleMyChildPage} myChild={child} />
