@@ -1,5 +1,3 @@
-import JDate from 'jalali-date';
-
 const options = {
   year: 'numeric',
   month: 'long',
@@ -11,7 +9,11 @@ function enDate(date) {
 }
 
 function faDate(date) {
-  return new JDate(new Date(date)).format('dddd D MMMM YYYY');
+  return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date));
 }
 
 export { enDate, faDate };

@@ -90,7 +90,6 @@ export default function NeedDone({ childId }) {
 
   // When payment is done we land here with an interval from NeedAvailable.jsx
   useEffect(() => {
-    console.log(theChild);
     if (theChild) {
       dispatch(fetchChildNeeds(theChild.id));
     } else if (!theChild) {
