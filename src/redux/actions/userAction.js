@@ -47,6 +47,13 @@ import {
   IP_LOCATION_REQUEST,
   IP_LOCATION_SUCCESS,
   IP_LOCATION_FAIL,
+  CHECKPOINT_CREATE_REQUEST,
+  CHECKPOINT_CREATE_SUCCESS,
+  CHECKPOINT_CREATE_FAIL,
+  CHECKPOINT_CREATE_RESET,
+  CHECKPOINT_LIST_REQUEST,
+  CHECKPOINT_LIST_SUCCESS,
+  CHECKPOINT_LIST_FAIL,
 } from '../constants/main/userConstants';
 import standalone from '../../standalone';
 
@@ -343,7 +350,7 @@ export const fetchUserDetails = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await publicApi.get(`user/userId=me`, config);
+    const { data } = await daoApi.get(`family/members/me`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -422,56 +429,56 @@ export const resetPasswordByToken = (token, password, confirmPassword) => async 
 
 export const userEditProfile =
   (phoneAuth, emailAuth, avatarUrl, firstName, lastName, phoneNumber, email, userName) =>
-    async (dispatch, getState) => {
-      try {
-        dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
 
-        const {
-          userLogin: { userInfo },
-        } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-        const config = {
-          headers: {
-            'Content-Type': `multipart/form-data`,
-            Authorization: userInfo && userInfo.accessToken,
-          },
-        };
+      const config = {
+        headers: {
+          'Content-Type': `multipart/form-data`,
+          Authorization: userInfo && userInfo.accessToken,
+        },
+      };
 
-        const formData = new FormData();
-        if (userInfo.user.avatarUrl !== avatarUrl) {
-          formData.append('avatarUrl', avatarUrl);
-        }
-        if (userInfo.user.firstName !== firstName) {
-          formData.append('firstName', firstName);
-        }
-        if (userInfo.user.lastName !== lastName) {
-          formData.append('lastName', lastName);
-        }
-        console.log(phoneNumber);
-        if (!phoneAuth && userInfo.user.phone_number !== phoneNumber) {
-          console.log('phne');
-          formData.append('phoneNumber', phoneNumber);
-        }
-        if (!emailAuth && userInfo.user.emailAddress !== email) {
-          console.log('mail');
-          formData.append('email', email);
-        }
-        if (userInfo.user.userName !== userName) {
-          formData.append('userName', userName);
-        }
-        const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
-
-        dispatch({
-          type: USER_UPDATE_PROFILE_SUCCESS,
-          payload: data,
-        });
-      } catch (e) {
-        dispatch({
-          type: USER_UPDATE_PROFILE_FAIL,
-          payload: e.response && e.response.status ? e.response : e.message,
-        });
+      const formData = new FormData();
+      if (userInfo.user.avatarUrl !== avatarUrl) {
+        formData.append('avatarUrl', avatarUrl);
       }
-    };
+      if (userInfo.user.firstName !== firstName) {
+        formData.append('firstName', firstName);
+      }
+      if (userInfo.user.lastName !== lastName) {
+        formData.append('lastName', lastName);
+      }
+      console.log(phoneNumber);
+      if (!phoneAuth && userInfo.user.phone_number !== phoneNumber) {
+        console.log('phne');
+        formData.append('phoneNumber', phoneNumber);
+      }
+      if (!emailAuth && userInfo.user.emailAddress !== email) {
+        console.log('mail');
+        formData.append('email', email);
+      }
+      if (userInfo.user.userName !== userName) {
+        formData.append('userName', userName);
+      }
+      const { data } = await publicApi.patch(`/user/update/userId=me`, formData, config);
+
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data,
+      });
+    } catch (e) {
+      dispatch({
+        type: USER_UPDATE_PROFILE_FAIL,
+        payload: e.response && e.response.status ? e.response : e.message,
+      });
+    }
+  };
 
 export const fetchUserCampaignsStatuses = () => async (dispatch, getState) => {
   try {
@@ -533,7 +540,6 @@ export const updateMonthlyCampaignStatus = () => async (dispatch, getState) => {
   }
 };
 
-
 export const updateNewsLetterCampaignStatus = () => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_NEWS_LETTER_CAMPAIGN_UPDATE_REQUEST });
@@ -562,4 +568,78 @@ export const updateNewsLetterCampaignStatus = () => async (dispatch, getState) =
       payload: e.response && e.response.status ? e.response : e.message,
     });
   }
+};
+
+export const createCheckpoint = (dto) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CHECKPOINT_CREATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const userInfoLocal = localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo'))
+      : null;
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: userInfo ? userInfo.accessToken : userInfoLocal.accessToken,
+        flaskDappId: userInfo && userInfo.user.id,
+      },
+    };
+
+    const { data } = await daoApi.post('/checkpoints', dto, config);
+    dispatch({
+      type: CHECKPOINT_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CHECKPOINT_CREATE_FAIL,
+      payload: e.response && e.response.status ? e.response.data.message : e.message,
+    });
+  }
+};
+
+export const fetchCheckpoints = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CHECKPOINT_LIST_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const userInfoLocal = localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo'))
+      : null;
+
+    const token = userInfo ? userInfo.accessToken : userInfoLocal?.accessToken;
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: token,
+        flaskDappId: userInfo && userInfo.user && userInfo.user.id,
+      },
+    };
+
+    const { data } = await daoApi.get('/checkpoints', config);
+    dispatch({
+      type: CHECKPOINT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CHECKPOINT_LIST_FAIL,
+      payload:
+        e.response && e.response.data && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    });
+  }
+};
+export const resetCreateCheckpoint = () => (dispatch) => {
+  dispatch({ type: CHECKPOINT_CREATE_RESET });
 };

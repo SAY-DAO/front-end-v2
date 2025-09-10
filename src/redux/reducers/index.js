@@ -13,6 +13,7 @@ import {
   ipLocationReducer,
   userUpdateReducer,
   userCampaignsReducer,
+  userCheckPointsReducer,
 } from './userReducer';
 import {
   childRandomSearchReducer,
@@ -71,6 +72,7 @@ export default combineReducers({
   userVerifyInfo: userVerifyReducer,
   userVerifyCode: codeVerifyReducer,
   userLogin: userLoginReducer,
+  userCheckPoints: userCheckPointsReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userForgotPass: userForgotPasswordReducer,

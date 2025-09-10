@@ -6,8 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { Link, useNavigate } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 import FiatWalletModal from '../../components/modals/FiatWalletModal';
+import CheckpointForm from '../../components/profile/CheckpointForm';
+import CheckpointLog from '../../components/profile/CheckpointLog';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -15,6 +19,7 @@ const Profile = () => {
   const { t } = useTranslation();
 
   const [modal, setModal] = useState(false);
+  const [openCheckPoint, setOpenCheckPoint] = useState(false);
 
   const userDetails = useSelector((state) => state.userDetails);
   const { theUser, error: errorUserDetails } = userDetails;
@@ -27,6 +32,9 @@ const Profile = () => {
     }
   }, [errorUserDetails, dispatch]);
 
+  const handleOnClick = () => {
+    setOpenCheckPoint(true);
+  };
   return (
     <Grid container direction="column" alignItems="center" maxWidth>
       {theUser ? (
@@ -120,44 +128,61 @@ const Profile = () => {
           </Grid>
           <Box
             sx={{
-              p: 4,
+              p: 1,
               marginBottom: 2,
               width: '100%',
               bgcolor: 'white',
               textAlign: 'center',
             }}
           >
-            <Grid container direction="row">
-              <Grid item xs={6}>
-                <Typography variant="subtitle2">{t('profile.credit')}</Typography>
-                <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
-                  {theUser.credit.toLocaleString() + t('currency.toman')}
-                </Typography>
+            <Grid container direction="column" item xs={12}>
+              <Grid item xs={12} container direction="row">
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2">{t('profile.credit')}</Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
+                    {theUser.credit.toLocaleString() + t('currency.toman')}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <Typography variant="subtitle2">{t('profile.doneNeeds')}</Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
+                    {theUser.done_needs_count}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="subtitle2">{t('profile.doneNeeds')}</Typography>
-                <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
-                  {theUser.done_needs_count}
+              <Grid item>
+                <Typography variant="body1">
+                  {t('profile.creditModal.thumbnail')}
+                  <IconButton color="primary" onClick={() => setModal(true)}>
+                    <InfoOutlinedIcon />
+                  </IconButton>
                 </Typography>
               </Grid>
             </Grid>
           </Box>
-          <Box
-            sx={{
-              p: 2,
-              marginBottom: 2,
-              width: '100%',
-            }}
-          >
-            <Grid>
-              <Typography variant="body1">
-                {t('profile.creditModal.thumbnail')}
-                <IconButton color="primary" onClick={() => setModal(true)}>
-                  <InfoOutlinedIcon />
-                </IconButton>
-              </Typography>
-            </Grid>
-          </Box>
+          {theUser && theUser.isBuilder && (
+            <>
+              {openCheckPoint ? (
+                <Grid container direction="column" item xs={12} sx={{ mb: 15 }}>
+                  <CheckpointForm setOpenCheckPoint={setOpenCheckPoint} />
+                </Grid>
+              ) : (
+                <>
+                  <CheckpointLog />
+                  <Fab
+                    sx={{ position: 'absolute', bottom: 70, left: 16, zIndex: 0 }}
+                    color="primary"
+                    size="small"
+                    aria-label="add"
+                    onClick={handleOnClick}
+                  >
+                    <AddIcon />
+                  </Fab>
+                </>
+              )}
+            </>
+          )}
 
           {modal && <FiatWalletModal modal={modal} setModal={setModal} />}
         </>

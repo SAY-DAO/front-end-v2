@@ -34,6 +34,8 @@ if (env === 'production') {
   envApiUrl3 = `http://${process.env.REACT_APP_DOMAIN_LOCAL}/api/v3`;
 }
 
+console.log(env);
+
 if (env === 'production') {
   console.log('initiating Sentry ...');
   Sentry.init({

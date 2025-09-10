@@ -55,6 +55,13 @@ import {
   USER_MONTHLY_CAMPAIGN_REQUEST,
   USER_MONTHLY_CAMPAIGN_SUCCESS,
   USER_MONTHLY_CAMPAIGN_FAIL,
+  CHECKPOINT_CREATE_REQUEST,
+  CHECKPOINT_CREATE_SUCCESS,
+  CHECKPOINT_CREATE_FAIL,
+  CHECKPOINT_CREATE_RESET,
+  CHECKPOINT_LIST_REQUEST,
+  CHECKPOINT_LIST_SUCCESS,
+  CHECKPOINT_LIST_FAIL,
 } from '../constants/main/userConstants';
 
 export const userStepReducer = (state = { step: 'EntryForm' }, action) => {
@@ -265,6 +272,27 @@ export const userCampaignsReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_NEWS_LETTER_CAMPAIGN_UPDATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userCheckPointsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CHECKPOINT_CREATE_REQUEST:
+      return { ...state, loading: true };
+    case CHECKPOINT_CREATE_SUCCESS:
+      return { loading: false, success: true, cp: action.payload };
+    case CHECKPOINT_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+    case CHECKPOINT_CREATE_RESET:
+      return {};
+    case CHECKPOINT_LIST_REQUEST:
+      return { ...state, loading: true, error: null };
+    case CHECKPOINT_LIST_SUCCESS:
+      return { ...state, loading: false, items: action.payload || [] };
+    case CHECKPOINT_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload || 'Error' };
     default:
       return state;
   }
