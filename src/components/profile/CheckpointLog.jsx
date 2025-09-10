@@ -120,7 +120,8 @@ export default function CheckpointLog() {
   const { t } = useTranslation();
 
   const checkpointList = useSelector((state) => state.userCheckPoints || {});
-  const { items = [], loading, error } = checkpointList;
+  const { checkpoints = [], loading, error } = checkpointList;
+console.log(checkpoints);
 
   const [openId, setOpenId] = useState(null);
 
@@ -182,15 +183,15 @@ export default function CheckpointLog() {
           mt: 1,
         }}
       >
-        {!loading && !error && items.data && items.data.length === 0 && (
+        {!loading && !error && checkpoints && checkpoints.length === 0 && (
           <Box sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="body2">{t('checkpoint.noCheckpoints')}</Typography>
           </Box>
         )}
 
         <List disablePadding>
-          {items.data &&
-            items.data.map((it) => {
+          {checkpoints &&
+            checkpoints.map((it) => {
               const id = it.id ?? it._id ?? JSON.stringify(it);
 
               // localized type label (fall back to raw type)

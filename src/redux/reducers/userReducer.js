@@ -290,7 +290,7 @@ export const userCheckPointsReducer = (state = {}, action) => {
     case CHECKPOINT_LIST_REQUEST:
       return { ...state, loading: true, error: null };
     case CHECKPOINT_LIST_SUCCESS:
-      return { ...state, loading: false, items: action.payload || [] };
+      return { ...state, loading: false, checkpoints: action.payload || [] };
     case CHECKPOINT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload || 'Error' };
     default:

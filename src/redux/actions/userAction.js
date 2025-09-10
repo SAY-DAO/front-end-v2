@@ -625,7 +625,7 @@ export const fetchCheckpoints = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await daoApi.get('/checkpoints', config);
+    const { data } = await daoApi.get('/analytic/public/checkpoints', config);
     dispatch({
       type: CHECKPOINT_LIST_SUCCESS,
       payload: data,
