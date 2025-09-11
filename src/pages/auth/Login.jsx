@@ -80,10 +80,14 @@ const Login = () => {
     if (successLogin) {
       dispatch(fetchUserDetails());
     }
+
+  }, [successLogin]);
+
+   useEffect(() => {
     if (errorLogin || errorUserDetails) {
       dispatch({ type: USER_DETAILS_RESET });
     }
-  }, [successLogin, errorUserDetails, errorLogin]);
+  }, [errorUserDetails, errorLogin]);
 
   useEffect(() => {
     if ((successLogin || userInfo) && successUserDetails) {
