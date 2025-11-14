@@ -48,7 +48,7 @@ export default function AppBarBottom() {
   useEffect(() => {
     // navigate('/main/offlineHome'); // use this when something wrong with server
     dispatch(fetchUserDetails());
-  }, [value]);
+  }, []);
 
   // we get the home date ahead to get our children's ids / for users with no children
   useEffect(() => {
