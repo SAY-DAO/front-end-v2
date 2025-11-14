@@ -12,11 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Back from '../../components/Back';
 import Message from '../../components/Message';
 import { fetchUserDetails, login } from '../../redux/actions/userAction';
-import {
-  USER_DETAILS_RESET,
-  USER_LOGOUT,
-  USER_REGISTER_RESET,
-} from '../../redux/constants/main/userConstants';
+import { USER_DETAILS_RESET, USER_REGISTER_RESET } from '../../redux/constants/main/userConstants';
 
 const useStyles = makeStyles({
   root: {
@@ -105,11 +101,6 @@ const Login = () => {
   // Handle input change for userName
   const handleChangeUserName = (event) => {
     setUserName(event.target.value);
-    // Only reset details and logout on significant events, like login attempt
-    if (userName) {
-      dispatch({ type: USER_LOGOUT });
-      dispatch({ type: USER_DETAILS_RESET });
-    }
   };
 
   // Handle input change for password
