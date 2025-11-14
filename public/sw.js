@@ -1,63 +1,121 @@
-const staticCacheName = 'SAY-DAPP-v2.3.0';
-const urlsToCache = [];
+// service-worker.js
 
-const self = this;
+const STATIC_CACHE = 'SAY-DAPP-static-v2.3.1';
+const RUNTIME_CACHE = 'SAY-DAPP-runtime-v2.3.1';
 
-// install Service Worker and save cache to Application - Cache
+// list critical files your app needs to boot (adjust at build time)
+const PRECACHE_URLS = [
+  '/', // index.html (your build should ensure index.html is available)
+  '/index.html',
+  '/offline.html', // simple offline page
+  // add other static assets that are safe to precache, e.g. '/css/main.css', '/images/logo.png'
+];
+
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing service worker');
-  self.skipWaiting(); // to take over old service worker without waiting for session to be finishes e,g: opening new tab
+  console.log('[SW] Install');
+  self.skipWaiting(); // activate new SW immediately
 
+  event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(PRECACHE_URLS)));
+});
+
+self.addEventListener('activate', (event) => {
+  console.log('[SW] Activate');
+  // remove old caches
+  const currentCaches = [STATIC_CACHE, RUNTIME_CACHE];
   event.waitUntil(
     caches
-      .open(staticCacheName)
-      .then((cache) => {
-        console.log('Service Worker: Caching');
-        cache.addAll(urlsToCache);
-      })
-      .catch((e) => console.log({ e })),
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.map((key) => {
+            if (!currentCaches.includes(key)) {
+              console.log('[SW] Deleting old cache:', key);
+              return caches.delete(key);
+            }
+            return null;
+          }),
+        ),
+      )
+      .then(() => self.clients.claim()), // take control of clients immediately
   );
 });
 
-// activate
-self.addEventListener('activate', (event) => {  
-  console.log('Service Worker: Activating new service worker...');
-  const cacheAllowlist = [staticCacheName];
+// Utility helpers
+const isNavigationRequest = (req) => req.mode === 'navigate';
+const isGET = (req) => req.method === 'GET';
+const isSameOriginAPI = (url) =>
+  url.origin === self.location.origin && url.pathname.startsWith('/api');
+const acceptsJSON = (req) => {
+  const header = req.headers.get('accept') || '';
+  return header.includes('application/json');
+};
 
-  // remove unwanted caches
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheAllowlist.indexOf(cacheName) === -1) {
-            console.log('Service Worker: Deleting old service worker...');
-            return caches.delete(cacheName);
-          }
-        }),
-      ),
-    ),
-  );
-});
-
-// fetch
 self.addEventListener('fetch', (event) => {
-  // console.log('Service Worker: Fetching ', event.request.url);
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        if (response) {
-          console.log('Found ', event.request.url, ' in cache');
-          return response;
-        }
-        // console.log('Network request for ', event.request.url);
-        return fetch(event.request);
+  const { request } = event;
+  const url = new URL(request.url);
 
-        // TODO 4 - Add fetched files to the cache
-      })
-      .catch((error) => {
-        console.log(error);
-        // TODO 6 - Respond with custom offline page
-      }),
+  // Do not handle non-GET requests inside the cache layer; let them go to network
+  if (!isGET(request)) {
+    return event.respondWith(fetch(request).catch(() => new Response(null, { status: 504 })));
+  }
+
+  // 1) Navigation requests (SPA routes) -> network-first, fallback to precached index/offline
+  if (isNavigationRequest(request)) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResp) => {
+          // optionally update index cache for offline fallback
+          caches.open(STATIC_CACHE).then((cache) => {
+            // clone and cache if it's an OK response
+            if (networkResp && networkResp.ok) cache.put('/index.html', networkResp.clone());
+          });
+          return networkResp;
+        })
+        .catch(() =>
+          // offline fallback: index.html if present, otherwise offline.html
+          caches.match('/index.html').then((r) => r || caches.match('/offline.html')),
+        ),
+    );
+    return;
+  }
+
+  // 2) API / JSON requests (same-origin or Accept: application/json) -> network-first, fallback to cache
+  if (isSameOriginAPI(url) || acceptsJSON(request)) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResp) => {
+          // don't cache responses for API by default, but you could cache GET API responses selectively:
+          // if (networkResp && networkResp.ok) { caches.open(RUNTIME_CACHE).then(cache => cache.put(request, networkResp.clone())); }
+          return networkResp;
+        })
+        .catch(() => caches.match(request)), // return cached API response if any
+    );
+    return;
+  }
+
+  // 3) Static assets (images, CSS, JS) -> cache-first, then network and cache new responses
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) {
+        return cached;
+      }
+      return fetch(request)
+        .then((networkResp) => {
+          // only cache same-origin, basic responses (avoid opaque cross-origin)
+          if (networkResp && networkResp.ok && networkResp.type === 'basic') {
+            const copy = networkResp.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
+          }
+          return networkResp;
+        })
+        .catch(() => {
+          // optional: fallback for images to a placeholder if you cached one
+          if (request.destination === 'image') {
+            return caches.match('/images/fallback.png'); // ensure you precached this if used
+          }
+          // otherwise nothing else to do
+          return new Response(null, { status: 503, statusText: 'Offline' });
+        });
+    }),
   );
 });
