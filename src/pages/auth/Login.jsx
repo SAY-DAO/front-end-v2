@@ -35,8 +35,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const redirect = window.location.search
-    ? // eslint-disable-next-line no-restricted-globals
-      window.location.search.split('redirect=')[1]
+    ? window.location.search.split('redirect=')[1]
     : 'main/home';
 
   const [userName, setUserName] = useState('');
@@ -45,62 +44,18 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messageInput, setMessageInput] = useState('');
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, loading: loadingLogin, error: errorLogin, success: successLogin } = userLogin;
-
-  const userRegister = useSelector((state) => state.userRegister);
-  const { success: successRegister } = userRegister;
-
-  const userDetails = useSelector((state) => state.userDetails);
+  const {
+    userInfo,
+    loading: loadingLogin,
+    error: errorLogin,
+    success: successLogin,
+  } = useSelector((state) => state.userLogin);
+  const { success: successRegister } = useSelector((state) => state.userRegister);
   const {
     loading: loadingUserDetails,
     success: successUserDetails,
     error: errorUserDetails,
-  } = userDetails;
-
-  // loading button
-  useEffect(() => {
-    if (loadingLogin || loadingUserDetails) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [loadingLogin, loadingUserDetails]);
-
-  // disable button
-  useEffect(() => {
-    if (!userName || !password) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
-  }, [userName, password, errorLogin, successLogin]);
-
-  useEffect(() => {
-    if (successLogin) {
-      dispatch(fetchUserDetails());
-    }
-
-  }, [successLogin]);
-
-   useEffect(() => {
-    if (errorLogin || errorUserDetails) {
-      dispatch({ type: USER_DETAILS_RESET });
-    }
-  }, [errorUserDetails, errorLogin]);
-
-  useEffect(() => {
-    if ((successLogin || userInfo) && successUserDetails) {
-      navigate(`/${redirect}`);
-    }
-  }, [redirect, successLogin, successUserDetails]);
-
-  // Message input for some status error (422)
-  useEffect(() => {
-    if (successRegister) {
-      dispatch({ type: USER_REGISTER_RESET });
-    }
-  }, [userName]);
+  } = useSelector((state) => state.userDetails);
 
   // Message input for some status error (422)
   useEffect(() => {
@@ -109,27 +64,68 @@ const Login = () => {
     }
   }, [userName]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const theUserName = userName && userName.startsWith(0) ? `+98${userName.slice(1)}` : userName;
-    dispatch(login(theUserName, password));
-  };
+  // Update loading state for button
+  useEffect(() => {
+    setIsLoading(loadingLogin || loadingUserDetails);
+  }, [loadingLogin, loadingUserDetails]);
 
+  // Disable button based on userName and password
+  useEffect(() => {
+    setIsDisabled(!userName || !password);
+  }, [userName, password]);
+
+  // Handle login success
+  useEffect(() => {
+    if (successLogin) {
+      dispatch(fetchUserDetails());
+    }
+  }, [successLogin, dispatch]);
+
+  // Reset user details error or logout on errorLogin or errorUserDetails
+  useEffect(() => {
+    if (errorLogin || errorUserDetails) {
+      dispatch({ type: USER_DETAILS_RESET });
+    }
+  }, [errorLogin, errorUserDetails, dispatch]);
+
+  // Navigate after successful login and user details fetching
+  useEffect(() => {
+    if ((successLogin || userInfo) && successUserDetails) {
+      navigate(`/${redirect}`);
+    }
+  }, [successLogin, successUserDetails, userInfo, navigate, redirect]);
+
+  // Reset registration state on userName change
+  useEffect(() => {
+    if (successRegister) {
+      dispatch({ type: USER_REGISTER_RESET });
+    }
+  }, [successRegister, dispatch]);
+
+  // Handle input change for userName
   const handleChangeUserName = (event) => {
     setUserName(event.target.value);
-    // clean error
-    dispatch({ type: USER_LOGOUT });
-    dispatch({ type: USER_DETAILS_RESET });
+    // Only reset details and logout on significant events, like login attempt
+    if (userName) {
+      dispatch({ type: USER_LOGOUT });
+      dispatch({ type: USER_DETAILS_RESET });
+    }
   };
 
+  // Handle input change for password
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
-    // clean error
-    dispatch({ type: USER_LOGOUT });
-    dispatch({ type: USER_DETAILS_RESET });
+  };
+
+  // Submit login form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formattedUserName = userName.startsWith(0) ? `+98${userName.slice(1)}` : userName;
+    dispatch(login(formattedUserName, password));
   };
 
   const classes = useStyles();
+
   return (
     <Grid
       container
