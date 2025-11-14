@@ -42,9 +42,11 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: '',
+      titleFa: '',
+      titleEn: '',
       url: '',
-      description: '',
+      descriptionFa: '',
+      descriptionEn: '',
       type: '',
       checkPointDate: null,
     },
@@ -70,10 +72,10 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
       data.checkPointDate instanceof Date ? data.checkPointDate : new Date(data.checkPointDate);
     const isoDateNoTime = moment(dateObj).format('YYYY-MM-DD');
     const dto = {
-      title: data.title,
+      title: { fa: data.titleFa, en: data.titleEn },
       url: data.url || undefined,
-      description: data.description || undefined,
-      type: data.type || undefined,
+      description: { fa: data.descriptionFa, en: data.descriptionEn },
+      type: data.type,
       checkPointDate: isoDateNoTime,
     };
     dispatch(createCheckpoint(dto));
@@ -113,16 +115,16 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
           {/* Title */}
           <Grid item xs={12} md={6}>
             <Controller
-              name="title"
+              name="titleFa"
               control={control}
               rules={{
-                required: t('checkpoint.titleRequired'),
+                required: t('checkpoint.titleRequired.fa'),
                 maxLength: { value: 50, message: t('checkpoint.maxChars', { count: 50 }) },
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label={t('checkpoint.titleLabel')}
+                  label={t('checkpoint.titleLabel.fa')}
                   required
                   error={!!errors.title}
                   helperText={errors.title?.message || t('checkpoint.maxCharsHint', { count: 50 })}
@@ -132,40 +134,40 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
               )}
             />
           </Grid>
-
-          {/* URL */}
           <Grid item xs={12} md={6}>
             <Controller
-              name="url"
+              name="titleEn"
               control={control}
               rules={{
-                maxLength: { value: 500, message: t('checkpoint.maxUrlChars', { count: 500 }) },
+                required: t('checkpoint.titleRequired.en'),
+                maxLength: { value: 50, message: t('checkpoint.maxChars', { count: 50 }) },
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label={t('checkpoint.urlLabel')}
-                  error={!!errors.url}
-                  helperText={errors.url?.message || t('checkpoint.urlHelper')}
+                  label={t('checkpoint.titleLabel.en')}
+                  required
+                  error={!!errors.title}
+                  helperText={errors.title?.message || t('checkpoint.maxCharsHint', { count: 50 })}
+                  inputProps={{ maxLength: 50 }}
                   fullWidth
                 />
               )}
             />
           </Grid>
-
           {/* Description */}
           <Grid item xs={12}>
             <Controller
-              name="description"
+              name="descriptionFa"
               control={control}
               rules={{
                 required: t('checkpoint.descriptionRequired'),
-                maxLength: { value: 150, message: t('checkpoint.maxChars', { count: 150 }) },
+                maxLength: { value: 450, message: t('checkpoint.maxChars', { count: 450 }) },
               }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label={t('checkpoint.descriptionLabel')}
+                  label={t('checkpoint.descriptionLabel.fa')}
                   multiline
                   minRows={3}
                   maxRows={8}
@@ -173,7 +175,7 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
                   required
                   error={!!errors.description}
                   helperText={
-                    errors.description?.message || t('checkpoint.maxCharsHint', { count: 150 })
+                    errors.description?.message || t('checkpoint.maxCharsHint', { count: 450 })
                   }
                   value={field.value ?? ''}
                   onChange={(e) => field.onChange(e.target.value)}
@@ -197,7 +199,68 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
               )}
             />
           </Grid>
-
+          <Grid item xs={12}>
+            <Controller
+              name="descriptionEn"
+              control={control}
+              rules={{
+                required: t('checkpoint.descriptionRequired'),
+                maxLength: { value: 450, message: t('checkpoint.maxChars', { count: 450 }) },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={t('checkpoint.descriptionLabel.en')}
+                  multiline
+                  minRows={3}
+                  maxRows={8}
+                  fullWidth
+                  required
+                  error={!!errors.description}
+                  helperText={
+                    errors.description?.message || t('checkpoint.maxCharsHint', { count: 450 })
+                  }
+                  value={field.value ?? ''}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  /* force a minimum visible height so external CSS can't collapse it */
+                  inputProps={{
+                    style: { maxHeight: 72, lineHeight: '1.5', resize: 'vertical' },
+                  }}
+                  sx={{
+                    /* target the textarea input specifically and make sure it wraps & preserves newlines */
+                    '& .MuiInputBase-input': {
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
+                      overflowWrap: 'anywhere',
+                    },
+                    /* defensive: if something else sets a fixed height on the input root, override it */
+                    '& .MuiInputBase-root': {
+                      minHeight: 72,
+                    },
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          {/* URL */}
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="url"
+              control={control}
+              rules={{
+                maxLength: { value: 500, message: t('checkpoint.maxUrlChars', { count: 500 }) },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={t('checkpoint.urlLabel')}
+                  error={!!errors.url}
+                  helperText={errors.url?.message || t('checkpoint.urlHelper')}
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
           {/* Type selector (required) */}
           <Grid item xs={12} md={6}>
             <FormControl fullWidth required error={!!errors.type}>

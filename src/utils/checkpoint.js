@@ -9,44 +9,35 @@ export const CheckPointType = {
   PERFORMANCE: 'performance',
 
   ROADMAP: 'roadmap',
-  PRODUCT_SPEC: 'product-spec',
-  USER_RESEARCH: 'user-research',
+  USER_RESEARCH: 'research',
   TESTING: 'testing',
 
   DESIGN: 'design',
-  UX: 'ux',
-  BRANDING: 'branding',
-  ASSET_PRODUCTION: 'asset-production',
-
   CONTENT: 'content',
-  COPYWRITING: 'copywriting',
-  SEO: 'seo',
-  SOCIAL: 'social',
-  EMAIL: 'email',
-  PAID_ADS: 'paid-ads',
-  CAMPAIGN: 'campaign',
-  EXPERIMENT: 'experiment',
+  MARKETING_CAMPAIGN: 'campaign',
+  GROWTH_EXPERIMENT: 'experiment',
 
-  SUPPORT: 'support',
+  CUSTOMER_SUPPORT: 'support',
   ONBOARDING: 'onboarding',
-  SALES: 'sales',
-  PARTNERSHIPS: 'partnerships',
-  INCIDENT: 'incident',
+  PARTNERSHIPS: 'partners',
 
-  MONITORING: 'monitoring',
+  INCIDENT_RESPONSE: 'incident',
+  MONITORING: 'monitor',
   BACKUP: 'backup',
   SECURITY: 'security',
-  CONFIG: 'config',
+  CONFIG_CHANGE: 'config',
   AUTOMATION: 'automation',
+
   LEGAL: 'legal',
   FINANCE: 'finance',
   HR: 'hr',
   MEETING: 'meeting',
   TRAINING: 'training',
 
-  // New
-  CHILD_JOINED: 'child-joined',
-  SEASONAL_REPORT: 'seasonal-report',
+  CHILD_JOINED: 'registered',
+  CHILD_LEFT: 'left',
+  NGO_JOINED: 'joined',
+  MONTHLY_REPORT: 'report',
 };
 
 export const CheckPointTypeLabel = {
@@ -60,35 +51,25 @@ export const CheckPointTypeLabel = {
   [CheckPointType.PERFORMANCE]: 'Perf',
 
   [CheckPointType.ROADMAP]: 'Roadmap',
-  [CheckPointType.PRODUCT_SPEC]: 'Spec',
   [CheckPointType.USER_RESEARCH]: 'Research',
   [CheckPointType.TESTING]: 'Testing',
 
   [CheckPointType.DESIGN]: 'Design',
-  [CheckPointType.UX]: 'UX',
-  [CheckPointType.BRANDING]: 'Brand',
-  [CheckPointType.ASSET_PRODUCTION]: 'Assets',
-
   [CheckPointType.CONTENT]: 'Content',
-  [CheckPointType.COPYWRITING]: 'Copy',
-  [CheckPointType.SEO]: 'SEO',
-  [CheckPointType.SOCIAL]: 'Social',
-  [CheckPointType.EMAIL]: 'Email',
-  [CheckPointType.PAID_ADS]: 'Ads',
-  [CheckPointType.CAMPAIGN]: 'Campaign',
-  [CheckPointType.EXPERIMENT]: 'Experiment',
+  [CheckPointType.MARKETING_CAMPAIGN]: 'Campaign',
+  [CheckPointType.GROWTH_EXPERIMENT]: 'Experiment',
 
-  [CheckPointType.SUPPORT]: 'Support',
+  [CheckPointType.CUSTOMER_SUPPORT]: 'Support',
   [CheckPointType.ONBOARDING]: 'Onboarding',
-  [CheckPointType.SALES]: 'Sales',
   [CheckPointType.PARTNERSHIPS]: 'Partners',
-  [CheckPointType.INCIDENT]: 'Incident',
 
+  [CheckPointType.INCIDENT_RESPONSE]: 'Incident',
   [CheckPointType.MONITORING]: 'Monitor',
   [CheckPointType.BACKUP]: 'Backup',
   [CheckPointType.SECURITY]: 'Security',
-  [CheckPointType.CONFIG]: 'Config',
+  [CheckPointType.CONFIG_CHANGE]: 'Config',
   [CheckPointType.AUTOMATION]: 'Automation',
+
   [CheckPointType.LEGAL]: 'Legal',
   [CheckPointType.FINANCE]: 'Finance',
   [CheckPointType.HR]: 'HR',
@@ -96,5 +77,7 @@ export const CheckPointTypeLabel = {
   [CheckPointType.TRAINING]: 'Training',
 
   [CheckPointType.CHILD_JOINED]: 'Joined',
-  [CheckPointType.SEASONAL_REPORT]: 'Report',
+  [CheckPointType.CHILD_LEFT]: 'Left',
+  [CheckPointType.NGO_JOINED]: 'Joined (NGO)',
+  [CheckPointType.MONTHLY_REPORT]: 'Report',
 };

@@ -121,7 +121,6 @@ export default function CheckpointLog() {
 
   const checkpointList = useSelector((state) => state.userCheckPoints || {});
   const { checkpoints = [], loading, error } = checkpointList;
-console.log(checkpoints);
 
   const [openId, setOpenId] = useState(null);
 
@@ -224,7 +223,7 @@ console.log(checkpoints);
                           noWrap
                           component="span"
                         >
-                          {it.title || t('checkpoint.untitled')}
+                          {it.title.fa || t('checkpoint.untitled')}
                         </Typography>
                       </Grid>
 
@@ -300,7 +299,7 @@ console.log(checkpoints);
                             variant="body2"
                             sx={{ whiteSpace: 'pre-wrap', mb: it.url ? 1 : 0 }}
                           >
-                            {it.description}
+                            {it.description.fa}
                           </Typography>
                         )}
 
