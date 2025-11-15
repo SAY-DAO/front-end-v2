@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-bitwise */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -115,7 +116,7 @@ function getChipSxFromBase(baseHex, opts = {}) {
   };
 }
 
-export default function CheckpointLog() {
+export default function CheckpointLogs() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -144,14 +145,14 @@ export default function CheckpointLog() {
   return (
     <Box
       sx={{
-        mb: 10,
-        textAlign: 'center',
+        // mb: 10,
+        // textAlign: 'center',
         width: '100%',
         p: 2,
         color: (theme) => theme.palette.text.primary,
       }}
     >
-      <Typography variant="h6" component="div" sx={{ fontWeight: 500, mb: 1 }}>
+      <Typography variant="subtitle1" component="div" sx={{ fontWeight: 600, letterSpacing: 0.2 }}>
         {t('checkpoint.publicTitle')}
       </Typography>
 
@@ -228,7 +229,7 @@ export default function CheckpointLog() {
                       </Grid>
 
                       {/* Type chip (keeps natural width) */}
-                      <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
+                      {/* <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
                         {typeLabel ? (
                           <Chip
                             variant="outlined"
@@ -244,7 +245,7 @@ export default function CheckpointLog() {
                             {it.type || ''}
                           </Typography>
                         )}
-                      </Grid>
+                      </Grid> */}
 
                       {/* Date + actions: pushed to the far right, stays on one line */}
                       <Grid

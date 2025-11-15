@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { USER_RESET_PASSWORD_RESET } from '../../redux/constants/main/userConstants';
 import FiatWalletModal from '../../components/modals/FiatWalletModal';
 import CheckpointForm from '../../components/profile/CheckpointForm';
-import CheckpointLog from '../../components/profile/CheckpointLog';
+import CheckpointLogs from '../../components/profile/CheckpointLogs';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -137,11 +137,18 @@ const Profile = () => {
           >
             <Grid container direction="column" item xs={12}>
               <Grid item xs={12} container direction="row">
-                <Grid item xs={6}>
-                  <Typography variant="subtitle2">{t('profile.credit')}</Typography>
-                  <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
-                    {theUser.credit.toLocaleString() + t('currency.toman')}
-                  </Typography>
+                <Grid container item xs={6} justifyContent="center">
+                  <Grid item>
+                    <Typography variant="subtitle2">{t('profile.credit')}</Typography>
+                    <Typography variant="subtitle1" sx={{ color: '#f05a31' }}>
+                      {theUser.credit.toLocaleString() + t('currency.toman')}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <IconButton color="primary" sx={{ p: 0, pl: 1 }} onClick={() => setModal(true)}>
+                      <InfoOutlinedIcon />
+                    </IconButton>
+                  </Grid>
                 </Grid>
 
                 <Grid item xs={6}>
@@ -151,17 +158,9 @@ const Profile = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid item>
-                <Typography variant="body1">
-                  {t('profile.creditModal.thumbnail')}
-                  <IconButton color="primary" onClick={() => setModal(true)}>
-                    <InfoOutlinedIcon />
-                  </IconButton>
-                </Typography>
-              </Grid>
             </Grid>
           </Box>
-          {theUser && theUser.isBuilder && (
+          {theUser && (
             <>
               {openCheckPoint ? (
                 <Grid container direction="column" item xs={12} sx={{ mb: 15 }}>
@@ -169,16 +168,18 @@ const Profile = () => {
                 </Grid>
               ) : (
                 <>
-                  <CheckpointLog />
-                  <Fab
-                    sx={{ position: 'absolute', bottom: 70, left: 16, zIndex: 0 }}
-                    color="primary"
-                    size="small"
-                    aria-label="add"
-                    onClick={handleOnClick}
-                  >
-                    <AddIcon />
-                  </Fab>
+                  <CheckpointLogs />
+                  {theUser.isBuilder && (
+                    <Fab
+                      sx={{ position: 'absolute', bottom: 70, left: 16, zIndex: 0 }}
+                      color="primary"
+                      size="small"
+                      aria-label="add"
+                      onClick={handleOnClick}
+                    >
+                      <AddIcon />
+                    </Fab>
+                  )}
                 </>
               )}
             </>

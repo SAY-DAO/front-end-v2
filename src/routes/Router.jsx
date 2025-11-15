@@ -26,7 +26,7 @@ const Home = Loadable(lazy(() => import('../pages/main/home')));
 const ProfileEdit = Loadable(lazy(() => import('../components/profile/ProfileEdit')));
 const ProfileUpload = Loadable(lazy(() => import('../components/profile/ProfileUpload')));
 const Report = Loadable(lazy(() => import('../pages/report')));
-const DAO = Loadable(lazy(() => import('../pages/main/dao/dao')));
+// const DAO = Loadable(lazy(() => import('../pages/main/dao/dao')));
 const DaoNeedSignature = Loadable(lazy(() => import('../pages/main/dao/daoNeedSignature')));
 
 const Router = [
@@ -57,7 +57,8 @@ const Router = [
       { path: '/main/search', element: <SearchChild /> },
       { path: '/main/profile/edit', element: <ProfileEdit /> },
       { path: '/main/profile/upload', element: <ProfileUpload /> },
-      { path: '/main/dao/portal', element: <DAO /> },
+      { path: '/main/dao/portal', element: <OfflineHome content="در حال تکمیل یکپارچه‌سازی قابلیت‌های بلاک‌چین هستیم" /> },
+      // { path: '/main/dao/portal', element: <DAO /> },
       { path: '/main/dao/tabs/signature', element: <DaoTabs tabSelected={0} /> },
       { path: '/main/dao/tabs/mint', element: <DaoTabs tabSelected={1} /> },
       { path: '/main/dao/tabs/proposals', element: <DaoTabs tabSelected={2} /> },
