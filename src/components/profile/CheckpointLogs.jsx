@@ -46,7 +46,7 @@ export default function CheckpointLogs() {
   return (
     <Box
       sx={{
-        // mb: 10,
+        mb: 10,
         // textAlign: 'center',
         width: '100%',
         p: 2,
