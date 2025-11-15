@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import './service-worker/sw-cleanup'; // one-time cleanup (runs once and reloads)
 import { CircularProgress, Grid } from '@mui/material';
 import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
@@ -7,7 +8,6 @@ import App from './App';
 import store from './redux/store';
 import './i18n';
 import './resources/styles/css/style.css';
-import './service-worker/sw-cleanup'; // one-time cleanup (runs once and reloads)
 import * as serviceWorkerRegistration from './service-worker/sw-register.js'; // register() function
 
 const rootElement = document.getElementById('root');
@@ -29,8 +29,5 @@ root.render(
   </Provider>,
 );
 
-// If you want to enable client cache, register instead.
-// if (process.env.REACT_APP_NODE_ENV === 'production') {
 // call the register helper (this calls navigator.serviceWorker.register and handles skipWaiting)
 serviceWorkerRegistration.register();
-// }
