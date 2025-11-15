@@ -2,7 +2,6 @@ import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import * as Sentry from '@sentry/react';
 import contents from '../inputsValidation/Contents';
 
@@ -119,12 +118,4 @@ Message.propTypes = {
   variant: PropTypes.string.isRequired,
   children: PropTypes.string,
   severity: PropTypes.string.isRequired,
-};
-
-Message.defaultProps = {
-  icon: <CheckCircleOutlineIcon fontSize="inherit" />,
-  input: '',
-  frontError: '',
-  backError: '',
-  children: '',
 };
