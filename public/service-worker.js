@@ -1,25 +1,36 @@
-// service-worker.js (fixed)
+/* eslint-disable no-restricted-globals */
+/* ================================================================
+   3) service-worker.js (fixed robust SW)
+   Versioned cache names are important: bump them on each deploy to ensure
+   clients fetch the new worker and assets.
 
-// Cache names
-const STATIC_CACHE = 'SAY-DAPP-static-v2.3.1';
-const RUNTIME_CACHE = 'SAY-DAPP-runtime-v2.3.1';
+   IMPORTANT: put this file at /service-worker.js (or adjust registration scope)
+   ================================================================ */
 
-// Precache - adjust at build time
+// service-worker.js
+const STATIC_CACHE = 'SAY-DAPP-static-v2.3.2'; // bump this version when you deploy
+const RUNTIME_CACHE = 'SAY-DAPP-runtime-v2.3.2';
+
 const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/offline.html',
-  // '/images/fallback.png'  // uncomment if you use an image fallback and precache it
+  // '/images/fallback.png',
 ];
 
-// Install
 self.addEventListener('install', (event) => {
   console.log('[SW] Install');
   self.skipWaiting();
-  event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(PRECACHE_URLS)));
+  event.waitUntil(
+    caches
+      .open(STATIC_CACHE)
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .catch((e) => {
+        console.error('[SW] Precache failed', e);
+      }),
+  );
 });
 
-// Activate - cleanup old caches
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activate');
   const currentCaches = [STATIC_CACHE, RUNTIME_CACHE];
@@ -39,6 +50,14 @@ self.addEventListener('activate', (event) => {
       )
       .then(() => self.clients.claim()),
   );
+});
+
+// Message listener to support SKIP_WAITING
+self.addEventListener('message', (evt) => {
+  if (!evt.data) return;
+  if (evt.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Helpers
@@ -63,12 +82,17 @@ const htmlOfflineResponse = (message = 'Offline') =>
     headers: { 'Content-Type': 'text/html' },
   });
 
-// Main fetch handler - wrapped as an async IIFE so respondWith always gets a Promise<Response>
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Non-GET requests: let network handle; on failure return a clear Response
+  // Let the browser perform the fetch and CORS handling itself.
+  if (url.origin !== self.location.origin) {
+    // Do NOT call event.respondWith(...) for cross-origin requests.
+    // This makes CORS failures surface to the browser instead of our SW returning a fallback.
+    return;
+  }
+  // Non-GETs: let network handle; respond with clear fallback on error
   if (!isGET(request)) {
     event.respondWith(
       fetch(request).catch((err) => {
@@ -83,15 +107,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Always provide a Response object from the Promise we give respondWith
   event.respondWith(
     (async () => {
       try {
-        // Navigation requests (SPA routes) => network-first, fallback to index/offline
+        // Navigation: network-first, fall back to index/offline
         if (isNavigationRequest(request)) {
           try {
             const networkResp = await fetch(request);
-            // Optionally cache updated index.html for offline fallback (non-blocking)
             if (networkResp && networkResp.ok) {
               caches.open(STATIC_CACHE).then((cache) => {
                 cache.put('/index.html', networkResp.clone()).catch((e) => {
@@ -106,48 +128,37 @@ self.addEventListener('fetch', (event) => {
             if (cachedIndex) return cachedIndex;
             const cachedOffline = await caches.match('/offline.html');
             if (cachedOffline) return cachedOffline;
-            // final fallback HTML
             return htmlOfflineResponse('Offline');
           }
         }
 
-        // API / JSON requests -> prefer same-origin handling; always return JSON response on failure
+        // API/JSON: only handle same-origin API or same-origin JSON (do NOT intercept cross-origin JSON)
         const sameOriginApi = isSameOriginAPI(url);
         const looksForJSON = acceptsJSON(request);
 
         if (sameOriginApi || (looksForJSON && url.origin === self.location.origin)) {
           try {
             const networkResp = await fetch(request);
-            // optionally cache GET API responses:
-            // if (request.method === 'GET' && networkResp && networkResp.ok) {
-            //   const copy = networkResp.clone();
-            //   caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy));
-            // }
             return networkResp;
           } catch (apiErr) {
             console.warn('[SW] API fetch failed, trying cache:', request.url, apiErr);
             const cached = await caches.match(request);
             if (cached) return cached;
-            // return a JSON error response (so callers expecting JSON don't get undefined)
             return jsonErrorResponse('Service unavailable (offline)');
           }
         }
 
-        // Cross-origin JSON (CORS) or other cross-origin requests:
-        // - We avoid caching cross-origin opaque responses.
-        // - Let the network handle it and return a safe fallback on error.
+        // Avoid intercepting cross-origin requests (let network handle) but provide safe fallback if network fails
         if (url.origin !== self.location.origin) {
           try {
             const crossResp = await fetch(request);
             return crossResp;
           } catch (crossErr) {
             console.warn('[SW] cross-origin fetch failed:', request.url, crossErr);
-            // If it's an image, return a cached fallback if available
             if (request.destination === 'image') {
               const imgFallback = await caches.match('/images/fallback.png');
               if (imgFallback) return imgFallback;
             }
-            // For fetches that likely expect JSON, give JSON; otherwise generic text fallback
             if (acceptsJSON(request)) return jsonErrorResponse('Cross-origin resource unavailable');
             return new Response('Cross-origin resource unavailable', {
               status: 503,
@@ -156,15 +167,12 @@ self.addEventListener('fetch', (event) => {
           }
         }
 
-        // Static assets (same-origin): cache-first, then network, then fallback
+        // Static assets (same-origin): cache-first then network then fallback
         const cached = await caches.match(request);
-        if (cached) {
-          return cached;
-        }
+        if (cached) return cached;
 
         try {
           const networkResp = await fetch(request);
-          // Only cache same-origin, basic (non-opaque) ok responses
           if (networkResp && networkResp.ok && networkResp.type === 'basic') {
             const copy = networkResp.clone();
             caches.open(RUNTIME_CACHE).then((cache) => {
@@ -176,19 +184,16 @@ self.addEventListener('fetch', (event) => {
           return networkResp;
         } catch (staticErr) {
           console.warn('[SW] static fetch failed:', request.url, staticErr);
-          // image fallback if available
           if (request.destination === 'image') {
             const imgFallback = await caches.match('/images/fallback.png');
             if (imgFallback) return imgFallback;
           }
-          // else generic offline response
           return new Response('Offline', {
             status: 503,
             headers: { 'Content-Type': 'text/plain' },
           });
         }
       } catch (err) {
-        // Extremely defensive: ensure we never resolve to undefined
         console.error('[SW] Unexpected error in fetch handler:', err);
         return new Response('Service Worker error', {
           status: 500,
@@ -198,3 +203,5 @@ self.addEventListener('fetch', (event) => {
     })(),
   );
 });
+
+/* End of file */
