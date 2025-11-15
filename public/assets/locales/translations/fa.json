@@ -6,7 +6,7 @@
     }
   },
   "checkpoint": {
-    "publicTitle": "نقاط عطف اخیر",
+    "publicTitle": "نقاط عطف",
     "errorMessage": "خطا: {{message}}",
     "noCheckpoints": "هنوز نقطه‌ عطفی ثبت نشده است.",
     "untitled": "بدون عنوان",

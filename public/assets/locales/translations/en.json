@@ -1,6 +1,6 @@
 {
   "checkpoint": {
-    "publicTitle": "Latest Checkpoints",
+    "publicTitle": "Checkpoints",
     "errorMessage": "Error: {{message}}",
     "noCheckpoints": "No checkpoints yet.",
     "untitled": "Untitled",
