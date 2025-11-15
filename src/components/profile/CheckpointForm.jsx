@@ -12,11 +12,6 @@ import {
   Button,
   IconButton,
   TextField,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  FormHelperText,
   Typography,
   Paper,
   Grid,
@@ -28,7 +23,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { createCheckpoint, resetCreateCheckpoint } from '../../redux/actions/userAction';
-import { CheckPointType } from '../../utils/checkpoint';
 
 export default function CheckpointForm({ setOpenCheckPoint }) {
   const dispatch = useDispatch();
@@ -47,21 +41,13 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
       url: '',
       descriptionFa: '',
       descriptionEn: '',
-      type: '',
       checkPointDate: null,
     },
   });
 
-  // Build localized type options (label keys are in translation files under checkpoint.typeLabels)
-  const typeOptions = Object.values(CheckPointType).map((type) => ({
-    value: type,
-    // translation key uses the enum value (e.g. 'feature', 'bug-fix', 'child-joined' ...)
-    label: t(`checkpoint.typeLabels.${type}`),
-  }));
-
   useEffect(() => {
     if (success) {
-      reset({ title: '', url: '', description: '', type: '', checkPointDate: null });
+      reset({ title: '', url: '', description: '', checkPointDate: null });
       const tId = setTimeout(() => dispatch(resetCreateCheckpoint()), 2000);
       return () => clearTimeout(tId);
     }
@@ -75,7 +61,6 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
       title: { fa: data.titleFa, en: data.titleEn },
       url: data.url || undefined,
       description: { fa: data.descriptionFa, en: data.descriptionEn },
-      type: data.type,
       checkPointDate: isoDateNoTime,
     };
     dispatch(createCheckpoint(dto));
@@ -261,41 +246,6 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
               )}
             />
           </Grid>
-          {/* Type selector (required) */}
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth required error={!!errors.type}>
-              <InputLabel id="type-label">{t('checkpoint.typeLabel')}</InputLabel>
-
-              <Controller
-                name="type"
-                control={control}
-                rules={{ required: t('checkpoint.typeRequired') }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    labelId="type-label"
-                    label={t('checkpoint.typeLabel')}
-                    value={field.value ?? ''}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  >
-                    {typeOptions.map((opt) => {
-                      const isDisabled =
-                        opt.value === CheckPointType.CHILD_JOINED ||
-                        opt.value === CheckPointType.SEASONAL_REPORT;
-                      return (
-                        <MenuItem key={opt.value} value={opt.value} disabled={isDisabled}>
-                          {opt.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                )}
-              />
-
-              <FormHelperText>{errors.type?.message}</FormHelperText>
-            </FormControl>
-          </Grid>
-
           {/* Date picker (required) */}
           <Grid item xs={12} md={6}>
             <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
@@ -347,9 +297,7 @@ export default function CheckpointForm({ setOpenCheckPoint }) {
             >
               <Button
                 variant="outlined"
-                onClick={() =>
-                  reset({ title: '', url: '', description: '', type: '', checkPointDate: null })
-                }
+                onClick={() => reset({ title: '', url: '', description: '', checkPointDate: null })}
               >
                 {t('checkpoint.reset')}
               </Button>
