@@ -14,12 +14,16 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
+import i18next from 'i18next';
 import { fetchCheckpoints } from '../../redux/actions/userAction';
 import { dateConvertor } from '../../utils/persianToEnglish';
 
 export default function CheckpointLogs() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const getLanguage = () => i18next.language || window.localStorage.i18nextLng;
+  const currentLang = getLanguage();
 
   const checkpointList = useSelector((state) => state.userCheckPoints || {});
   const { checkpoints = [], loading, error } = checkpointList;
@@ -105,7 +109,13 @@ export default function CheckpointLogs() {
                     disableGutters
                   >
                     {/* Primary single-line row */}
-                    <Grid container wrap="nowrap" alignItems="center" spacing={1} sx={{ gap: 1 }}>
+                    <Grid
+                      container
+                      wrap="nowrap"
+                      alignItems="center"
+                      spacing={1}
+                      sx={{ gap: 1, textAlign: currentLang !== 'fa' && 'initial' }}
+                    >
                       {/* Title (truncates) */}
                       <Grid item xs sx={{ minWidth: 0, overflow: 'hidden' }}>
                         <Typography
@@ -118,7 +128,7 @@ export default function CheckpointLogs() {
                           noWrap
                           component="span"
                         >
-                          {it.title.fa || t('checkpoint.untitled')}
+                          {currentLang === 'fa' ? it.title.fa : it.title.en}
                         </Typography>
                       </Grid>
 
@@ -188,13 +198,13 @@ export default function CheckpointLogs() {
 
                     {/* Collapsible details (description + url) */}
                     <Collapse in={openId === id} timeout="auto" unmountOnExit>
-                      <Box sx={{ mt: 1, pr: 1 }}>
+                      <Box sx={{ mt: 1, pr: 1, textAlign: currentLang !== 'fa' && 'initial' }}>
                         {it.description && (
                           <Typography
                             variant="body2"
                             sx={{ whiteSpace: 'pre-wrap', mb: it.url ? 1 : 0 }}
                           >
-                            {it.description.fa}
+                            {currentLang === 'fa' ? it.description.fa : it.description.en}
                           </Typography>
                         )}
 
@@ -204,6 +214,7 @@ export default function CheckpointLogs() {
                             target="_blank"
                             rel="noreferrer noopener"
                             underline="hover"
+                            sx={{ display: 'block', textAlign: 'right' }}
                           >
                             {it.url}
                           </Link>
