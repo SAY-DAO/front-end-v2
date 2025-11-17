@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
 import i18next from 'i18next';
 import { fetchCheckpoints } from '../../redux/actions/userAction';
-import { dateConvertor } from '../../utils/persianToEnglish';
+import { dateCleaner, dateConvertor } from '../../utils/persianToEnglish';
 
 export default function CheckpointLogs() {
   const dispatch = useDispatch();
@@ -35,9 +35,12 @@ export default function CheckpointLogs() {
   }, [dispatch]);
 
   function formatDate(val) {
+    const isRtl = currentLang === 'fa';
     if (!val) return '';
     try {
-      return dateConvertor(new Date(val).toLocaleString());
+      return isRtl
+        ? dateConvertor(new Date(val).toLocaleString())
+        : dateCleaner(new Date(val).toLocaleString());
     } catch {
       return val;
     }
