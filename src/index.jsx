@@ -30,4 +30,6 @@ root.render(
 );
 
 // call the register helper (this calls navigator.serviceWorker.register and handles skipWaiting)
-serviceWorkerRegistration.register();
+if (process.env.REACT_APP_NODE_ENV === 'production') {
+  serviceWorkerRegistration.register();
+}
