@@ -24,7 +24,7 @@ export default function Message({
     if (frontError.status) {
       return t(contents.sthIsWrong);
     }
-    if (backError.status) {
+    if (backError && backError.status) {
       if (backError.status === 600) {
         return t(contents.invalidNeed);
       }
@@ -95,15 +95,10 @@ export default function Message({
       return backError || frontError;
     }
   };
-  Sentry.captureException(children, frontError, backError.message);
+  Sentry.captureException(children, frontError, backError ? backError.message : 'no msg');
 
   return (
-    <Alert
-      icon={icon}
-      variant={variant}
-      severity={severity}
-      sx={{ margin: 'auto' }}
-    >
+    <Alert icon={icon} variant={variant} severity={severity} sx={{ margin: 'auto' }}>
       {children || onRequestCheck()}
     </Alert>
   );
