@@ -21,7 +21,7 @@ export default function Message({
     if (backSuccess) {
       return t(contents.successBank);
     }
-    if (frontError.status) {
+    if (frontError && frontError.status) {
       return t(contents.sthIsWrong);
     }
     if (backError && backError.status) {
