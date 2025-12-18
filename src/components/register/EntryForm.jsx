@@ -285,7 +285,7 @@ const EntryForm = () => {
         <Typography variant="subtitle2">
           <Trans i18nKey="join.alreadyJoined">
             If already joined tap
-            <Link to={`/login${redirectLogin}`}>here</Link>
+            <Link to={`/auth/login${redirectLogin}`}>here</Link>
           </Trans>
         </Typography>
       </Grid>
