@@ -7,7 +7,7 @@ known prefixes. Runs once per client (localStorage guard).
 (async function swCleanupOnce() {
   if (!('serviceWorker' in navigator) || !('caches' in window)) return;
 
-  const CLEANUP_KEY = 'sw_cleanup_done_v0.0.1'; // bump when running a new cleanup
+  const CLEANUP_KEY = 'sw_cleanup_done_v0.0.2'; // bump when running a new cleanup
   if (localStorage.getItem(CLEANUP_KEY)) return;
 
   // Immediately mark cleanup started so we won't run twice during a reload
