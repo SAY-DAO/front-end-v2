@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Typography, Link } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export default function OfflineHome({ content }) {
@@ -43,10 +43,10 @@ export default function OfflineHome({ content }) {
             mb: 1,
           }}
         >
-          {content || 'پوزش از اختلال — در حال تکمیل بخش بلاک‌چین هستیم'}
+          {content || '.پوزش از اختلال — در حال رفع مشکل پیش آمده هستیم'}
         </Typography>
         <Grid container spacing={5}>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <Link href="https://eco.saydao.org" target="_blank" sx={{ color: 'text.primary' }}>
               اکوسیستم
             </Link>
@@ -56,7 +56,7 @@ export default function OfflineHome({ content }) {
             <Link href="https://docs.saydao.org" target="_blank" sx={{ color: 'text.primary' }}>
               مستندات
             </Link>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Grid>
