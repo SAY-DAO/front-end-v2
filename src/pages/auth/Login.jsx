@@ -53,6 +53,10 @@ const Login = () => {
     error: errorUserDetails,
   } = useSelector((state) => state.userDetails);
 
+  useEffect(() => {
+    navigate('/main/offlineHome'); // use this when something wrong with server
+  }, []);
+
   // Message input for some status error (422)
   useEffect(() => {
     if (userName) {
