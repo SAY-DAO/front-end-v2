@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Typography } from '@mui/material';
+import { Grid, Box, Typography, Link } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export default function OfflineHome({ content }) {
@@ -20,13 +20,13 @@ export default function OfflineHome({ content }) {
           maxWidth: 720,
           width: '100%',
           px: 2,
-          direction: 'rtl', // Persian support
+          direction: 'rtl !important',
         }}
       >
         <Box
           component="img"
           src="/images/maintenance.png"
-          alt="در حال نگهداری"
+          alt="در حال"
           sx={{
             width: 72,
             height: 72,
@@ -40,23 +40,33 @@ export default function OfflineHome({ content }) {
           sx={{
             color: 'text.primary',
             fontWeight: 600,
+            direction: 'ltr !important',
             mb: 1,
           }}
         >
-          {content || '.پوزش از اختلال — در حال رفع مشکل پیش آمده هستیم'}
+          {content ||
+            'در اردیبهشت ۱۴۰۵، به‌دلیل ضرورت تأمین منابع مناسب برای پیشبرد این پروژه، تصمیم گرفتیم ارائه خدمات SAY را به‌صورت موقت متوقف کنیم. مدت این توقف در حال حاضر قابل پیش‌بینی نیست؛ با این حال امیدواریم این وقفه کوتاه باشد و پس از ازسرگیری فعالیت‌ها، همچنان همراه SAY باشید.'}
         </Typography>
         <Grid container spacing={5}>
-          {/* <Grid item xs={6}>
-            <Link href="https://eco.saydao.org" target="_blank" sx={{ color: 'text.primary' }}>
+          <Grid item xs={6}>
+            <Link
+              href="https://eco.saydao.org"
+              target="_blank"
+              sx={{ fontWeight: 400, color: '#ba690c ' }}
+            >
               اکوسیستم
             </Link>
           </Grid>
 
           <Grid item xs={6}>
-            <Link href="https://docs.saydao.org" target="_blank" sx={{ color: 'text.primary' }}>
+            <Link
+              href="https://docs.saydao.org"
+              target="_blank"
+              sx={{ fontWeight: 400, color: '#ba690c' }}
+            >
               مستندات
             </Link>
-          </Grid> */}
+          </Grid>
         </Grid>
       </Box>
     </Grid>
